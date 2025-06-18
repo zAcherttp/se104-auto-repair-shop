@@ -19,7 +19,7 @@ export async function Login(credentials: LoginFormData) {
   }
 
   revalidatePath("/", "layout");
-  redirect("/");
+  redirect("/home");
 }
 
 export async function SignOut() {
