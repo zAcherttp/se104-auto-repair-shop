@@ -1,31 +1,39 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { VariantProps } from "class-variance-authority";
 
 interface SubmitButtonProps {
-  text: string;
-  isDisabled: boolean;
+  children: React.ReactNode;
+  disabled: boolean;
   className?: string;
+  variant?: VariantProps<typeof buttonVariants>["variant"];
 }
 
 export default function SubmitButton({
-  text,
-  isDisabled,
+  children,
+  disabled,
   className = "",
+  variant = "default",
 }: SubmitButtonProps) {
   return (
-    <Button type="submit" className={`w-30 ${className}`} disabled={isDisabled}>
+    <Button
+      type="submit"
+      variant={variant}
+      className={`w-30 ${className}`}
+      disabled={disabled}
+    >
       <span
         className={`transition-all duration-300 ${
-          isDisabled ? "opacity-0 blur-md scale-95" : "opacity-100 blur-0"
+          disabled ? "opacity-0 blur-md scale-95" : "opacity-100 blur-0"
         }`}
       >
-        {text}
+        {children}
       </span>
 
       <span
         className={`absolute transition-all duration-200 ${
-          isDisabled ? "opacity-100 blur-0" : "opacity-0 blur-md scale-105"
+          disabled ? "opacity-100 blur-0" : "opacity-0 blur-md scale-105"
         }`}
       >
         <Loader2 className="animate-spin" />

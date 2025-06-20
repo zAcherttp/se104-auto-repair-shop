@@ -25,7 +25,7 @@ export default function Page() {
           {/* Staff Login */}
           <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:-translate-y-1">
             <CardHeader className="text-center pb-4">
-              <div className="mx-auto mb-4 w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+              <div className="mx-auto mb-4 w-16 h-16 rounded-full flex items-center justify-center">
                 <Users className="w-8 h-8 text-blue-600" />
               </div>
               <CardTitle className="text-2xl">Login as Garage Member</CardTitle>
@@ -39,7 +39,6 @@ export default function Page() {
                 onClick={() => router.push("/login")}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-lg py-3"
               >
-                <Users className="w-5 h-5 mr-2" />
                 Staff Login
               </Button>
             </CardContent>
@@ -48,7 +47,7 @@ export default function Page() {
           {/* Customer Tracking */}
           <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:-translate-y-1">
             <CardHeader className="text-center pb-4">
-              <div className="mx-auto mb-4 w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+              <div className="mx-auto mb-4 w-16 h-16 rounded-full flex items-center justify-center">
                 <Search className="w-8 h-8 text-green-600" />
               </div>
               <CardTitle className="text-2xl">Track My Order</CardTitle>
@@ -62,7 +61,6 @@ export default function Page() {
                 onClick={() => router.push("/track-order")}
                 className="w-full bg-green-600 hover:bg-green-700 text-lg py-3"
               >
-                <Car className="w-5 h-5 mr-2" />
                 Track Order
               </Button>
             </CardContent>
@@ -76,7 +74,7 @@ export default function Page() {
           </h2>
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <div className="text-center">
-              <div className="mx-auto mb-4 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+              <div className="mx-auto mb-4 w-12 h-12 rounded-full flex items-center justify-center">
                 <Car className="w-6 h-6 text-blue-600" />
               </div>
               <h3 className="text-lg font-semibold mb-2">Vehicle Management</h3>
@@ -85,7 +83,7 @@ export default function Page() {
               </p>
             </div>
             <div className="text-center">
-              <div className="mx-auto mb-4 w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+              <div className="mx-auto mb-4 w-12 h-12  rounded-full flex items-center justify-center">
                 <Users className="w-6 h-6 text-green-600" />
               </div>
               <h3 className="text-lg font-semibold mb-2">Staff Management</h3>
@@ -94,7 +92,7 @@ export default function Page() {
               </p>
             </div>
             <div className="text-center">
-              <div className="mx-auto mb-4 w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+              <div className="mx-auto mb-4 w-12 h-12  rounded-full flex items-center justify-center">
                 <Search className="w-6 h-6 text-purple-600" />
               </div>
               <h3 className="text-lg font-semibold mb-2">Customer Tracking</h3>

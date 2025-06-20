@@ -24,10 +24,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import SubmitButton from "./submit-button";
 import { toast } from "sonner";
 import { Login } from "@/app/actions/login";
+import { useRouter } from "next/navigation";
 
 type LoginFormProps = z.infer<typeof LoginFormSchema>;
 
 export function LoginForm() {
+  const router = useRouter();
   const form = useForm<LoginFormProps>({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
@@ -37,10 +39,11 @@ export function LoginForm() {
   });
 
   const onSubmit = async (data: LoginFormProps) => {
-    const { error } = await Login(data);
-    if (error) {
-      toast.error(error);
+    const result = await Login(data);
+    if (result.error) {
+      toast.error(result.error);
     } else {
+      router.push("/home");
       toast.success("Login successful!");
     }
   };
@@ -89,9 +92,10 @@ export function LoginForm() {
               />
               <SubmitButton
                 className="w-full"
-                text="Login"
-                isDisabled={form.formState.isSubmitting}
-              />
+                disabled={form.formState.isSubmitting}
+              >
+                Login
+              </SubmitButton>
             </form>
           </Form>
         </CardContent>

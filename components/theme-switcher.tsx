@@ -1,78 +1,52 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Laptop, Moon, Sun } from "lucide-react";
+import * as React from "react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 
-const ThemeSwitcher = () => {
-  const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
+import { useMetaColor } from "@/hooks/use-meta-colors";
+import { Button } from "./ui/button";
+import { Moon, Sun } from "lucide-react";
 
-  // useEffect only runs on the client, so now we can safely show the UI
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+export function ThemeSwitcher() {
+  const { setTheme, resolvedTheme } = useTheme();
+  const { setMetaColor, metaColor } = useMetaColor();
 
-  if (!mounted) {
-    return null;
-  }
+  React.useEffect(() => {
+    setMetaColor(metaColor);
+  }, [metaColor, setMetaColor]);
 
-  const ICON_SIZE = 16;
+  const toggleTheme = React.useCallback(() => {
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
+  }, [resolvedTheme, setTheme]);
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size={"sm"}>
-          {theme === "light" ? (
-            <Sun
-              key="light"
-              size={ICON_SIZE}
-              className={"text-muted-foreground"}
-            />
-          ) : theme === "dark" ? (
-            <Moon
-              key="dark"
-              size={ICON_SIZE}
-              className={"text-muted-foreground"}
-            />
-          ) : (
-            <Laptop
-              key="system"
-              size={ICON_SIZE}
-              className={"text-muted-foreground"}
-            />
-          )}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-content" align="start">
-        <DropdownMenuRadioGroup
-          value={theme}
-          onValueChange={(e) => setTheme(e)}
-        >
-          <DropdownMenuRadioItem className="flex gap-2" value="light">
-            <Sun size={ICON_SIZE} className="text-muted-foreground" />{" "}
-            <span>Light</span>
-          </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem className="flex gap-2" value="dark">
-            <Moon size={ICON_SIZE} className="text-muted-foreground" />{" "}
-            <span>Dark</span>
-          </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem className="flex gap-2" value="system">
-            <Laptop size={ICON_SIZE} className="text-muted-foreground" />{" "}
-            <span>System</span>
-          </DropdownMenuRadioItem>
-        </DropdownMenuRadioGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-};
+    <Button
+      variant="ghost"
+      size="icon"
+      className="group/toggle extend-touch-target size-8"
+      onClick={toggleTheme}
+      title="Toggle theme"
+    >
+      <span
+        className={`transition-all duration-300 ${
+          resolvedTheme === "dark"
+            ? "opacity-0 scale-95 rotate-180"
+            : "opacity-100 rotate-0"
+        }`}
+      >
+        <Moon />
+      </span>
 
-export { ThemeSwitcher };
+      <span
+        className={`absolute transition-all duration-300 ${
+          resolvedTheme === "dark"
+            ? "opacity-100 rotate-0"
+            : "opacity-0 scale-105 -rotate-180"
+        }`}
+      >
+        <Sun />
+      </span>
+      <span className="sr-only">Toggle theme</span>
+    </Button>
+  );
+}

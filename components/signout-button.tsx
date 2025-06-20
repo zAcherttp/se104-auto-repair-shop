@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
+import { toast } from "sonner";
 
 export function SignOutButton() {
   const router = useRouter();
@@ -11,6 +12,8 @@ export function SignOutButton() {
   const signOut = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
+
+    toast.success("You have been signed out successfully.");
     router.push("/");
   };
 

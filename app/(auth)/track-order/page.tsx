@@ -1,28 +1,52 @@
 "use client";
 
 import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ArrowLeft, Search, Loader2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { OrderDataProps } from "@/types";
 import OrderDetails from "@/components/order-data-detail";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { z } from "zod/v4";
+import { RepairTrackingFormSchema } from "@/lib/form/definitions";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import SubmitButton from "@/components/submit-button";
 
-const TrackOrderPage = () => {
-  const [licensePlate, setLicensePlate] = useState("");
+type RepairTrackingFormProps = z.infer<typeof RepairTrackingFormSchema>;
+
+export default function TrackOrderPage() {
+  const form = useForm<RepairTrackingFormProps>({
+    resolver: zodResolver(RepairTrackingFormSchema),
+    defaultValues: {
+      query: "",
+    },
+  });
+
   const [loading, setLoading] = useState(false);
   const [orderData, setOrderData] = useState<OrderDataProps | null>(null);
 
   const supabase = createClient();
-
   const router = useRouter();
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: RepairTrackingFormProps) => {
     setLoading(true);
 
     try {
@@ -35,7 +59,7 @@ const TrackOrderPage = () => {
           customer:customers(*)
         `
         )
-        .eq("license_plate", licensePlate.toUpperCase())
+        .eq("license_plate", data.query.toUpperCase())
         .single();
 
       if (vehicleError || !vehicle) {
@@ -66,7 +90,7 @@ const TrackOrderPage = () => {
         throw ordersError;
       }
 
-      console.log("Repair Orders:", vehicle);
+      //console.log("Repair Orders:", vehicle);
 
       setOrderData({
         vehicle,
@@ -90,54 +114,55 @@ const TrackOrderPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
-      <div className="container mx-auto px-4">
-        <Card className="max-w-md mx-auto">
-          <CardHeader className="text-center">
-            <Button
-              variant="ghost"
-              onClick={() => router.push("/")}
-              className="absolute left-4 top-4"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back
-            </Button>
-            <CardTitle className="text-2xl">Track Your Order</CardTitle>
-            <p className="text-slate-600">
+    <div className="min-h-screen bg-gradient-to-br flex items-center justify-center">
+      <div className="flex flex-col gap-4 w-full max-w-md">
+        <Button
+          variant="ghost"
+          className="w-min"
+          onClick={() => router.push("/")}
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back
+        </Button>
+        <Card className="max-w-md">
+          <CardHeader>
+            <CardTitle>Track Your Order</CardTitle>
+            <CardDescription>
               Enter your license plate to check repair status
-            </p>
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSearch} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="licensePlate">License Plate Number</Label>
-                <Input
-                  id="licensePlate"
-                  type="text"
-                  value={licensePlate}
-                  onChange={(e) =>
-                    setLicensePlate(e.target.value.toUpperCase())
-                  }
-                  placeholder="Enter license plate (e.g., ABC-123)"
-                  required
-                  className="uppercase"
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
+                <FormField
+                  control={form.control}
+                  name="query"
+                  render={({ field }) => (
+                    <FormItem className="pb-4">
+                      <FormLabel>License plate number</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="ABC-123"
+                          className="uppercase"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
 
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? (
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                ) : (
-                  <Search className="w-4 h-4 mr-2" />
-                )}
-                Search Order
-              </Button>
-            </form>
+                <SubmitButton disabled={loading} className="w-full">
+                  Search
+                </SubmitButton>
+              </form>
+            </Form>
           </CardContent>
         </Card>
       </div>
     </div>
   );
-};
-
-export default TrackOrderPage;
+}

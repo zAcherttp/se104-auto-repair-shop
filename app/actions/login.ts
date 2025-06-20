@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
 import { LoginFormSchema } from "@/lib/form/definitions";
@@ -19,7 +18,7 @@ export async function Login(credentials: LoginFormData) {
   }
 
   revalidatePath("/", "layout");
-  redirect("/home");
+  return { success: true };
 }
 
 export async function SignOut() {
@@ -28,8 +27,8 @@ export async function SignOut() {
   const { error } = await supabase.auth.signOut();
 
   if (error) {
-    redirect("/error");
+    return { error: error.message };
   }
   revalidatePath("/", "layout");
-  redirect("/");
+  return { success: true };
 }
