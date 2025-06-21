@@ -23,29 +23,26 @@ export function ThemeSwitcher() {
     <Button
       variant="ghost"
       size="icon"
-      className="group/toggle extend-touch-target size-8"
+      className="group/toggle extend-touch-target size-8 relative overflow-hidden"
       onClick={toggleTheme}
       title="Toggle theme"
+      suppressHydrationWarning
     >
-      <span
-        className={`transition-all duration-300 ${
-          resolvedTheme === "dark"
-            ? "opacity-0 scale-95 rotate-180"
-            : "opacity-100 rotate-0"
+      <Moon
+        className={`absolute h-4 w-4 transition-all duration-300 ease-out ${
+          resolvedTheme === "light"
+            ? "opacity-0 scale-90 rotate-180"
+            : "opacity-100 scale-100 rotate-0"
         }`}
-      >
-        <Moon />
-      </span>
+      />
 
-      <span
-        className={`absolute transition-all duration-300 ${
-          resolvedTheme === "dark"
-            ? "opacity-100 rotate-0"
-            : "opacity-0 scale-105 -rotate-180"
+      <Sun
+        className={`absolute h-4 w-4 transition-all duration-300 ease-out ${
+          resolvedTheme === "light"
+            ? "opacity-100 scale-105 rotate-0"
+            : "opacity-0 scale-95 -rotate-180"
         }`}
-      >
-        <Sun />
-      </span>
+      />
       <span className="sr-only">Toggle theme</span>
     </Button>
   );

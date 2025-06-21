@@ -51,7 +51,7 @@ CREATE TABLE public.repair_orders (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   vehicle_id UUID REFERENCES public.vehicles(id),
   customer_id UUID REFERENCES public.customers(id),
-  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'in-progress', 'completed')),
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'in-progress', 'completed', 'cancelled')),
   reception_date DATE DEFAULT CURRENT_DATE,
   completion_date DATE,
   total_amount DECIMAL(10,2) DEFAULT 0,
@@ -222,6 +222,33 @@ $$;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- Create trigger to update created_at and updated_at timestamps
+CREATE OR REPLACE FUNCTION public.update_timestamps()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER SET search_path = ''
+AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  IF TG_OP = 'INSERT' THEN
+    NEW.created_at = NOW();
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER update_profiles_timestamps
+  BEFORE INSERT OR UPDATE ON public.profiles
+  FOR EACH ROW EXECUTE FUNCTION public.update_timestamps();
+
+  CREATE TRIGGER update_repair_orders_timestamps
+  BEFORE INSERT OR UPDATE ON public.repair_orders
+  FOR EACH ROW EXECUTE FUNCTION public.update_timestamps();
+  
+CREATE TRIGGER update_repair_order_items_timestamps
+  BEFORE INSERT OR UPDATE ON public.repair_order_items
+  FOR EACH ROW EXECUTE FUNCTION public.update_timestamps();
 
 -- Insert initial system settings
 INSERT INTO public.system_settings (setting_key, setting_value) VALUES

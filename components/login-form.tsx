@@ -18,19 +18,16 @@ import {
   FormMessage,
 } from "./ui/form";
 import { useForm } from "react-hook-form";
-import { LoginFormSchema } from "@/lib/form/definitions";
-import { z } from "zod/v4";
+import { LoginFormSchema, LoginFormData } from "@/lib/form/definitions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SubmitButton from "./submit-button";
 import { toast } from "sonner";
 import { Login } from "@/app/actions/login";
 import { useRouter } from "next/navigation";
 
-type LoginFormProps = z.infer<typeof LoginFormSchema>;
-
 export function LoginForm() {
   const router = useRouter();
-  const form = useForm<LoginFormProps>({
+  const form = useForm<LoginFormData>({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
       email: "",
@@ -38,7 +35,7 @@ export function LoginForm() {
     },
   });
 
-  const onSubmit = async (data: LoginFormProps) => {
+  const onSubmit = async (data: LoginFormData) => {
     const result = await Login(data);
     if (result.error) {
       toast.error(result.error);

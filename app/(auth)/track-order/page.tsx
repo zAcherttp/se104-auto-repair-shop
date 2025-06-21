@@ -24,16 +24,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { z } from "zod/v4";
-import { RepairTrackingFormSchema } from "@/lib/form/definitions";
+import {
+  RepairTrackingFormSchema,
+  RepairTrackingFormData,
+} from "@/lib/form/definitions";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SubmitButton from "@/components/submit-button";
 
-type RepairTrackingFormProps = z.infer<typeof RepairTrackingFormSchema>;
-
 export default function TrackOrderPage() {
-  const form = useForm<RepairTrackingFormProps>({
+  const form = useForm<RepairTrackingFormData>({
     resolver: zodResolver(RepairTrackingFormSchema),
     defaultValues: {
       query: "",
@@ -46,7 +46,7 @@ export default function TrackOrderPage() {
   const supabase = createClient();
   const router = useRouter();
 
-  const onSubmit = async (data: RepairTrackingFormProps) => {
+  const onSubmit = async (data: RepairTrackingFormData) => {
     setLoading(true);
 
     try {

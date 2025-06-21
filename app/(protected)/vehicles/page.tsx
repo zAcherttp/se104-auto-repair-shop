@@ -1,7 +1,11 @@
-export default async function Page() {
+"use client";
+
+import { VehiclesList } from "@/components/vehicles/vehicles-list";
+
+export default function VehiclesPage() {
   return (
-    <div>
-      <h1>Welcome to the Vehicles Page</h1>
+    <div className="flex-1 w-full flex flex-col p-6">
+      <VehiclesList />
     </div>
   );
 }

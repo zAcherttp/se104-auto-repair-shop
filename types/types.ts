@@ -23,3 +23,13 @@ export type OrderDataProps = {
   customer: Customer;
   RepairOrderWithItemsDetails: RepairOrderWithItemsDetails[];
 };
+
+export type VehicleWithDetails = Vehicle & {
+  customer: Customer;
+  repair_orders: RepairOrder[];
+};
+
+export interface ReceptionProps {
+  onCreateRepair: (vehicle: VehicleWithDetails) => void;
+  onProcessPayment: (vehicle: VehicleWithDetails) => void;
+}
