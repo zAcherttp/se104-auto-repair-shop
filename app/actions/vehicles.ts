@@ -164,6 +164,29 @@ export async function fetchVehiclesWithRange(
   }
 }
 
+export async function handleRepairOrderPayment(
+  repairOrderId: string,
+  amount: number
+) {
+  const supabase = await createClient();
+
+  try {
+    // Update the repair order with the payment amount
+    const { error } = await supabase
+      .from("repair_orders")
+      .update({ paid_amount: amount })
+      .eq("id", repairOrderId);
+
+    if (error) throw error;
+
+    revalidatePath("/vehicles");
+    return { success: true };
+  } catch (error) {
+    console.error("Error processing payment:", error);
+    return { error: "Failed to process payment" };
+  }
+}
+
 export async function removeVehicle(vehicleId: string) {
   const supabase = await createClient();
 

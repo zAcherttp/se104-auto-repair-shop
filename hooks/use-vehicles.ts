@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchVehiclesWithRange } from "@/app/actions/vehicles";
 
 export function useVehicles(dateFrom: string, dateTo: string) {
-  console.log("useVehicles called with:", { dateFrom, dateTo });
+  //console.log("useVehicles called with:", { dateFrom, dateTo });
 
   return useQuery({
     queryKey: ["vehicles", dateFrom, dateTo],

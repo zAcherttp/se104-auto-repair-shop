@@ -18,6 +18,10 @@ export type RepairOrderItemWithDetails = RepairOrderItem & {
   labor_type: LaborType;
 };
 
+export type RepairOrderWithVehicleDetails = RepairOrder & {
+  vehicle: Vehicle;
+};
+
 export type OrderDataProps = {
   vehicle: Vehicle;
   customer: Customer;

@@ -102,7 +102,10 @@ export function ReceptionForm({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        aria-describedby="vehicle-reception-form"
+        className="max-w-2xl max-h-[90vh] overflow-y-auto"
+      >
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-blue-800">
             Vehicle Reception Form

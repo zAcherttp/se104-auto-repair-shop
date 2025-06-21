@@ -29,17 +29,29 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { ReceptionForm } from "./reception-form";
-import { removeVehicle } from "@/app/actions/vehicles";
-import { VehicleWithDetails } from "@/types/types";
+import {
+  handleRepairOrderPayment,
+  removeVehicle,
+} from "@/app/actions/vehicles";
+import {
+  RepairOrderWithVehicleDetails,
+  VehicleWithDetails,
+} from "@/types/types";
 import { useVehicles } from "@/hooks/use-vehicles";
 import DateRangePicker from "@/components/date-range-picker";
 import { format } from "date-fns";
 import { type DateRange } from "react-day-picker";
+import PaymentDialog from "../payment-dialog";
 
 export function VehiclesList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showReceptionForm, setShowReceptionForm] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
+  const [selectedRepairOrder, setSelectedRepairOrder] = useState<
+    RepairOrderWithVehicleDetails | undefined
+  >(undefined);
 
   // Date range state - default to today
   const today = new Date();
@@ -100,13 +112,40 @@ export function VehiclesList() {
     toast.success("Vehicle reception created successfully!");
   };
   const handleCreateRepair = (vehicle: VehicleWithDetails) => {
-    console.log("Create repair for:", vehicle);
+    console.log("Creating repair for vehicle:", vehicle);
     toast.info("Repair creation feature coming soon!");
   };
 
-  const handleProcessPayment = (vehicle: VehicleWithDetails) => {
-    console.log("Process payment for:", vehicle);
-    toast.info("Payment processing feature coming soon!");
+  const handleProcessPayment = (repairOrder: RepairOrderWithVehicleDetails) => {
+    setSelectedRepairOrder(repairOrder);
+    setShowPaymentDialog(true);
+  };
+
+  const handlePaymentSuccess = async () => {
+    setShowPaymentDialog(false);
+
+    try {
+      if (!selectedRepairOrder) {
+        toast.error("No repair order selected for payment");
+        return;
+      }
+
+      const { error } = await handleRepairOrderPayment(
+        selectedRepairOrder.id,
+        selectedRepairOrder.total_amount || 0
+      );
+
+      if (error) {
+        toast.error(error);
+        return;
+      }
+    } catch (error) {
+      console.error("Error updating repair order:", error);
+      toast.error("Failed to update repair order status");
+    }
+
+    refetch();
+    toast.success("Payment confirmed!");
   };
 
   const handleRemoveVehicle = async (vehicleId: string) => {
@@ -224,7 +263,7 @@ export function VehiclesList() {
                   <TableHead>Last Service</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
-              </TableHeader>{" "}
+              </TableHeader>
               <TableBody>
                 {isLoading
                   ? renderSkeletonRows()
@@ -246,11 +285,26 @@ export function VehiclesList() {
                           }, 0) || 0;
 
                         const latestOrder = vehicle.repair_orders?.[0];
-
+                        const repairOrderWithVehicle: RepairOrderWithVehicleDetails =
+                          {
+                            ...latestOrder,
+                            vehicle: {
+                              id: vehicle.id,
+                              license_plate: vehicle.license_plate,
+                              brand: vehicle.brand,
+                              created_at: vehicle.created_at,
+                              customer_id: vehicle.customer_id,
+                            },
+                          };
                         return (
                           <TableRow
                             key={vehicle.id}
                             className="hover:bg-gray-50 dark:hover:bg-gray-800"
+                            onClick={() => {
+                              if (latestOrder) {
+                                setSelectedRepairOrder(repairOrderWithVehicle);
+                              }
+                            }}
                           >
                             <TableCell className="font-mono font-semibold">
                               {vehicle.license_plate}
@@ -292,10 +346,13 @@ export function VehiclesList() {
                                     </Button>
                                   </DropdownMenuTrigger>
                                   <DropdownMenuContent align="end">
+                                    {" "}
                                     <DropdownMenuItem
-                                      onClick={() =>
-                                        handleRemoveVehicle(vehicle.id)
-                                      }
+                                      onClick={() => {
+                                        // Prevent execution if disabled
+                                        if (loading || totalDebt > 0) return;
+                                        handleRemoveVehicle(vehicle.id);
+                                      }}
                                       className="text-red-600 hover:text-red-700 dark:text-red-400"
                                       disabled={loading || totalDebt > 0}
                                     >
@@ -303,9 +360,11 @@ export function VehiclesList() {
                                       Remove
                                     </DropdownMenuItem>
                                     <DropdownMenuItem
-                                      onClick={() =>
-                                        handleCreateRepair(vehicle)
-                                      }
+                                      onClick={() => {
+                                        // Prevent execution if disabled
+                                        if (loading) return;
+                                        handleCreateRepair(vehicle);
+                                      }}
                                       className="text-blue-600 hover:text-blue-700 dark:text-blue-400"
                                       disabled={loading}
                                     >
@@ -313,9 +372,26 @@ export function VehiclesList() {
                                       Modify order
                                     </DropdownMenuItem>
                                     <DropdownMenuItem
-                                      onClick={() =>
-                                        handleProcessPayment(vehicle)
-                                      }
+                                      onClick={() => {
+                                        // Prevent execution if disabled
+                                        if (totalDebt <= 0 || loading) return;
+
+                                        const repairOrderWithVehicle: RepairOrderWithVehicleDetails =
+                                          {
+                                            ...latestOrder,
+                                            vehicle: {
+                                              id: vehicle.id,
+                                              license_plate:
+                                                vehicle.license_plate,
+                                              brand: vehicle.brand,
+                                              created_at: vehicle.created_at,
+                                              customer_id: vehicle.customer_id,
+                                            },
+                                          };
+                                        handleProcessPayment(
+                                          repairOrderWithVehicle
+                                        );
+                                      }}
                                       className="text-green-600 hover:text-green-700 dark:text-green-400"
                                       disabled={totalDebt <= 0 || loading}
                                     >
@@ -330,7 +406,7 @@ export function VehiclesList() {
                         );
                       })}
               </TableBody>
-            </Table>{" "}
+            </Table>
           </div>
           {!isLoading && filteredVehicles.length === 0 && (
             <div className="text-center py-8 text-gray-500 dark:text-gray-400">
@@ -346,6 +422,12 @@ export function VehiclesList() {
         open={showReceptionForm}
         onClose={() => setShowReceptionForm(false)}
         onSuccess={handleReceptionSuccess}
+      />
+      <PaymentDialog
+        open={showPaymentDialog}
+        onClose={() => setShowPaymentDialog(false)}
+        onSuccess={handlePaymentSuccess}
+        selectedRepairOrderWithVehicleDetail={selectedRepairOrder}
       />
     </div>
   );
