@@ -44,6 +44,7 @@ import {
 } from "@/lib/form/definitions";
 import { createReception } from "@/app/actions/vehicles";
 import SubmitButton from "../submit-button";
+import { FormDialogProps } from "@/types/dialog";
 
 const CAR_BRANDS = [
   "Toyota",
@@ -63,17 +64,7 @@ const CAR_BRANDS = [
   "Other",
 ];
 
-interface ReceptionFormProps {
-  open: boolean;
-  onClose: () => void;
-  onSuccess: () => void;
-}
-
-export function ReceptionForm({
-  open,
-  onClose,
-  onSuccess,
-}: ReceptionFormProps) {
+export function ReceptionForm({ open, onClose, onSuccess }: FormDialogProps) {
   const form = useForm<VehicleReceptionFormData>({
     resolver: zodResolver(VehicleReceptionFormSchema),
     defaultValues: {
@@ -95,7 +86,7 @@ export function ReceptionForm({
     } else {
       toast.success("Vehicle reception created successfully!");
       form.reset();
-      onSuccess();
+      onSuccess?.();
       onClose();
     }
   };

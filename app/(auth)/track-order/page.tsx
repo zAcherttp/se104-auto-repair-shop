@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/supabase/client";
 import { toast } from "sonner";
 import { OrderDataProps } from "@/types";
 import OrderDetails from "@/components/order-data-detail";

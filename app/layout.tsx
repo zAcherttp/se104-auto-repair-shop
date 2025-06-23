@@ -3,6 +3,8 @@ import { Geist } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import { Providers } from "@/components/providers/providers";
+import { ReactNode } from "react";
+import { ReactScan } from "@/components/react-scan";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -23,10 +25,11 @@ const geistSans = Geist({
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <ReactScan />
       <body className={`${geistSans.className} antialiased`}>
         <Toaster richColors={true} />
         <Providers>{children}</Providers>

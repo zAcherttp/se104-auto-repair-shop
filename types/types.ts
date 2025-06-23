@@ -1,8 +1,14 @@
-import { Tables } from "@/lib/supabase/types";
+import { Tables } from "@/supabase/types";
+
+export type ApiResponse<T> = {
+  error: Error | null;
+  data?: T;
+  totalCount?: number;
+};
 
 export type Customer = Tables<"customers">;
 export type Vehicle = Tables<"vehicles">;
-export type RepairOrder = Tables<"repair_orders">;
+export type RepairOrder = Omit<Tables<"repair_orders">, "customer_id">;
 export type RepairOrderItem = Tables<"repair_order_items">;
 export type SparePart = Tables<"spare_parts">;
 export type LaborType = Tables<"labor_types">;
@@ -33,7 +39,4 @@ export type VehicleWithDetails = Vehicle & {
   repair_orders: RepairOrder[];
 };
 
-export interface ReceptionProps {
-  onCreateRepair: (vehicle: VehicleWithDetails) => void;
-  onProcessPayment: (vehicle: VehicleWithDetails) => void;
-}
+export type PaymentInsert = Omit<Payment, "id" | "created_at" | "updated_at">;

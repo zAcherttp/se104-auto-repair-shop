@@ -8,27 +8,41 @@ type PaymentDialogProps = {
   open: boolean;
   onClose: () => void;
   onSuccess: () => void;
-  selectedRepairOrderWithVehicleDetail?: RepairOrderWithVehicleDetails;
+  repairOrderWithVehicleDetail?: RepairOrderWithVehicleDetails;
 };
 
 export default function PaymentDialog({
   open,
   onClose,
   onSuccess,
-  selectedRepairOrderWithVehicleDetail,
+  repairOrderWithVehicleDetail,
 }: PaymentDialogProps) {
+  // Show loading state if dialog is open but data is not ready
   if (
-    !selectedRepairOrderWithVehicleDetail?.vehicle ||
-    !selectedRepairOrderWithVehicleDetail?.total_amount ||
-    selectedRepairOrderWithVehicleDetail?.paid_amount === null ||
-    selectedRepairOrderWithVehicleDetail?.paid_amount === undefined
+    open &&
+    (!repairOrderWithVehicleDetail?.vehicle ||
+      !repairOrderWithVehicleDetail?.total_amount ||
+      repairOrderWithVehicleDetail?.paid_amount === null ||
+      repairOrderWithVehicleDetail?.paid_amount === undefined)
   ) {
-    return null;
+    return (
+      <Dialog open={open} onOpenChange={onClose}>
+        <DialogContent className="max-w-md">
+          <div className="flex items-center justify-center py-8">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <p className="text-gray-500">Loading payment data...</p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
   }
 
+  if (!open || !repairOrderWithVehicleDetail) return null;
   const debtAmount =
-    selectedRepairOrderWithVehicleDetail.total_amount -
-    (selectedRepairOrderWithVehicleDetail.paid_amount || 0);
+    (repairOrderWithVehicleDetail.total_amount || 0) -
+    (repairOrderWithVehicleDetail.paid_amount || 0);
 
   // Don't show dialog if there's no debt
   if (debtAmount <= 0) {
@@ -40,7 +54,7 @@ export default function PaymentDialog({
     destinationAccount:
       process.env.NEXT_PUBLIC_VIETQR_DESTINATION_ACCOUNT || "N/A",
     amount: debtAmount,
-    description: `Payment for ${selectedRepairOrderWithVehicleDetail.vehicle.license_plate}`,
+    description: `Payment for ${repairOrderWithVehicleDetail.vehicle.license_plate}`,
   });
 
   return (

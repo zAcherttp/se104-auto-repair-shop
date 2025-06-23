@@ -8,6 +8,8 @@ interface SubmitButtonProps {
   disabled: boolean;
   className?: string;
   variant?: VariantProps<typeof buttonVariants>["variant"];
+  onClick?: () => void | Promise<void>;
+  type?: "button" | "submit";
 }
 
 export default function SubmitButton({
@@ -15,13 +17,16 @@ export default function SubmitButton({
   disabled,
   className = "",
   variant = "default",
+  onClick,
+  type = "submit",
 }: SubmitButtonProps) {
   return (
     <Button
-      type="submit"
+      type={type}
       variant={variant}
       className={`w-30 ${className}`}
       disabled={disabled}
+      onClick={onClick}
     >
       <span
         className={`transition-all duration-300 ${

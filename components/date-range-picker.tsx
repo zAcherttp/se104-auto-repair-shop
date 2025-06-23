@@ -272,9 +272,9 @@ export default function DateRangePicker({
       }}
     >
       <PopoverTrigger asChild>
-        <Button size={"lg"} variant="outline">
+        <Button variant="outline">
           <div className="text-right">
-            <div className="py-1">
+            <div>
               <div>{`${
                 committedRange.from
                   ? formatDate(committedRange.from, locale)
@@ -286,7 +286,7 @@ export default function DateRangePicker({
               }`}</div>
             </div>
           </div>
-          <div className="pl-1 opacity-60 -mr-2 scale-125">
+          <div className="pl-1 pr-1 opacity-60 -mr-2 scale-125">
             {isOpen ? <ChevronUp width={24} /> : <ChevronDown width={24} />}
           </div>
         </Button>

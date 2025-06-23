@@ -17,3 +17,7 @@ Coding standards, domain knowledge, and preferences that AI should follow.
 - Use descriptive names for variables and functions.
 - Separate types in respective "types.ts" files.
 - Always propose a plan before writing code.
+
+# Tools
+
+- use pnpm for package management.

@@ -32,3 +32,16 @@ export const VehicleReceptionFormSchema = z.object({
 export type VehicleReceptionFormData = z.infer<
   typeof VehicleReceptionFormSchema
 >;
+
+export const LineItemFormSchema = z.object({
+  id: z.string().optional(),
+  description: z.string().min(1, "Description is required"),
+  sparePart: z.string().optional(),
+  quantity: z.number().min(1, "Quantity must be at least 1"),
+  unitPrice: z.number().min(0, "Unit price must be non-negative"),
+  laborType: z.string().optional(),
+  laborCost: z.number().min(0, "Labor cost must be non-negative"),
+  total: z.number().min(0, "Total must be non-negative"),
+});
+
+export type LineItemFormData = z.infer<typeof LineItemFormSchema>;
