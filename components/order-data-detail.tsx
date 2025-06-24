@@ -141,7 +141,7 @@ const OrderDetails = ({ orderData, onBack }: OrderDataDetailsProps) => {
                       Repair Order #{order.id.slice(0, 8)}
                     </CardTitle>
                     <p className="text-sm text-gray-600 mt-1">
-                      Reception Date:{" "}
+                      Reception Date:
                       {new Date(
                         order.reception_date || ""
                       ).toLocaleDateString()}
@@ -173,7 +173,7 @@ const OrderDetails = ({ orderData, onBack }: OrderDataDetailsProps) => {
                                   {item.description}
                                   {item.spare_part_id && (
                                     <div className="text-sm text-gray-600">
-                                      Part: {item.spare_part.name} (Qty:{" "}
+                                      Part: {item.spare_part.name} (Qty:
                                       {item.quantity})
                                     </div>
                                   )}
@@ -232,7 +232,7 @@ const OrderDetails = ({ orderData, onBack }: OrderDataDetailsProps) => {
 
                 {order.completion_date && (
                   <div className="mt-4 text-sm text-gray-600">
-                    <strong>Completed on:</strong>{" "}
+                    <strong>Completed on:</strong>
                     {new Date(order.completion_date).toLocaleDateString()}
                   </div>
                 )}

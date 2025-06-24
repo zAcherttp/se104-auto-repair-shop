@@ -86,7 +86,7 @@ export function VehicleDataTable<TData, TValue>({
       <div className="flex items-center justify-between pb-6">
         <div className="leading-none font-semibold pl-2">
           Vehicle Reception & Registry
-        </div>{" "}
+        </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <DateRangePicker
@@ -106,7 +106,7 @@ export function VehicleDataTable<TData, TValue>({
               onChange={(e) => table.setGlobalFilter(String(e.target.value))}
               className="pl-10 w-80"
             />
-          </div>{" "}
+          </div>
           <Button
             className="bg-blue-600 hover:bg-blue-700"
             onClick={onNewReception}
@@ -180,7 +180,7 @@ export function VehicleDataTable<TData, TValue>({
 
       <div className="flex items-center justify-between px-4 pt-4">
         <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
-          {table.getFilteredRowModel().rows.length} order(s){" "}
+          {table.getFilteredRowModel().rows.length} order(s)
           {dateRange?.from && dateRange?.to && (
             <span className="ml-2">in selected date range</span>
           )}
@@ -212,7 +212,7 @@ export function VehicleDataTable<TData, TValue>({
             </Select>
           </div>
           <div className="flex w-fit items-center justify-center text-sm font-medium">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
+            Page {table.getState().pagination.pageIndex + 1} of
             {table.getPageCount()}
           </div>
           <div className="ml-auto flex items-center gap-2 lg:ml-0">

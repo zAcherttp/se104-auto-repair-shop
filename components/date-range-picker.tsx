@@ -65,6 +65,30 @@ const getDateAdjustedForTimezone = (dateInput: Date | string): Date => {
   }
 };
 
+// Helper function to normalize date range with proper times
+const normalizeDateRange = (range: { from?: Date; to?: Date }): DateRange => {
+  const normalizedRange: { from?: Date; to?: Date } = {};
+
+  if (range.from) {
+    const fromDate = new Date(range.from);
+    fromDate.setHours(0, 0, 0, 0);
+    normalizedRange.from = fromDate;
+  }
+
+  if (range.to) {
+    const toDate = new Date(range.to);
+    toDate.setHours(23, 59, 59, 999);
+    normalizedRange.to = toDate;
+  } else if (range.from) {
+    // If no 'to' date, use 'from' date with end of day time
+    const toDate = new Date(range.from);
+    toDate.setHours(23, 59, 59, 999);
+    normalizedRange.to = toDate;
+  }
+
+  return normalizedRange as DateRange;
+};
+
 export default function DateRangePicker({
   initialDateFrom = new Date(new Date().setHours(0, 0, 0, 0)),
   initialDateTo,
@@ -75,21 +99,27 @@ export default function DateRangePicker({
 }: DateRangePickerProps) {
   const [isOpen, setIsOpen] = React.useState(false);
 
-  // Committed range - only updated when user clicks Update button
-  const [committedRange, setCommittedRange] = React.useState<DateRange>({
-    from: getDateAdjustedForTimezone(initialDateFrom),
-    to: initialDateTo
+  // Helper to get normalized initial dates
+  const getInitialRange = () => {
+    const fromDate = getDateAdjustedForTimezone(initialDateFrom);
+    fromDate.setHours(0, 0, 0, 0);
+
+    const toDate = initialDateTo
       ? getDateAdjustedForTimezone(initialDateTo)
-      : getDateAdjustedForTimezone(initialDateFrom),
-  });
+      : new Date(fromDate);
+    toDate.setHours(23, 59, 59, 999);
+
+    return { from: fromDate, to: toDate };
+  };
+
+  const initialRange = getInitialRange();
+
+  // Committed range - only updated when user clicks Update button
+  const [committedRange, setCommittedRange] =
+    React.useState<DateRange>(initialRange);
 
   // Working range - changes as user selects dates in the picker
-  const [range, setRange] = React.useState<DateRange>({
-    from: getDateAdjustedForTimezone(initialDateFrom),
-    to: initialDateTo
-      ? getDateAdjustedForTimezone(initialDateTo)
-      : getDateAdjustedForTimezone(initialDateFrom),
-  });
+  const [range, setRange] = React.useState<DateRange>(initialRange);
 
   // Refs to store the values of range when the date picker is opened
   const openedRangeRef = React.useRef<DateRange | undefined>(undefined);
@@ -176,8 +206,9 @@ export default function DateRangePicker({
   };
 
   const setPreset = (preset: string): void => {
-    const range = getPresetRange(preset);
-    setRange(range);
+    const presetRange = getPresetRange(preset);
+    const normalizedRange = normalizeDateRange(presetRange);
+    setRange(normalizedRange);
   };
 
   const checkPreset = React.useCallback((): void => {
@@ -209,26 +240,17 @@ export default function DateRangePicker({
   }, [range]);
 
   const resetValues = (): void => {
-    const initialFrom =
-      typeof initialDateFrom === "string"
-        ? getDateAdjustedForTimezone(initialDateFrom)
-        : initialDateFrom;
-    const initialTo = initialDateTo
-      ? typeof initialDateTo === "string"
-        ? getDateAdjustedForTimezone(initialDateTo)
-        : initialDateTo
-      : typeof initialDateFrom === "string"
-      ? getDateAdjustedForTimezone(initialDateFrom)
-      : initialDateFrom;
+    const initialFrom = getDateAdjustedForTimezone(initialDateFrom);
+    initialFrom.setHours(0, 0, 0, 0);
 
-    setRange({
-      from: initialFrom,
-      to: initialTo,
-    });
-    setCommittedRange({
-      from: initialFrom,
-      to: initialTo,
-    });
+    const initialTo = initialDateTo
+      ? getDateAdjustedForTimezone(initialDateTo)
+      : new Date(initialFrom);
+    initialTo.setHours(23, 59, 59, 999);
+
+    const resetRange = { from: initialFrom, to: initialTo };
+    setRange(resetRange);
+    setCommittedRange(resetRange);
   };
 
   React.useEffect(() => {
@@ -298,7 +320,8 @@ export default function DateRangePicker({
               mode="range"
               onSelect={(value: { from?: Date; to?: Date } | undefined) => {
                 if (value?.from != null) {
-                  setRange({ from: value.from, to: value?.to });
+                  const normalizedRange = normalizeDateRange(value);
+                  setRange(normalizedRange);
                 }
               }}
               selected={range}
@@ -350,9 +373,10 @@ export default function DateRangePicker({
               <Button
                 onClick={() => {
                   setIsOpen(false);
-                  setCommittedRange(range); // Update the committed range
+                  const normalizedRange = normalizeDateRange(range);
+                  setCommittedRange(normalizedRange);
                   if (!areRangesEqual(committedRange, openedRangeRef.current)) {
-                    onUpdate?.({ range });
+                    onUpdate?.({ range: normalizedRange });
                   }
                 }}
                 className={isSmallScreen ? "ml-auto" : ""}

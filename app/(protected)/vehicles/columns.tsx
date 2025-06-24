@@ -22,12 +22,12 @@ export const columns: ColumnDef<VehicleRegistration>[] = [
     header: "License Plate",
   },
   {
-    accessorKey: "customer.name",
-    header: "Customer Name",
-  },
-  {
     accessorKey: "vehicle.brand",
     header: "Brand",
+  },
+  {
+    accessorKey: "customer.name",
+    header: "Customer Name",
   },
   {
     accessorKey: "customer.phone",

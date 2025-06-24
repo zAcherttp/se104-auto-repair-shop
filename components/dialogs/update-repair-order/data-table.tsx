@@ -145,7 +145,7 @@ export function LineItemDataTable<TData, TValue>({
         </div>
         <div className="flex w-full items-center gap-8 lg:w-fit">
           <div className="flex w-fit items-center justify-center text-sm font-medium">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
+            Page {table.getState().pagination.pageIndex + 1} of
             {table.getPageCount()}
           </div>
           <div className="ml-auto flex items-center gap-2 lg:ml-0">

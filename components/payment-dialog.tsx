@@ -67,7 +67,6 @@ export default function PaymentDialog({
         </DialogHeader>
         <div className="space-y-4">
           <div className="text-center p-8 bg-gray-50 rounded-lg">
-            {" "}
             <p className="text-gray-600 mb-2">Payment Amount Due:</p>
             <p className="text-2xl font-bold text-green-600">
               ${debtAmount.toFixed(2)}

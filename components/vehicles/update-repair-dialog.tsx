@@ -285,7 +285,7 @@ export function UpdateRepairDialog({
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-blue-800">
             Modify Repair Order - {vehicle.license_plate}
-          </DialogTitle>{" "}
+          </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit}>

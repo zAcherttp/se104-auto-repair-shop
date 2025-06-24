@@ -31,8 +31,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <ReactScan />
       <body className={`${geistSans.className} antialiased`}>
-        <Toaster richColors={true} />
-        <Providers>{children}</Providers>
+        <Providers>
+          <Toaster richColors={true} />
+          {children}
+        </Providers>
       </body>
     </html>
   );

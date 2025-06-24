@@ -23,6 +23,7 @@ import { toast } from "sonner";
 import { updateRepairOrderSmart } from "@/app/actions/vehicles";
 import { useQueryClient } from "@tanstack/react-query";
 import { VEHICLE_REGISTRATION_QUERY_KEY } from "@/hooks/use-vehicle-registration";
+import { Separator } from "@/components/ui/separator";
 
 export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
   const [notes, setNotes] = useState("");
@@ -159,7 +160,7 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
                     </div>
                   </CardContent>
                 </Card>
-              </div>{" "}
+              </div>
               <Card>
                 <CardContent>
                   {isLoadingItems ? (
@@ -185,43 +186,39 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
               </Card>
               <Card>
                 <CardHeader className="pb-0">
-                  <CardTitle className="font-medium">Notes</CardTitle>{" "}
+                  <CardTitle className="font-medium">Notes</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="space-y-6">
                   <Textarea
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     placeholder="Add any additional notes here..."
-                    className="w-full h-24 border rounded-md resize-none"
+                    className="w-full h-24 border rounded-md resize-none "
                   />
-                </CardContent>{" "}
+                  <Separator />
+                  {/* Total Summary */}
+                  <div className="flex justify-between items-center">
+                    <p className="font-medium">Total Amount</p>
+                    <p className="text-xl font-bold">
+                      {new Intl.NumberFormat("en-US", {
+                        style: "currency",
+                        currency: "USD",
+                      }).format(getTotalAmount())}
+                    </p>
+                  </div>
+                </CardContent>
               </Card>
-            </div>
-
-            {/* Total Summary */}
-            <div className="flex justify-end">
-              <div className="text-right">
-                <div className="text-sm text-muted-foreground">
-                  Total Amount
-                </div>
-                <div className="text-lg font-semibold">
-                  {new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  }).format(getTotalAmount())}
-                </div>
-              </div>
             </div>
 
             <div className="flex justify-end gap-2 pt-4">
               <DialogClose asChild>
                 <Button variant="outline">Cancel</Button>
-              </DialogClose>{" "}
+              </DialogClose>
               <SubmitButton
                 disabled={isLoading}
                 onClick={handleUpdate}
                 type="button"
-                className="bg-blue-600 hover:bg-blue-700"
+                className="bg-blue-600 hover:bg-blue-700 w-45"
               >
                 Update Repair Order
               </SubmitButton>
