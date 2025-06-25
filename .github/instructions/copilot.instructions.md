@@ -10,6 +10,7 @@ Coding standards, domain knowledge, and preferences that AI should follow.
 - Use `const` and `let` instead of `var`.
 - use export default for the main export of a module.
 - Use arrow functions for callbacks.
+- Use ApiResponse<T> for API responses, server actions.
 
 # Coding practices
 
