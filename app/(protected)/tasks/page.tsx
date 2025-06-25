@@ -11,6 +11,8 @@ import { useState } from "react";
 import { DateRange } from "react-day-picker";
 
 import { RepairOrderStatus } from "@/types/types";
+import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 export default function Page() {
   // Default to current day
@@ -19,9 +21,25 @@ export default function Page() {
     from: today,
     to: new Date(new Date().setHours(23, 59, 59, 999)),
   });
+  const [searchFilter, setSearchFilter] = useState("");
   const updateRepairOrderStatus = useUpdateRepairOrderStatus();
 
   const { data: orders = [], error, isLoading } = useRepairOrders(dateRange);
+
+  // Filter orders based on search input
+  const filteredOrders = orders.filter((order) => {
+    if (!searchFilter) return true;
+
+    const searchTerm = searchFilter.toLowerCase();
+    return (
+      order.vehicle.license_plate?.toLowerCase().includes(searchTerm) ||
+      order.vehicle.brand?.toLowerCase().includes(searchTerm) ||
+      order.vehicle.customer?.name?.toLowerCase().includes(searchTerm) ||
+      order.vehicle.customer?.phone?.toLowerCase().includes(searchTerm) ||
+      order.notes?.toLowerCase().includes(searchTerm) ||
+      order.status?.toLowerCase().includes(searchTerm)
+    );
+  });
 
   const handleDateRangeUpdate = ({ range }: { range: DateRange }) => {
     setDateRange(range);
@@ -49,7 +67,17 @@ export default function Page() {
   return (
     <div className="container mx-auto py-6">
       <div className="flex items-center justify-between pb-6">
-        <div className="leading-none font-semibold pl-2">Repair Orders</div>
+        <div className="flex items-center space-x-2">
+          <div className="relative w-80">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search tasks..."
+              value={searchFilter}
+              onChange={(e) => setSearchFilter(e.target.value)}
+              className="pl-8"
+            />
+          </div>
+        </div>
         <div className="flex items-center gap-4">
           <DateRangePicker
             onUpdate={handleDateRangeUpdate}
@@ -60,7 +88,7 @@ export default function Page() {
         </div>
       </div>
       <KanbanBoard
-        repairOrders={orders}
+        repairOrders={filteredOrders}
         onStatusChange={handleStatusChange}
         isLoading={isLoading}
       />

@@ -2,8 +2,8 @@
 
 import { createClient } from "@/supabase/server";
 import {
-  VehicleReceptionFormSchema,
   VehicleReceptionFormData,
+  VehicleReceptionFormSchema,
 } from "@/lib/form/definitions";
 import { ApiResponse } from "@/types/types";
 import { format } from "date-fns";
@@ -17,28 +17,36 @@ interface FetchVehicleRegistrationParams {
   offset?: number;
 }
 
-export async function createReception(data: VehicleReceptionFormData) {
-  const supabase = await createClient();
-
-  // Get current user
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
-
-  if (userError || !user) {
-    return { error: "Authentication required" };
-  }
-
-  // Validate the form data
-  const validatedData = VehicleReceptionFormSchema.safeParse(data);
-
-  if (!validatedData.success) {
-    return { error: "Invalid form data" };
-  }
-  const formData = validatedData.data;
-
+export async function createReception(
+  data: VehicleReceptionFormData,
+): Promise<ApiResponse<{ success: true }>> {
   try {
+    const supabase = await createClient();
+
+    // Get current user
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      return {
+        error: new Error("Authentication required"),
+        data: undefined,
+      };
+    }
+
+    // Validate the form data
+    const validatedData = VehicleReceptionFormSchema.safeParse(data);
+
+    if (!validatedData.success) {
+      return {
+        error: new Error("Invalid form data"),
+        data: undefined,
+      };
+    }
+    const formData = validatedData.data;
+
     // Check if customer already exists
     const { data: existingCustomer } = await supabase
       .from("customers")
@@ -61,7 +69,10 @@ export async function createReception(data: VehicleReceptionFormData) {
         .single();
 
       if (customerError) {
-        return { error: "Failed to create customer" };
+        return {
+          error: new Error("Failed to create customer"),
+          data: undefined,
+        };
       }
       customerId = customer.id;
     }
@@ -88,10 +99,15 @@ export async function createReception(data: VehicleReceptionFormData) {
         .single();
 
       if (vehicleError) {
-        return { error: "Failed to create vehicle" };
+        return {
+          error: new Error("Failed to create vehicle"),
+          data: undefined,
+        };
       }
       vehicleId = vehicle.id;
-    } // Create repair order (no customer_id since it's linked through vehicle)
+    }
+
+    // Create repair order (no customer_id since it's linked through vehicle)
     const { error: repairOrderError } = await supabase
       .from("repair_orders")
       .insert({
@@ -105,25 +121,36 @@ export async function createReception(data: VehicleReceptionFormData) {
       });
 
     if (repairOrderError) {
-      return { error: "Failed to create repair order" };
+      return {
+        error: new Error("Failed to create repair order"),
+        data: undefined,
+      };
     }
 
     revalidatePath("/vehicles");
-    return { success: true };
+    return {
+      error: null,
+      data: { success: true },
+    };
   } catch (error) {
     console.error("Reception creation error:", error);
-    return { error: "Something went wrong. Please try again." };
+    return {
+      error: error instanceof Error
+        ? error
+        : new Error("Something went wrong. Please try again."),
+      data: undefined,
+    };
   }
 }
 
 export async function handleRepairOrderPayment(
   repairOrderId: string,
   amount: number,
-  paymentMethod: string = 'cash'
-) {
-  const supabase = await createClient();
-
+  paymentMethod: string = "cash",
+): Promise<ApiResponse<{ success: true }>> {
   try {
+    const supabase = await createClient();
+
     // Get current user
     const {
       data: { user },
@@ -131,7 +158,10 @@ export async function handleRepairOrderPayment(
     } = await supabase.auth.getUser();
 
     if (userError || !user) {
-      return { error: "Authentication required" };
+      return {
+        error: new Error("Authentication required"),
+        data: undefined,
+      };
     }
 
     // Insert new payment record
@@ -142,22 +172,33 @@ export async function handleRepairOrderPayment(
         amount: amount,
         payment_method: paymentMethod,
         created_by: user.id,
-        payment_date: new Date().toISOString().split('T')[0], // Today's date
+        payment_date: new Date().toISOString().split("T")[0], // Today's date
       });
 
     if (paymentError) {
       console.error("Payment insertion error:", paymentError);
-      throw paymentError;
+      return {
+        error: new Error(paymentError.message),
+        data: undefined,
+      };
     }
 
     // The database trigger will automatically update the repair_order.paid_amount
     // No need to manually update repair_orders table
 
     revalidatePath("/vehicles");
-    return { success: true };
+    return {
+      error: null,
+      data: { success: true },
+    };
   } catch (error) {
     console.error("Error processing payment:", error);
-    return { error: "Failed to process payment" };
+    return {
+      error: error instanceof Error
+        ? error
+        : new Error("Failed to process payment"),
+      data: undefined,
+    };
   }
 }
 
@@ -213,7 +254,7 @@ export async function fetchExistingRepairOrderItems(repairOrderId: string) {
         *,
         spare_part:spare_parts(id, name, price),
         labor_type:labor_types(id, name, cost)
-      `
+      `,
       )
       .eq("repair_order_id", repairOrderId);
 
@@ -237,7 +278,7 @@ export async function updateRepairOrder(
     labor_type_id: string | null;
     labor_cost: number;
     total_amount: number;
-  }>
+  }>,
 ) {
   const supabase = await createClient();
 
@@ -305,7 +346,7 @@ export async function updateRepairOrderSmart(
       total_amount: number;
     }>;
     deletedItemIds: string[];
-  }
+  },
 ) {
   const supabase = await createClient();
 
@@ -371,7 +412,7 @@ export async function updateRepairOrderSmart(
 }
 
 export async function fetchVehicleRegistrationWithDateRange(
-  params: FetchVehicleRegistrationParams = {}
+  params: FetchVehicleRegistrationParams = {},
 ): Promise<ApiResponse<VehicleRegistration[]>> {
   const supabase = await createClient();
   const { from, to, limit = 100, offset = 0 } = params;
@@ -386,7 +427,7 @@ export async function fetchVehicleRegistrationWithDateRange(
           *,
           customer:customers(*)
         )
-      `
+      `,
       )
       .order("created_at", { ascending: false });
 
@@ -413,32 +454,30 @@ export async function fetchVehicleRegistrationWithDateRange(
 
     return {
       error: null,
-      data:
-        data?.map((repairOrder) => ({
-          vehicle: repairOrder.vehicle,
-          customer: repairOrder.vehicle?.customer,
-          repair_order: {
-            id: repairOrder.id,
-            vehicle_id: repairOrder.vehicle_id,
-            created_by: repairOrder.created_by,
-            status: repairOrder.status,
-            reception_date: repairOrder.reception_date,
-            completion_date: repairOrder.completion_date,
-            notes: repairOrder.notes,
-            total_amount: repairOrder.total_amount,
-            paid_amount: repairOrder.paid_amount,
-            created_at: repairOrder.created_at,
-            updated_at: repairOrder.updated_at,
-          },
-          debt:
-            (repairOrder.total_amount || 0) - (repairOrder.paid_amount || 0),
-        })) || [],
+      data: data?.map((repairOrder) => ({
+        vehicle: repairOrder.vehicle,
+        customer: repairOrder.vehicle?.customer,
+        repair_order: {
+          id: repairOrder.id,
+          vehicle_id: repairOrder.vehicle_id,
+          created_by: repairOrder.created_by,
+          status: repairOrder.status,
+          reception_date: repairOrder.reception_date,
+          completion_date: repairOrder.completion_date,
+          notes: repairOrder.notes,
+          total_amount: repairOrder.total_amount,
+          paid_amount: repairOrder.paid_amount,
+          created_at: repairOrder.created_at,
+          updated_at: repairOrder.updated_at,
+        },
+        debt: (repairOrder.total_amount || 0) - (repairOrder.paid_amount || 0),
+      })) || [],
       totalCount: count || 0,
     };
   } catch (error) {
     console.error(
       "Error fetching vehicle registration with date range:",
-      error
+      error,
     );
     return {
       error: new Error("Failed to fetch vehicle registration"),

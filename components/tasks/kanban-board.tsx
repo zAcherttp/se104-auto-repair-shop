@@ -19,7 +19,7 @@ import {
 } from "@/types/types";
 import { KanbanColumn } from "./kanban-column";
 import { RepairOrderCard } from "./repair-order-card";
-import { RepairOrderDetailsDialog } from "./repair-order-details-dialog";
+import { RepairOrderDetailsDialog } from "../dialogs";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 

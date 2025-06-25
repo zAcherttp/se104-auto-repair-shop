@@ -34,86 +34,78 @@ import {
   ChevronRightIcon,
   ChevronsLeftIcon,
   ChevronsRightIcon,
-  Plus,
   Search,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import DateRangePicker from "@/components/date-range-picker";
 import { DateRange } from "react-day-picker";
 
-interface TasksDataTableProps<TData, TValue> {
+interface PaymentsDataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   isLoading?: boolean;
   dateRange?: DateRange;
   onDateRangeChange?: (range: DateRange) => void;
-  onNewReception?: () => void;
 }
 
-export function VehicleDataTable<TData, TValue>({
+export function PaymentsDataTable<TData, TValue>({
   columns,
   data,
   isLoading = false,
   dateRange,
   onDateRangeChange,
-  onNewReception,
-}: TasksDataTableProps<TData, TValue>) {
+}: PaymentsDataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [globalFilter, setGlobalFilter] = React.useState<string>("");
+  const [globalFilter, setGlobalFilter] = React.useState("");
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onGlobalFilterChange: setGlobalFilter,
     getFilteredRowModel: getFilteredRowModel(),
-    onSortingChange: setSorting,
     state: {
       sorting,
       globalFilter,
     },
-    defaultColumn: {
-      size: 200,
-      minSize: 50,
-      maxSize: 500,
+    initialState: {
+      pagination: {
+        pageSize: 20,
+      },
     },
-    globalFilterFn: "includesString",
   });
 
   return (
-    <>
-      <div className="flex items-center justify-between pb-6">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <Input
-            placeholder="Search..."
-            value={table.getState().globalFilter ?? ""}
-            onChange={(e) => table.setGlobalFilter(String(e.target.value))}
-            className="pl-10 w-80"
-          />
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <DateRangePicker
-              onUpdate={({ range }: { range: DateRange }) =>
-                onDateRangeChange?.(range)
-              }
-              initialDateFrom={dateRange?.from}
-              initialDateTo={dateRange?.to}
-              align="end"
+    <div className="space-y-4">
+      {/* Header with Search and Date Range */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <div className="relative w-80">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search payments..."
+              value={globalFilter ?? ""}
+              onChange={(e) => setGlobalFilter(e.target.value)}
+              className="pl-8"
             />
           </div>
-          <Button
-            className="bg-blue-600 hover:bg-blue-700"
-            onClick={onNewReception}
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            New Reception
-          </Button>
+        </div>
+        <div className="flex items-center space-x-2">
+          <DateRangePicker
+            onUpdate={({ range }: { range: DateRange }) =>
+              onDateRangeChange?.(range)
+            }
+            initialDateFrom={dateRange?.from}
+            initialDateTo={dateRange?.to}
+            align="end"
+          />
         </div>
       </div>
 
+      {/* Table */}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -136,15 +128,14 @@ export function VehicleDataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <>
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <TableRow key={index}>
-                    <TableCell colSpan={columns.length} className="h-12">
-                      <div className="animate-pulse bg-gray-200/30 h-full rounded"></div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </>
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  Loading payments...
+                </TableCell>
+              </TableRow>
             ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
@@ -167,7 +158,7 @@ export function VehicleDataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  No payments found.
                 </TableCell>
               </TableRow>
             )}
@@ -175,17 +166,15 @@ export function VehicleDataTable<TData, TValue>({
         </Table>
       </div>
 
-      <div className="flex items-center justify-between px-4 pt-4">
-        <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
-          {table.getFilteredRowModel().rows.length} order(s)
-          {dateRange?.from && dateRange?.to && (
-            <span className="ml-2">in selected date range</span>
-          )}
-          .
+      {/* Pagination */}
+      <div className="flex items-center justify-between px-2">
+        <div className="flex-1 text-sm text-muted-foreground">
+          {table.getFilteredSelectedRowModel().rows.length} of{" "}
+          {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="flex w-full items-center gap-8 lg:w-fit">
-          <div className="hidden items-center gap-2 lg:flex">
-            <Label htmlFor="rows-per-page" className="text-sm font-medium">
+        <div className="flex items-center space-x-6 lg:space-x-8">
+          <div className="flex items-center space-x-2">
+            <Label htmlFor="pageSize" className="text-sm font-medium">
               Rows per page
             </Label>
             <Select
@@ -194,7 +183,7 @@ export function VehicleDataTable<TData, TValue>({
                 table.setPageSize(Number(value));
               }}
             >
-              <SelectTrigger className="w-20" id="rows-per-page">
+              <SelectTrigger className="h-8 w-[70px]" id="pageSize">
                 <SelectValue
                   placeholder={table.getState().pagination.pageSize}
                 />
@@ -208,11 +197,11 @@ export function VehicleDataTable<TData, TValue>({
               </SelectContent>
             </Select>
           </div>
-          <div className="flex w-fit items-center justify-center text-sm font-medium">
-            Page {table.getState().pagination.pageIndex + 1} of
+          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+            Page {table.getState().pagination.pageIndex + 1} of{" "}
             {table.getPageCount()}
           </div>
-          <div className="ml-auto flex items-center gap-2 lg:ml-0">
+          <div className="flex items-center space-x-2">
             <Button
               variant="outline"
               className="hidden h-8 w-8 p-0 lg:flex"
@@ -220,41 +209,38 @@ export function VehicleDataTable<TData, TValue>({
               disabled={!table.getCanPreviousPage()}
             >
               <span className="sr-only">Go to first page</span>
-              <ChevronsLeftIcon />
+              <ChevronsLeftIcon className="h-4 w-4" />
             </Button>
             <Button
               variant="outline"
-              className="size-8"
-              size="icon"
+              className="h-8 w-8 p-0"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
               <span className="sr-only">Go to previous page</span>
-              <ChevronLeftIcon />
+              <ChevronLeftIcon className="h-4 w-4" />
             </Button>
             <Button
               variant="outline"
-              className="size-8"
-              size="icon"
+              className="h-8 w-8 p-0"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
               <span className="sr-only">Go to next page</span>
-              <ChevronRightIcon />
+              <ChevronRightIcon className="h-4 w-4" />
             </Button>
             <Button
               variant="outline"
-              className="hidden size-8 lg:flex"
-              size="icon"
+              className="hidden h-8 w-8 p-0 lg:flex"
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
               <span className="sr-only">Go to last page</span>
-              <ChevronsRightIcon />
+              <ChevronsRightIcon className="h-4 w-4" />
             </Button>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

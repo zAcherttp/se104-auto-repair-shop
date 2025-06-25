@@ -46,3 +46,15 @@ export type VehicleWithDetails = Vehicle & {
   customer: Customer;
   repair_orders: RepairOrder[];
 };
+
+export type PaymentWithDetails = Payment & {
+  repair_order: RepairOrder & {
+    vehicle: Vehicle & {
+      customer: Customer;
+    };
+  };
+  created_by_profile?: {
+    full_name: string | null;
+    email: string;
+  };
+};

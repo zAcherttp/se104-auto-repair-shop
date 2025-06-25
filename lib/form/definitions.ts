@@ -45,3 +45,20 @@ export const LineItemFormSchema = z.object({
 });
 
 export type LineItemFormData = z.infer<typeof LineItemFormSchema>;
+
+export const SparePartFormSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Part name must be at least 2 characters")
+    .max(100, "Part name must be less than 100 characters"),
+  price: z
+    .number()
+    .min(0.01, "Price must be greater than 0")
+    .max(999999.99, "Price is too high"),
+  stock_quantity: z
+    .number()
+    .int("Stock quantity must be a whole number")
+    .min(0, "Stock quantity cannot be negative"),
+});
+
+export type SparePartFormData = z.infer<typeof SparePartFormSchema>;

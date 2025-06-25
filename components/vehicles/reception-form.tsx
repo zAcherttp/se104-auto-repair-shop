@@ -82,7 +82,7 @@ export function ReceptionForm({ open, onClose, onSuccess }: FormDialogProps) {
     const result = await createReception(data);
 
     if (result.error) {
-      toast.error(result.error);
+      toast.error("Failed to create vehicle reception");
     } else {
       toast.success("Vehicle reception created successfully!");
       form.reset();

@@ -38,7 +38,7 @@ export function LoginForm() {
   const onSubmit = async (data: LoginFormData) => {
     const result = await Login(data);
     if (result.error) {
-      toast.error(result.error);
+      toast.error("Login failed");
     } else {
       router.push("/home");
       toast.success("Login successful!");

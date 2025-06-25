@@ -33,7 +33,7 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
       );
 
       if (result?.error) {
-        toast.error(result.error);
+        toast.error("Failed to process payment");
         return;
       }
 
