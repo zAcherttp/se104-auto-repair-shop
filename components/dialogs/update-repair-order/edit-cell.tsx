@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
@@ -18,6 +18,35 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+
+// Stable constants to prevent recreation
+const READONLY_CELL_STYLE =
+  "px-3 py-2 text-right font-medium text-muted-foreground";
+const ERROR_BORDER_CLASS = "border-red-500 focus:border-red-500";
+const BUTTON_CLASSES = "w-full justify-between";
+const ERROR_TEXT_CLASSES = "text-xs text-red-500 mt-1";
+
+// Validation messages - stable references
+const VALIDATION_MESSAGES = {
+  DESCRIPTION_REQUIRED: "Description is required",
+  SPARE_PART_REQUIRED: "Spare part is required",
+  LABOR_TYPE_REQUIRED: "Labor type is required",
+  QUANTITY_MIN: "Quantity must be at least 1",
+} as const;
+
+// Readonly field IDs - stable array
+const READONLY_FIELDS = ["unitPrice", "laborCost", "total"] as const;
+
+// Currency formatter - stable reference
+const formatCurrency = (val: unknown): string => {
+  if (typeof val === "number") {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(val);
+  }
+  return "$0.00";
+};
 
 interface EditCellProps {
   getValue: () => unknown;
@@ -38,14 +67,14 @@ interface EditCellProps {
   laborTypes?: Array<{ id: string; name: string; cost: number }>;
 }
 
-export function EditCell({
+export const EditCell = React.memo<EditCellProps>(function EditCell({
   getValue,
   row,
   column,
   table,
   spareParts = [],
   laborTypes = [],
-}: EditCellProps) {
+}) {
   const initialValue = getValue();
   const [value, setValue] = useState(initialValue);
   const [open, setOpen] = useState(false);
@@ -55,114 +84,122 @@ export function EditCell({
     setValue(initialValue);
   }, [initialValue]);
 
-  // Validate field value
-  const validateField = (fieldValue: unknown, fieldId: string): string => {
-    if (fieldId === "description") {
-      return !fieldValue ||
-        (typeof fieldValue === "string" && !fieldValue.trim())
-        ? "Description is required"
-        : "";
-    }
-    if (fieldId === "sparePart") {
-      return !fieldValue ||
-        (typeof fieldValue === "string" && !fieldValue.trim())
-        ? "Spare part is required"
-        : "";
-    }
-    if (fieldId === "laborType") {
-      return !fieldValue ||
-        (typeof fieldValue === "string" && !fieldValue.trim())
-        ? "Labor type is required"
-        : "";
-    }
-    if (fieldId === "quantity") {
-      const num =
-        typeof fieldValue === "string"
-          ? parseInt(fieldValue)
-          : Number(fieldValue);
-      return isNaN(num) || num < 1 ? "Quantity must be at least 1" : "";
-    }
-    return "";
-  };
-
-  // Auto-update data as user types (for real-time calculations)
-  const handleValueChange = (newValue: unknown) => {
-    setValue(newValue);
-
-    // Validate the new value
-    const validationError = validateField(newValue, column.id);
-    setError(validationError);
-
-    if (table.options.meta?.updateData) {
-      table.options.meta.updateData(row.index, column.id, newValue);
-    }
-  };
-
-  const handleSparePartSelect = (selectedPart: string) => {
-    setValue(selectedPart);
-    setError(""); // Clear error when a valid selection is made
-
-    const part = spareParts.find((p) => p.name === selectedPart);
-    if (part && table.options.meta?.updateData) {
-      // Auto-update unit price
-      table.options.meta.updateData(row.index, "unitPrice", part.price);
-    }
-    if (table.options.meta?.updateData) {
-      table.options.meta.updateData(row.index, column.id, selectedPart);
-    }
-    setOpen(false);
-  };
-
-  const handleLaborTypeSelect = (selectedLabor: string) => {
-    setValue(selectedLabor);
-    setError(""); // Clear error when a valid selection is made
-
-    const labor = laborTypes.find((l) => l.name === selectedLabor);
-    if (labor && table.options.meta?.updateData) {
-      // Auto-update labor cost
-      table.options.meta.updateData(row.index, "laborCost", labor.cost);
-    }
-    if (table.options.meta?.updateData) {
-      table.options.meta.updateData(row.index, column.id, selectedLabor);
-    }
-    setOpen(false);
-  };
-
-  // Read-only fields that are auto-calculated
-  if (
-    column.id === "unitPrice" ||
-    column.id === "laborCost" ||
-    column.id === "total"
-  ) {
-    const formatValue = (val: unknown) => {
-      if (typeof val === "number") {
-        return new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "USD",
-        }).format(val);
+  // Memoized validation function
+  const validateField = useCallback(
+    (fieldValue: unknown, fieldId: string): string => {
+      if (fieldId === "description") {
+        return !fieldValue ||
+          (typeof fieldValue === "string" && !fieldValue.trim())
+          ? VALIDATION_MESSAGES.DESCRIPTION_REQUIRED
+          : "";
       }
-      return "$0.00";
-    };
+      if (fieldId === "sparePart") {
+        return !fieldValue ||
+          (typeof fieldValue === "string" && !fieldValue.trim())
+          ? VALIDATION_MESSAGES.SPARE_PART_REQUIRED
+          : "";
+      }
+      if (fieldId === "laborType") {
+        return !fieldValue ||
+          (typeof fieldValue === "string" && !fieldValue.trim())
+          ? VALIDATION_MESSAGES.LABOR_TYPE_REQUIRED
+          : "";
+      }
+      if (fieldId === "quantity") {
+        const num =
+          typeof fieldValue === "string"
+            ? parseInt(fieldValue)
+            : Number(fieldValue);
+        return isNaN(num) || num < 1 ? VALIDATION_MESSAGES.QUANTITY_MIN : "";
+      }
+      return "";
+    },
+    []
+  );
 
-    return (
-      <div className="px-3 py-2 text-right font-medium text-muted-foreground">
-        {formatValue(value)}
-      </div>
-    );
+  // Memoized handlers for stable references
+  const handleValueChange = useCallback(
+    (newValue: unknown) => {
+      setValue(newValue);
+
+      // Validate the new value
+      const validationError = validateField(newValue, column.id);
+      setError(validationError);
+
+      if (table.options.meta?.updateData) {
+        table.options.meta.updateData(row.index, column.id, newValue);
+      }
+    },
+    [validateField, column.id, table.options.meta, row.index]
+  );
+
+  const handleSparePartSelect = useCallback(
+    (selectedPart: string) => {
+      setValue(selectedPart);
+      setError("");
+
+      const part = spareParts.find((p) => p.name === selectedPart);
+      if (part && table.options.meta?.updateData) {
+        table.options.meta.updateData(row.index, "unitPrice", part.price);
+      }
+      if (table.options.meta?.updateData) {
+        table.options.meta.updateData(row.index, column.id, selectedPart);
+      }
+      setOpen(false);
+    },
+    [spareParts, table.options.meta, row.index, column.id]
+  );
+
+  const handleLaborTypeSelect = useCallback(
+    (selectedLabor: string) => {
+      setValue(selectedLabor);
+      setError("");
+
+      const labor = laborTypes.find((l) => l.name === selectedLabor);
+      if (labor && table.options.meta?.updateData) {
+        table.options.meta.updateData(row.index, "laborCost", labor.cost);
+      }
+      if (table.options.meta?.updateData) {
+        table.options.meta.updateData(row.index, column.id, selectedLabor);
+      }
+      setOpen(false);
+    },
+    [laborTypes, table.options.meta, row.index, column.id]
+  );
+
+  // Memoized check for readonly fields
+  const isReadonly = useMemo(
+    () =>
+      READONLY_FIELDS.includes(column.id as (typeof READONLY_FIELDS)[number]),
+    [column.id]
+  );
+
+  // Memoized classes
+  const buttonClassName = useMemo(
+    () => `${BUTTON_CLASSES} ${error ? ERROR_BORDER_CLASS : ""}`,
+    [error]
+  );
+
+  const inputClassName = useMemo(
+    () => (error ? ERROR_BORDER_CLASS : ""),
+    [error]
+  );
+
+  // Render readonly fields early return - but keep hooks above
+  if (isReadonly) {
+    return <div className={READONLY_CELL_STYLE}>{formatCurrency(value)}</div>;
   }
 
-  const renderInput = () => {
-    if (column.id === "sparePart") {
-      return (
+  return (
+    <div className="w-full">
+      {column.id === "sparePart" ? (
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
               role="combobox"
               aria-expanded={open}
-              className={`w-full justify-between ${
-                error ? "border-red-500 focus:border-red-500" : ""
-              }`}
+              className={buttonClassName}
             >
               {(value as string) || "Select spare part..."}
               <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -193,20 +230,14 @@ export function EditCell({
             </Command>
           </PopoverContent>
         </Popover>
-      );
-    }
-
-    if (column.id === "laborType") {
-      return (
+      ) : column.id === "laborType" ? (
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
               role="combobox"
               aria-expanded={open}
-              className={`w-full justify-between ${
-                error ? "border-red-500 focus:border-red-500" : ""
-              }`}
+              className={buttonClassName}
             >
               {(value as string) || "Select labor type..."}
               <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -237,27 +268,19 @@ export function EditCell({
             </Command>
           </PopoverContent>
         </Popover>
-      );
-    }
-
-    return (
-      <Input
-        value={value as string}
-        onChange={(e) => handleValueChange(e.target.value)}
-        type={column.id === "quantity" ? "number" : "text"}
-        min={column.id === "quantity" ? "1" : undefined}
-        placeholder={
-          column.id === "description" ? "Enter description..." : undefined
-        }
-        className={error ? "border-red-500 focus:border-red-500" : ""}
-      />
-    );
-  };
-
-  return (
-    <div className="w-full">
-      {renderInput()}
-      {error && <div className="text-xs text-red-500 mt-1">{error}</div>}
+      ) : (
+        <Input
+          value={value as string}
+          onChange={(e) => handleValueChange(e.target.value)}
+          type={column.id === "quantity" ? "number" : "text"}
+          min={column.id === "quantity" ? "1" : undefined}
+          placeholder={
+            column.id === "description" ? "Enter description..." : undefined
+          }
+          className={inputClassName}
+        />
+      )}
+      {error && <div className={ERROR_TEXT_CLASSES}>{error}</div>}
     </div>
   );
-}
+});

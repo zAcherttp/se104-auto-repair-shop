@@ -8,13 +8,20 @@
 
 ### Planned
 
-- [ ] [Vehicles page] Implement the page.
-  - [ ] [Vehicles page] fetch vehicle list, put in tanstack table, showing |License PLate| customer name(Owner)| car brand| total debt(query all repair order with this license plate and calculate total debt)|Action(Pay(uses payment-dialog.tsx)).
 - [ ] [Task page] boom
 - [ ] [Setting function] In setting admin can change garage info + banner image and those get displayed on the landing page.
 - [ ] [Reception page] repair line items table in Update action rerender every change - to be optimized
 
 ### Done ✓
+
+- [x] [Vehicles page] Implement the page with comprehensive vehicle management
+
+  - [x] Created server action to fetch all vehicles with debt calculation
+  - [x] Built responsive data table with sorting, filtering, and pagination
+  - [x] Added columns for license plate, customer name, car brand, total debt
+  - [x] Implemented payment action using existing payment-dialog component
+  - [x] Added search functionality across all vehicle data
+  - [x] Color-coded debt status with badges for easy identification
 
 - [x] [Schema Migration] Updated database schema following the new payment structure
 

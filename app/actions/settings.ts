@@ -388,3 +388,44 @@ export async function deleteLaborType(id: string): Promise<ApiResponse> {
     return { success: false, error: "Failed to delete labor type" };
   }
 }
+
+// Car Brands fetching (public access)
+export async function getCarBrands(): Promise<ApiResponse<string[]>> {
+  try {
+    const supabase = await createClient();
+
+    // Check if user is authenticated (no admin required for car brands)
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return { success: false, error: "Authentication required" };
+    }
+
+    const { data, error } = await supabase
+      .from("system_settings")
+      .select("setting_value")
+      .eq("setting_key", "car_brands")
+      .single();
+
+    if (error) {
+      // If car_brands setting doesn't exist, return empty array
+      const defaultBrands = [""];
+      return { success: true, data: defaultBrands };
+    }
+
+    // Parse the JSON array from setting_value
+    const brands = Array.isArray(data.setting_value)
+      ? data.setting_value
+      : JSON.parse(data.setting_value || "[]");
+
+    return { success: true, data: brands };
+  } catch (error) {
+    console.error("Error fetching car brands:", error);
+    // Return empty array if there's an error
+    const defaultBrands = [""];
+    return { success: true, data: defaultBrands };
+  }
+}

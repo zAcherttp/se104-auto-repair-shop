@@ -140,6 +140,9 @@ importers:
       react:
         specifier: ^19.0.0
         version: 19.1.0
+      react-currency-input-field:
+        specifier: ^3.10.0
+        version: 3.10.0(react@19.1.0)
       react-day-picker:
         specifier: ^9.7.0
         version: 9.7.0(react@19.1.0)
@@ -2963,6 +2966,11 @@ packages:
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
+
+  react-currency-input-field@3.10.0:
+    resolution: {integrity: sha512-GRmZogHh1e1LrmgXg/fKHSuRLYUnj/c/AumfvfuDMA0UX1mDR6u2NR0fzDemRdq4tNHNLucJeJ2OKCr3ehqyDA==}
+    peerDependencies:
+      react: ^16.9.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   react-day-picker@9.7.0:
     resolution: {integrity: sha512-urlK4C9XJZVpQ81tmVgd2O7lZ0VQldZeHzNejbwLWZSkzHH498KnArT0EHNfKBOWwKc935iMLGZdxXPRISzUxQ==}
@@ -6289,6 +6297,10 @@ snapshots:
   punycode@2.3.1: {}
 
   queue-microtask@1.2.3: {}
+
+  react-currency-input-field@3.10.0(react@19.1.0):
+    dependencies:
+      react: 19.1.0
 
   react-day-picker@9.7.0(react@19.1.0):
     dependencies:

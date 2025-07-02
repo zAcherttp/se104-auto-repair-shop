@@ -16,16 +16,29 @@ export async function getSalesAnalytics(
     try {
         const supabase = await createClient();
 
+        // Check if user is authenticated
+        const {
+            data: { user },
+            error: authError,
+        } = await supabase.auth.getUser();
+
+        if (authError || !user) {
+            return {
+                error: new Error("Authentication required"),
+                data: undefined,
+            };
+        }
+
         // Get repair orders in the period
         const { data: orders, error: ordersError } = await supabase
             .from("repair_orders")
             .select(`
         *,
         vehicle:vehicles(
+          id,
           brand,
           customer:customers(name)
-        ),
-        payments(amount)
+        )
       `)
             .gte("reception_date", period.from.toISOString().split("T")[0])
             .lte("reception_date", period.to.toISOString().split("T")[0]);
@@ -37,27 +50,56 @@ export async function getSalesAnalytics(
             };
         }
 
+        // Get vehicle IDs from the orders
+        const vehicleIds = orders?.map((order) =>
+            order.vehicle?.id
+        ).filter(Boolean) || [];
+
+        // Fetch payments for these vehicles within the period
+        let vehiclePayments: Record<string, number> = {};
+        if (vehicleIds.length > 0) {
+            const { data: payments, error: paymentsError } = await supabase
+                .from("payments")
+                .select("vehicle_id, amount")
+                .in("vehicle_id", vehicleIds)
+                .gte("payment_date", period.from.toISOString().split("T")[0])
+                .lte("payment_date", period.to.toISOString().split("T")[0]);
+
+            if (paymentsError) {
+                return {
+                    error: new Error(paymentsError.message),
+                    data: undefined,
+                };
+            }
+
+            // Group payments by vehicle
+            vehiclePayments =
+                payments?.reduce((acc: Record<string, number>, payment) => {
+                    const vehicleId = payment.vehicle_id;
+                    if (vehicleId) {
+                        acc[vehicleId] = (acc[vehicleId] || 0) + payment.amount;
+                    }
+                    return acc;
+                }, {}) || {};
+        }
+
         // Calculate analytics
         const totalOrders = orders?.length || 0;
         const completedOrders = orders?.filter((o) =>
             o.status === "completed"
         ).length || 0;
-        const pendingOrders = orders?.filter((o) =>
-            o.status === "pending"
-        ).length || 0;
+        const pendingOrders =
+            orders?.filter((o) => o.status === "pending").length || 0;
         const inProgressOrders =
-            orders?.filter((o) => o.status === "in-progress").length || 0;
+            orders?.filter((o) => o.status === "in_progress").length || 0;
         const cancelledOrders =
             orders?.filter((o) => o.status === "cancelled").length || 0;
 
-        const totalRevenue = orders?.reduce((sum, order) => {
-            const payments = order.payments || [];
-            const orderRevenue = payments.reduce(
-                (pSum: number, p: { amount: number }) => pSum + (p.amount || 0),
-                0,
-            );
-            return sum + orderRevenue;
-        }, 0) || 0;
+        // Calculate total revenue from vehicle payments
+        const totalRevenue = Object.values(vehiclePayments).reduce(
+            (sum, amount) => sum + amount,
+            0,
+        );
 
         const averageOrderValue = totalOrders > 0
             ? totalRevenue / totalOrders
@@ -70,18 +112,16 @@ export async function getSalesAnalytics(
                 order,
             ) => {
                 const brand = order.vehicle?.brand || "Unknown";
+                const vehicleId = order.vehicle?.id;
                 if (!acc[brand]) {
                     acc[brand] = { count: 0, revenue: 0 };
                 }
                 acc[brand].count += 1;
 
-                const payments = order.payments || [];
-                const orderRevenue = payments.reduce(
-                    (sum: number, p: { amount: number }) =>
-                        sum + (p.amount || 0),
-                    0,
-                );
-                acc[brand].revenue += orderRevenue;
+                // Add revenue from payments for this vehicle
+                if (vehicleId && vehiclePayments[vehicleId]) {
+                    acc[brand].revenue += vehiclePayments[vehicleId];
+                }
 
                 return acc;
             },
@@ -130,6 +170,19 @@ export async function getInventoryAnalytics(): Promise<
 > {
     try {
         const supabase = await createClient();
+
+        // Check if user is authenticated
+        const {
+            data: { user },
+            error: authError,
+        } = await supabase.auth.getUser();
+
+        if (authError || !user) {
+            return {
+                error: new Error("Authentication required"),
+                data: undefined,
+            };
+        }
 
         const { data: spareParts, error: partsError } = await supabase
             .from("spare_parts")
@@ -193,12 +246,24 @@ export async function getB51SalesReport(
     try {
         const supabase = await createClient();
 
+        // Check if user is authenticated
+        const {
+            data: { user },
+            error: authError,
+        } = await supabase.auth.getUser();
+
+        if (authError || !user) {
+            return {
+                error: new Error("Authentication required"),
+                data: undefined,
+            };
+        }
+
         const { data: orders, error } = await supabase
             .from("repair_orders")
             .select(`
         *,
-        vehicle:vehicles(brand),
-        payments(amount)
+        vehicle:vehicles(id, brand)
       `)
             .gte("reception_date", period.from.toISOString().split("T")[0])
             .lte("reception_date", period.to.toISOString().split("T")[0]);
@@ -210,6 +275,39 @@ export async function getB51SalesReport(
             };
         }
 
+        // Get vehicle IDs from the orders
+        const vehicleIds = orders?.map((order) =>
+            order.vehicle?.id
+        ).filter(Boolean) || [];
+
+        // Fetch payments for these vehicles within the period
+        let vehiclePayments: Record<string, number> = {};
+        if (vehicleIds.length > 0) {
+            const { data: payments, error: paymentsError } = await supabase
+                .from("payments")
+                .select("vehicle_id, amount")
+                .in("vehicle_id", vehicleIds)
+                .gte("payment_date", period.from.toISOString().split("T")[0])
+                .lte("payment_date", period.to.toISOString().split("T")[0]);
+
+            if (paymentsError) {
+                return {
+                    error: new Error(paymentsError.message),
+                    data: undefined,
+                };
+            }
+
+            // Group payments by vehicle
+            vehiclePayments =
+                payments?.reduce((acc: Record<string, number>, payment) => {
+                    const vehicleId = payment.vehicle_id;
+                    if (vehicleId) {
+                        acc[vehicleId] = (acc[vehicleId] || 0) + payment.amount;
+                    }
+                    return acc;
+                }, {}) || {};
+        }
+
         // Group by vehicle brand
         const brandStats = orders?.reduce(
             (
@@ -217,18 +315,17 @@ export async function getB51SalesReport(
                 order,
             ) => {
                 const brand = order.vehicle?.brand || "Unknown";
+                const vehicleId = order.vehicle?.id;
+
                 if (!acc[brand]) {
                     acc[brand] = { count: 0, amount: 0 };
                 }
                 acc[brand].count += 1;
 
-                const payments = order.payments || [];
-                const orderRevenue = payments.reduce(
-                    (sum: number, p: { amount: number }) =>
-                        sum + (p.amount || 0),
-                    0,
-                );
-                acc[brand].amount += orderRevenue;
+                // Add revenue from payments for this vehicle
+                if (vehicleId && vehiclePayments[vehicleId]) {
+                    acc[brand].amount += vehiclePayments[vehicleId];
+                }
 
                 return acc;
             },
@@ -287,6 +384,19 @@ export async function getB52InventoryReport(): Promise<
 > {
     try {
         const supabase = await createClient();
+
+        // Check if user is authenticated
+        const {
+            data: { user },
+            error: authError,
+        } = await supabase.auth.getUser();
+
+        if (authError || !user) {
+            return {
+                error: new Error("Authentication required"),
+                data: undefined,
+            };
+        }
 
         const { data: spareParts, error } = await supabase
             .from("spare_parts")

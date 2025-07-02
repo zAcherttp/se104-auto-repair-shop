@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -17,17 +17,44 @@ import SubmitButton from "@/components/submit-button";
 import { toast } from "sonner";
 import { handleVehiclePayment } from "@/app/actions/vehicles";
 import { useQueryClient } from "@tanstack/react-query";
-import { VEHICLE_REGISTRATION_QUERY_KEY } from "@/hooks/use-vehicle-registration";
+import { VEHICLES_QUERY_KEY } from "@/hooks/use-vehicles";
+import CurrencyInput from "react-currency-input-field";
 
 export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [paymentAmount, setPaymentAmount] = useState<number>(0);
+  const [showQRCode, setShowQRCode] = useState(false);
   const query = useQueryClient();
 
+  const handleProceedToPayment = () => {
+    if (paymentAmount <= 0) {
+      toast.error("Payment amount must be greater than 0");
+      return;
+    }
+
+    if (paymentAmount > debtAmount) {
+      toast.error("Payment amount cannot exceed debt amount");
+      return;
+    }
+
+    setShowQRCode(true);
+  };
+
   const handlePaymentSuccess = async () => {
+    if (paymentAmount <= 0) {
+      toast.error("Payment amount must be greater than 0");
+      return;
+    }
+
+    if (paymentAmount > debtAmount) {
+      toast.error("Payment amount cannot exceed debt amount");
+      return;
+    }
+
     setIsLoading(true);
     try {
-      const result = await handleVehiclePayment(data.vehicle.id, debtAmount);
+      const result = await handleVehiclePayment(data.vehicle.id, paymentAmount);
 
       if (result?.error) {
         toast.error("Failed to process payment");
@@ -35,7 +62,7 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
       }
 
       query.invalidateQueries({
-        queryKey: [VEHICLE_REGISTRATION_QUERY_KEY],
+        queryKey: [VEHICLES_QUERY_KEY],
       });
       toast.success("Payment confirmed successfully");
       setOpen(false);
@@ -49,18 +76,18 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
 
   const debtAmount = data.debt;
 
+  // Initialize payment amount when dialog opens
+  useEffect(() => {
+    if (open) {
+      setPaymentAmount(debtAmount);
+      setShowQRCode(false);
+    }
+  }, [open, debtAmount]);
+
   // Don't render if there's no debt
   if (debtAmount <= 0) {
     return null;
   }
-
-  const paymentImgUrl = getPaymentImageURL({
-    bankCode: process.env.NEXT_PUBLIC_VIETQR_BANKCODE || "N/A",
-    destinationAccount:
-      process.env.NEXT_PUBLIC_VIETQR_DESTINATION_ACCOUNT || "N/A",
-    amount: debtAmount,
-    description: `Payment for ${data.vehicle.license_plate}`,
-  });
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -89,33 +116,90 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
 
           {/* Payment Amount */}
           <div className="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 rounded-lg border">
-            <p className="text-muted-foreground mb-2">Amount Due:</p>
-            <p className="text-3xl font-bold text-green-600 dark:text-green-400">
-              {new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-              }).format(debtAmount)}
-            </p>
+            <p className="text-muted-foreground mb-4">Payment Amount:</p>
+            <div className="space-y-2">
+              <CurrencyInput
+                id="payment-amount"
+                name="paymentAmount"
+                value={paymentAmount}
+                onValueChange={(value) => setPaymentAmount(Number(value) || 0)}
+                prefix="$"
+                decimalsLimit={2}
+                disabled={showQRCode}
+                className="w-full text-center text-2xl font-bold bg-transparent border-0 outline-none focus:ring-2 focus:ring-green-500 rounded px-2 py-1 disabled:opacity-50"
+                style={{
+                  color: paymentAmount > debtAmount ? "#ef4444" : "#16a34a",
+                }}
+              />
+              <div className="text-sm text-muted-foreground">
+                Max:{" "}
+                {new Intl.NumberFormat("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                }).format(debtAmount)}
+              </div>
+              {paymentAmount > debtAmount && (
+                <p className="text-sm text-red-500">
+                  Payment cannot exceed debt amount
+                </p>
+              )}
+              {paymentAmount <= 0 && (
+                <p className="text-sm text-red-500">
+                  Payment must be greater than 0
+                </p>
+              )}
+              {!showQRCode && (
+                <Button
+                  onClick={handleProceedToPayment}
+                  disabled={paymentAmount <= 0 || paymentAmount > debtAmount}
+                  className="mt-4 bg-blue-600 hover:bg-blue-700"
+                >
+                  Proceed to Payment
+                </Button>
+              )}
+            </div>
           </div>
 
           {/* QR Code */}
-          <div className="flex justify-center p-4 bg-white rounded-lg border">
-            <ZoomableImage src={paymentImgUrl} alt="Payment QR Code" />
-          </div>
+          {showQRCode && (
+            <div className="flex justify-center p-4 bg-white rounded-lg border">
+              <ZoomableImage
+                src={getPaymentImageURL({
+                  bankCode: process.env.NEXT_PUBLIC_VIETQR_BANKCODE || "N/A",
+                  destinationAccount:
+                    process.env.NEXT_PUBLIC_VIETQR_DESTINATION_ACCOUNT || "N/A",
+                  amount: paymentAmount,
+                  description: `Payment for ${data.vehicle.license_plate}`,
+                })}
+                alt="Payment QR Code"
+              />
+            </div>
+          )}
 
           {/* Actions */}
           <div className="flex justify-end gap-2 pt-4">
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <SubmitButton
-              disabled={isLoading}
-              onClick={handlePaymentSuccess}
-              type="button"
-              className="bg-green-600 hover:bg-green-700"
-            >
-              Confirm Payment
-            </SubmitButton>
+            {showQRCode ? (
+              <>
+                <Button
+                  variant="ghost"
+                  onClick={() => setShowQRCode(false)}
+                  className="text-blue-600 hover:text-blue-700"
+                >
+                  Back to Edit
+                </Button>
+                <SubmitButton
+                  disabled={isLoading}
+                  onClick={handlePaymentSuccess}
+                  type="button"
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  Confirm Payment
+                </SubmitButton>
+              </>
+            ) : null}
           </div>
         </div>
       </DialogContent>

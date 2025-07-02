@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Edit } from "lucide-react";
 import { LineItem } from "./columns";
@@ -12,38 +13,48 @@ interface TableCellProps {
   table: Table<LineItem>; // Using Table type for better type safety
 }
 
-export function TableCell({ getValue, row, column, table }: TableCellProps) {
+export const TableCell = React.memo<TableCellProps>(function TableCell({
+  getValue,
+  row,
+  column,
+  table,
+}) {
   const initialValue = getValue();
-  const onEdit = () => {
+
+  const onEdit = React.useCallback(() => {
     table.options.meta?.setEditedRows?.((old: Record<string, boolean>) => ({
       ...old,
       [row.index]: !old[row.index],
     }));
-  };
+  }, [table.options.meta, row.index]);
 
-  const formatValue = (value: unknown) => {
-    if (typeof value === "number") {
-      if (
-        column.id === "unitPrice" ||
-        column.id === "laborCost" ||
-        column.id === "total"
-      ) {
-        return new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "USD",
-        }).format(value);
+  const formatValue = React.useCallback(
+    (value: unknown) => {
+      if (typeof value === "number") {
+        if (
+          column.id === "unitPrice" ||
+          column.id === "laborCost" ||
+          column.id === "total"
+        ) {
+          return new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+          }).format(value);
+        }
+        return value.toString();
       }
-      return value.toString();
-    }
-    return (value as string) || "-";
-  };
+      return (value as string) || "-";
+    },
+    [column.id]
+  );
+
+  const isTotal = column.id === "total";
+  const formattedValue = formatValue(initialValue);
 
   return (
     <div className="flex items-center justify-between group">
-      <span className={column.id === "total" ? "font-medium" : ""}>
-        {formatValue(initialValue)}
-      </span>
-      {column.id !== "total" && (
+      <span className={isTotal ? "font-medium" : ""}>{formattedValue}</span>
+      {!isTotal && (
         <Button
           variant="ghost"
           size="sm"
@@ -55,4 +66,4 @@ export function TableCell({ getValue, row, column, table }: TableCellProps) {
       )}
     </div>
   );
-}
+});

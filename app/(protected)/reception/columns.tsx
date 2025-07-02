@@ -45,14 +45,14 @@ export const columns: ColumnDef<VehicleRegistration>[] = [
     },
     accessorKey: "repair_order.total_amount",
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("repair_order.total_amount")) || 0;
+      const amount = row.original.repair_order.total_amount || 0;
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
       }).format(amount);
 
       return (
-        <div className="text-right font-medium px-2 py-1 rounded">
+        <div className="text-right text-green-600  font-medium px-2 py-1 rounded">
           {formatted}
         </div>
       );

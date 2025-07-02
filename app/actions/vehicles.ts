@@ -6,6 +6,7 @@ import {
   VehicleReceptionFormSchema,
 } from "@/lib/form/definitions";
 import { ApiResponse } from "@/types/types";
+import { VehicleWithDebt } from "@/types/types";
 import { format } from "date-fns";
 import { revalidatePath } from "next/cache";
 import { VehicleRegistration } from "../(protected)/reception/columns";
@@ -21,33 +22,44 @@ export async function createReception(
   data: VehicleReceptionFormData,
 ): Promise<ApiResponse<{ success: true }>> {
   try {
+    console.log("Starting createReception with data:", data);
     const supabase = await createClient();
 
     // Get current user
+    console.log("Fetching current user...");
     const {
       data: { user },
       error: userError,
     } = await supabase.auth.getUser();
 
     if (userError || !user) {
+      console.error("Authentication failed:", userError);
       return {
         error: new Error("Authentication required"),
         data: undefined,
       };
     }
+    console.log("User authenticated:", user.id);
 
     // Validate the form data
+    console.log("Validating form data...");
     const validatedData = VehicleReceptionFormSchema.safeParse(data);
 
     if (!validatedData.success) {
+      console.error("Form validation failed:", validatedData.error);
       return {
         error: new Error("Invalid form data"),
         data: undefined,
       };
     }
     const formData = validatedData.data;
+    console.log("Form data validated successfully");
 
     // Check if customer already exists
+    console.log(
+      "Checking for existing customer with phone:",
+      formData.phoneNumber,
+    );
     const { data: existingCustomer } = await supabase
       .from("customers")
       .select("id")
@@ -57,6 +69,7 @@ export async function createReception(
     let customerId = existingCustomer?.id;
 
     if (!customerId) {
+      console.log("Creating new customer...");
       // Create new customer
       const { data: customer, error: customerError } = await supabase
         .from("customers")
@@ -69,15 +82,23 @@ export async function createReception(
         .single();
 
       if (customerError) {
+        console.error("Failed to create customer:", customerError);
         return {
           error: new Error("Failed to create customer"),
           data: undefined,
         };
       }
       customerId = customer.id;
+      console.log("Customer created successfully with ID:", customerId);
+    } else {
+      console.log("Using existing customer ID:", customerId);
     }
 
     // Check if vehicle already exists
+    console.log(
+      "Checking for existing vehicle with license plate:",
+      formData.licensePlate,
+    );
     const { data: existingVehicle } = await supabase
       .from("vehicles")
       .select("id")
@@ -87,6 +108,7 @@ export async function createReception(
     let vehicleId = existingVehicle?.id;
 
     if (!vehicleId) {
+      console.log("Creating new vehicle...");
       // Create new vehicle
       const { data: vehicle, error: vehicleError } = await supabase
         .from("vehicles")
@@ -99,15 +121,20 @@ export async function createReception(
         .single();
 
       if (vehicleError) {
+        console.error("Failed to create vehicle:", vehicleError);
         return {
           error: new Error("Failed to create vehicle"),
           data: undefined,
         };
       }
       vehicleId = vehicle.id;
+      console.log("Vehicle created successfully with ID:", vehicleId);
+    } else {
+      console.log("Using existing vehicle ID:", vehicleId);
     }
 
     // Create repair order (no customer_id since it's linked through vehicle)
+    console.log("Creating repair order...");
     const { error: repairOrderError } = await supabase
       .from("repair_orders")
       .insert({
@@ -120,13 +147,18 @@ export async function createReception(
       });
 
     if (repairOrderError) {
+      console.error("Failed to create repair order:", repairOrderError);
       return {
         error: new Error("Failed to create repair order"),
         data: undefined,
       };
     }
+    console.log("Repair order created successfully");
 
+    console.log("Revalidating paths...");
     revalidatePath("/vehicles");
+    console.log("createReception completed successfully");
+
     return {
       error: null,
       data: { success: true },
@@ -478,6 +510,19 @@ export async function fetchVehicleRegistrationWithDateRange(
   const { from, to, limit = 100, offset = 0 } = params;
 
   try {
+    // Check if user is authenticated
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return {
+        error: new Error("Authentication required"),
+        data: undefined,
+      };
+    }
+
     let query = supabase
       .from("repair_orders")
       .select(
@@ -485,8 +530,7 @@ export async function fetchVehicleRegistrationWithDateRange(
         *,
         vehicle:vehicles(
           *,
-          customer:customers(*),
-          payments(amount)
+          customer:customers(*)
         )
       `,
       )
@@ -513,6 +557,47 @@ export async function fetchVehicleRegistrationWithDateRange(
 
     if (error) throw error;
 
+    // Fetch total repair costs and payments for all vehicles in the result set
+    const vehicleIds = data?.map((repairOrder) => {
+      const vehicle = Array.isArray(repairOrder.vehicle)
+        ? repairOrder.vehicle[0]
+        : repairOrder.vehicle;
+      return vehicle?.id;
+    }).filter(Boolean) || [];
+
+    const vehicleDebts: Record<
+      string,
+      { totalRepairs: number; totalPaid: number }
+    > = {};
+
+    if (vehicleIds.length > 0) {
+      // Get total repair costs per vehicle
+      const { data: repairTotals } = await supabase
+        .from("repair_orders")
+        .select("vehicle_id, total_amount")
+        .in("vehicle_id", vehicleIds);
+
+      // Get total payments per vehicle
+      const { data: paymentTotals } = await supabase
+        .from("payments")
+        .select("vehicle_id, amount")
+        .in("vehicle_id", vehicleIds);
+
+      // Calculate totals per vehicle
+      vehicleIds.forEach((vehicleId) => {
+        const totalRepairs = repairTotals?.filter((r) =>
+          r.vehicle_id === vehicleId
+        )
+          .reduce((sum, r) => sum + (r.total_amount || 0), 0) || 0;
+        const totalPaid = paymentTotals?.filter((p) =>
+          p.vehicle_id === vehicleId
+        )
+          .reduce((sum, p) => sum + p.amount, 0) || 0;
+
+        vehicleDebts[vehicleId] = { totalRepairs, totalPaid };
+      });
+    }
+
     return {
       error: null,
       data: data?.map((repairOrder) => {
@@ -523,12 +608,13 @@ export async function fetchVehicleRegistrationWithDateRange(
           ? vehicle.customer[0]
           : vehicle?.customer;
 
-        // Calculate total paid for this vehicle
-        const totalPaid =
-          vehicle?.payments?.reduce(
-            (sum: number, payment: { amount: number }) => sum + payment.amount,
-            0,
-          ) || 0;
+        // Calculate debt for this vehicle using aggregated data
+        const vehicleDebt = vehicleDebts[vehicle?.id] ||
+          { totalRepairs: 0, totalPaid: 0 };
+        const debt = Math.max(
+          0,
+          vehicleDebt.totalRepairs - vehicleDebt.totalPaid,
+        );
 
         return {
           vehicle: vehicle,
@@ -545,7 +631,7 @@ export async function fetchVehicleRegistrationWithDateRange(
             created_at: repairOrder.created_at,
             updated_at: repairOrder.updated_at,
           },
-          debt: Math.max(0, (repairOrder.total_amount || 0) - totalPaid),
+          debt: debt,
         };
       }) || [],
       totalCount: count || 0,
@@ -582,5 +668,92 @@ export async function fetchPaymentHistory(vehicleId: string) {
   } catch (error) {
     console.error("Error fetching payment history:", error);
     return { error: "Failed to fetch payment history" };
+  }
+}
+
+export async function fetchVehiclesWithDebt(): Promise<
+  ApiResponse<VehicleWithDebt[]>
+> {
+  try {
+    const supabase = await createClient();
+
+    // Check if user is authenticated
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return {
+        error: new Error("Authentication required"),
+        data: undefined,
+      };
+    }
+
+    // Fetch all vehicles with their customers, repair orders, and payments
+    const { data: vehicles, error } = await supabase
+      .from("vehicles")
+      .select(`
+        id,
+        license_plate,
+        brand,
+        total_paid,
+        created_at,
+        customer:customers (
+          id,
+          name,
+          phone,
+          email
+        ),
+        repair_orders (
+          id,
+          total_amount,
+          status
+        ),
+        payments (
+          id,
+          amount,
+          payment_date
+        )
+      `)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    // Calculate debt for each vehicle
+    const vehiclesWithDebt: VehicleWithDebt[] = vehicles?.map((vehicle) => {
+      const customer = Array.isArray(vehicle.customer)
+        ? vehicle.customer[0]
+        : vehicle.customer;
+      const totalRepairCosts = vehicle.repair_orders?.reduce((sum, order) =>
+        sum + (order.total_amount || 0), 0) || 0;
+      const totalPaid = vehicle.payments?.reduce((sum, payment) =>
+        sum + payment.amount, 0) || 0;
+      const totalDebt = Math.max(0, totalRepairCosts - totalPaid);
+
+      return {
+        id: vehicle.id,
+        license_plate: vehicle.license_plate,
+        brand: vehicle.brand,
+        customer: customer,
+        total_repair_cost: totalRepairCosts,
+        total_paid: totalPaid,
+        total_debt: totalDebt,
+        created_at: vehicle.created_at,
+      };
+    }) || [];
+
+    return {
+      error: null,
+      data: vehiclesWithDebt,
+    };
+  } catch (error) {
+    console.error("Error fetching vehicles with debt:", error);
+    return {
+      error: error instanceof Error
+        ? error
+        : new Error("Failed to fetch vehicles"),
+      data: undefined,
+    };
   }
 }

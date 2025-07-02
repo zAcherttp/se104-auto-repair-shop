@@ -59,3 +59,19 @@ export type PaymentWithDetails = Payment & {
     email: string;
   };
 };
+
+export type VehicleWithDebt = {
+  id: string;
+  license_plate: string;
+  brand: string;
+  customer: {
+    id: string;
+    name: string;
+    phone: string | null;
+    email: string | null;
+  };
+  total_repair_cost: number;
+  total_paid: number;
+  total_debt: number;
+  created_at: string | null;
+};

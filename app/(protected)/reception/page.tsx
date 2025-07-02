@@ -5,7 +5,7 @@ import { DateRange } from "react-day-picker";
 import { columns } from "./columns";
 import { VehicleDataTable } from "@/app/(protected)/reception/data-table";
 import { useVehicleRegistration } from "@/hooks/use-vehicle-registration";
-import { ReceptionForm } from "@/components/vehicles/reception-form";
+import { ReceptionForm } from "@/components/reception/reception-form";
 
 export default function Page() {
   const [isReceptionFormOpen, setIsReceptionFormOpen] = useState(false);
@@ -31,6 +31,8 @@ export default function Page() {
   const handleReceptionSuccess = () => {
     refetch(); // Refresh the vehicle list after successful form submission
   };
+
+  //console.log("Vehicle Registration Data:", vehicleRegistration);
 
   if (error) {
     return (

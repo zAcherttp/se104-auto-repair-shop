@@ -1,10 +1,26 @@
 "use client";
 
+import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Actions } from "./actions";
 import { TableCell } from "./table-cell";
 import { EditCell } from "./edit-cell";
 import { RowActions } from "./row-actions";
+
+// Extend the TableMeta interface for our specific needs
+declare module "@tanstack/react-table" {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface TableMeta<TData> {
+    editedRows?: Record<number, boolean>;
+    setEditedRows?: React.Dispatch<
+      React.SetStateAction<Record<number, boolean>>
+    >;
+    spareParts?: Array<{ id: string; name: string; price: number }>;
+    laborTypes?: Array<{ id: string; name: string; cost: number }>;
+    updateData?: (rowIndex: number, columnId: string, value: unknown) => void;
+    removeRow?: (rowIndex: number) => void;
+  }
+}
 
 // This type is used to define the shape of our data.
 export type LineItem = {
@@ -18,6 +34,17 @@ export type LineItem = {
   total: number;
 };
 
+// Stable header components to prevent recreation
+const UnitPriceHeader = () => <div className="text-right">Unit Price</div>;
+const LaborCostHeader = () => <div className="text-right">Labor Cost</div>;
+const TotalHeader = () => <div className="text-right">Total</div>;
+
+// Memoized component wrappers for better performance
+const MemoizedEditCell = React.memo(EditCell);
+const MemoizedTableCell = React.memo(TableCell);
+const MemoizedActions = React.memo(Actions);
+const MemoizedRowActions = React.memo(RowActions);
+
 export const lineItemColumns: ColumnDef<LineItem>[] = [
   {
     accessorKey: "description",
@@ -25,9 +52,14 @@ export const lineItemColumns: ColumnDef<LineItem>[] = [
     cell: ({ getValue, row, column, table }) => {
       const isEditing = table.options.meta?.editedRows?.[row.index];
       return isEditing ? (
-        <EditCell getValue={getValue} row={row} column={column} table={table} />
+        <MemoizedEditCell
+          getValue={getValue}
+          row={row}
+          column={column}
+          table={table}
+        />
       ) : (
-        <TableCell
+        <MemoizedTableCell
           getValue={getValue}
           row={row}
           column={column}
@@ -42,7 +74,7 @@ export const lineItemColumns: ColumnDef<LineItem>[] = [
     cell: ({ getValue, row, column, table }) => {
       const isEditing = table.options.meta?.editedRows?.[row.index];
       return isEditing ? (
-        <EditCell
+        <MemoizedEditCell
           getValue={getValue}
           row={row}
           column={column}
@@ -50,7 +82,7 @@ export const lineItemColumns: ColumnDef<LineItem>[] = [
           spareParts={table.options.meta?.spareParts}
         />
       ) : (
-        <TableCell
+        <MemoizedTableCell
           getValue={getValue}
           row={row}
           column={column}
@@ -65,9 +97,14 @@ export const lineItemColumns: ColumnDef<LineItem>[] = [
     cell: ({ getValue, row, column, table }) => {
       const isEditing = table.options.meta?.editedRows?.[row.index];
       return isEditing ? (
-        <EditCell getValue={getValue} row={row} column={column} table={table} />
+        <MemoizedEditCell
+          getValue={getValue}
+          row={row}
+          column={column}
+          table={table}
+        />
       ) : (
-        <TableCell
+        <MemoizedTableCell
           getValue={getValue}
           row={row}
           column={column}
@@ -78,13 +115,18 @@ export const lineItemColumns: ColumnDef<LineItem>[] = [
   },
   {
     accessorKey: "unitPrice",
-    header: () => <div className="text-right">Unit Price</div>,
+    header: UnitPriceHeader,
     cell: ({ getValue, row, column, table }) => {
       const isEditing = table.options.meta?.editedRows?.[row.index];
       return isEditing ? (
-        <EditCell getValue={getValue} row={row} column={column} table={table} />
+        <MemoizedEditCell
+          getValue={getValue}
+          row={row}
+          column={column}
+          table={table}
+        />
       ) : (
-        <TableCell
+        <MemoizedTableCell
           getValue={getValue}
           row={row}
           column={column}
@@ -99,7 +141,7 @@ export const lineItemColumns: ColumnDef<LineItem>[] = [
     cell: ({ getValue, row, column, table }) => {
       const isEditing = table.options.meta?.editedRows?.[row.index];
       return isEditing ? (
-        <EditCell
+        <MemoizedEditCell
           getValue={getValue}
           row={row}
           column={column}
@@ -107,7 +149,7 @@ export const lineItemColumns: ColumnDef<LineItem>[] = [
           laborTypes={table.options.meta?.laborTypes}
         />
       ) : (
-        <TableCell
+        <MemoizedTableCell
           getValue={getValue}
           row={row}
           column={column}
@@ -118,13 +160,18 @@ export const lineItemColumns: ColumnDef<LineItem>[] = [
   },
   {
     accessorKey: "laborCost",
-    header: () => <div className="text-right">Labor Cost</div>,
+    header: LaborCostHeader,
     cell: ({ getValue, row, column, table }) => {
       const isEditing = table.options.meta?.editedRows?.[row.index];
       return isEditing ? (
-        <EditCell getValue={getValue} row={row} column={column} table={table} />
+        <MemoizedEditCell
+          getValue={getValue}
+          row={row}
+          column={column}
+          table={table}
+        />
       ) : (
-        <TableCell
+        <MemoizedTableCell
           getValue={getValue}
           row={row}
           column={column}
@@ -135,11 +182,11 @@ export const lineItemColumns: ColumnDef<LineItem>[] = [
   },
   {
     accessorKey: "total",
-    header: () => <div className="text-right">Total</div>,
+    header: TotalHeader,
     cell: ({ getValue, row, column, table }) => {
       // Total is always read-only
       return (
-        <TableCell
+        <MemoizedTableCell
           getValue={getValue}
           row={row}
           column={column}
@@ -155,9 +202,9 @@ export const lineItemColumns: ColumnDef<LineItem>[] = [
       const isEditing = table.options.meta?.editedRows?.[row.index];
 
       return isEditing ? (
-        <RowActions row={row} table={table} />
+        <MemoizedRowActions row={row} table={table} />
       ) : (
-        <Actions
+        <MemoizedActions
           lineItem={row.original}
           onRemove={() => table.options.meta?.removeRow?.(row.index)}
         />

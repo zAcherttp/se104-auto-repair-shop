@@ -1,7 +1,9 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/supabase/server";
-import { ProtectedLayout } from "@/components/protected-layout";
 import React, { ReactNode } from "react";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import { Header } from "@/components/app-header";
 
 export default async function Layout({ children }: { children: ReactNode }) {
   const supabase = await createClient();
@@ -11,5 +13,13 @@ export default async function Layout({ children }: { children: ReactNode }) {
     redirect("/login");
   }
 
-  return <ProtectedLayout>{children}</ProtectedLayout>;
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <Header />
+        {children}
+      </SidebarInset>
+    </SidebarProvider>
+  );
 }
