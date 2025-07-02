@@ -116,17 +116,26 @@ export function RepairOrderDetailsDialog({
                       </div>
                     )}
 
-                    {order.paid_amount && (
-                      <div className="flex items-center gap-2">
-                        <DollarSign className="h-4 w-4 text-muted-foreground" />
-                        <div>
-                          <p className="text-sm font-medium">Paid Amount</p>
-                          <p className="text-sm text-muted-foreground">
-                            ${order.paid_amount.toFixed(2)}
-                          </p>
+                    {order.vehicle.payments &&
+                      order.vehicle.payments.length > 0 && (
+                        <div className="flex items-center gap-2">
+                          <DollarSign className="h-4 w-4 text-muted-foreground" />
+                          <div>
+                            <p className="text-sm font-medium">
+                              Vehicle Total Paid
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              $
+                              {order.vehicle.payments
+                                .reduce(
+                                  (sum, payment) => sum + payment.amount,
+                                  0
+                                )
+                                .toFixed(2)}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
                   </div>
                 </CardContent>
               </Card>

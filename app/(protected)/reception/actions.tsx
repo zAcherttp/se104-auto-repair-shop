@@ -7,15 +7,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, FileText } from "lucide-react";
-import { PaymentWithDetails } from "@/types";
-import { InvoiceDialog } from "./invoice-dialog";
+import { MoreHorizontal, Edit } from "lucide-react";
+import { VehicleRegistration } from "./columns";
+import { UpdateDialog } from "@/components/dialogs/update-repair-order";
 
 interface ActionsProps {
-  payment: PaymentWithDetails;
+  vehicleRegistration: VehicleRegistration;
 }
 
-export function Actions({ payment }: ActionsProps) {
+export function Actions({ vehicleRegistration }: ActionsProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -25,14 +25,14 @@ export function Actions({ payment }: ActionsProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <InvoiceDialog
+        <UpdateDialog
           trigger={
             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-              <FileText className="mr-2 h-4 w-4" />
-              View Receipt
+              <Edit className="mr-2 h-4 w-4" />
+              Update
             </DropdownMenuItem>
           }
-          payment={payment}
+          data={vehicleRegistration}
         />
       </DropdownMenuContent>
     </DropdownMenu>

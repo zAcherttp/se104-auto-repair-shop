@@ -7,16 +7,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Edit, CreditCard } from "lucide-react";
-import { VehicleRegistration } from "./columns";
-import { PaymentDialog } from "@/components/dialogs/payment-dialog";
-import { UpdateDialog } from "@/components/dialogs/update-repair-order";
+import { MoreHorizontal, CreditCard, Eye } from "lucide-react";
+import { VehicleDebt } from "@/types/debt-management";
+import { DebtPaymentDialog } from "@/components/debt-management/debt-payment-dialog";
+import { DebtDetailsDialog } from "@/components/debt-management/debt-details-dialog";
 
 interface ActionsProps {
-  vehicleRegistration: VehicleRegistration;
+  vehicleDebt: VehicleDebt;
 }
 
-export function Actions({ vehicleRegistration }: ActionsProps) {
+export function Actions({ vehicleDebt }: ActionsProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -26,33 +26,26 @@ export function Actions({ vehicleRegistration }: ActionsProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <UpdateDialog
+        <DebtDetailsDialog
           trigger={
             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-              <Edit className="mr-2 h-4 w-4" />
-              Update
+              <Eye className="mr-2 h-4 w-4" />
+              View Details
             </DropdownMenuItem>
           }
-          data={vehicleRegistration}
+          vehicleDebt={vehicleDebt}
         />
 
-        {vehicleRegistration.debt > 0 && (
-          <PaymentDialog
+        {vehicleDebt.remaining_debt > 0 && (
+          <DebtPaymentDialog
             trigger={
               <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                 <CreditCard className="mr-2 h-4 w-4" />
                 Process Payment
               </DropdownMenuItem>
             }
-            data={vehicleRegistration}
+            vehicleDebt={vehicleDebt}
           />
-        )}
-
-        {vehicleRegistration.debt <= 0 && (
-          <DropdownMenuItem disabled>
-            <CreditCard className="mr-2 h-4 w-4" />
-            Process Payment (Paid)
-          </DropdownMenuItem>
         )}
       </DropdownMenuContent>
     </DropdownMenu>

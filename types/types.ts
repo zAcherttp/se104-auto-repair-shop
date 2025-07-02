@@ -33,11 +33,14 @@ export type RepairOrderItemWithDetails = RepairOrderItem & {
 export type RepairOrderWithVehicleDetails = RepairOrder & {
   vehicle: Vehicle & {
     customer: Customer;
+    payments?: Payment[];
   };
 };
 
 export type OrderDataProps = {
-  vehicle: Vehicle;
+  vehicle: Vehicle & {
+    payments?: Payment[];
+  };
   customer: Customer;
   RepairOrderWithItemsDetails: RepairOrderWithItemsDetails[];
 };
@@ -48,10 +51,8 @@ export type VehicleWithDetails = Vehicle & {
 };
 
 export type PaymentWithDetails = Payment & {
-  repair_order: RepairOrder & {
-    vehicle: Vehicle & {
-      customer: Customer;
-    };
+  vehicle: Vehicle & {
+    customer: Customer;
   };
   created_by_profile?: {
     full_name: string | null;

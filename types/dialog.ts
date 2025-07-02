@@ -1,4 +1,4 @@
-import { VehicleRegistration } from "@/app/(protected)/vehicles/columns";
+import { VehicleRegistration } from "@/app/(protected)/reception/columns";
 import { LineItem } from "@/components/dialogs/update-repair-order/columns";
 
 // Standard dialog props interface for consistency

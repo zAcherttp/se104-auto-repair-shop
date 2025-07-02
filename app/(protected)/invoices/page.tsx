@@ -29,7 +29,7 @@ export default function Page() {
   if (error) {
     return (
       <div className="w-full p-6">
-        <p className="text-red-500">Error: {error.message || String(error)}</p>
+        <p className="text-red-500">An error has occurred</p>
       </div>
     );
   }

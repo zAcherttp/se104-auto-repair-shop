@@ -39,35 +39,20 @@ export const columns: ColumnDef<VehicleRegistration>[] = [
         <DataTableColumnHeader
           className="justify-end"
           column={column}
-          title="Debt"
+          title="Total"
         />
       );
     },
-    accessorKey: "debt",
+    accessorKey: "repair_order.total_amount",
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("debt"));
+      const amount = parseFloat(row.getValue("repair_order.total_amount")) || 0;
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
       }).format(amount);
 
-      // Map debt amount to Tailwind color classes from green-600 to red-600
-      const ratio = Math.min(amount / 500, 1);
-      const colorClass =
-        ratio < 0.2
-          ? "text-green-600 dark:text-green-600"
-          : ratio < 0.4
-          ? "text-yellow-600 dark:text-yellow-600"
-          : ratio < 0.6
-          ? "text-orange-600 dark:text-orange-600"
-          : ratio < 0.8
-          ? "text-red-500 dark:text-red-500"
-          : "text-red-600 dark:text-red-600";
-
       return (
-        <div
-          className={`text-right font-medium px-2 py-1 rounded ${colorClass}`}
-        >
+        <div className="text-right font-medium px-2 py-1 rounded">
           {formatted}
         </div>
       );

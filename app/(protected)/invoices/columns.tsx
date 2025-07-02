@@ -9,15 +9,15 @@ import { Actions } from "./actions";
 
 export const columns: ColumnDef<PaymentWithDetails>[] = [
   {
-    accessorKey: "repair_order.vehicle.license_plate",
+    accessorKey: "vehicle.license_plate",
     header: "License Plate",
   },
   {
-    accessorKey: "repair_order.vehicle.customer.name",
+    accessorKey: "vehicle.customer.name",
     header: "Customer Name",
   },
   {
-    accessorKey: "repair_order.vehicle.customer.phone",
+    accessorKey: "vehicle.customer.phone",
     header: "Phone",
   },
   {
@@ -113,6 +113,7 @@ export const columns: ColumnDef<PaymentWithDetails>[] = [
     },
   },
   {
+    header: "Actions",
     id: "actions",
     cell: ({ row }) => {
       const payment = row.original;

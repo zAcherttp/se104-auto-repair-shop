@@ -21,9 +21,7 @@ export default function PaymentDialog({
   if (
     open &&
     (!repairOrderWithVehicleDetail?.vehicle ||
-      !repairOrderWithVehicleDetail?.total_amount ||
-      repairOrderWithVehicleDetail?.paid_amount === null ||
-      repairOrderWithVehicleDetail?.paid_amount === undefined)
+      !repairOrderWithVehicleDetail?.total_amount)
   ) {
     return (
       <Dialog open={open} onOpenChange={onClose}>
@@ -40,9 +38,17 @@ export default function PaymentDialog({
   }
 
   if (!open || !repairOrderWithVehicleDetail) return null;
-  const debtAmount =
-    (repairOrderWithVehicleDetail.total_amount || 0) -
-    (repairOrderWithVehicleDetail.paid_amount || 0);
+
+  // Calculate total vehicle debt vs total vehicle payments
+  const totalVehiclePaid =
+    repairOrderWithVehicleDetail.vehicle.payments?.reduce(
+      (sum, payment) => sum + payment.amount,
+      0
+    ) || 0;
+  const debtAmount = Math.max(
+    0,
+    (repairOrderWithVehicleDetail.total_amount || 0) - totalVehiclePaid
+  );
 
   // Don't show dialog if there's no debt
   if (debtAmount <= 0) {

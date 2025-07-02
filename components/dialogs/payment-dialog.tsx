@@ -15,7 +15,7 @@ import ZoomableImage from "../zoomable-image";
 import { VehicleDialogProps } from "@/types/dialog";
 import SubmitButton from "@/components/submit-button";
 import { toast } from "sonner";
-import { handleRepairOrderPayment } from "@/app/actions/vehicles";
+import { handleVehiclePayment } from "@/app/actions/vehicles";
 import { useQueryClient } from "@tanstack/react-query";
 import { VEHICLE_REGISTRATION_QUERY_KEY } from "@/hooks/use-vehicle-registration";
 
@@ -27,10 +27,7 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
   const handlePaymentSuccess = async () => {
     setIsLoading(true);
     try {
-      const result = await handleRepairOrderPayment(
-        data.repair_order.id,
-        debtAmount
-      );
+      const result = await handleVehiclePayment(data.vehicle.id, debtAmount);
 
       if (result?.error) {
         toast.error("Failed to process payment");

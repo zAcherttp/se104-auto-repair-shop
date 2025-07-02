@@ -79,7 +79,7 @@ export function PaymentsDataTable<TData, TValue>({
   });
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Header with Search and Date Range */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">

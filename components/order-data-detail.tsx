@@ -211,20 +211,34 @@ const OrderDetails = ({ orderData, onBack }: OrderDataDetailsProps) => {
                   <div className="flex justify-between items-center mb-2">
                     <span>Paid Amount:</span>
                     <span className="text-green-600 font-semibold">
-                      {formatCurrency(order.paid_amount || 0)}
+                      {formatCurrency(
+                        vehicle.payments?.reduce(
+                          (sum, payment) => sum + payment.amount,
+                          0
+                        ) || 0
+                      )}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span>Outstanding Balance:</span>
                     <span
                       className={`font-semibold ${
-                        (order.total_amount || 0) - (order.paid_amount || 0) > 0
+                        (order.total_amount || 0) -
+                          (vehicle.payments?.reduce(
+                            (sum, payment) => sum + payment.amount,
+                            0
+                          ) || 0) >
+                        0
                           ? "text-red-600"
                           : "text-green-600"
                       }`}
                     >
                       {formatCurrency(
-                        (order.total_amount || 0) - (order.paid_amount || 0)
+                        (order.total_amount || 0) -
+                          (vehicle.payments?.reduce(
+                            (sum, payment) => sum + payment.amount,
+                            0
+                          ) || 0)
                       )}
                     </span>
                   </div>

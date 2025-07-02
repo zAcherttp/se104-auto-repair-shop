@@ -64,8 +64,8 @@ export type Database = {
           created_by: string | null;
           id: string;
           payment_date: string | null;
-          payment_method: string | null;
-          repair_order_id: string | null;
+          payment_method: string;
+          vehicle_id: string | null;
         };
         Insert: {
           amount: number;
@@ -73,8 +73,8 @@ export type Database = {
           created_by?: string | null;
           id?: string;
           payment_date?: string | null;
-          payment_method?: string | null;
-          repair_order_id?: string | null;
+          payment_method?: string;
+          vehicle_id?: string | null;
         };
         Update: {
           amount?: number;
@@ -82,8 +82,8 @@ export type Database = {
           created_by?: string | null;
           id?: string;
           payment_date?: string | null;
-          payment_method?: string | null;
-          repair_order_id?: string | null;
+          payment_method?: string;
+          vehicle_id?: string | null;
         };
         Relationships: [
           {
@@ -94,12 +94,12 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "payments_repair_order_id_fkey";
-            columns: ["repair_order_id"];
+            foreignKeyName: "payments_vehicle_id_fkey";
+            columns: ["vehicle_id"];
             isOneToOne: false;
-            referencedRelation: "repair_orders";
+            referencedRelation: "vehicles";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       profiles: {
@@ -190,7 +190,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "spare_parts";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       repair_orders: {
@@ -200,7 +200,6 @@ export type Database = {
           created_by: string | null;
           id: string;
           notes: string | null;
-          paid_amount: number | null;
           reception_date: string;
           status: string;
           total_amount: number | null;
@@ -213,7 +212,6 @@ export type Database = {
           created_by?: string | null;
           id?: string;
           notes?: string | null;
-          paid_amount?: number | null;
           reception_date?: string;
           status?: string;
           total_amount?: number | null;
@@ -226,7 +224,6 @@ export type Database = {
           created_by?: string | null;
           id?: string;
           notes?: string | null;
-          paid_amount?: number | null;
           reception_date?: string;
           status?: string;
           total_amount?: number | null;
@@ -247,7 +244,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "vehicles";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       spare_parts: {
@@ -305,6 +302,7 @@ export type Database = {
           customer_id: string | null;
           id: string;
           license_plate: string;
+          total_paid: number | null;
         };
         Insert: {
           brand: string;
@@ -312,6 +310,7 @@ export type Database = {
           customer_id?: string | null;
           id?: string;
           license_plate: string;
+          total_paid?: number | null;
         };
         Update: {
           brand?: string;
@@ -319,6 +318,7 @@ export type Database = {
           customer_id?: string | null;
           id?: string;
           license_plate?: string;
+          total_paid?: number | null;
         };
         Relationships: [
           {
@@ -327,7 +327,7 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "customers";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
     };
@@ -345,7 +345,8 @@ export type Database = {
       };
     };
     Enums: {
-      repair_order_status: "Pending" | "In Progress" | "Completed";
+      payment_method: "cash" | "transfer" | "card";
+      repair_order_status: "pending" | "in_progress" | "completed";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -361,24 +362,27 @@ export type Tables<
     | { schema: keyof Database },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof Database;
-  }
-    ? keyof (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-        Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-      Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+  } ? keyof (
+      & Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+      & Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"]
+    )
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database } ? (
+    & Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    & Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"]
+  )[TableName] extends {
+    Row: infer R;
+  } ? R
+  : never
+  : DefaultSchemaTableNameOrOptions extends keyof (
+    & DefaultSchema["Tables"]
+    & DefaultSchema["Views"]
+  ) ? (
+      & DefaultSchema["Tables"]
+      & DefaultSchema["Views"]
+    )[DefaultSchemaTableNameOrOptions] extends {
       Row: infer R;
-    }
-    ? R
-    : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
-      DefaultSchema["Views"])
-  ? (DefaultSchema["Tables"] &
-      DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-      Row: infer R;
-    }
-    ? R
+    } ? R
     : never
   : never;
 
@@ -388,19 +392,18 @@ export type TablesInsert<
     | { schema: keyof Database },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof Database;
-  }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+  } ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I;
-    }
-    ? I
-    : never
+  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][
+    TableName
+  ] extends {
+    Insert: infer I;
+  } ? I
+  : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-  ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
       Insert: infer I;
-    }
-    ? I
+    } ? I
     : never
   : never;

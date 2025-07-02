@@ -17,7 +17,8 @@ export function useRepairOrders(dateRange?: DateRange) {
           *,
           vehicle:vehicles(
             *,
-            customer:customers(*)
+            customer:customers(*),
+            payments(*)
           )
         `)
         .order("reception_date", { ascending: false });

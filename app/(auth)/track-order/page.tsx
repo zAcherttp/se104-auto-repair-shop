@@ -56,7 +56,8 @@ export default function TrackOrderPage() {
         .select(
           `
           *,
-          customer:customers(*)
+          customer:customers(*),
+          payments(*)
         `
         )
         .eq("license_plate", data.query.toUpperCase())
@@ -79,8 +80,7 @@ export default function TrackOrderPage() {
             *,
             spare_part:spare_parts(*),
             labor_type:labor_types(*)
-          ),
-          payments(*)
+          )
         `
         )
         .eq("vehicle_id", vehicle.id)

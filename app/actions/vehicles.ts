@@ -8,7 +8,7 @@ import {
 import { ApiResponse } from "@/types/types";
 import { format } from "date-fns";
 import { revalidatePath } from "next/cache";
-import { VehicleRegistration } from "../(protected)/vehicles/columns";
+import { VehicleRegistration } from "../(protected)/reception/columns";
 
 interface FetchVehicleRegistrationParams {
   from?: Date;
@@ -117,7 +117,6 @@ export async function createReception(
         reception_date: format(formData.receptionDate, "yyyy-MM-dd"),
         notes: formData.notes || null,
         total_amount: 0,
-        paid_amount: 0,
       });
 
     if (repairOrderError) {
@@ -143,8 +142,8 @@ export async function createReception(
   }
 }
 
-export async function handleRepairOrderPayment(
-  repairOrderId: string,
+export async function handleVehiclePayment(
+  vehicleId: string,
   amount: number,
   paymentMethod: string = "cash",
 ): Promise<ApiResponse<{ success: true }>> {
@@ -164,11 +163,58 @@ export async function handleRepairOrderPayment(
       };
     }
 
+    // Validate that there's outstanding debt for this vehicle
+    const { data: vehicle, error: vehicleError } = await supabase
+      .from("vehicles")
+      .select(`
+        id,
+        total_paid,
+        repair_orders (
+          total_amount
+        ),
+        payments (
+          amount
+        )
+      `)
+      .eq("id", vehicleId)
+      .single();
+
+    if (vehicleError) {
+      console.error("Vehicle fetch error:", vehicleError);
+      return {
+        error: new Error("Failed to fetch vehicle data"),
+        data: undefined,
+      };
+    }
+
+    // Calculate current debt
+    const totalRepairCosts = vehicle.repair_orders?.reduce((sum, order) =>
+      sum + (order.total_amount || 0), 0) || 0;
+    const totalPaid = vehicle.payments?.reduce((sum, payment) =>
+      sum + payment.amount, 0) || 0;
+    const remainingDebt = totalRepairCosts - totalPaid;
+
+    if (remainingDebt <= 0) {
+      return {
+        error: new Error("No outstanding debt found for this vehicle"),
+        data: undefined,
+      };
+    }
+
+    if (amount > remainingDebt) {
+      return {
+        error: new Error(
+          `Payment amount (${amount}) exceeds remaining debt (${remainingDebt})`,
+        ),
+        data: undefined,
+      };
+    }
+
     // Insert new payment record
     const { error: paymentError } = await supabase
       .from("payments")
       .insert({
-        repair_order_id: repairOrderId,
+        vehicle_id: vehicleId,
         amount: amount,
         payment_method: paymentMethod,
         created_by: user.id,
@@ -183,10 +229,24 @@ export async function handleRepairOrderPayment(
       };
     }
 
-    // The database trigger will automatically update the repair_order.paid_amount
-    // No need to manually update repair_orders table
+    // Update vehicle's total_paid
+    const newTotalPaid = totalPaid + amount;
+    const { error: updateError } = await supabase
+      .from("vehicles")
+      .update({ total_paid: newTotalPaid })
+      .eq("id", vehicleId);
+
+    if (updateError) {
+      console.error("Vehicle update error:", updateError);
+      return {
+        error: new Error("Failed to update vehicle payment total"),
+        data: undefined,
+      };
+    }
 
     revalidatePath("/vehicles");
+    revalidatePath("/reception");
+    revalidatePath("/debt-management");
     return {
       error: null,
       data: { success: true },
@@ -425,7 +485,8 @@ export async function fetchVehicleRegistrationWithDateRange(
         *,
         vehicle:vehicles(
           *,
-          customer:customers(*)
+          customer:customers(*),
+          payments(amount)
         )
       `,
       )
@@ -454,24 +515,39 @@ export async function fetchVehicleRegistrationWithDateRange(
 
     return {
       error: null,
-      data: data?.map((repairOrder) => ({
-        vehicle: repairOrder.vehicle,
-        customer: repairOrder.vehicle?.customer,
-        repair_order: {
-          id: repairOrder.id,
-          vehicle_id: repairOrder.vehicle_id,
-          created_by: repairOrder.created_by,
-          status: repairOrder.status,
-          reception_date: repairOrder.reception_date,
-          completion_date: repairOrder.completion_date,
-          notes: repairOrder.notes,
-          total_amount: repairOrder.total_amount,
-          paid_amount: repairOrder.paid_amount,
-          created_at: repairOrder.created_at,
-          updated_at: repairOrder.updated_at,
-        },
-        debt: (repairOrder.total_amount || 0) - (repairOrder.paid_amount || 0),
-      })) || [],
+      data: data?.map((repairOrder) => {
+        const vehicle = Array.isArray(repairOrder.vehicle)
+          ? repairOrder.vehicle[0]
+          : repairOrder.vehicle;
+        const customer = Array.isArray(vehicle?.customer)
+          ? vehicle.customer[0]
+          : vehicle?.customer;
+
+        // Calculate total paid for this vehicle
+        const totalPaid =
+          vehicle?.payments?.reduce(
+            (sum: number, payment: { amount: number }) => sum + payment.amount,
+            0,
+          ) || 0;
+
+        return {
+          vehicle: vehicle,
+          customer: customer,
+          repair_order: {
+            id: repairOrder.id,
+            vehicle_id: repairOrder.vehicle_id,
+            created_by: repairOrder.created_by,
+            status: repairOrder.status,
+            reception_date: repairOrder.reception_date,
+            completion_date: repairOrder.completion_date,
+            notes: repairOrder.notes,
+            total_amount: repairOrder.total_amount,
+            created_at: repairOrder.created_at,
+            updated_at: repairOrder.updated_at,
+          },
+          debt: Math.max(0, (repairOrder.total_amount || 0) - totalPaid),
+        };
+      }) || [],
       totalCount: count || 0,
     };
   } catch (error) {
@@ -487,7 +563,7 @@ export async function fetchVehicleRegistrationWithDateRange(
   }
 }
 
-export async function fetchPaymentHistory(repairOrderId: string) {
+export async function fetchPaymentHistory(vehicleId: string) {
   const supabase = await createClient();
 
   try {
@@ -495,9 +571,9 @@ export async function fetchPaymentHistory(repairOrderId: string) {
       .from("payments")
       .select(`
         *,
-        created_by_profile:profiles(name)
+        created_by_profile:profiles(full_name)
       `)
-      .eq("repair_order_id", repairOrderId)
+      .eq("vehicle_id", vehicleId)
       .order("created_at", { ascending: false });
 
     if (error) throw error;

@@ -23,12 +23,9 @@ export const usePayments = ({ initialDateRange }: UsePaymentsProps = {}) => {
             .from("payments")
             .select(`
         *,
-        repair_order:repair_orders(
+        vehicle:vehicles(
           *,
-          vehicle:vehicles(
-            *,
-            customer:customers(*)
-          )
+          customer:customers(*)
         ),
         created_by_profile:profiles!payments_created_by_fkey(
           full_name,

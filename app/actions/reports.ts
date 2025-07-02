@@ -1,0 +1,330 @@
+"use server";
+
+import { createClient } from "@/supabase/server";
+import { ApiResponse } from "@/types/types";
+import {
+    InventoryAnalytics,
+    InventoryReport,
+    ReportPeriod,
+    SalesAnalytics,
+    SalesReport,
+} from "@/types/reports";
+
+export async function getSalesAnalytics(
+    period: ReportPeriod,
+): Promise<ApiResponse<SalesAnalytics>> {
+    try {
+        const supabase = await createClient();
+
+        // Get repair orders in the period
+        const { data: orders, error: ordersError } = await supabase
+            .from("repair_orders")
+            .select(`
+        *,
+        vehicle:vehicles(
+          brand,
+          customer:customers(name)
+        ),
+        payments(amount)
+      `)
+            .gte("reception_date", period.from.toISOString().split("T")[0])
+            .lte("reception_date", period.to.toISOString().split("T")[0]);
+
+        if (ordersError) {
+            return {
+                error: new Error(ordersError.message),
+                data: undefined,
+            };
+        }
+
+        // Calculate analytics
+        const totalOrders = orders?.length || 0;
+        const completedOrders = orders?.filter((o) =>
+            o.status === "completed"
+        ).length || 0;
+        const pendingOrders = orders?.filter((o) =>
+            o.status === "pending"
+        ).length || 0;
+        const inProgressOrders =
+            orders?.filter((o) => o.status === "in-progress").length || 0;
+        const cancelledOrders =
+            orders?.filter((o) => o.status === "cancelled").length || 0;
+
+        const totalRevenue = orders?.reduce((sum, order) => {
+            const payments = order.payments || [];
+            const orderRevenue = payments.reduce(
+                (pSum: number, p: { amount: number }) => pSum + (p.amount || 0),
+                0,
+            );
+            return sum + orderRevenue;
+        }, 0) || 0;
+
+        const averageOrderValue = totalOrders > 0
+            ? totalRevenue / totalOrders
+            : 0;
+
+        // Group by vehicle brand for top services
+        const brandStats = orders?.reduce(
+            (
+                acc: Record<string, { count: number; revenue: number }>,
+                order,
+            ) => {
+                const brand = order.vehicle?.brand || "Unknown";
+                if (!acc[brand]) {
+                    acc[brand] = { count: 0, revenue: 0 };
+                }
+                acc[brand].count += 1;
+
+                const payments = order.payments || [];
+                const orderRevenue = payments.reduce(
+                    (sum: number, p: { amount: number }) =>
+                        sum + (p.amount || 0),
+                    0,
+                );
+                acc[brand].revenue += orderRevenue;
+
+                return acc;
+            },
+            {},
+        ) || {};
+
+        const topServices = Object.entries(brandStats)
+            .map((
+                [service, stats]: [string, { count: number; revenue: number }],
+            ) => ({
+                service,
+                count: stats.count,
+                revenue: stats.revenue,
+            }))
+            .sort((a, b) => b.revenue - a.revenue)
+            .slice(0, 10);
+
+        const analytics: SalesAnalytics = {
+            totalRevenue,
+            totalOrders,
+            averageOrderValue,
+            completedOrders,
+            pendingOrders,
+            inProgressOrders,
+            cancelledOrders,
+            monthlyRevenue: [], // Would need more complex aggregation
+            topServices,
+        };
+
+        return {
+            error: null,
+            data: analytics,
+        };
+    } catch (error) {
+        return {
+            error: error instanceof Error
+                ? error
+                : new Error("Failed to fetch sales analytics"),
+            data: undefined,
+        };
+    }
+}
+
+export async function getInventoryAnalytics(): Promise<
+    ApiResponse<InventoryAnalytics>
+> {
+    try {
+        const supabase = await createClient();
+
+        const { data: spareParts, error: partsError } = await supabase
+            .from("spare_parts")
+            .select("*");
+
+        if (partsError) {
+            return {
+                error: new Error(partsError.message),
+                data: undefined,
+            };
+        }
+
+        const totalParts = spareParts?.length || 0;
+        const totalValue = spareParts?.reduce((sum, part) =>
+            sum + (part.price * part.stock_quantity), 0) || 0;
+        const lowStockItems = spareParts?.filter((part) =>
+            part.stock_quantity <= 5 && part.stock_quantity > 0
+        ).length || 0;
+        const outOfStockItems = spareParts?.filter((part) =>
+            part.stock_quantity === 0
+        ).length || 0;
+        const averagePartValue = totalParts > 0 ? totalValue / totalParts : 0;
+
+        const topValueParts = spareParts
+            ?.map((part) => ({
+                part,
+                totalValue: part.price * part.stock_quantity,
+            }))
+            .sort((a, b) =>
+                b.totalValue - a.totalValue
+            )
+            .slice(0, 10) || [];
+
+        const analytics: InventoryAnalytics = {
+            totalParts,
+            totalValue,
+            lowStockItems,
+            outOfStockItems,
+            averagePartValue,
+            topValueParts,
+            stockMovement: [], // Would need historical data
+        };
+
+        return {
+            error: null,
+            data: analytics,
+        };
+    } catch (error) {
+        return {
+            error: error instanceof Error
+                ? error
+                : new Error("Failed to fetch inventory analytics"),
+            data: undefined,
+        };
+    }
+}
+
+export async function getB51SalesReport(
+    period: ReportPeriod,
+): Promise<ApiResponse<SalesReport>> {
+    try {
+        const supabase = await createClient();
+
+        const { data: orders, error } = await supabase
+            .from("repair_orders")
+            .select(`
+        *,
+        vehicle:vehicles(brand),
+        payments(amount)
+      `)
+            .gte("reception_date", period.from.toISOString().split("T")[0])
+            .lte("reception_date", period.to.toISOString().split("T")[0]);
+
+        if (error) {
+            return {
+                error: new Error(error.message),
+                data: undefined,
+            };
+        }
+
+        // Group by vehicle brand
+        const brandStats = orders?.reduce(
+            (
+                acc: Record<string, { count: number; amount: number }>,
+                order,
+            ) => {
+                const brand = order.vehicle?.brand || "Unknown";
+                if (!acc[brand]) {
+                    acc[brand] = { count: 0, amount: 0 };
+                }
+                acc[brand].count += 1;
+
+                const payments = order.payments || [];
+                const orderRevenue = payments.reduce(
+                    (sum: number, p: { amount: number }) =>
+                        sum + (p.amount || 0),
+                    0,
+                );
+                acc[brand].amount += orderRevenue;
+
+                return acc;
+            },
+            {},
+        ) || {};
+
+        const totalRevenue = Object.values(brandStats).reduce(
+            (sum: number, stats: { count: number; amount: number }) =>
+                sum + stats.amount,
+            0,
+        );
+
+        const reportOrders = Object.entries(brandStats)
+            .map((
+                [vehicleBrand, stats]: [
+                    string,
+                    { count: number; amount: number },
+                ],
+                index,
+            ) => ({
+                stt: index + 1,
+                vehicleBrand,
+                repairCount: stats.count,
+                amount: stats.amount,
+                rate: totalRevenue > 0
+                    ? (stats.amount / totalRevenue) * 100
+                    : 0,
+            }))
+            .sort((a, b) => b.amount - a.amount);
+
+        const report: SalesReport = {
+            month: period.from.toLocaleDateString("en-US", {
+                month: "long",
+                year: "numeric",
+            }),
+            totalRevenue,
+            orders: reportOrders,
+        };
+
+        return {
+            error: null,
+            data: report,
+        };
+    } catch (error) {
+        return {
+            error: error instanceof Error
+                ? error
+                : new Error("Failed to fetch B5.1 sales report"),
+            data: undefined,
+        };
+    }
+}
+
+export async function getB52InventoryReport(): Promise<
+    ApiResponse<InventoryReport>
+> {
+    try {
+        const supabase = await createClient();
+
+        const { data: spareParts, error } = await supabase
+            .from("spare_parts")
+            .select("*");
+
+        if (error) {
+            return {
+                error: new Error(error.message),
+                data: undefined,
+            };
+        }
+
+        const inventory = spareParts?.map((part, index) => ({
+            stt: index + 1,
+            partName: part.name,
+            beginStock: part.stock_quantity, // Would need historical data for actual begin stock
+            purchased: 0, // Would need purchase history
+            endStock: part.stock_quantity,
+        })) || [];
+
+        const report: InventoryReport = {
+            month: new Date().toLocaleDateString("en-US", {
+                month: "long",
+                year: "numeric",
+            }),
+            inventory,
+        };
+
+        return {
+            error: null,
+            data: report,
+        };
+    } catch (error) {
+        return {
+            error: error instanceof Error
+                ? error
+                : new Error("Failed to fetch B5.2 inventory report"),
+            data: undefined,
+        };
+    }
+}
