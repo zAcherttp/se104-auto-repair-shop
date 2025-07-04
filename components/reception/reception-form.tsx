@@ -47,7 +47,9 @@ import {
   CommandList,
 } from "../ui/command";
 import { useCarBrands } from "@/hooks/use-car-brands";
+import { useDailyVehicleLimit } from "@/hooks/use-daily-vehicle-limit";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 // Stable references - moved outside component to prevent recreation
 const FORM_DEFAULT_VALUES: VehicleReceptionFormData = {
@@ -69,6 +71,8 @@ const SUBMIT_BUTTON_CLASSES = "bg-blue-600 hover:bg-blue-700 w-25";
 const ReceptionForm = React.memo<FormDialogProps>(
   ({ open, onClose, onSuccess }) => {
     const { data: carBrands, isLoading: isBrandsLoading } = useCarBrands();
+    const { data: vehicleLimit, isLoading: isLimitLoading } =
+      useDailyVehicleLimit();
 
     const form = useForm<VehicleReceptionFormData>({
       resolver: zodResolver(VehicleReceptionFormSchema),
@@ -81,7 +85,17 @@ const ReceptionForm = React.memo<FormDialogProps>(
         const result = await createReception(data);
 
         if (result.error) {
-          toast.error("Failed to create vehicle reception");
+          // Check if the error is about daily vehicle limit
+          if (
+            result.error.message?.includes("Cannot handle any more vehicles")
+          ) {
+            toast.error(
+              "Cannot handle any more vehicles today. Daily capacity limit reached."
+            );
+            onClose(); // Close the dialog
+          } else {
+            toast.error("Failed to create vehicle reception");
+          }
         } else {
           toast.success("Vehicle reception created successfully!");
           form.reset();
@@ -140,6 +154,40 @@ const ReceptionForm = React.memo<FormDialogProps>(
               Vehicle Reception Form
             </DialogTitle>
           </DialogHeader>
+
+          {/* Daily Vehicle Limit Warning */}
+          {!isLimitLoading &&
+            vehicleLimit &&
+            (vehicleLimit.isNearLimit || vehicleLimit.isAtLimit) && (
+              <Alert
+                className={
+                  vehicleLimit.isAtLimit
+                    ? "border-red-500 bg-red-50"
+                    : "border-yellow-500 bg-yellow-50"
+                }
+              >
+                <AlertDescription
+                  className={
+                    vehicleLimit.isAtLimit ? "text-red-700" : "text-yellow-700"
+                  }
+                >
+                  {vehicleLimit.isAtLimit ? (
+                    <>
+                      <strong>Daily limit reached:</strong>{" "}
+                      {vehicleLimit.currentCount}/{vehicleLimit.maxCapacity}{" "}
+                      vehicles received today. New vehicle creation may be
+                      blocked.
+                    </>
+                  ) : (
+                    <>
+                      <strong>Approaching daily limit:</strong>{" "}
+                      {vehicleLimit.currentCount}/{vehicleLimit.maxCapacity}{" "}
+                      vehicles received today.
+                    </>
+                  )}
+                </AlertDescription>
+              </Alert>
+            )}
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

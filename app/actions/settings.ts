@@ -484,6 +484,39 @@ export async function getCarBrands(): Promise<ApiResponse<string[]>> {
   }
 }
 
+// Car Brands Management Actions
+export async function updateCarBrands(brands: string[]): Promise<ApiResponse> {
+  try {
+    const { supabase } = await checkAdminRole();
+
+    // Validate and clean the brands array
+    const validBrands = brands
+      .filter((brand) => brand && brand.trim() !== "")
+      .map((brand) => brand.trim())
+      .filter((brand, index, arr) => arr.indexOf(brand) === index); // Remove duplicates
+
+    const { data, error } = await supabase
+      .from("system_settings")
+      .upsert(
+        {
+          setting_key: "car_brands",
+          setting_value: JSON.stringify(validBrands),
+        },
+        { onConflict: "setting_key" },
+      )
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    revalidatePath("/settings");
+    return { success: true, data };
+  } catch (error) {
+    console.error("Error updating car brands:", error);
+    return { success: false, error: "Failed to update car brands" };
+  }
+}
+
 // Helper function to promote a user to admin (useful for initial setup)
 export async function promoteUserToAdmin(userId: string): Promise<ApiResponse> {
   try {
@@ -567,5 +600,70 @@ export async function migrateExistingAdmins(): Promise<ApiResponse> {
   } catch (error) {
     console.error("Error migrating existing admins:", error);
     return { success: false, error: "Failed to migrate existing admin users" };
+  }
+}
+
+// Public function to get garage information for landing page (no admin required)
+export async function getGarageInfo(): Promise<
+  ApiResponse<{
+    garageName: string;
+    phoneNumber: string;
+    emailAddress: string;
+    address: string;
+  }>
+> {
+  try {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+      .from("system_settings")
+      .select("setting_key, setting_value")
+      .in("setting_key", [
+        "garage_name",
+        "phone_number",
+        "email_address",
+        "address",
+      ])
+      .order("setting_key");
+
+    if (error) {
+      console.error("Database error fetching garage info:", error);
+      throw error;
+    }
+
+    // Convert settings array to object
+    const settingsMap = (data || []).reduce(
+      (
+        acc: Record<string, string>,
+        setting: { setting_key: string; setting_value: string },
+      ) => {
+        acc[setting.setting_key] = setting.setting_value;
+        return acc;
+      },
+      {},
+    );
+
+    const garageInfo = {
+      garageName: settingsMap.garage_name || "",
+      phoneNumber: settingsMap.phone_number || "",
+      emailAddress: settingsMap.email_address || "",
+      address: settingsMap.address || "",
+    };
+
+    return {
+      success: true,
+      data: garageInfo,
+    };
+  } catch (error) {
+    console.error("Error fetching garage info:", error);
+    return {
+      success: true, // Return success with defaults to avoid breaking the landing page
+      data: {
+        garageName: "",
+        phoneNumber: "",
+        emailAddress: "",
+        address: "",
+      },
+    };
   }
 }

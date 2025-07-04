@@ -40,6 +40,8 @@ import {
 import { Input } from "@/components/ui/input";
 import DateRangePicker from "@/components/date-range-picker";
 import { DateRange } from "react-day-picker";
+import { Badge } from "@/components/ui/badge";
+import { useDailyVehicleLimit } from "@/hooks/use-daily-vehicle-limit";
 
 interface TasksDataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -60,6 +62,8 @@ export function VehicleDataTable<TData, TValue>({
 }: TasksDataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = React.useState<string>("");
+  const { data: vehicleLimit, isLoading: isLimitLoading } =
+    useDailyVehicleLimit();
   const table = useReactTable({
     data,
     columns,
@@ -84,14 +88,33 @@ export function VehicleDataTable<TData, TValue>({
   return (
     <>
       <div className="flex items-center justify-between pb-6">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <Input
-            placeholder="Search..."
-            value={table.getState().globalFilter ?? ""}
-            onChange={(e) => table.setGlobalFilter(String(e.target.value))}
-            className="pl-10 w-80"
-          />
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Input
+              placeholder="Search..."
+              value={table.getState().globalFilter ?? ""}
+              onChange={(e) => table.setGlobalFilter(String(e.target.value))}
+              className="pl-10 w-80"
+            />
+          </div>
+
+          {/* Daily Vehicle Limit Badge */}
+          {!isLimitLoading && vehicleLimit && (
+            <Badge
+              variant={
+                vehicleLimit.isAtLimit
+                  ? "destructive"
+                  : vehicleLimit.isNearLimit
+                  ? "secondary"
+                  : "outline"
+              }
+              className="px-3 py-1 text-sm font-medium"
+            >
+              Daily: {vehicleLimit.currentCount}/
+              {vehicleLimit.maxCapacity || "∞"}
+            </Badge>
+          )}
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">

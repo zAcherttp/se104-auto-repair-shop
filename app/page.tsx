@@ -3,22 +3,74 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Car, Users, Search } from "lucide-react";
+import { Car, Users, Search, Phone, Mail, MapPin } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useGarageInfo } from "@/hooks/use-garage-info";
 
 export default function Page() {
   const router = useRouter();
+  const { data: garageInfo, isLoading: isGarageInfoLoading } = useGarageInfo();
 
   return (
     <div className="min-h-screen bg-gradient-to-br">
       <div className="container mx-auto px-4 py-16">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-4">AutoRepair Manager</h1>
-          <p className="text-xl text-slate-600">
-            Comprehensive vehicle repair management system
-          </p>
-        </div>
+        {/* Show loading state while fetching garage info */}
+        {isGarageInfoLoading ? (
+          <div className="text-center mb-16">
+            <div className="animate-pulse">
+              <div className="h-12 bg-gray-200 rounded mb-4 mx-auto w-96"></div>
+              <div className="h-6 bg-gray-200 rounded mx-auto w-80"></div>
+            </div>
+          </div>
+        ) : (
+          <>
+            {/* Header */}
+            <div className="text-center mb-16">
+              <h1 className="text-5xl font-bold mb-4">
+                {garageInfo?.garageName || "AutoRepair Manager"}
+              </h1>
+              <p className="text-xl text-slate-600">
+                Comprehensive vehicle repair management system
+              </p>
+
+              {/* Contact Information */}
+              {garageInfo && (
+                <div className="mt-8 space-y-4">
+                  <div className="flex flex-wrap justify-center gap-6 text-slate-600">
+                    {garageInfo.phoneNumber && (
+                      <div className="flex items-center gap-2">
+                        <Phone className="w-4 h-4" />
+                        <span>{garageInfo.phoneNumber}</span>
+                      </div>
+                    )}
+                    {garageInfo.emailAddress && (
+                      <div className="flex items-center gap-2">
+                        <Mail className="w-4 h-4" />
+                        <span>{garageInfo.emailAddress}</span>
+                      </div>
+                    )}
+                    {garageInfo.address && (
+                      <div className="flex items-center gap-2">
+                        <MapPin className="w-4 h-4" />
+                        <span>{garageInfo.address}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Show message if no contact info */}
+                  {!garageInfo.phoneNumber &&
+                    !garageInfo.emailAddress &&
+                    !garageInfo.address && (
+                      <div className="text-slate-500 text-sm">
+                        Contact information can be configured in the admin
+                        settings.
+                      </div>
+                    )}
+                </div>
+              )}
+            </div>
+          </>
+        )}
 
         {/* Main Options */}
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">

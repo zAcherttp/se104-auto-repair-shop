@@ -5,15 +5,17 @@ import GarageSettingsTab from "./garage-settings-tab";
 import EmployeesTab from "./employees-tab";
 import PartsTab from "./parts-tab";
 import LaborTypesTab from "./labor-types-tab";
+import CarBrandsTab from "./car-brands-tab";
 
 export function SettingsTabs() {
   return (
     <Tabs defaultValue="garage" className="w-full">
-      <TabsList className="grid w-full grid-cols-4">
+      <TabsList className="grid w-full grid-cols-5">
         <TabsTrigger value="garage">Garage Settings</TabsTrigger>
         <TabsTrigger value="employees">Employees</TabsTrigger>
         <TabsTrigger value="parts">Parts</TabsTrigger>
         <TabsTrigger value="labor">Labor Types</TabsTrigger>
+        <TabsTrigger value="brands">Car Brands</TabsTrigger>
       </TabsList>
 
       <TabsContent value="garage">
@@ -30,6 +32,10 @@ export function SettingsTabs() {
 
       <TabsContent value="labor">
         <LaborTypesTab />
+      </TabsContent>
+
+      <TabsContent value="brands">
+        <CarBrandsTab />
       </TabsContent>
     </Tabs>
   );

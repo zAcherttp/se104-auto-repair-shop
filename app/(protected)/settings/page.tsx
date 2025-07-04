@@ -23,7 +23,7 @@ export default async function SettingsPage() {
     .single();
 
   if (profileError || !profile || profile.role !== "admin") {
-    redirect("/home");
+    redirect("/reception");
   }
 
   return (

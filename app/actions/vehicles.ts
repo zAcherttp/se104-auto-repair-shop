@@ -107,6 +107,36 @@ export async function createReception(
 
     let vehicleId = existingVehicle?.id;
 
+    // If creating a new vehicle, check daily limits
+    if (!vehicleId) {
+      console.log("New vehicle detected, checking daily limits...");
+      const limitCheck = await checkDailyVehicleLimit();
+
+      if (!limitCheck.success) {
+        console.error("Failed to check daily limits:", limitCheck.error);
+        return {
+          error: new Error("Failed to verify daily vehicle capacity"),
+          data: undefined,
+        };
+      }
+
+      if (!limitCheck.canCreate) {
+        console.warn(
+          "Daily vehicle limit reached, rejecting new vehicle creation",
+        );
+        return {
+          error: new Error(
+            "Cannot handle any more vehicles today. Daily capacity limit reached.",
+          ),
+          data: undefined,
+        };
+      }
+
+      console.log(
+        `Daily limit check passed: ${limitCheck.currentCount}/${limitCheck.maxCapacity} vehicles`,
+      );
+    }
+
     if (!vehicleId) {
       console.log("Creating new vehicle...");
       // Create new vehicle
@@ -756,6 +786,109 @@ export async function fetchVehiclesWithDebt(): Promise<
       error: error instanceof Error
         ? error
         : new Error("Failed to fetch vehicles"),
+      data: undefined,
+    };
+  }
+}
+
+// Helper function to check daily vehicle limits
+async function checkDailyVehicleLimit() {
+  try {
+    const supabase = await createClient();
+
+    // Get the maximum car capacity setting
+    const { data: settings, error: settingsError } = await supabase
+      .from("system_settings")
+      .select("setting_value")
+      .eq("setting_key", "maximum_car_capacity")
+      .single();
+
+    if (settingsError || !settings) {
+      console.warn("No maximum car capacity setting found, allowing creation");
+      return {
+        success: true,
+        currentCount: 0,
+        maxCapacity: null,
+        canCreate: true,
+      };
+    }
+
+    const maxCapacity = parseInt(settings.setting_value) || 0;
+    if (maxCapacity <= 0) {
+      return {
+        success: true,
+        currentCount: 0,
+        maxCapacity: 0,
+        canCreate: true,
+      };
+    }
+
+    // Get today's date in YYYY-MM-DD format
+    const today = format(new Date(), "yyyy-MM-dd");
+
+    // Count vehicles created today
+    const { data: todayOrders, error: countError } = await supabase
+      .from("repair_orders")
+      .select("id")
+      .eq("reception_date", today);
+
+    if (countError) {
+      console.error("Error counting today's orders:", countError);
+      return { success: false, error: "Failed to check daily vehicle count" };
+    }
+
+    const currentCount = todayOrders?.length || 0;
+    const canCreate = currentCount < maxCapacity;
+
+    return {
+      success: true,
+      currentCount,
+      maxCapacity,
+      canCreate,
+      isAtLimit: currentCount >= maxCapacity,
+      isNearLimit: currentCount >= maxCapacity - 2 &&
+        currentCount < maxCapacity,
+    };
+  } catch (error) {
+    console.error("Error checking daily vehicle limit:", error);
+    return { success: false, error: "Failed to check daily vehicle limit" };
+  }
+}
+
+// Export function to get daily vehicle limit status for UI
+export async function getDailyVehicleLimitStatus(): Promise<
+  ApiResponse<{
+    currentCount: number;
+    maxCapacity: number | null;
+    canCreate: boolean;
+    isAtLimit: boolean;
+    isNearLimit: boolean;
+  }>
+> {
+  try {
+    const limitCheck = await checkDailyVehicleLimit();
+
+    if (!limitCheck.success) {
+      return {
+        error: new Error(limitCheck.error || "Failed to check vehicle limit"),
+        data: undefined,
+      };
+    }
+
+    return {
+      error: null,
+      data: {
+        currentCount: limitCheck.currentCount || 0,
+        maxCapacity: limitCheck.maxCapacity ?? null,
+        canCreate: limitCheck.canCreate ?? true,
+        isAtLimit: limitCheck.isAtLimit || false,
+        isNearLimit: limitCheck.isNearLimit || false,
+      },
+    };
+  } catch (error) {
+    console.error("Error getting daily vehicle limit status:", error);
+    return {
+      error: new Error("Failed to get vehicle limit status"),
       data: undefined,
     };
   }

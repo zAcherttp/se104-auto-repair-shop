@@ -8,11 +8,13 @@
 
 ### Planned
 
-- [ ] [Task page] boom
 - [ ] [Setting function] In setting admin can change garage info + banner image and those get displayed on the landing page.
+  - [x] Garage info (name, phone, email, address) now displayed on landing page
+  - [ ] Banner image functionality still needs implementation
 
 ### Done ✓
 
+- [x] [Task page] boom
 - [x] [Vehicles page] Implement the page with comprehensive vehicle management
 
   - [x] Created server action to fetch all vehicles with debt calculation
@@ -111,9 +113,29 @@
   - [x] Ensured both auth metadata and profile data are correctly synchronized
 
 - [x] [Employee Management] Enhanced delete action with proper confirmation dialog
+
   - [x] Created DeleteEmployeeDialog component with warning icons and detailed messaging
   - [x] Replaced browser confirm() with custom UI dialog
   - [x] Added loading state during deletion process
   - [x] Shows employee name in confirmation message
   - [x] Includes warning about permanent deletion and data loss
   - [x] Better user experience with proper visual feedback
+
+- [x] [Reception Page] Added daily vehicle limit display next to search bar
+
+  - [x] Added useDailyVehicleLimit hook to reception data table
+  - [x] Created Badge component to show current count vs daily limit
+  - [x] Display independent of date range selector (uses TanStack Query caching)
+  - [x] Color-coded badge: destructive (at limit), secondary (near limit), outline (normal)
+  - [x] Shows "Daily: X/Y" format with infinity symbol for unlimited
+  - [x] Auto-refreshes every minute to keep count current
+  - [x] Positioned next to search bar for easy visibility
+
+- [x] [Landing Page] Added garage information display
+  - [x] Created public getGarageInfo function to fetch garage settings without admin access
+  - [x] Added useGarageInfo hook with TanStack Query for caching
+  - [x] Updated landing page header to show garage name dynamically
+  - [x] Added contact information section with phone, email, and address
+  - [x] Used Lucide React icons for professional appearance
+  - [x] Includes fallback values to prevent page breaking if settings not configured
+  - [x] Auto-refreshes every 10 minutes to keep information current

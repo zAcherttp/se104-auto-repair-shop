@@ -30,7 +30,7 @@ export const AppBanner = memo(function AppBanner({
       <SidebarMenuItem>
         <SidebarMenuButton
           size="lg"
-          onClick={() => router.push("/home")}
+          onClick={() => router.push("/reception")}
           className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
         >
           <div className="flex gap-2 aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
