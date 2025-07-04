@@ -17,8 +17,11 @@ declare module "@tanstack/react-table" {
     >;
     spareParts?: Array<{ id: string; name: string; price: number }>;
     laborTypes?: Array<{ id: string; name: string; cost: number }>;
+    employees?: Array<{ id: string; full_name: string; role: string }>;
     updateData?: (rowIndex: number, columnId: string, value: unknown) => void;
+    revertData?: (rowIndex: number) => void;
     removeRow?: (rowIndex: number) => void;
+    addRow?: () => { newRow: unknown; newIndex: number } | void;
   }
 }
 
@@ -32,6 +35,7 @@ export type LineItem = {
   laborType: string;
   laborCost: number;
   total: number;
+  assignedTo?: string;
 };
 
 // Stable header components to prevent recreation
@@ -147,6 +151,29 @@ export const lineItemColumns: ColumnDef<LineItem>[] = [
           column={column}
           table={table}
           laborTypes={table.options.meta?.laborTypes}
+        />
+      ) : (
+        <MemoizedTableCell
+          getValue={getValue}
+          row={row}
+          column={column}
+          table={table}
+        />
+      );
+    },
+  },
+  {
+    accessorKey: "assignedTo",
+    header: "Assigned To",
+    cell: ({ getValue, row, column, table }) => {
+      const isEditing = table.options.meta?.editedRows?.[row.index];
+      return isEditing ? (
+        <MemoizedEditCell
+          getValue={getValue}
+          row={row}
+          column={column}
+          table={table}
+          employees={table.options.meta?.employees}
         />
       ) : (
         <MemoizedTableCell

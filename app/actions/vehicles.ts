@@ -345,7 +345,8 @@ export async function fetchExistingRepairOrderItems(repairOrderId: string) {
         `
         *,
         spare_part:spare_parts(id, name, price),
-        labor_type:labor_types(id, name, cost)
+        labor_type:labor_types(id, name, cost),
+        assigned_employee:profiles(id, full_name, role)
       `,
       )
       .eq("repair_order_id", repairOrderId);
@@ -426,6 +427,7 @@ export async function updateRepairOrderSmart(
       labor_type_id: string | null;
       labor_cost: number;
       total_amount: number;
+      assigned_to: string | null;
     }>;
     updatedItems: Array<{
       id: string;
@@ -436,6 +438,7 @@ export async function updateRepairOrderSmart(
       labor_type_id: string | null;
       labor_cost: number;
       total_amount: number;
+      assigned_to: string | null;
     }>;
     deletedItemIds: string[];
   },

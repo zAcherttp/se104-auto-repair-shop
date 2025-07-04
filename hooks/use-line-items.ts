@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { LineItem } from "../components/dialogs/update-repair-order/columns";
 import { useSparePartsAndLaborTypes } from "./use-spare-parts-labor-types";
 import { fetchExistingRepairOrderItems } from "@/app/actions/vehicles";
@@ -30,7 +30,7 @@ export function useLineItems(options: UseLineItemsOptions = {}) {
     setIsLoadingItems(true);
     try {
       const { items, error } = await fetchExistingRepairOrderItems(
-        repairOrderId
+        repairOrderId,
       );
 
       if (error) {
@@ -48,6 +48,7 @@ export function useLineItems(options: UseLineItemsOptions = {}) {
             total_amount?: number;
             spare_part?: { name: string };
             labor_type?: { name: string };
+            assigned_employee?: { full_name: string };
           }) => ({
             id: item.id,
             description: item.description || "",
@@ -57,7 +58,8 @@ export function useLineItems(options: UseLineItemsOptions = {}) {
             laborType: item.labor_type?.name || "",
             laborCost: item.labor_cost || 0,
             total: item.total_amount || 0,
-          })
+            assignedTo: item.assigned_employee?.full_name || "",
+          }),
         );
         setLineItems(formattedItems);
         setOriginalItems(formattedItems);
@@ -92,6 +94,7 @@ export function useLineItems(options: UseLineItemsOptions = {}) {
       laborType: "",
       laborCost: 0,
       total: 0,
+      assignedTo: "",
     };
     const newIndex = lineItems.length;
     setLineItems((prev) => [...prev, newRow]);
@@ -111,8 +114,7 @@ export function useLineItems(options: UseLineItemsOptions = {}) {
               columnId === "unitPrice" ||
               columnId === "laborCost"
             ) {
-              updatedRow.total =
-                updatedRow.quantity * updatedRow.unitPrice +
+              updatedRow.total = updatedRow.quantity * updatedRow.unitPrice +
                 updatedRow.laborCost;
             }
 
@@ -122,7 +124,7 @@ export function useLineItems(options: UseLineItemsOptions = {}) {
         })
       );
     },
-    []
+    [],
   );
 
   const revertData = useCallback(
@@ -136,7 +138,7 @@ export function useLineItems(options: UseLineItemsOptions = {}) {
         })
       );
     },
-    [originalItems]
+    [originalItems],
   );
 
   const removeRow = useCallback(
@@ -151,7 +153,7 @@ export function useLineItems(options: UseLineItemsOptions = {}) {
       // Remove from current items
       setLineItems((old) => old.filter((_, index) => index !== rowIndex));
     },
-    [lineItems]
+    [lineItems],
   );
 
   const resetData = useCallback(() => {
@@ -165,7 +167,7 @@ export function useLineItems(options: UseLineItemsOptions = {}) {
     const updatedItems = lineItems.filter(
       (item) =>
         !item.id?.startsWith("temp-") &&
-        originalItems.some((orig) => orig.id === item.id)
+        originalItems.some((orig) => orig.id === item.id),
     );
 
     return {

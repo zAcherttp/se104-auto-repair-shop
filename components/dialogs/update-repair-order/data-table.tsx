@@ -32,6 +32,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   spareParts?: Array<{ id: string; name: string; price: number }>;
   laborTypes?: Array<{ id: string; name: string; cost: number }>;
+  employees?: Array<{ id: string; full_name: string; role: string }>;
   onUpdateData?: (rowIndex: number, columnId: string, value: unknown) => void;
   onRevertData?: (rowIndex: number) => void;
   onRemoveRow?: (rowIndex: number) => void;
@@ -43,6 +44,7 @@ export function LineItemDataTable<TData, TValue>({
   data,
   spareParts = [],
   laborTypes = [],
+  employees = [],
   onUpdateData,
   onRevertData,
   onRemoveRow,
@@ -77,6 +79,7 @@ export function LineItemDataTable<TData, TValue>({
       addRow: onAddRow,
       spareParts,
       laborTypes,
+      employees,
     },
   });
 

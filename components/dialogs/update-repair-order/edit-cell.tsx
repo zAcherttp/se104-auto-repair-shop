@@ -65,6 +65,7 @@ interface EditCellProps {
   };
   spareParts?: Array<{ id: string; name: string; price: number }>;
   laborTypes?: Array<{ id: string; name: string; cost: number }>;
+  employees?: Array<{ id: string; full_name: string; role: string }>;
 }
 
 export const EditCell = React.memo<EditCellProps>(function EditCell({
@@ -74,6 +75,7 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
   table,
   spareParts = [],
   laborTypes = [],
+  employees = [],
 }) {
   const initialValue = getValue();
   const [value, setValue] = useState(initialValue);
@@ -165,6 +167,19 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
       setOpen(false);
     },
     [laborTypes, table.options.meta, row.index, column.id]
+  );
+
+  const handleEmployeeSelect = useCallback(
+    (selectedEmployee: string) => {
+      setValue(selectedEmployee);
+      setError("");
+
+      if (table.options.meta?.updateData) {
+        table.options.meta.updateData(row.index, column.id, selectedEmployee);
+      }
+      setOpen(false);
+    },
+    [table.options.meta, row.index, column.id]
   );
 
   // Memoized check for readonly fields
@@ -259,6 +274,44 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
                         <span>{labor.name}</span>
                         <span className="text-muted-foreground">
                           ${labor.cost.toFixed(2)}
+                        </span>
+                      </div>
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
+      ) : column.id === "assignedTo" ? (
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={open}
+              className={buttonClassName}
+            >
+              {(value as string) || "Select employee..."}
+              <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-full p-0">
+            <Command>
+              <CommandInput placeholder="Search employees..." />
+              <CommandList>
+                <CommandEmpty>No employee found.</CommandEmpty>
+                <CommandGroup>
+                  {employees.map((employee) => (
+                    <CommandItem
+                      key={employee.id}
+                      value={employee.full_name}
+                      onSelect={handleEmployeeSelect}
+                    >
+                      <div className="flex justify-between w-full">
+                        <span>{employee.full_name}</span>
+                        <span className="text-muted-foreground">
+                          {employee.role}
                         </span>
                       </div>
                     </CommandItem>

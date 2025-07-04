@@ -131,6 +131,7 @@ export type Database = {
       };
       repair_order_items: {
         Row: {
+          assigned_to: string | null;
           created_at: string | null;
           description: string;
           id: string;
@@ -144,6 +145,7 @@ export type Database = {
           updated_at: string | null;
         };
         Insert: {
+          assigned_to?: string | null;
           created_at?: string | null;
           description: string;
           id?: string;
@@ -157,6 +159,7 @@ export type Database = {
           updated_at?: string | null;
         };
         Update: {
+          assigned_to?: string | null;
           created_at?: string | null;
           description?: string;
           id?: string;
@@ -170,6 +173,13 @@ export type Database = {
           updated_at?: string | null;
         };
         Relationships: [
+          {
+            foreignKeyName: "repair_order_items_assigned_to_fkey";
+            columns: ["assigned_to"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "repair_order_items_labor_type_id_fkey";
             columns: ["labor_type_id"];

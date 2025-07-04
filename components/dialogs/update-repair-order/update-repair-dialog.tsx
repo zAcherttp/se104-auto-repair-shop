@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Car, User } from "lucide-react";
 import { useLineItems } from "@/hooks/use-line-items";
+import { useEmployees } from "@/hooks/use-employees";
 import { ScrollArea } from "../../ui/scroll-area";
 import { LineItemDataTable } from "./data-table";
 import { lineItemColumns, LineItem } from "./columns";
@@ -46,6 +47,10 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
     isLoadingItems,
   } = useLineItems();
 
+  const { data: employees = [] } = useEmployees() as {
+    data: Array<{ id: string; full_name: string; role: string }>;
+  };
+
   // Load existing items when dialog opens
   React.useEffect(() => {
     if (open && data.repair_order?.id) {
@@ -67,6 +72,8 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
           laborTypes.find((l) => l.name === item.laborType)?.id || null,
         labor_cost: item.laborCost || 0,
         total_amount: item.total || 0,
+        assigned_to:
+          employees.find((e) => e.full_name === item.assignedTo)?.id || null,
       });
 
       const changes = {
@@ -176,6 +183,7 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
                       data={lineItems}
                       spareParts={spareParts}
                       laborTypes={laborTypes}
+                      employees={employees}
                       onUpdateData={updateData}
                       onRevertData={revertData}
                       onRemoveRow={removeRow}
