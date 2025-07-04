@@ -10,7 +10,6 @@
 
 - [ ] [Task page] boom
 - [ ] [Setting function] In setting admin can change garage info + banner image and those get displayed on the landing page.
-- [ ] [Reception page] repair line items table in Update action rerender every change - to be optimized
 
 ### Done ✓
 
@@ -64,7 +63,14 @@
 
 - [x] [Reception page] fix Update + Payment dialog modals.
 - [x] [Reception page] Consider using tanstack/react-tables for advanced table sorting, pagination, filters.
-- [x] [Reception page] Implement the page.
+- [x] [Reports page] Clean up UI by removing B5.1 and B5.2 references
+
+  - [x] Removed "B5.1 -" prefix from Detailed Sales Report title
+  - [x] Removed "B5.2 -" prefix from Inventory Status Report title
+  - [x] Updated type definitions to remove B5.1/B5.2 comments
+  - [x] Maintained clean, descriptive titles for better user experience
+
+- [x] [Reception page] Add employee assignment to repair line items
 - [x] [Tasks page] Implement the page.
 - [x] [Inventory page] Implement the page.
 - [x] [Invoices page] Implement the page.

@@ -37,7 +37,7 @@ export interface InventoryAnalytics {
     }>;
 }
 
-// B5.1 - Doanh Số (Sales Report)
+// Sales Report
 export interface SalesReport {
     month: string;
     totalRevenue: number;
@@ -50,7 +50,7 @@ export interface SalesReport {
     }>;
 }
 
-// B5.2 - Báo Cáo Tồn (Inventory Report)
+// Inventory Report
 export interface InventoryReport {
     month: string;
     inventory: Array<{

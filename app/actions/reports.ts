@@ -240,7 +240,7 @@ export async function getInventoryAnalytics(): Promise<
     }
 }
 
-export async function getB51SalesReport(
+export async function getSalesReport(
     period: ReportPeriod,
 ): Promise<ApiResponse<SalesReport>> {
     try {
@@ -379,9 +379,9 @@ export async function getB51SalesReport(
     }
 }
 
-export async function getB52InventoryReport(): Promise<
-    ApiResponse<InventoryReport>
-> {
+export async function getInventoryReport(
+    period: ReportPeriod,
+): Promise<ApiResponse<InventoryReport>> {
     try {
         const supabase = await createClient();
 
@@ -409,16 +409,58 @@ export async function getB52InventoryReport(): Promise<
             };
         }
 
-        const inventory = spareParts?.map((part, index) => ({
-            stt: index + 1,
-            partName: part.name,
-            beginStock: part.stock_quantity, // Would need historical data for actual begin stock
-            purchased: 0, // Would need purchase history
-            endStock: part.stock_quantity,
-        })) || [];
+        // Get repair order items within the period to calculate parts usage
+        const { data: repairItems, error: itemsError } = await supabase
+            .from("repair_order_items")
+            .select(`
+                quantity,
+                spare_part_id,
+                repair_order:repair_orders(reception_date)
+            `)
+            .not("spare_part_id", "is", null)
+            .gte(
+                "repair_order.reception_date",
+                period.from.toISOString().split("T")[0],
+            )
+            .lte(
+                "repair_order.reception_date",
+                period.to.toISOString().split("T")[0],
+            );
+
+        if (itemsError) {
+            return {
+                error: new Error(itemsError.message),
+                data: undefined,
+            };
+        }
+
+        // Calculate parts usage during the period
+        const partsUsage: Record<string, number> = {};
+        repairItems?.forEach((item) => {
+            if (item.spare_part_id) {
+                partsUsage[item.spare_part_id] =
+                    (partsUsage[item.spare_part_id] || 0) +
+                    (item.quantity || 0);
+            }
+        });
+
+        const inventory = spareParts?.map((part, index) => {
+            const usedQuantity = partsUsage[part.id] || 0;
+            const currentStock = part.stock_quantity || 0;
+            // For demonstration, assume begin stock was current stock + used quantity
+            const beginStock = currentStock + usedQuantity;
+
+            return {
+                stt: index + 1,
+                partName: part.name,
+                beginStock,
+                purchased: 0, // Would need purchase history from a purchases table
+                endStock: currentStock,
+            };
+        }) || [];
 
         const report: InventoryReport = {
-            month: new Date().toLocaleDateString("en-US", {
+            month: period.from.toLocaleDateString("vi-VN", {
                 month: "long",
                 year: "numeric",
             }),
@@ -433,7 +475,7 @@ export async function getB52InventoryReport(): Promise<
         return {
             error: error instanceof Error
                 ? error
-                : new Error("Failed to fetch B5.2 inventory report"),
+                : new Error("Failed to fetch inventory report"),
             data: undefined,
         };
     }

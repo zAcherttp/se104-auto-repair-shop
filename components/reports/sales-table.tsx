@@ -29,9 +29,6 @@ export function SalesTable({ data }: SalesTableProps) {
       <Card>
         <CardHeader className="bg-gray-800 text-white">
           <CardTitle className="text-center">
-            <div className="inline-block bg-white text-black px-3 py-1 mr-4 font-bold">
-              BM5.1
-            </div>
             <span className="text-lg font-bold">Doanh Số</span>
           </CardTitle>
         </CardHeader>

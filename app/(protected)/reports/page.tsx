@@ -120,7 +120,7 @@ export default function Page() {
               <CardHeader>
                 <CardTitle>Sales Overview</CardTitle>
                 <CardDescription>
-                  Monthly sales performance and trends
+                  Car brands revenue distribution and market share
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -188,7 +188,7 @@ export default function Page() {
 
           <Card>
             <CardHeader>
-              <CardTitle>B5.1 - Detailed Sales Report</CardTitle>
+              <CardTitle>Detailed Sales Report</CardTitle>
               <CardDescription>
                 Comprehensive breakdown of sales transactions and revenue
               </CardDescription>
@@ -209,73 +209,47 @@ export default function Page() {
         </TabsContent>
 
         <TabsContent value="inventory" className="space-y-6">
-          <div className="grid gap-6 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Inventory Overview</CardTitle>
-                <CardDescription>
-                  Current stock levels and inventory trends
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {isLoading ? (
-                  <div className="space-y-3">
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-[200px] w-full" />
+          <Card>
+            <CardHeader>
+              <CardTitle>Inventory Metrics</CardTitle>
+              <CardDescription>
+                Key inventory performance indicators
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {isLoading ? (
+                <div className="space-y-3">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                  <Skeleton className="h-4 w-1/2" />
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">Total Parts</span>
+                    <span className="text-2xl font-bold">
+                      {inventoryAnalytics?.totalParts || 0}
+                    </span>
                   </div>
-                ) : (
-                  <InventoryAnalyticsChart data={inventoryAnalytics} />
-                )}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Inventory Metrics</CardTitle>
-                <CardDescription>
-                  Key inventory performance indicators
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {isLoading ? (
-                  <div className="space-y-3">
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-4 w-3/4" />
-                    <Skeleton className="h-4 w-1/2" />
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">Low Stock Items</span>
+                    <span className="text-2xl font-bold text-destructive">
+                      {inventoryAnalytics?.lowStockItems || 0}
+                    </span>
                   </div>
-                ) : (
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">Total Parts</span>
-                      <span className="text-2xl font-bold">
-                        {inventoryAnalytics?.totalParts || 0}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">
-                        Low Stock Items
-                      </span>
-                      <span className="text-2xl font-bold text-destructive">
-                        {inventoryAnalytics?.lowStockItems || 0}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">Total Value</span>
-                      <span className="text-2xl font-bold">
-                        {inventoryAnalytics?.totalValue?.toLocaleString(
-                          "vi-VN",
-                          {
-                            style: "currency",
-                            currency: "VND",
-                          }
-                        ) || "0 ₫"}
-                      </span>
-                    </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">Total Value</span>
+                    <span className="text-2xl font-bold">
+                      {inventoryAnalytics?.totalValue?.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      }) || "0 ₫"}
+                    </span>
                   </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
 
           <Card>
             <CardHeader>

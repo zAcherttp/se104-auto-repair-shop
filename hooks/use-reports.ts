@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import {
-    getB51SalesReport,
-    getB52InventoryReport,
     getInventoryAnalytics,
+    getInventoryReport,
     getSalesAnalytics,
+    getSalesReport,
 } from "@/app/actions/reports";
 import { ReportPeriod } from "@/types/reports";
 
@@ -21,13 +21,14 @@ export const useReportsQuery = (period: ReportPeriod) => {
 
     const b51Query = useQuery({
         queryKey: ["b51-sales-report", period.from, period.to],
-        queryFn: () => getB51SalesReport(period),
+        queryFn: () => getSalesReport(period),
         enabled: Boolean(period.from && period.to),
     });
 
     const b52Query = useQuery({
-        queryKey: ["b52-inventory-report"],
-        queryFn: () => getB52InventoryReport(),
+        queryKey: ["b52-inventory-report", period.from, period.to],
+        queryFn: () => getInventoryReport(period),
+        enabled: Boolean(period.from && period.to),
     });
 
     return {
