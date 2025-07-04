@@ -25,74 +25,69 @@ export function SalesTable({ data }: SalesTableProps) {
   }
 
   return (
-    <div className="space-y-4">
-      <Card>
-        <CardHeader className="bg-gray-800 text-white">
-          <CardTitle className="text-center">
-            <span className="text-lg font-bold">Doanh Số</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-6">
-          <div className="text-center mb-6 space-y-2">
-            <p>
-              <strong>Tháng:</strong> {data.month}
-            </p>
-            <p>
-              <strong>Tổng doanh thu:</strong>{" "}
-              {data.totalRevenue.toLocaleString("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              })}
-            </p>
-          </div>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-center">
+          <span className="text-lg font-bold">Sales Report: {data.month}</span>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="text-center mb-6">
+          <p className="text-lg font-semibold">
+            <strong>Total Revenue:</strong>{" "}
+            {data.totalRevenue.toLocaleString("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            })}
+          </p>
+        </div>
 
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-gray-800">
-                <TableHead className="text-white text-center font-bold border border-gray-400">
-                  STT
-                </TableHead>
-                <TableHead className="text-white text-center font-bold border border-gray-400">
-                  Hiệu Xe
-                </TableHead>
-                <TableHead className="text-white text-center font-bold border border-gray-400">
-                  Số Lượt Sửa
-                </TableHead>
-                <TableHead className="text-white text-center font-bold border border-gray-400">
-                  Thành Tiền
-                </TableHead>
-                <TableHead className="text-white text-center font-bold border border-gray-400">
-                  Tỉ Lệ
-                </TableHead>
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-muted">
+              <TableHead className="text-center font-bold border">
+                No.
+              </TableHead>
+              <TableHead className="text-center font-bold border">
+                Car Brand
+              </TableHead>
+              <TableHead className="text-center font-bold border">
+                Repair Count
+              </TableHead>
+              <TableHead className="text-center font-bold border">
+                Amount
+              </TableHead>
+              <TableHead className="text-center font-bold border">
+                Rate (%)
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data.orders.map((item) => (
+              <TableRow key={item.stt} className="border-b hover:bg-muted/50">
+                <TableCell className="text-center border font-medium">
+                  {item.stt}
+                </TableCell>
+                <TableCell className="border font-medium">
+                  {item.vehicleBrand}
+                </TableCell>
+                <TableCell className="text-center border">
+                  {item.repairCount.toLocaleString()}
+                </TableCell>
+                <TableCell className="text-right border">
+                  {item.amount.toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}
+                </TableCell>
+                <TableCell className="text-center border">
+                  {item.rate.toFixed(1)}%
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {data.orders.map((item) => (
-                <TableRow key={item.stt} className="border-b">
-                  <TableCell className="text-center border border-gray-300">
-                    {item.stt}
-                  </TableCell>
-                  <TableCell className="border border-gray-300">
-                    {item.vehicleBrand}
-                  </TableCell>
-                  <TableCell className="text-center border border-gray-300">
-                    {item.repairCount}
-                  </TableCell>
-                  <TableCell className="text-right border border-gray-300">
-                    {item.amount.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
-                  </TableCell>
-                  <TableCell className="text-center border border-gray-300">
-                    {item.rate.toFixed(1)}%
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-    </div>
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
   );
 }

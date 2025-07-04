@@ -74,3 +74,31 @@
 - [x] [Tasks page] Implement the page.
 - [x] [Inventory page] Implement the page.
 - [x] [Invoices page] Implement the page.
+
+- [x] [Settings Actions] Refactored admin role checking to use Supabase auth metadata instead of profiles table
+  - [x] Created admin client helper for service role access
+  - [x] Updated checkAdminRole to use auth admin API for role verification
+  - [x] Modified createEmployee to set role in user_metadata during user creation
+  - [x] Updated updateEmployee to sync role changes to auth metadata
+  - [x] Added promoteUserToAdmin helper function for initial admin setup
+  - [x] Maintained profiles table as complementary data storage
+  - [x] All functions now use proper admin authentication for security
+- [x] [Settings Actions] Updated admin role checking to use boolean flag instead of string role
+  - [x] Changed from checking `role` string to `is_garage_admin` boolean in user_metadata
+  - [x] Updated createEmployee to set `is_garage_admin: true` when role is "admin"
+  - [x] Updated updateEmployee to toggle `is_garage_admin` based on role selection
+  - [x] Updated promoteUserToAdmin to set `is_garage_admin: true`
+  - [x] Removed debugging console.log statements for production readiness
+  - [x] More reliable admin checking using boolean flags in auth metadata
+- [x] [Settings Actions] Fixed data fetching issue for existing users without is_garage_admin flag
+  - [x] Updated checkAdminRole to fallback to profiles table when is_garage_admin is not set
+  - [x] Added migrateExistingAdmins function to update existing admin users with proper metadata
+  - [x] Ensures backward compatibility with users created before the boolean flag implementation
+  - [x] Prevents access denied errors for legitimate admin users
+- [x] [Settings Actions] Cleaned up user_metadata to only contain is_garage_admin
+  - [x] Removed role and full_name from user_metadata (kept in profiles table only)
+  - [x] Updated createEmployee to only set is_garage_admin in user_metadata
+  - [x] Updated updateEmployee to only set is_garage_admin in user_metadata
+  - [x] Updated promoteUserToAdmin to only set is_garage_admin in user_metadata
+  - [x] Updated migrateExistingAdmins to only set is_garage_admin in user_metadata
+  - [x] Modified getEmployees to allow any authenticated user (not just admins) for assignment purposes

@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { createEmployee } from "@/app/actions/settings";
+import SubmitButton from "../submit-button";
 
 interface AddEmployeeDialogProps {
   open: boolean;
@@ -135,7 +136,6 @@ export function AddEmployeeDialog({
             <Label htmlFor="password">Password</Label>
             <Input
               id="password"
-              type="password"
               value={formData.password}
               onChange={(e) => handleInputChange("password", e.target.value)}
               placeholder="Enter password"
@@ -152,9 +152,9 @@ export function AddEmployeeDialog({
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={loading}>
-              {loading ? "Creating..." : "Create Employee"}
-            </Button>
+            <SubmitButton className="w-35" disabled={loading}>
+              Create Employee
+            </SubmitButton>
           </div>
         </form>
       </DialogContent>

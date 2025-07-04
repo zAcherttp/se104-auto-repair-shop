@@ -16,19 +16,19 @@ export function SettingsTabs() {
         <TabsTrigger value="labor">Labor Types</TabsTrigger>
       </TabsList>
 
-      <TabsContent value="garage" className="space-y-4">
+      <TabsContent value="garage">
         <GarageSettingsTab />
       </TabsContent>
 
-      <TabsContent value="employees" className="space-y-4">
+      <TabsContent value="employees">
         <EmployeesTab />
       </TabsContent>
 
-      <TabsContent value="parts" className="space-y-4">
+      <TabsContent value="parts">
         <PartsTab />
       </TabsContent>
 
-      <TabsContent value="labor" className="space-y-4">
+      <TabsContent value="labor">
         <LaborTypesTab />
       </TabsContent>
     </Tabs>

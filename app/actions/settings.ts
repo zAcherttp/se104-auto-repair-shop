@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/supabase/server";
+import { createAdminClient } from "@/supabase/admin";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import type { ApiResponse } from "@/types/settings";
@@ -18,14 +19,31 @@ async function checkAdminRole() {
     redirect("/login");
   }
 
-  const { data: profile, error: profileError } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
+  // Use admin client to check user role through auth metadata
+  const adminClient = createAdminClient();
+  const { data: adminUserData, error: adminError } = await adminClient.auth
+    .admin.getUserById(user.id);
 
-  if (profileError || !profile || profile.role !== "admin") {
-    throw new Error("Access denied. Admin role required.");
+  if (adminError || !adminUserData.user) {
+    throw new Error("Failed to verify user permissions.");
+  }
+
+  // Check if user has admin role in user metadata
+  const isGarageAdmin =
+    adminUserData.user.user_metadata?.is_garage_admin === true;
+
+  // If is_garage_admin is not set, fallback to checking profiles table
+  if (!isGarageAdmin) {
+    const supabase = await createClient();
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+
+    if (profileError || !profile || profile.role !== "admin") {
+      throw new Error("Access denied. Admin role required.");
+    }
   }
 
   return { supabase, user };
@@ -79,7 +97,17 @@ export async function updateSystemSetting(
 // Employee Actions
 export async function getEmployees(): Promise<ApiResponse> {
   try {
-    const { supabase } = await checkAdminRole();
+    // Allow any authenticated user to fetch employees (for assignment purposes)
+    const supabase = await createClient();
+
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return { success: false, error: "Authentication required" };
+    }
 
     const { data, error } = await supabase
       .from("profiles")
@@ -98,23 +126,27 @@ export async function getEmployees(): Promise<ApiResponse> {
 export async function createEmployee(formData: FormData): Promise<ApiResponse> {
   try {
     const { supabase } = await checkAdminRole();
+    const adminClient = createAdminClient();
 
     const email = formData.get("email") as string;
     const fullName = formData.get("fullName") as string;
     const role = formData.get("role") as string;
     const password = formData.get("password") as string;
 
-    // Create user in auth
-    const { data: authData, error: authError } = await supabase.auth.admin
+    // Create user in auth with role in metadata
+    const { data: authData, error: authError } = await adminClient.auth.admin
       .createUser({
         email,
         password,
         email_confirm: true,
+        user_metadata: {
+          is_garage_admin: role === "admin",
+        },
       });
 
     if (authError) throw authError;
 
-    // Create profile
+    // Create profile (keeping this for complementary data)
     const { data: profileData, error: profileError } = await supabase
       .from("profiles")
       .insert({
@@ -142,11 +174,27 @@ export async function updateEmployee(
 ): Promise<ApiResponse> {
   try {
     const { supabase } = await checkAdminRole();
+    const adminClient = createAdminClient();
 
     const email = formData.get("email") as string;
     const fullName = formData.get("fullName") as string;
     const role = formData.get("role") as string;
 
+    // Update user metadata in auth
+    const { error: authUpdateError } = await adminClient.auth.admin
+      .updateUserById(
+        id,
+        {
+          email,
+          user_metadata: {
+            is_garage_admin: role === "admin",
+          },
+        },
+      );
+
+    if (authUpdateError) throw authUpdateError;
+
+    // Update profile (keeping this for complementary data)
     const { data, error } = await supabase
       .from("profiles")
       .update({
@@ -171,6 +219,7 @@ export async function updateEmployee(
 export async function deleteEmployee(id: string): Promise<ApiResponse> {
   try {
     const { supabase } = await checkAdminRole();
+    const adminClient = createAdminClient();
 
     // Delete profile first
     const { error: profileError } = await supabase
@@ -180,8 +229,8 @@ export async function deleteEmployee(id: string): Promise<ApiResponse> {
 
     if (profileError) throw profileError;
 
-    // Delete user from auth
-    const { error: authError } = await supabase.auth.admin.deleteUser(id);
+    // Delete user from auth using admin client
+    const { error: authError } = await adminClient.auth.admin.deleteUser(id);
 
     if (authError) throw authError;
 
@@ -427,5 +476,91 @@ export async function getCarBrands(): Promise<ApiResponse<string[]>> {
     // Return empty array if there's an error
     const defaultBrands = [""];
     return { success: true, data: defaultBrands };
+  }
+}
+
+// Helper function to promote a user to admin (useful for initial setup)
+export async function promoteUserToAdmin(userId: string): Promise<ApiResponse> {
+  try {
+    const adminClient = createAdminClient();
+
+    // Update user metadata to include admin role
+    const { error: authUpdateError } = await adminClient.auth.admin
+      .updateUserById(
+        userId,
+        {
+          user_metadata: {
+            is_garage_admin: true,
+          },
+        },
+      );
+
+    if (authUpdateError) throw authUpdateError;
+
+    // Also update the profiles table for consistency
+    const supabase = await createClient();
+    const { error: profileError } = await supabase
+      .from("profiles")
+      .update({ role: "admin" })
+      .eq("id", userId);
+
+    if (profileError) throw profileError;
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error promoting user to admin:", error);
+    return { success: false, error: "Failed to promote user to admin" };
+  }
+}
+
+// Migration function to set is_garage_admin flag for existing admin users
+export async function migrateExistingAdmins(): Promise<ApiResponse> {
+  try {
+    const supabase = await createClient();
+    const adminClient = createAdminClient();
+
+    // Get all admin users from profiles table
+    const { data: adminProfiles, error: profilesError } = await supabase
+      .from("profiles")
+      .select("id, role")
+      .eq("role", "admin");
+
+    if (profilesError) throw profilesError;
+
+    if (!adminProfiles || adminProfiles.length === 0) {
+      return { success: true, data: "No admin users found to migrate" };
+    }
+
+    // Update each admin user's metadata
+    const migrationPromises = adminProfiles.map(async (profile) => {
+      const { error } = await adminClient.auth.admin.updateUserById(
+        profile.id,
+        {
+          user_metadata: {
+            is_garage_admin: true,
+          },
+        },
+      );
+      return { id: profile.id, error };
+    });
+
+    const results = await Promise.all(migrationPromises);
+    const failures = results.filter((r) => r.error);
+
+    if (failures.length > 0) {
+      console.error("Migration failures:", failures);
+      return {
+        success: false,
+        error: `Failed to migrate ${failures.length} admin users`,
+      };
+    }
+
+    return {
+      success: true,
+      data: `Successfully migrated ${results.length} admin users`,
+    };
+  } catch (error) {
+    console.error("Error migrating existing admins:", error);
+    return { success: false, error: "Failed to migrate existing admin users" };
   }
 }

@@ -19,7 +19,6 @@ export default function GarageSettingsTab() {
     phoneNumber: "",
     emailAddress: "",
     address: "",
-    dailyVehicleLimit: "",
     maximumCarCapacity: "",
   });
 
@@ -41,7 +40,6 @@ export default function GarageSettingsTab() {
           phoneNumber: settingsMap.phone_number || "",
           emailAddress: settingsMap.email_address || "",
           address: settingsMap.address || "",
-          dailyVehicleLimit: settingsMap.daily_vehicle_limit || "",
           maximumCarCapacity: settingsMap.maximum_car_capacity || "",
         });
       }
@@ -72,15 +70,18 @@ export default function GarageSettingsTab() {
         { key: "phone_number", value: formData.phoneNumber },
         { key: "email_address", value: formData.emailAddress },
         { key: "address", value: formData.address },
-        { key: "daily_vehicle_limit", value: formData.dailyVehicleLimit },
         { key: "maximum_car_capacity", value: formData.maximumCarCapacity },
       ];
 
-      for (const setting of settingUpdates) {
-        const response = await updateSystemSetting(setting.key, setting.value);
-        if (!response.success) {
-          throw new Error(response.error || "Failed to update setting");
-        }
+      const updatePromises = settingUpdates.map((setting) =>
+        updateSystemSetting(setting.key, setting.value)
+      );
+
+      const responses = await Promise.all(updatePromises);
+
+      const failedUpdate = responses.find((response) => !response.success);
+      if (failedUpdate) {
+        throw new Error(failedUpdate.error || "Failed to update setting");
       }
 
       toast.success("Garage settings updated successfully");
@@ -108,9 +109,6 @@ export default function GarageSettingsTab() {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Garage Configuration</CardTitle>
-      </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
@@ -120,19 +118,6 @@ export default function GarageSettingsTab() {
               value={formData.garageName}
               onChange={(e) => handleInputChange("garageName", e.target.value)}
               placeholder="AutoRepair Shop"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="dailyVehicleLimit">Daily Vehicle Limit</Label>
-            <Input
-              id="dailyVehicleLimit"
-              type="number"
-              value={formData.dailyVehicleLimit}
-              onChange={(e) =>
-                handleInputChange("dailyVehicleLimit", e.target.value)
-              }
-              placeholder="30"
             />
           </div>
 

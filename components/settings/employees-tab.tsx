@@ -83,18 +83,12 @@ export default function EmployeesTab() {
 
   return (
     <>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h2 className="text-2xl font-bold">Employee Management</h2>
-        </div>
-        <Button onClick={() => setAddDialogOpen(true)}>
-          <PlusIcon className="h-4 w-4 mr-2" />
-          Add Employee
-        </Button>
-      </div>
-
       <Card>
-        <CardContent className="p-0">
+        <CardContent>
+          <div className="flex justify-between mb-6">
+            <span className="ml-6 text-lg font-semibold">Employees</span>
+            <Button onClick={() => setAddDialogOpen(true)}>Add Employee</Button>
+          </div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-muted/50">

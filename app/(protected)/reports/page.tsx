@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/card";
 import MonthYearPicker from "@/components/month-year-picker";
 import { SalesAnalyticsChart } from "@/components/reports/sales-analytics-chart";
-import { InventoryAnalyticsChart } from "@/components/reports/inventory-analytics-chart";
 import { SalesTable } from "@/components/reports/sales-table";
 import { InventoryTable } from "@/components/reports/inventory-table";
 import { useReportsQuery } from "@/hooks/use-reports";
