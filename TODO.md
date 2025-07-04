@@ -102,3 +102,18 @@
   - [x] Updated promoteUserToAdmin to only set is_garage_admin in user_metadata
   - [x] Updated migrateExistingAdmins to only set is_garage_admin in user_metadata
   - [x] Modified getEmployees to allow any authenticated user (not just admins) for assignment purposes
+- [x] [Settings Actions] Fixed employee creation errors
+
+  - [x] Fixed duplicate key error by using upsert instead of insert for profiles
+  - [x] Fixed role assignment issue - now correctly sets the selected role in profiles table
+  - [x] Added small delay to handle potential database triggers
+  - [x] Improved error handling to prevent false error toasts
+  - [x] Ensured both auth metadata and profile data are correctly synchronized
+
+- [x] [Employee Management] Enhanced delete action with proper confirmation dialog
+  - [x] Created DeleteEmployeeDialog component with warning icons and detailed messaging
+  - [x] Replaced browser confirm() with custom UI dialog
+  - [x] Added loading state during deletion process
+  - [x] Shows employee name in confirmation message
+  - [x] Includes warning about permanent deletion and data loss
+  - [x] Better user experience with proper visual feedback

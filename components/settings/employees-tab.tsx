@@ -4,11 +4,12 @@ import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { PlusIcon, EditIcon, TrashIcon, UserIcon } from "lucide-react";
+import { EditIcon, TrashIcon, UserIcon } from "lucide-react";
 import { toast } from "sonner";
 import { getEmployees, deleteEmployee } from "@/app/actions/settings";
 import { AddEmployeeDialog } from "./add-employee-dialog";
 import { EditEmployeeDialog } from "./edit-employee-dialog";
+import { DeleteEmployeeDialog } from "./delete-employee-dialog";
 import type { Employee } from "@/types/settings";
 
 export default function EmployeesTab() {
@@ -16,9 +17,14 @@ export default function EmployeesTab() {
   const [loading, setLoading] = useState(true);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
     null
   );
+  const [employeeToDelete, setEmployeeToDelete] = useState<Employee | null>(
+    null
+  );
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const fetchEmployees = useCallback(async () => {
     try {
@@ -38,15 +44,21 @@ export default function EmployeesTab() {
     fetchEmployees();
   }, [fetchEmployees]);
 
-  const handleDeleteEmployee = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this employee?")) {
-      return;
-    }
+  const handleDeleteEmployee = (employee: Employee) => {
+    setEmployeeToDelete(employee);
+    setDeleteDialogOpen(true);
+  };
 
+  const confirmDeleteEmployee = async () => {
+    if (!employeeToDelete) return;
+
+    setDeleteLoading(true);
     try {
-      const response = await deleteEmployee(id);
+      const response = await deleteEmployee(employeeToDelete.id);
       if (response.success) {
         toast.success("Employee deleted successfully");
+        setDeleteDialogOpen(false);
+        setEmployeeToDelete(null);
         await fetchEmployees();
       } else {
         toast.error(response.error || "Failed to delete employee");
@@ -54,6 +66,8 @@ export default function EmployeesTab() {
     } catch (error) {
       console.error("Error deleting employee:", error);
       toast.error("Failed to delete employee");
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -152,7 +166,7 @@ export default function EmployeesTab() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => handleDeleteEmployee(employee.id)}
+                          onClick={() => handleDeleteEmployee(employee)}
                         >
                           <TrashIcon className="h-4 w-4" />
                         </Button>
@@ -177,6 +191,14 @@ export default function EmployeesTab() {
         onOpenChange={setEditDialogOpen}
         employee={selectedEmployee}
         onSuccess={handleDialogClose}
+      />
+
+      <DeleteEmployeeDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={confirmDeleteEmployee}
+        employeeName={employeeToDelete?.full_name || undefined}
+        loading={deleteLoading}
       />
     </>
   );

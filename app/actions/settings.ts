@@ -146,14 +146,19 @@ export async function createEmployee(formData: FormData): Promise<ApiResponse> {
 
     if (authError) throw authError;
 
-    // Create profile (keeping this for complementary data)
+    // Wait a moment for any database triggers to complete
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Create or update profile (upsert to handle potential duplicates from triggers)
     const { data: profileData, error: profileError } = await supabase
       .from("profiles")
-      .insert({
+      .upsert({
         id: authData.user.id,
         email,
         full_name: fullName,
         role,
+      }, {
+        onConflict: "id",
       })
       .select()
       .single();
