@@ -1,18 +1,6 @@
-# TODO or future considerations of app
+# Completed Tasks
 
-## Todo template
-
-- [ ] Task
-
-  - [ ] Sub-task
-
-### Planned
-
-- [ ] [Setting function] In setting admin can change garage info + banner image and those get displayed on the landing page.
-  - [x] Garage info (name, phone, email, address) now displayed on landing page
-  - [ ] Banner image functionality still needs implementation
-
-### Done ✓
+## Done ✓
 
 - [x] [Task page] boom
 - [x] [Vehicles page] Implement the page with comprehensive vehicle management
@@ -78,6 +66,7 @@
 - [x] [Invoices page] Implement the page.
 
 - [x] [Settings Actions] Refactored admin role checking to use Supabase auth metadata instead of profiles table
+
   - [x] Created admin client helper for service role access
   - [x] Updated checkAdminRole to use auth admin API for role verification
   - [x] Modified createEmployee to set role in user_metadata during user creation
@@ -85,25 +74,32 @@
   - [x] Added promoteUserToAdmin helper function for initial admin setup
   - [x] Maintained profiles table as complementary data storage
   - [x] All functions now use proper admin authentication for security
+
 - [x] [Settings Actions] Updated admin role checking to use boolean flag instead of string role
+
   - [x] Changed from checking `role` string to `is_garage_admin` boolean in user_metadata
   - [x] Updated createEmployee to set `is_garage_admin: true` when role is "admin"
   - [x] Updated updateEmployee to toggle `is_garage_admin` based on role selection
   - [x] Updated promoteUserToAdmin to set `is_garage_admin: true`
   - [x] Removed debugging console.log statements for production readiness
   - [x] More reliable admin checking using boolean flags in auth metadata
+
 - [x] [Settings Actions] Fixed data fetching issue for existing users without is_garage_admin flag
+
   - [x] Updated checkAdminRole to fallback to profiles table when is_garage_admin is not set
   - [x] Added migrateExistingAdmins function to update existing admin users with proper metadata
   - [x] Ensures backward compatibility with users created before the boolean flag implementation
   - [x] Prevents access denied errors for legitimate admin users
+
 - [x] [Settings Actions] Cleaned up user_metadata to only contain is_garage_admin
+
   - [x] Removed role and full_name from user_metadata (kept in profiles table only)
   - [x] Updated createEmployee to only set is_garage_admin in user_metadata
   - [x] Updated updateEmployee to only set is_garage_admin in user_metadata
   - [x] Updated promoteUserToAdmin to only set is_garage_admin in user_metadata
   - [x] Updated migrateExistingAdmins to only set is_garage_admin in user_metadata
   - [x] Modified getEmployees to allow any authenticated user (not just admins) for assignment purposes
+
 - [x] [Settings Actions] Fixed employee creation errors
 
   - [x] Fixed duplicate key error by using upsert instead of insert for profiles
@@ -139,3 +135,22 @@
   - [x] Used Lucide React icons for professional appearance
   - [x] Includes fallback values to prevent page breaking if settings not configured
   - [x] Auto-refreshes every 10 minutes to keep information current
+
+## Testing Infrastructure
+
+- [x] [Testing] Implemented comprehensive testing infrastructure
+  - [x] Created Jest configuration with ES modules support
+  - [x] Set up React Testing Library with proper mocking
+  - [x] Wrote comprehensive landing page tests
+  - [x] Created TESTING.md documentation
+  - [x] Added test scripts to package.json
+  - [x] Configured polyfills and global mocks
+
+## Documentation
+
+- [x] [Documentation] Enhanced project documentation for AI agents
+  - [x] Optimized FEATURE.instructions.md with comprehensive guidelines
+  - [x] Added project context and technology stack documentation
+  - [x] Created testing strategy and best practices guide
+  - [x] Structured workflow and code quality standards
+  - [x] Added AI agent-specific development guidelines
