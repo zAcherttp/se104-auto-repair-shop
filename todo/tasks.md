@@ -13,12 +13,6 @@
 
 ## New Tasks
 
-- [ ] [Landing page] Group customer order tracking expenses into a single card (Total expense, paid, remaining).
-
-  - [ ] Refactor existing expense display to show consolidated view
-  - [ ] Create single card component with total, paid, and remaining amounts
-  - [ ] Ensure proper calculation and display of financial summary
-
 - [ ] [Settings] Make add employee only create profiles (not Supabase accounts); parameter is just name and role; assign employee to repair order line item by fetching profile.
 
   - [ ] Modify employee creation to only store in profiles table

@@ -138,10 +138,17 @@
   - [x] Auto-refreshes every 10 minutes to keep information current
 
 - [x] [Setting function] Add setting to change max part and labor type in garage settings; validate part usage in repair rows against monthly limit.
+
   - [x] Add garage setting fields for max parts and labor types per month
   - [x] Implement validation during repair order creation
   - [x] Display current usage vs limit in relevant pages
   - [x] Add appropriate error messages when limits are exceeded
+
+- [x] [Landing page] Group customer order tracking expenses into a single card (Total expense, paid, remaining).
+
+  - [x] Refactor existing expense display to show consolidated view
+  - [x] Create single card component with total, paid, and remaining amounts
+  - [x] Ensure proper calculation and display of financial summary
 
 ## Testing Infrastructure
 
