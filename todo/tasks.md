@@ -13,13 +13,6 @@
 
 ## New Tasks
 
-- [ ] [Setting function] Add setting to change max part and labor type in garage settings; validate part usage in repair rows against monthly limit.
-
-  - [ ] Add garage setting fields for max parts and labor types per month
-  - [ ] Implement validation during repair order creation
-  - [ ] Display current usage vs limit in relevant pages
-  - [ ] Add appropriate error messages when limits are exceeded
-
 - [ ] [Landing page] Group customer order tracking expenses into a single card (Total expense, paid, remaining).
 
   - [ ] Refactor existing expense display to show consolidated view

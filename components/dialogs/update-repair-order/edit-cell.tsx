@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { LineItem } from "./columns";
+import { validateMonthlyUsage } from "@/app/actions/settings";
+import { toast } from "sonner";
 import {
   Command,
   CommandEmpty,
@@ -136,12 +138,29 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
   );
 
   const handleSparePartSelect = useCallback(
-    (selectedPart: string) => {
+    async (selectedPart: string) => {
+      const part = spareParts.find((p) => p.name === selectedPart);
+      if (!part) return;
+
+      // Validate monthly usage limits before allowing selection
+      const validation = await validateMonthlyUsage(part.id, null);
+
+      if (!validation.success) {
+        toast.error("Failed to validate usage limits");
+        return;
+      }
+
+      if (!validation.data?.canAddPart) {
+        toast.error(
+          validation.data?.messages?.[0] || "Part usage limit exceeded"
+        );
+        return;
+      }
+
       setValue(selectedPart);
       setError("");
 
-      const part = spareParts.find((p) => p.name === selectedPart);
-      if (part && table.options.meta?.updateData) {
+      if (table.options.meta?.updateData) {
         table.options.meta.updateData(row.index, "unitPrice", part.price);
       }
       if (table.options.meta?.updateData) {
@@ -153,12 +172,29 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
   );
 
   const handleLaborTypeSelect = useCallback(
-    (selectedLabor: string) => {
+    async (selectedLabor: string) => {
+      const labor = laborTypes.find((l) => l.name === selectedLabor);
+      if (!labor) return;
+
+      // Validate monthly usage limits before allowing selection
+      const validation = await validateMonthlyUsage(null, labor.id);
+
+      if (!validation.success) {
+        toast.error("Failed to validate usage limits");
+        return;
+      }
+
+      if (!validation.data?.canAddLabor) {
+        toast.error(
+          validation.data?.messages?.[0] || "Labor type usage limit exceeded"
+        );
+        return;
+      }
+
       setValue(selectedLabor);
       setError("");
 
-      const labor = laborTypes.find((l) => l.name === selectedLabor);
-      if (labor && table.options.meta?.updateData) {
+      if (table.options.meta?.updateData) {
         table.options.meta.updateData(row.index, "laborCost", labor.cost);
       }
       if (table.options.meta?.updateData) {

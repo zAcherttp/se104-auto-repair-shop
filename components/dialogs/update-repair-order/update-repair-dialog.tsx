@@ -25,6 +25,7 @@ import { updateRepairOrderSmart } from "@/app/actions/vehicles";
 import { useQueryClient } from "@tanstack/react-query";
 import { VEHICLE_REGISTRATION_QUERY_KEY } from "@/hooks/use-vehicle-registration";
 import { Separator } from "@/components/ui/separator";
+import { UsageStatsCard } from "./usage-stats-card";
 
 export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
   const [notes, setNotes] = useState("");
@@ -168,6 +169,9 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
                   </CardContent>
                 </Card>
               </div>
+
+              <UsageStatsCard />
+
               <Card>
                 <CardContent>
                   {isLoadingItems ? (

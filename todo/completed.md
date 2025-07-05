@@ -128,6 +128,7 @@
   - [x] Positioned next to search bar for easy visibility
 
 - [x] [Landing Page] Added garage information display
+
   - [x] Created public getGarageInfo function to fetch garage settings without admin access
   - [x] Added useGarageInfo hook with TanStack Query for caching
   - [x] Updated landing page header to show garage name dynamically
@@ -135,6 +136,12 @@
   - [x] Used Lucide React icons for professional appearance
   - [x] Includes fallback values to prevent page breaking if settings not configured
   - [x] Auto-refreshes every 10 minutes to keep information current
+
+- [x] [Setting function] Add setting to change max part and labor type in garage settings; validate part usage in repair rows against monthly limit.
+  - [x] Add garage setting fields for max parts and labor types per month
+  - [x] Implement validation during repair order creation
+  - [x] Display current usage vs limit in relevant pages
+  - [x] Add appropriate error messages when limits are exceeded
 
 ## Testing Infrastructure
 

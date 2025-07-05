@@ -667,3 +667,108 @@ export async function getGarageInfo(): Promise<
     };
   }
 }
+
+// Monthly usage validation for parts and labor types
+export async function validateMonthlyUsage(
+  sparePartId: string | null,
+  laborTypeId: string | null,
+  currentMonth = new Date(),
+): Promise<
+  ApiResponse<{ canAddPart: boolean; canAddLabor: boolean; messages: string[] }>
+> {
+  try {
+    const { supabase } = await checkAdminRole();
+
+    // Get current garage settings for limits
+    const { data: settings, error: settingsError } = await supabase
+      .from("system_settings")
+      .select("setting_key, setting_value")
+      .in("setting_key", ["max_parts_per_month", "max_labor_types_per_month"]);
+
+    if (settingsError) throw settingsError;
+
+    const settingsMap = (settings || []).reduce((acc, setting) => {
+      acc[setting.setting_key] = setting.setting_value;
+      return acc;
+    }, {} as Record<string, string>);
+
+    const maxPartsPerMonth = parseInt(settingsMap.max_parts_per_month) || 0;
+    const maxLaborTypesPerMonth =
+      parseInt(settingsMap.max_labor_types_per_month) || 0;
+
+    // If no limits are set, allow everything
+    if (maxPartsPerMonth === 0 && maxLaborTypesPerMonth === 0) {
+      return {
+        success: true,
+        data: { canAddPart: true, canAddLabor: true, messages: [] },
+      };
+    }
+
+    // Calculate current month boundaries
+    const startOfMonth = new Date(
+      currentMonth.getFullYear(),
+      currentMonth.getMonth(),
+      1,
+    );
+    const endOfMonth = new Date(
+      currentMonth.getFullYear(),
+      currentMonth.getMonth() + 1,
+      0,
+    );
+
+    const messages: string[] = [];
+    let canAddPart = true;
+    let canAddLabor = true;
+
+    // Check part usage if part is being added and limit is set
+    if (sparePartId && maxPartsPerMonth > 0) {
+      const { data: partUsage, error: partError } = await supabase
+        .from("repair_order_items")
+        .select("id")
+        .eq("spare_part_id", sparePartId)
+        .gte("created_at", startOfMonth.toISOString())
+        .lte("created_at", endOfMonth.toISOString());
+
+      if (partError) throw partError;
+
+      const currentPartUsage = partUsage?.length || 0;
+      if (currentPartUsage >= maxPartsPerMonth) {
+        canAddPart = false;
+        messages.push(
+          `Part usage limit reached for this month (${currentPartUsage}/${maxPartsPerMonth})`,
+        );
+      }
+    }
+
+    // Check labor type usage if labor type is being added and limit is set
+    if (laborTypeId && maxLaborTypesPerMonth > 0) {
+      const { data: laborUsage, error: laborError } = await supabase
+        .from("repair_order_items")
+        .select("id")
+        .eq("labor_type_id", laborTypeId)
+        .gte("created_at", startOfMonth.toISOString())
+        .lte("created_at", endOfMonth.toISOString());
+
+      if (laborError) throw laborError;
+
+      const currentLaborUsage = laborUsage?.length || 0;
+      if (currentLaborUsage >= maxLaborTypesPerMonth) {
+        canAddLabor = false;
+        messages.push(
+          `Labor type usage limit reached for this month (${currentLaborUsage}/${maxLaborTypesPerMonth})`,
+        );
+      }
+    }
+
+    return {
+      success: true,
+      data: { canAddPart, canAddLabor, messages },
+    };
+  } catch (error) {
+    console.error("Error validating monthly usage:", error);
+    return {
+      success: false,
+      error: "Failed to validate monthly usage limits",
+    };
+  }
+}
