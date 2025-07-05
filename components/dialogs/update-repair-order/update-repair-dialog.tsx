@@ -121,7 +121,7 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="p-0 max-h-[80vh] max-w-[80vw] md:max-h-[80vh] md:max-w-[50vw] lg:max-w-[60vw]">
+      <DialogContent className="p-0 max-h-[85vh] max-w-[90vw] md:max-h-[85vh] md:max-w-[70vw] lg:max-w-[70vw]">
         <ScrollArea className="max-h-[80vh]">
           <div className="p-6">
             <DialogHeader className="pb-6">

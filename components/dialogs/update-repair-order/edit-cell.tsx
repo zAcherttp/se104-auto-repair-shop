@@ -23,10 +23,11 @@ import {
 
 // Stable constants to prevent recreation
 const READONLY_CELL_STYLE =
-  "px-3 py-2 text-right font-medium text-muted-foreground";
+  "px-3 py-2 text-right font-medium text-muted-foreground min-w-0";
 const ERROR_BORDER_CLASS = "border-red-500 focus:border-red-500";
-const BUTTON_CLASSES = "w-full justify-between";
+const BUTTON_CLASSES = "w-full justify-between min-w-0";
 const ERROR_TEXT_CLASSES = "text-xs text-red-500 mt-1";
+const INPUT_CLASSES = "w-full min-w-0";
 
 // Validation messages - stable references
 const VALIDATION_MESSAGES = {
@@ -232,7 +233,7 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
   );
 
   const inputClassName = useMemo(
-    () => (error ? ERROR_BORDER_CLASS : ""),
+    () => `${INPUT_CLASSES} ${error ? ERROR_BORDER_CLASS : ""}`,
     [error]
   );
 
@@ -252,11 +253,13 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
               aria-expanded={open}
               className={buttonClassName}
             >
-              {(value as string) || "Select spare part..."}
+              <span className="truncate">
+                {(value as string) || "Select spare part..."}
+              </span>
               <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-full p-0">
+          <PopoverContent className="w-[var(--radix-popover-trigger-width)] max-w-[90vw] p-0">
             <Command>
               <CommandInput placeholder="Search spare parts..." />
               <CommandList>
@@ -269,8 +272,8 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
                       onSelect={handleSparePartSelect}
                     >
                       <div className="flex justify-between w-full">
-                        <span>{part.name}</span>
-                        <span className="text-muted-foreground">
+                        <span className="truncate">{part.name}</span>
+                        <span className="text-muted-foreground ml-2 flex-shrink-0">
                           ${part.price.toFixed(2)}
                         </span>
                       </div>
@@ -290,11 +293,13 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
               aria-expanded={open}
               className={buttonClassName}
             >
-              {(value as string) || "Select labor type..."}
+              <span className="truncate">
+                {(value as string) || "Select labor type..."}
+              </span>
               <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-full p-0">
+          <PopoverContent className="w-[var(--radix-popover-trigger-width)] max-w-[90vw] p-0">
             <Command>
               <CommandInput placeholder="Search labor types..." />
               <CommandList>
@@ -307,8 +312,8 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
                       onSelect={handleLaborTypeSelect}
                     >
                       <div className="flex justify-between w-full">
-                        <span>{labor.name}</span>
-                        <span className="text-muted-foreground">
+                        <span className="truncate">{labor.name}</span>
+                        <span className="text-muted-foreground ml-2 flex-shrink-0">
                           ${labor.cost.toFixed(2)}
                         </span>
                       </div>
@@ -328,11 +333,13 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
               aria-expanded={open}
               className={buttonClassName}
             >
-              {(value as string) || "Select employee..."}
+              <span className="truncate">
+                {(value as string) || "Select employee..."}
+              </span>
               <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-full p-0">
+          <PopoverContent className="w-[var(--radix-popover-trigger-width)] max-w-[90vw] p-0">
             <Command>
               <CommandInput placeholder="Search employees..." />
               <CommandList>
@@ -345,8 +352,8 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
                       onSelect={handleEmployeeSelect}
                     >
                       <div className="flex justify-between w-full">
-                        <span>{employee.full_name}</span>
-                        <span className="text-muted-foreground">
+                        <span className="truncate">{employee.full_name}</span>
+                        <span className="text-muted-foreground ml-2 flex-shrink-0">
                           {employee.role}
                         </span>
                       </div>
