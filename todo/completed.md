@@ -2,6 +2,10 @@
 
 ## Done ✓
 
+- [x] [TSK0706000] Fix payment dialog input formatting and add to order tracking
+  - [x] Fix payment dialog to properly handle currency input (dot for thousands, comma for cents) - currently fails on inputs like $347.50
+- [x] [TSK0706001] Add payment dialog to order tracking section on landing page
+  - [x] Set created_by field to null when payment is made through order tracking dialog
 - [x] [Reception page] remove status column
 
 - [x] [Inventory page] Show "ending stock" of the inventory report page as stock quantity column as above; plan to reuse function for code optimization.
