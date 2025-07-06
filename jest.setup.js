@@ -13,9 +13,6 @@ jest.mock("@/app/actions/vehicles", () =>
 jest.mock("@/app/actions/settings", () =>
   require("./test/mocks/server-actions")
 );
-jest.mock("@/app/actions/debt-management", () =>
-  require("./test/mocks/server-actions")
-);
 jest.mock("@/app/actions/reports", () =>
   require("./test/mocks/server-actions")
 );
@@ -32,11 +29,15 @@ jest.mock("@/components/ui/dialog", () =>
 jest.mock("@/components/ui/button", () =>
   require("./test/mocks/ui-components.tsx")
 );
-jest.mock("@/components/ui/input", () => require("./test/mocks/ui-components.tsx"));
+jest.mock("@/components/ui/input", () =>
+  require("./test/mocks/ui-components.tsx")
+);
 jest.mock("@/components/ui/textarea", () =>
   require("./test/mocks/ui-components.tsx")
 );
-jest.mock("@/components/ui/label", () => require("./test/mocks/ui-components.tsx"));
+jest.mock("@/components/ui/label", () =>
+  require("./test/mocks/ui-components.tsx")
+);
 jest.mock("@/components/ui/calendar", () =>
   require("./test/mocks/ui-components.tsx")
 );
@@ -46,8 +47,12 @@ jest.mock("@/components/ui/command", () =>
 jest.mock("@/components/ui/popover", () =>
   require("./test/mocks/ui-components.tsx")
 );
-jest.mock("@/components/ui/form", () => require("./test/mocks/ui-components.tsx"));
-jest.mock("@/components/ui/alert", () => require("./test/mocks/ui-components.tsx"));
+jest.mock("@/components/ui/form", () =>
+  require("./test/mocks/ui-components.tsx")
+);
+jest.mock("@/components/ui/alert", () =>
+  require("./test/mocks/ui-components.tsx")
+);
 jest.mock("@/components/ui/dropdown-menu", () =>
   require("./test/mocks/ui-components")
 );

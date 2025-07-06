@@ -17,9 +17,15 @@ import { useCarBrands } from "@/hooks/use-car-brands";
 import { useDailyVehicleLimit } from "@/hooks/use-daily-vehicle-limit";
 import { VehicleReceptionFormData } from "@/lib/form/definitions";
 
-const mockCreateReception = createReception as jest.MockedFunction<typeof createReception>;
-const mockUseCarBrands = useCarBrands as jest.MockedFunction<typeof useCarBrands>;
-const mockUseDailyVehicleLimit = useDailyVehicleLimit as jest.MockedFunction<typeof useDailyVehicleLimit>;
+const mockCreateReception = createReception as jest.MockedFunction<
+  typeof createReception
+>;
+const mockUseCarBrands = useCarBrands as jest.MockedFunction<
+  typeof useCarBrands
+>;
+const mockUseDailyVehicleLimit = useDailyVehicleLimit as jest.MockedFunction<
+  typeof useDailyVehicleLimit
+>;
 
 describe("ReceptionForm Data Layer", () => {
   const validReceptionData: VehicleReceptionFormData = {
@@ -34,7 +40,7 @@ describe("ReceptionForm Data Layer", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    
+
     // Default mock returns for hooks with simplified structure
     mockUseCarBrands.mockReturnValue({
       data: ["Toyota", "Honda", "Ford", "BMW", "Mercedes"],
@@ -110,7 +116,8 @@ describe("ReceptionForm Data Layer", () => {
     it("handles reception data with special characters in notes", async () => {
       const dataWithSpecialNotes: VehicleReceptionFormData = {
         ...validReceptionData,
-        notes: "Customer reports: Engine noise @ 2500 RPM & vibration during idle",
+        notes:
+          "Customer reports: Engine noise @ 2500 RPM & vibration during idle",
       };
 
       mockCreateReception.mockResolvedValue({
@@ -411,16 +418,18 @@ describe("ReceptionForm Data Layer", () => {
   describe("Data Validation Logic", () => {
     it("validates required fields are present", () => {
       const requiredFields = [
-        'customerName',
-        'phoneNumber', 
-        'licensePlate',
-        'carBrand',
-        'receptionDate'
+        "customerName",
+        "phoneNumber",
+        "licensePlate",
+        "carBrand",
+        "receptionDate",
       ];
 
-      requiredFields.forEach(field => {
+      requiredFields.forEach((field) => {
         expect(validReceptionData).toHaveProperty(field);
-        expect(validReceptionData[field as keyof VehicleReceptionFormData]).toBeTruthy();
+        expect(
+          validReceptionData[field as keyof VehicleReceptionFormData]
+        ).toBeTruthy();
       });
     });
 
@@ -428,10 +437,18 @@ describe("ReceptionForm Data Layer", () => {
       const phonePatterns = [
         { phone: "1234567890", valid: true, description: "10 digits" },
         { phone: "12345678901", valid: true, description: "11 digits" },
-        { phone: "123456789", valid: false, description: "9 digits - too short" },
+        {
+          phone: "123456789",
+          valid: false,
+          description: "9 digits - too short",
+        },
         { phone: "abc1234567", valid: false, description: "contains letters" },
         { phone: "123-456-7890", valid: false, description: "contains dashes" },
-        { phone: "(123) 456-7890", valid: false, description: "contains formatting" },
+        {
+          phone: "(123) 456-7890",
+          valid: false,
+          description: "contains formatting",
+        },
       ];
 
       phonePatterns.forEach(({ phone, valid, description }) => {
@@ -447,14 +464,18 @@ describe("ReceptionForm Data Layer", () => {
         { plate: "A", valid: false, description: "too short" },
         { plate: "ABCDEFGHIJK", valid: false, description: "too long" },
         { plate: "", valid: false, description: "empty" },
-        { plate: "abc123", valid: true, description: "lowercase (transforms to upper)" },
+        {
+          plate: "abc123",
+          valid: true,
+          description: "lowercase (transforms to upper)",
+        },
       ];
 
       platePatterns.forEach(({ plate, valid, description }) => {
         const isValidLength = plate.length >= 2 && plate.length <= 10;
         const isNotEmpty = plate.trim().length > 0;
         const isValidFormat = isValidLength && isNotEmpty;
-        
+
         expect(isValidFormat).toBe(valid);
       });
     });
@@ -479,9 +500,9 @@ describe("ReceptionForm Data Layer", () => {
       const today = new Date();
       const tomorrow = new Date(today);
       tomorrow.setDate(today.getDate() + 1);
-      
-      const pastDate = new Date('2020-01-01');
-      const veryOldDate = new Date('1800-01-01');
+
+      const pastDate = new Date("2020-01-01");
+      const veryOldDate = new Date("1800-01-01");
 
       const dateTests = [
         { date: today, valid: true, description: "today" },
@@ -492,9 +513,9 @@ describe("ReceptionForm Data Layer", () => {
 
       dateTests.forEach(({ date, valid, description }) => {
         const isNotFuture = date <= today;
-        const isNotTooOld = date >= new Date('1900-01-01');
+        const isNotTooOld = date >= new Date("1900-01-01");
         const isValidDate = isNotFuture && isNotTooOld;
-        
+
         expect(isValidDate).toBe(valid);
       });
     });
@@ -521,7 +542,7 @@ describe("ReceptionForm Data Layer", () => {
       const results = await Promise.all(promises);
 
       expect(submissionCount).toBe(3);
-      results.forEach(result => {
+      results.forEach((result) => {
         expect(result.data).toEqual({ success: true });
         expect(result.error).toBeNull();
       });
