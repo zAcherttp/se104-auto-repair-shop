@@ -67,6 +67,9 @@ jest.mock("@/components/ui/select", () =>
 jest.mock("@/components/ui/scroll-area", () =>
   require("./test/mocks/ui-components")
 );
+jest.mock("@/components/ui/card", () =>
+  require("./test/mocks/ui-components.tsx")
+);
 
 // Mock Lucide React icons
 jest.mock("lucide-react", () => require("./test/mocks/ui-components"));
@@ -155,3 +158,13 @@ Object.defineProperty(window, "matchMedia", {
     dispatchEvent: jest.fn(),
   })),
 });
+
+// Mock Sonner toast
+jest.mock("sonner", () => ({
+  toast: {
+    error: jest.fn(),
+    success: jest.fn(),
+    info: jest.fn(),
+    warning: jest.fn(),
+  },
+}));

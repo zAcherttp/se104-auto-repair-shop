@@ -525,6 +525,26 @@ export const CalendarIcon = (props: any) => (
   </div>
 );
 
+// Mock Lucide React icons
+export const ArrowLeft = (props: any) => (
+  <div data-testid="arrow-left-icon" {...props} />
+);
+export const Car = (props: any) => <div data-testid="car-icon" {...props} />;
+export const User = (props: any) => <div data-testid="user-icon" {...props} />;
+export const Phone = (props: any) => (
+  <div data-testid="phone-icon" {...props} />
+);
+export const Mail = (props: any) => <div data-testid="mail-icon" {...props} />;
+export const CheckCircle = (props: any) => (
+  <div data-testid="check-circle-icon" {...props} />
+);
+export const Clock = (props: any) => (
+  <div data-testid="clock-icon" {...props} />
+);
+export const AlertCircle = (props: any) => (
+  <div data-testid="alert-circle-icon" {...props} />
+);
+
 // Primitive components and Slot
 export const Slot = ({ children, ...props }: any) => {
   if (React.isValidElement(children)) {
@@ -572,4 +592,41 @@ export const ScrollArea = ({ children, ...props }: any) => (
 
 export const ScrollBar = ({ ...props }: any) => (
   <div data-testid="scroll-bar" {...props} />
+);
+
+// Mock Card Components
+export const Card = ({ children, className, ...props }: any) => (
+  <div data-testid="card" className={className} {...props}>
+    {children}
+  </div>
+);
+
+export const CardHeader = ({ children, className, ...props }: any) => (
+  <div data-testid="card-header" className={className} {...props}>
+    {children}
+  </div>
+);
+
+export const CardTitle = ({ children, className, ...props }: any) => (
+  <h3 data-testid="card-title" className={className} {...props}>
+    {children}
+  </h3>
+);
+
+export const CardContent = ({ children, className, ...props }: any) => (
+  <div data-testid="card-content" className={className} {...props}>
+    {children}
+  </div>
+);
+
+export const CardDescription = ({ children, className, ...props }: any) => (
+  <p data-testid="card-description" className={className} {...props}>
+    {children}
+  </p>
+);
+
+export const CardFooter = ({ children, className, ...props }: any) => (
+  <div data-testid="card-footer" className={className} {...props}>
+    {children}
+  </div>
 );
