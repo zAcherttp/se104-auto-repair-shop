@@ -434,28 +434,67 @@ export async function getInventoryReport(
             };
         }
 
-        // Calculate parts usage during the period
-        const partsUsage: Record<string, number> = {};
+        // Get repair order items before the period to calculate beginning stock
+        const { data: repairItemsBefore, error: itemsBeforeError } = await supabase
+            .from("repair_order_items")
+            .select(`
+                quantity,
+                spare_part_id,
+                repair_order:repair_orders(reception_date)
+            `)
+            .not("spare_part_id", "is", null)
+            .lt(
+                "repair_order.reception_date",
+                period.from.toISOString().split("T")[0],
+            );
+
+        if (itemsBeforeError) {
+            return {
+                error: new Error(itemsBeforeError.message),
+                data: undefined,
+            };
+        }
+
+        // Calculate parts usage during the period (additions)
+        const partsUsageDuringPeriod: Record<string, number> = {};
         repairItems?.forEach((item) => {
             if (item.spare_part_id) {
-                partsUsage[item.spare_part_id] =
-                    (partsUsage[item.spare_part_id] || 0) +
+                partsUsageDuringPeriod[item.spare_part_id] =
+                    (partsUsageDuringPeriod[item.spare_part_id] || 0) +
+                    (item.quantity || 0);
+            }
+        });
+
+        // Calculate total parts usage before the period
+        const totalPartsUsageBefore: Record<string, number> = {};
+        repairItemsBefore?.forEach((item) => {
+            if (item.spare_part_id) {
+                totalPartsUsageBefore[item.spare_part_id] =
+                    (totalPartsUsageBefore[item.spare_part_id] || 0) +
                     (item.quantity || 0);
             }
         });
 
         const inventory = spareParts?.map((part, index) => {
-            const usedQuantity = partsUsage[part.id] || 0;
             const currentStock = part.stock_quantity || 0;
-            // For demonstration, assume begin stock was current stock + used quantity
-            const beginStock = currentStock + usedQuantity;
+            const usedDuringPeriod = partsUsageDuringPeriod[part.id] || 0;
+            const totalUsedBefore = totalPartsUsageBefore[part.id] || 0;
+            
+            // Calculate beginning stock: current stock + all usage from start of period to now
+            const beginStock = currentStock + usedDuringPeriod;
+            
+            // Addition is the parts used during the selected period
+            const addition = usedDuringPeriod;
+            
+            // Ending stock = beginning stock - addition
+            const endStock = beginStock - addition;
 
             return {
                 stt: index + 1,
                 partName: part.name,
                 beginStock,
-                purchased: 0, // Would need purchase history from a purchases table
-                endStock: currentStock,
+                purchased: addition, // Using "purchased" field to represent additions (parts used)
+                endStock,
             };
         }) || [];
 

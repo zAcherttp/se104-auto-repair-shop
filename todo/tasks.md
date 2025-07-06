@@ -13,20 +13,13 @@
 
 ## New Tasks
 
-- [x] [Settings] Make add employee only create profiles (not Supabase accounts); parameter is just name and role; assign employee to repair order line item by fetching profile.
+- [x] [Inventory report page] Update the current inventory report logic to be calculated that way, no new UI is needed, only logic update.
 
-  - [x] Modify employee creation to only store in profiles table
-  - [x] Remove Supabase user account creation from employee flow
-  - [x] Update employee assignment to use profile data instead of auth users
-  - [x] Update repair order line item assignment logic
-
-- [ ] [Inventory report page] Update the current inventory report logic to be calculated that way, no new UI is needed, only logic update.
-
-  - [ ] Update beginning stock calculation to show inventory at start of selected month
-  - [ ] Update addition calculation to show parts used during selected month
-  - [ ] Update ending stock calculation with formula (beginning - addition)
-  - [ ] Modify inventory report queries and server actions to use new calculation logic
-  - [ ] Ensure existing UI columns display the updated calculated values
+  - [x] Update beginning stock calculation to show inventory at start of selected month
+  - [x] Update addition calculation to show parts used during selected month
+  - [x] Update ending stock calculation with formula (beginning - addition)
+  - [x] Modify inventory report queries and server actions to use new calculation logic
+  - [x] Ensure existing UI columns display the updated calculated values
 
 - [ ] [Inventory page] Show "ending stock" as above; plan to reuse function for code optimization.
 

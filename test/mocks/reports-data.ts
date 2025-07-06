@@ -44,36 +44,36 @@ export const mockInventoryReport: InventoryReport = {
       stt: 1,
       partName: "Engine Oil (5W-30)",
       beginStock: 50,
-      purchased: 25,
-      endStock: 45,
+      purchased: 25, // Parts used during the month
+      endStock: 25,   // 50 - 25 = 25
     },
     {
       stt: 2,
       partName: "Brake Pads (Front)",
       beginStock: 20,
-      purchased: 15,
-      endStock: 18,
+      purchased: 15, // Parts used during the month
+      endStock: 5,   // 20 - 15 = 5
     },
     {
       stt: 3,
       partName: "Air Filter",
       beginStock: 30,
-      purchased: 20,
-      endStock: 25,
+      purchased: 20, // Parts used during the month
+      endStock: 10,  // 30 - 20 = 10
     },
     {
       stt: 4,
       partName: "Spark Plugs",
       beginStock: 40,
-      purchased: 30,
-      endStock: 35,
+      purchased: 30, // Parts used during the month
+      endStock: 10,  // 40 - 30 = 10
     },
     {
       stt: 5,
       partName: "Transmission Fluid",
       beginStock: 15,
-      purchased: 10,
-      endStock: 12,
+      purchased: 10, // Parts used during the month
+      endStock: 5,   // 15 - 10 = 5
     },
   ],
 };
