@@ -25,6 +25,7 @@ import { updateRepairOrderSmart } from "@/app/actions/vehicles";
 import { useQueryClient } from "@tanstack/react-query";
 import { VEHICLE_REGISTRATION_QUERY_KEY } from "@/hooks/use-vehicle-registration";
 import { Separator } from "@/components/ui/separator";
+import { UsageStatsCard } from "./usage-stats-card";
 
 export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
   const [notes, setNotes] = useState("");
@@ -120,7 +121,7 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="p-0 max-h-[80vh] max-w-[80vw] md:max-h-[80vh] md:max-w-[50vw] lg:max-w-[60vw]">
+      <DialogContent className="p-0 max-h-[85vh] max-w-[90vw] md:max-h-[85vh] md:max-w-[70vw] lg:max-w-[70vw]">
         <ScrollArea className="max-h-[80vh]">
           <div className="p-6">
             <DialogHeader className="pb-6">
@@ -168,6 +169,9 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
                   </CardContent>
                 </Card>
               </div>
+
+              <UsageStatsCard />
+
               <Card>
                 <CardContent>
                   {isLoadingItems ? (

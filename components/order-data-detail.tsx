@@ -10,13 +10,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, Car, User, Calendar } from "lucide-react";
 import {
   OrderDataProps,
   RepairOrderItemWithDetails,
   RepairOrderWithItemsDetails,
 } from "@/types";
+import ExpenseSummaryCard from "./expense-summary-card";
 
 type OrderDataDetailsProps = {
   orderData: OrderDataProps;
@@ -51,7 +51,7 @@ const OrderDetails = ({ orderData, onBack }: OrderDataDetailsProps) => {
     RepairOrderWithItemsDetails.length === 0
   ) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4">
+      <div className="min-h-screen bg-gradient-to-br p-4">
         <div className="container mx-auto max-w-4xl">
           <Button onClick={onBack} className="mb-6">
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -59,13 +59,11 @@ const OrderDetails = ({ orderData, onBack }: OrderDataDetailsProps) => {
           </Button>
           <Card>
             <CardContent className="text-center py-12">
-              <Car className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+              <Car className="w-16 h-16 mx-auto  mb-4" />
               <h3 className="text-xl font-semibold mb-2">
                 No Repair Orders Found
               </h3>
-              <p className="text-gray-600">
-                This vehicle has no repair orders in our system.
-              </p>
+              <p>This vehicle has no repair orders in our system.</p>
             </CardContent>
           </Card>
         </div>
@@ -74,7 +72,7 @@ const OrderDetails = ({ orderData, onBack }: OrderDataDetailsProps) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br p-4">
       <div className="container mx-auto max-w-4xl">
         <Button onClick={onBack} className="mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />
@@ -128,6 +126,9 @@ const OrderDetails = ({ orderData, onBack }: OrderDataDetailsProps) => {
             </CardContent>
           </Card>
         </div>
+
+        {/* Consolidated Expense Summary */}
+        <ExpenseSummaryCard orderData={orderData} />
 
         {/* Repair Orders */}
         {RepairOrderWithItemsDetails.map(
@@ -198,48 +199,12 @@ const OrderDetails = ({ orderData, onBack }: OrderDataDetailsProps) => {
                   </div>
                 )}
 
-                <Separator className="my-6" />
-
-                {/* Payment Summary */}
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-semibold">Total Amount:</span>
+                {/* Order Total */}
+                <div className="mt-4 pt-4 border-t">
+                  <div className="flex justify-between items-center">
+                    <span className="font-semibold">Order Total:</span>
                     <span className="text-lg font-bold">
                       {formatCurrency(order.total_amount || 0)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span>Paid Amount:</span>
-                    <span className="text-green-600 font-semibold">
-                      {formatCurrency(
-                        vehicle.payments?.reduce(
-                          (sum, payment) => sum + payment.amount,
-                          0
-                        ) || 0
-                      )}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span>Outstanding Balance:</span>
-                    <span
-                      className={`font-semibold ${
-                        (order.total_amount || 0) -
-                          (vehicle.payments?.reduce(
-                            (sum, payment) => sum + payment.amount,
-                            0
-                          ) || 0) >
-                        0
-                          ? "text-red-600"
-                          : "text-green-600"
-                      }`}
-                    >
-                      {formatCurrency(
-                        (order.total_amount || 0) -
-                          (vehicle.payments?.reduce(
-                            (sum, payment) => sum + payment.amount,
-                            0
-                          ) || 0)
-                      )}
                     </span>
                   </div>
                 </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,6 +20,8 @@ export default function GarageSettingsTab() {
     emailAddress: "",
     address: "",
     maximumCarCapacity: "",
+    maxPartsPerMonth: "",
+    maxLaborTypesPerMonth: "",
   });
 
   const fetchSettings = useCallback(async () => {
@@ -41,6 +43,8 @@ export default function GarageSettingsTab() {
           emailAddress: settingsMap.email_address || "",
           address: settingsMap.address || "",
           maximumCarCapacity: settingsMap.maximum_car_capacity || "",
+          maxPartsPerMonth: settingsMap.max_parts_per_month || "",
+          maxLaborTypesPerMonth: settingsMap.max_labor_types_per_month || "",
         });
       }
     } catch (error) {
@@ -71,6 +75,11 @@ export default function GarageSettingsTab() {
         { key: "email_address", value: formData.emailAddress },
         { key: "address", value: formData.address },
         { key: "maximum_car_capacity", value: formData.maximumCarCapacity },
+        { key: "max_parts_per_month", value: formData.maxPartsPerMonth },
+        {
+          key: "max_labor_types_per_month",
+          value: formData.maxLaborTypesPerMonth,
+        },
       ];
 
       const updatePromises = settingUpdates.map((setting) =>
@@ -154,6 +163,34 @@ export default function GarageSettingsTab() {
                 handleInputChange("emailAddress", e.target.value)
               }
               placeholder="Enter email address"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="maxPartsPerMonth">Max Parts Per Month</Label>
+            <Input
+              id="maxPartsPerMonth"
+              type="number"
+              value={formData.maxPartsPerMonth}
+              onChange={(e) =>
+                handleInputChange("maxPartsPerMonth", e.target.value)
+              }
+              placeholder="100"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="maxLaborTypesPerMonth">
+              Max Labor Types Per Month
+            </Label>
+            <Input
+              id="maxLaborTypesPerMonth"
+              type="number"
+              value={formData.maxLaborTypesPerMonth}
+              onChange={(e) =>
+                handleInputChange("maxLaborTypesPerMonth", e.target.value)
+              }
+              placeholder="50"
             />
           </div>
         </div>
