@@ -9,7 +9,7 @@ const createJestConfig = nextJest({
 
 // Add any custom config to be passed to Jest
 const customJestConfig = {
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js", "<rootDir>/test/setup.js"],
   moduleNameMapper: {
     // Handle module aliases (this will be automatically configured for you based on your tsconfig.json paths)
     "^@/(.*)$": "<rootDir>/$1",
@@ -26,6 +26,12 @@ const customJestConfig = {
   transformIgnorePatterns: [
     "/node_modules/",
     "^.+\\.module\\.(css|sass|scss)$",
+  ],
+  // Add test match patterns to include our test directory
+  testMatch: [
+    "<rootDir>/**/__tests__/**/*.{js,jsx,ts,tsx}",
+    "<rootDir>/**/*.(test|spec).{js,jsx,ts,tsx}",
+    "<rootDir>/test/**/*.{test,spec}.{js,jsx,ts,tsx}",
   ],
 };
 

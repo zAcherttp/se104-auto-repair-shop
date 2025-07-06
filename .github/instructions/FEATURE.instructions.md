@@ -57,7 +57,7 @@ e:\Web\automobile-repair-shop\
 ├── lib/                          # Utility functions
 ├── supabase/                     # Database client and types
 ├── types/                        # TypeScript definitions
-├── __tests__/                    # Test files
+├── test/                         # Test files
 ├── .github/instructions/         # Development guidelines
 └── package.json                  # Dependencies and scripts
 ```

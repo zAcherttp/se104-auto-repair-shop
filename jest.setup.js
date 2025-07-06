@@ -1,9 +1,82 @@
 import "@testing-library/jest-dom";
+import React from "react";
 
 // Polyfills for Node.js environment
 import { TextEncoder, TextDecoder } from "util";
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
+
+// Mock server actions to prevent Next.js server imports in test environment
+jest.mock("@/app/actions/vehicles", () =>
+  require("./test/mocks/server-actions")
+);
+jest.mock("@/app/actions/settings", () =>
+  require("./test/mocks/server-actions")
+);
+jest.mock("@/app/actions/debt-management", () =>
+  require("./test/mocks/server-actions")
+);
+jest.mock("@/app/actions/reports", () =>
+  require("./test/mocks/server-actions")
+);
+jest.mock("@/app/actions/inventory", () =>
+  require("./test/mocks/server-actions")
+);
+jest.mock("@/app/actions/tasks", () => require("./test/mocks/server-actions"));
+jest.mock("@/app/actions/login", () => require("./test/mocks/server-actions"));
+
+// Mock UI components to use our test mocks
+jest.mock("@/components/ui/dialog", () =>
+  require("./test/mocks/ui-components.tsx")
+);
+jest.mock("@/components/ui/button", () =>
+  require("./test/mocks/ui-components.tsx")
+);
+jest.mock("@/components/ui/input", () => require("./test/mocks/ui-components.tsx"));
+jest.mock("@/components/ui/textarea", () =>
+  require("./test/mocks/ui-components.tsx")
+);
+jest.mock("@/components/ui/label", () => require("./test/mocks/ui-components.tsx"));
+jest.mock("@/components/ui/calendar", () =>
+  require("./test/mocks/ui-components.tsx")
+);
+jest.mock("@/components/ui/command", () =>
+  require("./test/mocks/ui-components.tsx")
+);
+jest.mock("@/components/ui/popover", () =>
+  require("./test/mocks/ui-components.tsx")
+);
+jest.mock("@/components/ui/form", () => require("./test/mocks/ui-components.tsx"));
+jest.mock("@/components/ui/alert", () => require("./test/mocks/ui-components.tsx"));
+jest.mock("@/components/ui/dropdown-menu", () =>
+  require("./test/mocks/ui-components")
+);
+jest.mock("@/components/ui/data-table-column-header", () =>
+  require("./test/mocks/ui-components")
+);
+jest.mock("@/components/ui/badge", () => require("./test/mocks/ui-components"));
+jest.mock("@/components/ui/table", () => require("./test/mocks/ui-components"));
+jest.mock("@/components/ui/select", () =>
+  require("./test/mocks/ui-components")
+);
+jest.mock("@/components/ui/scroll-area", () =>
+  require("./test/mocks/ui-components")
+);
+
+// Mock Lucide React icons
+jest.mock("lucide-react", () => require("./test/mocks/ui-components"));
+
+// Mock Radix UI primitives
+jest.mock("@radix-ui/react-slot", () => require("./test/mocks/ui-components"));
+jest.mock("@radix-ui/react-scroll-area", () =>
+  require("./test/mocks/ui-components")
+);
+
+// Mock complex components that might have deep dependencies
+jest.mock("@/components/dialogs/update-repair-order", () => ({
+  UpdateDialog: ({ children }) =>
+    React.createElement("div", { "data-testid": "update-dialog" }, children),
+}));
 
 // Mock Next.js router
 jest.mock("next/navigation", () => ({
@@ -41,14 +114,19 @@ jest.mock("lucide-react", () => ({
   MapPin: () => <div data-testid="mappin-icon">MapPin</div>,
 }));
 
-// Mock server actions
-jest.mock("@/app/actions/settings", () => ({
-  getGarageInfo: jest.fn(),
-}));
-
 // Mock hooks
 jest.mock("@/hooks/use-garage-info", () => ({
   useGarageInfo: jest.fn(),
+}));
+
+// Mock hooks that might import server actions
+jest.mock("@/hooks/use-spare-parts-labor-types", () => ({
+  useSpareParts: jest.fn(),
+  useLaborTypes: jest.fn(),
+}));
+
+jest.mock("@/hooks/use-line-items", () => ({
+  useLineItems: jest.fn(),
 }));
 
 // Global test utilities

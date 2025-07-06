@@ -1,0 +1,31 @@
+// Mock server actions to prevent Next.js server code from running in test environment
+
+// Mock vehicles actions
+export const createReception = jest.fn();
+export const updateRepairOrder = jest.fn();
+export const getVehicleRegistrations = jest.fn();
+
+// Mock other common server actions that might be imported
+export const checkAdminRole = jest.fn().mockResolvedValue(true);
+export const getUserProfile = jest.fn();
+export const updateGarageSettings = jest.fn();
+export const addEmployee = jest.fn();
+export const deleteEmployee = jest.fn();
+export const addPartType = jest.fn();
+export const addLaborType = jest.fn();
+export const addCarBrand = jest.fn();
+
+// Export default for any default imports
+export default {
+  createReception,
+  updateRepairOrder,
+  getVehicleRegistrations,
+  checkAdminRole,
+  getUserProfile,
+  updateGarageSettings,
+  addEmployee,
+  deleteEmployee,
+  addPartType,
+  addLaborType,
+  addCarBrand,
+};

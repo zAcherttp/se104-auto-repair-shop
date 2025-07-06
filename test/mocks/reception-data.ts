@@ -1,0 +1,165 @@
+import { VehicleRegistration } from "@/app/(protected)/reception/columns";
+import { Customer, RepairOrder, Vehicle } from "@/types";
+
+export const mockVehicleRegistrationData: VehicleRegistration[] = [
+  {
+    vehicle: {
+      id: "1",
+      license_plate: "ABC123",
+      brand: "Toyota",
+      customer_id: "1",
+      created_at: "2024-01-01T10:00:00Z",
+      total_paid: 750.00,
+    },
+    customer: {
+      id: "1",
+      name: "John Doe",
+      phone: "123-456-7890",
+      address: "123 Main St, City, State 12345",
+      email: "john.doe@example.com",
+      created_at: "2024-01-01T10:00:00Z",
+    },
+    repair_order: {
+      id: "1",
+      vehicle_id: "1",
+      total_amount: 750.00,
+      status: "in-progress",
+      reception_date: "2024-01-15T08:30:00Z",
+      completion_date: null,
+      notes: "Oil change and brake inspection",
+      created_at: "2024-01-15T08:30:00Z",
+      updated_at: "2024-01-15T08:30:00Z",
+      created_by: "user1",
+    },
+    debt: 0,
+  },
+  {
+    vehicle: {
+      id: "2",
+      license_plate: "XYZ789",
+      brand: "Honda",
+      customer_id: "2",
+      created_at: "2024-01-01T11:00:00Z",
+      total_paid: 900.00,
+    },
+    customer: {
+      id: "2",
+      name: "Jane Smith",
+      phone: "098-765-4321",
+      address: "456 Oak Ave, City, State 67890",
+      email: "jane.smith@example.com",
+      created_at: "2024-01-01T11:00:00Z",
+    },
+    repair_order: {
+      id: "2",
+      vehicle_id: "2",
+      total_amount: 1200.00,
+      status: "completed",
+      reception_date: "2024-01-14T09:00:00Z",
+      completion_date: "2024-01-16T16:00:00Z",
+      notes: "Transmission repair and alignment",
+      created_at: "2024-01-14T09:00:00Z",
+      updated_at: "2024-01-16T16:00:00Z",
+      created_by: "user2",
+    },
+    debt: 300,
+  },
+  {
+    vehicle: {
+      id: "3",
+      license_plate: "DEF456",
+      brand: "Ford",
+      customer_id: "3",
+      created_at: "2024-01-01T12:00:00Z",
+      total_paid: 2350.00,
+    },
+    customer: {
+      id: "3",
+      name: "Mike Johnson",
+      phone: "555-123-4567",
+      address: "789 Pine Rd, City, State 11111",
+      email: "mike.johnson@example.com",
+      created_at: "2024-01-01T12:00:00Z",
+    },
+    repair_order: {
+      id: "3",
+      vehicle_id: "3",
+      total_amount: 2500.00,
+      status: "pending",
+      reception_date: "2024-01-16T07:45:00Z",
+      completion_date: null,
+      notes: "Engine diagnostic and possible replacement",
+      created_at: "2024-01-16T07:45:00Z",
+      updated_at: "2024-01-16T07:45:00Z",
+      created_by: "user3",
+    },
+    debt: 150,
+  },
+];
+
+export const mockCarBrands = [
+  "Toyota",
+  "Honda",
+  "Ford",
+  "Chevrolet",
+  "BMW",
+  "Mercedes-Benz",
+  "Audi",
+  "Nissan",
+  "Hyundai",
+  "Kia",
+  "Volkswagen",
+  "Subaru",
+  "Mazda",
+  "Acura",
+  "Lexus",
+  "Infiniti",
+  "Cadillac",
+  "Buick",
+  "GMC",
+  "Chrysler",
+  "Dodge",
+  "Jeep",
+  "Ram",
+  "Tesla",
+  "Volvo",
+  "Porsche",
+  "Jaguar",
+  "Land Rover",
+  "Mini",
+  "Mitsubishi",
+];
+
+export const mockVehicleLimit = {
+  currentCount: 8,
+  maxCapacity: 15,
+  canCreate: true,
+  isAtLimit: false,
+  isNearLimit: true,
+};
+
+export const mockVehicleLimitAtCapacity = {
+  currentCount: 15,
+  maxCapacity: 15,
+  canCreate: false,
+  isAtLimit: true,
+  isNearLimit: false,
+};
+
+export const mockVehicleLimitNormal = {
+  currentCount: 5,
+  maxCapacity: 15,
+  canCreate: true,
+  isAtLimit: false,
+  isNearLimit: false,
+};
+
+export const mockFormData = {
+  customerName: "Test Customer",
+  licensePlate: "TEST123",
+  phoneNumber: "123-456-7890",
+  carBrand: "Toyota",
+  address: "123 Test St, Test City, TC 12345",
+  receptionDate: new Date("2024-01-15T10:00:00Z"),
+  notes: "Test notes for vehicle reception",
+};
