@@ -280,7 +280,9 @@ pnpm test __tests__/page.test.tsx
 #### Pre-Task Requirements
 
 - **Read Related Files**: Always read existing code to understand patterns before making changes
-- **Check Project Status**: Review `TODO.md` for current priorities and completed tasks
+- **Check Project Status**: Review `\todo` for current priorities and completed
+- **Check Current Tasks**: Review `tasks.md` for tasks in progress and planned features
+- **Move completed Tasks**: move completed tasks to `completed.md` after implementation
 - **Understand User Roles**: Know the difference between admin and employee permissions
 - **Review Dependencies**: Check related components, hooks, and actions for consistency
 - **Identify Patterns**: Look for established patterns in similar features

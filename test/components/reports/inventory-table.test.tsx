@@ -13,17 +13,20 @@ describe("Inventory Data Validation", () => {
 
     it("should verify stock balance logic makes sense", () => {
       mockInventoryReport.inventory.forEach((item) => {
-        // Stock movement should be logical:
-        // Used = Beginning Stock + Purchased - Ending Stock
-        const used = item.beginStock + item.purchased - item.endStock;
+        // New stock calculation logic:
+        // endStock = beginStock - additions (where additions = purchased field)
+        const expectedEndStock = item.beginStock - item.purchased;
 
-        // Used should not be negative (can't use more than available)
-        expect(used).toBeGreaterThanOrEqual(0);
+        // The calculated end stock should match the actual end stock
+        expect(item.endStock).toBe(expectedEndStock);
 
-        // Ending stock should not exceed beginning stock + purchased
-        expect(item.endStock).toBeLessThanOrEqual(
-          item.beginStock + item.purchased
-        );
+        // All stock quantities should be non-negative
+        expect(item.beginStock).toBeGreaterThanOrEqual(0);
+        expect(item.purchased).toBeGreaterThanOrEqual(0);
+        expect(item.endStock).toBeGreaterThanOrEqual(0);
+
+        // End stock should not exceed beginning stock (we can't end with more than we started with)
+        expect(item.endStock).toBeLessThanOrEqual(item.beginStock);
       });
     });
 
@@ -41,8 +44,8 @@ describe("Inventory Data Validation", () => {
         (item) => item.partName === "Engine Oil (5W-30)"
       );
       expect(engineOil?.beginStock).toBe(50);
-      expect(engineOil?.purchased).toBe(25);
-      expect(engineOil?.endStock).toBe(45);
+      expect(engineOil?.purchased).toBe(25); // Parts used during the month
+      expect(engineOil?.endStock).toBe(25); // 50 - 25 = 25
     });
 
     it("should verify inventory turnover calculations", () => {
@@ -108,16 +111,20 @@ describe("Inventory Data Validation", () => {
 
       expect(totalUsed).toBeGreaterThanOrEqual(0);
       expect(totalBeginStock).toBe(155); // 50+20+30+40+15
-      expect(totalPurchased).toBe(100); // 25+15+20+30+10
-      expect(totalEndStock).toBe(135); // 45+18+25+35+12
-      expect(totalUsed).toBe(120); // 155+100-135
+      expect(totalPurchased).toBe(100); // 25+15+20+30+10 (parts used)
+      expect(totalEndStock).toBe(55); // 25+5+10+10+5 (with new logic)
+      expect(totalUsed).toBe(200); // 155+100-55
     });
 
     it("should validate inventory data integrity", () => {
       expect(mockInventoryReport.inventory).toHaveLength(5);
       expect(mockInventoryReport.month).toBe("June 2025");
-      expect(mockInventoryReport.inventory[0].partName).toBe("Engine Oil (5W-30)");
-      expect(mockInventoryReport.inventory[1].partName).toBe("Brake Pads (Front)");
+      expect(mockInventoryReport.inventory[0].partName).toBe(
+        "Engine Oil (5W-30)"
+      );
+      expect(mockInventoryReport.inventory[1].partName).toBe(
+        "Brake Pads (Front)"
+      );
       expect(mockInventoryReport.inventory[2].partName).toBe("Air Filter");
     });
   });
@@ -132,7 +139,10 @@ describe("Inventory Data Validation", () => {
         endStock: 0,
       };
 
-      const used = zeroStockItem.beginStock + zeroStockItem.purchased - zeroStockItem.endStock;
+      const used =
+        zeroStockItem.beginStock +
+        zeroStockItem.purchased -
+        zeroStockItem.endStock;
       expect(used).toBe(0);
     });
 
@@ -145,7 +155,10 @@ describe("Inventory Data Validation", () => {
         endStock: 12000,
       };
 
-      const used = largeStockItem.beginStock + largeStockItem.purchased - largeStockItem.endStock;
+      const used =
+        largeStockItem.beginStock +
+        largeStockItem.purchased -
+        largeStockItem.endStock;
       expect(used).toBe(3000);
       expect(largeStockItem.endStock).toBeLessThanOrEqual(
         largeStockItem.beginStock + largeStockItem.purchased
