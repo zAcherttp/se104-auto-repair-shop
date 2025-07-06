@@ -58,31 +58,31 @@ export const columns: ColumnDef<VehicleRegistration>[] = [
       );
     },
   },
-  {
-    id: "status",
-    accessorFn: (row) => row.repair_order.status,
-    header: "Status",
-    cell: ({ row }) => {
-      return (
-        <Badge
-          variant="outline"
-          className="flex gap-1 px-1.5 text-muted-foreground [&_svg]:size-3"
-        >
-          {row.original.repair_order.status === "completed" ? (
-            <CheckCircle2Icon className="text-green-500 dark:text-green-400" />
-          ) : row.original.repair_order.status === "in-progress" ? (
-            <CircleDot className="text-yellow-500 dark:text-yellow-400" />
-          ) : row.original.repair_order.status === "pending" ? (
-            <Circle className="text-blue-500 dark:text-blue-400" />
-          ) : (
-            <CircleX className="text-red-500 dark:text-red-400" />
-          )}
+  // {
+  //   id: "status",
+  //   accessorFn: (row) => row.repair_order.status,
+  //   header: "Status",
+  //   cell: ({ row }) => {
+  //     return (
+  //       <Badge
+  //         variant="outline"
+  //         className="flex gap-1 px-1.5 text-muted-foreground [&_svg]:size-3"
+  //       >
+  //         {row.original.repair_order.status === "completed" ? (
+  //           <CheckCircle2Icon className="text-green-500 dark:text-green-400" />
+  //         ) : row.original.repair_order.status === "in-progress" ? (
+  //           <CircleDot className="text-yellow-500 dark:text-yellow-400" />
+  //         ) : row.original.repair_order.status === "pending" ? (
+  //           <Circle className="text-blue-500 dark:text-blue-400" />
+  //         ) : (
+  //           <CircleX className="text-red-500 dark:text-red-400" />
+  //         )}
 
-          {row.original.repair_order.status}
-        </Badge>
-      );
-    },
-  },
+  //         {row.original.repair_order.status}
+  //       </Badge>
+  //     );
+  //   },
+  // },
   {
     id: "reception_date",
     accessorFn: (row) => row.repair_order.reception_date,

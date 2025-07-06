@@ -40,9 +40,12 @@
   - [ ] Ensure part addition is only available through settings page
 
 - [ ] [Vehicles/Reception pages] Add phone and address columns; unify columns: License plate | customer name | phone number | address | car brand.
+
   - [ ] Add phone number column to vehicles page
   - [ ] Add address column to vehicles page
   - [ ] Add phone number column to reception page
   - [ ] Add address column to reception page
   - [ ] Ensure consistent column order across both pages
   - [ ] Update data fetching to include phone and address information
+
+- [x] [Reception page] remove status column
