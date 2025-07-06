@@ -69,6 +69,7 @@ export type VehicleWithDebt = {
     name: string;
     phone: string | null;
     email: string | null;
+    address: string | null;
   };
   total_repair_cost: number;
   total_paid: number;

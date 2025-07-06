@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import React from 'react';
 
 // Mock Next.js router
 jest.mock('next/navigation', () => ({
@@ -17,39 +18,38 @@ jest.mock('next/navigation', () => ({
 // Mock Next.js Image component
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: ({ src, alt, ...props }: any) => (
-    <img src={src} alt={alt} {...props} />
-  ),
+  default: ({ src, alt, ...props }: any) => 
+    React.createElement('img', { src, alt, ...props }),
 }));
 
 // Mock Recharts components globally
 jest.mock('recharts', () => ({
-  PieChart: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="pie-chart">{children}</div>
-  ),
-  Pie: ({ data }: { data: any[] }) => (
-    <div data-testid="pie">
-      {data?.map((item, index) => (
-        <div key={index} data-testid="pie-segment">
-          {item.name}: {item.value}
-        </div>
-      ))}
-    </div>
-  ),
-  Cell: ({ fill }: { fill: string }) => (
-    <div data-testid="pie-cell" style={{ backgroundColor: fill }}></div>
-  ),
-  Tooltip: ({ content }: { content: React.ComponentType<any> }) => (
-    <div data-testid="tooltip">{content && 'Custom Tooltip'}</div>
-  ),
-  ResponsiveContainer: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="responsive-container">{children}</div>
-  ),
-  Legend: ({ formatter }: { formatter: (value: string, entry: any) => React.ReactNode }) => (
-    <div data-testid="legend">
-      {formatter && formatter('Test Service', { color: '#3b82f6' })}
-    </div>
-  ),
+  PieChart: ({ children }: { children: React.ReactNode }) => 
+    React.createElement('div', { 'data-testid': 'pie-chart' }, children),
+  Pie: ({ data }: { data: any[] }) => 
+    React.createElement('div', { 'data-testid': 'pie' }, 
+      data?.map((item, index) => 
+        React.createElement('div', { 
+          key: index, 
+          'data-testid': 'pie-segment' 
+        }, `${item.name}: ${item.value}`)
+      )
+    ),
+  Cell: ({ fill }: { fill: string }) => 
+    React.createElement('div', { 
+      'data-testid': 'pie-cell', 
+      style: { backgroundColor: fill } 
+    }),
+  Tooltip: ({ content }: { content: React.ComponentType<any> }) => 
+    React.createElement('div', { 'data-testid': 'tooltip' }, 
+      content && 'Custom Tooltip'
+    ),
+  ResponsiveContainer: ({ children }: { children: React.ReactNode }) => 
+    React.createElement('div', { 'data-testid': 'responsive-container' }, children),
+  Legend: ({ formatter }: { formatter: (value: string, entry: any) => React.ReactNode }) => 
+    React.createElement('div', { 'data-testid': 'legend' }, 
+      formatter && formatter('Test Service', { color: '#3b82f6' })
+    ),
 }));
 
 // Mock CSS modules

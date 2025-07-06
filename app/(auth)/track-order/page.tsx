@@ -108,8 +108,64 @@ export default function TrackOrderPage() {
   };
 
   if (orderData) {
+    const handlePaymentSuccess = async () => {
+      // Refresh the order data after successful payment
+      try {
+        const { data: vehicle, error: vehicleError } = await supabase
+          .from("vehicles")
+          .select(
+            `
+            *,
+            customer:customers(*),
+            payments(*)
+          `
+          )
+          .eq("id", orderData.vehicle.id)
+          .single();
+
+        if (vehicleError || !vehicle) {
+          toast.error("Failed to refresh order data");
+          return;
+        }
+
+        // Get repair orders for this vehicle
+        const { data: repairOrders, error: ordersError } = await supabase
+          .from("repair_orders")
+          .select(
+            `
+            *,
+            repair_order_items(
+              *,
+              spare_part:spare_parts(*),
+              labor_type:labor_types(*)
+            )
+          `
+          )
+          .eq("vehicle_id", vehicle.id)
+          .order("created_at", { ascending: false });
+
+        if (ordersError) {
+          toast.error("Failed to refresh repair orders");
+          return;
+        }
+
+        setOrderData({
+          vehicle,
+          customer: vehicle.customer,
+          RepairOrderWithItemsDetails: repairOrders || [],
+        });
+      } catch (error) {
+        console.error("Error refreshing order data:", error);
+        toast.error("Failed to refresh order data");
+      }
+    };
+
     return (
-      <OrderDetails orderData={orderData} onBack={() => setOrderData(null)} />
+      <OrderDetails
+        orderData={orderData}
+        onBack={() => setOrderData(null)}
+        onPaymentSuccess={handlePaymentSuccess}
+      />
     );
   }
 

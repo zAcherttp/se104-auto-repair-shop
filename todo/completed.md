@@ -2,6 +2,19 @@
 
 ## Done ✓
 
+- [x] [Reception page] remove status column
+
+- [x] [Inventory page] Show "ending stock" of the inventory report page as stock quantity column as above; plan to reuse function for code optimization.
+
+  - [x] Implement ending stock calculation in inventory page
+  - [x] Create reusable function for stock calculations
+  - [x] Optimize code by sharing logic between inventory and reports pages
+
+- [x] [Inventory page] Remove "add new part" button in inventory.
+
+  - [x] Remove add new part button from inventory page
+  - [x] Ensure part addition is only available through settings page
+
 - [x] [Inventory report page] Update the current inventory report logic to be calculated that way, no new UI is needed, only logic update.
 
   - [x] Update beginning stock calculation to show inventory at start of selected month
@@ -171,6 +184,20 @@
   - [x] Create single card component with total, paid, and remaining amounts
   - [x] Ensure proper calculation and display of financial summary
 
+- [x] [TSK0706000] Fix payment dialog input formatting and add to order tracking
+
+  - [x] Fix payment dialog to properly handle currency input with proper decimal and thousand separators
+  - [x] Enhanced CurrencyInput component with correct decimal separator (.) and group separator (,)
+  - [x] Added placeholder text and step configuration for better user experience
+
+- [x] [TSK0706001] Add payment dialog to order tracking section on landing page
+  - [x] Created new OrderTrackingPaymentDialog component for public order tracking
+  - [x] Set created_by field to null when payment is made through order tracking dialog
+  - [x] Added payment functionality to ExpenseSummaryCard component
+  - [x] Updated OrderDetails component to support payment success callbacks
+  - [x] Enhanced track-order page to refresh data after successful payments
+  - [x] Implemented proper debt calculation and validation for public payments
+
 ## Testing Infrastructure
 
 - [x] [Testing] Implemented comprehensive testing infrastructure
@@ -184,8 +211,38 @@
 ## Documentation
 
 - [x] [Documentation] Enhanced project documentation for AI agents
+
   - [x] Optimized FEATURE.instructions.md with comprehensive guidelines
   - [x] Added project context and technology stack documentation
   - [x] Created testing strategy and best practices guide
   - [x] Structured workflow and code quality standards
   - [x] Added AI agent-specific development guidelines
+
+- [x] [Inventory page] Show "ending stock" of the inventory report page as stock quantity column as above; plan to reuse function for code optimization.
+
+  - [x] Implement ending stock calculation in inventory page
+  - [x] Create reusable function for stock calculations
+  - [x] Optimize code by sharing logic between inventory and reports pages
+  - [x] Update inventory columns to show "Ending Stock" instead of "Stock Quantity"
+  - [x] Created shared utility function `/lib/inventory-calculations.ts` for stock calculations
+  - [x] Refactored inventory reports to use shared logic
+  - [x] Updated inventory page to display calculated ending stock values
+
+- [x] [Inventory page] Remove "add new part" button in inventory.
+
+  - [x] Remove add new part button from inventory page
+  - [x] Ensure part addition is only available through settings page
+  - [x] Updated inventory data table to handle optional add button
+  - [x] Verified that parts can still be added through Settings > Parts tab
+
+- [x] [Vehicles/Reception pages] Add phone and address columns; unify columns: License plate | customer name | phone number | address | car brand.
+
+  - [x] Add phone number column to vehicles page
+  - [x] Add address column to vehicles page
+  - [x] Add phone number column to reception page (already existed)
+  - [x] Add address column to reception page (already existed)
+  - [x] Ensure consistent column order across both pages
+  - [x] Update data fetching to include phone and address information
+  - [x] Update VehicleWithDebt type to include address field
+  - [x] Update test mock data to include address information
+  - [x] Fixed TypeScript compilation errors and ESLint issues

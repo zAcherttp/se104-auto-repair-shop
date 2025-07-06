@@ -2,17 +2,10 @@
 
 import { columns } from "./columns";
 import { InventoryDataTable } from "./data-table";
-import { useInventory } from "@/hooks/use-inventory";
-import { AddPartDialog } from "@/components/dialogs/add-part-dialog";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { useInventoryWithEndingStock } from "@/hooks/use-inventory-with-ending-stock";
 
 export default function Page() {
-  const { data: spareParts, isLoading, error, refetch } = useInventory();
-
-  const handleAddSuccess = () => {
-    refetch(); // Refresh the inventory list after successful addition
-  };
+  const { data: spareParts, isLoading, error } = useInventoryWithEndingStock();
 
   if (error) {
     return (
@@ -28,17 +21,7 @@ export default function Page() {
         columns={columns}
         data={spareParts || []}
         isLoading={isLoading}
-        renderAddButton={() => (
-          <AddPartDialog
-            trigger={
-              <Button className="bg-blue-600 hover:bg-blue-700">
-                <Plus className="w-4 h-4 mr-2" />
-                Add New Part
-              </Button>
-            }
-            onSuccess={handleAddSuccess}
-          />
-        )}
+        // Removed renderAddButton - parts can only be added through settings page
       />
     </div>
   );

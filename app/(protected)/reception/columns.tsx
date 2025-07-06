@@ -1,10 +1,8 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { Customer, RepairOrder, Vehicle } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
-import { CheckCircle2Icon, Circle, CircleDot, CircleX } from "lucide-react";
 import { Actions } from "./actions";
 
 // This type is used to define the shape of our data.
@@ -22,16 +20,24 @@ export const columns: ColumnDef<VehicleRegistration>[] = [
     header: "License Plate",
   },
   {
-    accessorKey: "vehicle.brand",
-    header: "Brand",
-  },
-  {
     accessorKey: "customer.name",
     header: "Customer Name",
   },
   {
     accessorKey: "customer.phone",
-    header: "Phone",
+    header: "Phone Number",
+  },
+  {
+    accessorKey: "customer.address",
+    header: "Address",
+    cell: ({ row }) => {
+      const address = row.original.customer.address;
+      return <div>{address || "N/A"}</div>;
+    },
+  },
+  {
+    accessorKey: "vehicle.brand",
+    header: "Car Brand",
   },
   {
     header: ({ column }) => {

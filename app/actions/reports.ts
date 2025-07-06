@@ -9,6 +9,7 @@ import {
     SalesAnalytics,
     SalesReport,
 } from "@/types/reports";
+import { getStockCalculationsForPeriod } from "@/lib/inventory-calculations";
 
 export async function getSalesAnalytics(
     period: ReportPeriod,
@@ -398,6 +399,7 @@ export async function getInventoryReport(
             };
         }
 
+        // Get spare parts for part names
         const { data: spareParts, error } = await supabase
             .from("spare_parts")
             .select("*");
@@ -409,92 +411,26 @@ export async function getInventoryReport(
             };
         }
 
-        // Get repair order items within the period to calculate parts usage
-        const { data: repairItems, error: itemsError } = await supabase
-            .from("repair_order_items")
-            .select(`
-                quantity,
-                spare_part_id,
-                repair_order:repair_orders(reception_date)
-            `)
-            .not("spare_part_id", "is", null)
-            .gte(
-                "repair_order.reception_date",
-                period.from.toISOString().split("T")[0],
-            )
-            .lte(
-                "repair_order.reception_date",
-                period.to.toISOString().split("T")[0],
-            );
+        // Use the shared stock calculation function
+        const stockCalculations = await getStockCalculationsForPeriod(
+            period.from,
+            period.to
+        );
 
-        if (itemsError) {
-            return {
-                error: new Error(itemsError.message),
-                data: undefined,
-            };
-        }
-
-        // Get repair order items before the period to calculate beginning stock
-        const { data: repairItemsBefore, error: itemsBeforeError } = await supabase
-            .from("repair_order_items")
-            .select(`
-                quantity,
-                spare_part_id,
-                repair_order:repair_orders(reception_date)
-            `)
-            .not("spare_part_id", "is", null)
-            .lt(
-                "repair_order.reception_date",
-                period.from.toISOString().split("T")[0],
-            );
-
-        if (itemsBeforeError) {
-            return {
-                error: new Error(itemsBeforeError.message),
-                data: undefined,
-            };
-        }
-
-        // Calculate parts usage during the period (additions)
-        const partsUsageDuringPeriod: Record<string, number> = {};
-        repairItems?.forEach((item) => {
-            if (item.spare_part_id) {
-                partsUsageDuringPeriod[item.spare_part_id] =
-                    (partsUsageDuringPeriod[item.spare_part_id] || 0) +
-                    (item.quantity || 0);
-            }
-        });
-
-        // Calculate total parts usage before the period
-        const totalPartsUsageBefore: Record<string, number> = {};
-        repairItemsBefore?.forEach((item) => {
-            if (item.spare_part_id) {
-                totalPartsUsageBefore[item.spare_part_id] =
-                    (totalPartsUsageBefore[item.spare_part_id] || 0) +
-                    (item.quantity || 0);
-            }
-        });
+        // Create a map for quick lookup of stock calculations by part ID
+        const stockCalcMap = new Map(
+            stockCalculations.map(calc => [calc.partId, calc])
+        );
 
         const inventory = spareParts?.map((part, index) => {
-            const currentStock = part.stock_quantity || 0;
-            const usedDuringPeriod = partsUsageDuringPeriod[part.id] || 0;
-            const totalUsedBefore = totalPartsUsageBefore[part.id] || 0;
+            const stockCalc = stockCalcMap.get(part.id);
             
-            // Calculate beginning stock: current stock + all usage from start of period to now
-            const beginStock = currentStock + usedDuringPeriod;
-            
-            // Addition is the parts used during the selected period
-            const addition = usedDuringPeriod;
-            
-            // Ending stock = beginning stock - addition
-            const endStock = beginStock - addition;
-
             return {
                 stt: index + 1,
                 partName: part.name,
-                beginStock,
-                purchased: addition, // Using "purchased" field to represent additions (parts used)
-                endStock,
+                beginStock: stockCalc?.beginStock || 0,
+                purchased: stockCalc?.usedDuringPeriod || 0, // Using "purchased" field to represent additions (parts used)
+                endStock: stockCalc?.endStock || 0,
             };
         }) || [];
 

@@ -7,7 +7,12 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Actions } from "./actions";
 import { cn } from "@/lib/utils";
 
-export const columns: ColumnDef<SparePart>[] = [
+// Extended type to include calculated ending stock
+export interface SparePartWithEndingStock extends SparePart {
+  endingStock?: number;
+}
+
+export const columns: ColumnDef<SparePartWithEndingStock>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -41,13 +46,15 @@ export const columns: ColumnDef<SparePart>[] = [
         <DataTableColumnHeader
           className="justify-center"
           column={column}
-          title="Stock Quantity"
+          title="Ending Stock"
         />
       );
     },
-    accessorKey: "stock_quantity",
+    accessorKey: "endingStock",
     cell: ({ row }) => {
-      const quantity = row.getValue("stock_quantity") as number;
+      const endingStock = row.getValue("endingStock") as number | undefined;
+      const quantity =
+        endingStock ?? (row.getValue("stock_quantity") as number) ?? 0;
 
       // Color coding based on stock levels
       const getStockBadgeVariant = (qty: number) => {

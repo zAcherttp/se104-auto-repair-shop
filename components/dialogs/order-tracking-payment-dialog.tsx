@@ -12,20 +12,31 @@ import {
 import { Button } from "@/components/ui/button";
 import { getPaymentImageURL } from "@/lib/utils";
 import ZoomableImage from "../zoomable-image";
-import { VehicleDialogProps } from "@/types/dialog";
 import SubmitButton from "@/components/submit-button";
 import { toast } from "sonner";
-import { handleVehiclePayment } from "@/app/actions/vehicles";
-import { useQueryClient } from "@tanstack/react-query";
-import { VEHICLES_QUERY_KEY } from "@/hooks/use-vehicles";
 import CurrencyInput from "react-currency-input-field";
+import { createClient } from "@/supabase/client";
+import { Vehicle, Customer } from "@/types";
 
-export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
+interface OrderTrackingPaymentDialogProps {
+  trigger: React.ReactNode;
+  vehicle: Vehicle;
+  customer: Customer;
+  debtAmount: number;
+  onPaymentSuccess?: () => void;
+}
+
+export function OrderTrackingPaymentDialog({
+  trigger,
+  vehicle,
+  customer,
+  debtAmount,
+  onPaymentSuccess,
+}: OrderTrackingPaymentDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [paymentAmount, setPaymentAmount] = useState<number>(0);
   const [showQRCode, setShowQRCode] = useState(false);
-  const query = useQueryClient();
 
   const handleProceedToPayment = () => {
     if (paymentAmount <= 0) {
@@ -54,18 +65,87 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
 
     setIsLoading(true);
     try {
-      const result = await handleVehiclePayment(data.vehicle.id, paymentAmount);
+      const supabase = createClient();
 
-      if (result?.error) {
+      // Calculate current debt to ensure we don't overpay
+      const { data: vehicleData, error: vehicleError } = await supabase
+        .from("vehicles")
+        .select(
+          `
+          id,
+          total_paid,
+          repair_orders (
+            total_amount
+          ),
+          payments (
+            amount
+          )
+        `
+        )
+        .eq("id", vehicle.id)
+        .single();
+
+      if (vehicleError) {
+        toast.error("Failed to fetch vehicle data");
+        return;
+      }
+
+      // Calculate current debt
+      const totalRepairCosts =
+        vehicleData.repair_orders?.reduce(
+          (sum, order) => sum + (order.total_amount || 0),
+          0
+        ) || 0;
+      const totalPaid =
+        vehicleData.payments?.reduce(
+          (sum, payment) => sum + payment.amount,
+          0
+        ) || 0;
+      const remainingDebt = totalRepairCosts - totalPaid;
+
+      if (remainingDebt <= 0) {
+        toast.error("No outstanding debt found for this vehicle");
+        return;
+      }
+
+      if (paymentAmount > remainingDebt) {
+        toast.error(
+          `Payment amount exceeds remaining debt of $${remainingDebt.toFixed(
+            2
+          )}`
+        );
+        return;
+      }
+
+      // Insert new payment record with created_by as null (public payment)
+      const { error: paymentError } = await supabase.from("payments").insert({
+        vehicle_id: vehicle.id,
+        amount: paymentAmount,
+        payment_method: "online",
+        created_by: null, // Set to null for public order tracking payments
+        payment_date: new Date().toISOString().split("T")[0],
+      });
+
+      if (paymentError) {
         toast.error("Failed to process payment");
         return;
       }
 
-      query.invalidateQueries({
-        queryKey: [VEHICLES_QUERY_KEY],
-      });
+      // Update vehicle's total_paid
+      const newTotalPaid = totalPaid + paymentAmount;
+      const { error: updateError } = await supabase
+        .from("vehicles")
+        .update({ total_paid: newTotalPaid })
+        .eq("id", vehicle.id);
+
+      if (updateError) {
+        toast.error("Failed to update payment records");
+        return;
+      }
+
       toast.success("Payment confirmed successfully");
       setOpen(false);
+      onPaymentSuccess?.();
     } catch (error) {
       console.error("Error processing payment:", error);
       toast.error("Failed to process payment");
@@ -73,8 +153,6 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
       setIsLoading(false);
     }
   };
-
-  const debtAmount = data.debt;
 
   // Initialize payment amount when dialog opens
   useEffect(() => {
@@ -92,7 +170,7 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="w-80 sm:w-full  sm:max-w-lg">
+      <DialogContent className="w-80 sm:w-full sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Payment QR Code</DialogTitle>
         </DialogHeader>
@@ -102,15 +180,15 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
           <div className="bg-slate-50 dark:bg-slate-900 p-3 rounded-lg">
             <div className="flex justify-between items-center text-sm">
               <span className="text-muted-foreground">Vehicle:</span>
-              <span className="font-medium">{data.vehicle.license_plate}</span>
+              <span className="font-medium">{vehicle.license_plate}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
               <span className="text-muted-foreground">Customer:</span>
-              <span className="font-medium">{data.customer.name}</span>
+              <span className="font-medium">{customer.name}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
               <span className="text-muted-foreground">Brand:</span>
-              <span className="font-medium">{data.vehicle.brand}</span>
+              <span className="font-medium">{vehicle.brand}</span>
             </div>
           </div>
 
@@ -175,7 +253,7 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
                   destinationAccount:
                     process.env.NEXT_PUBLIC_VIETQR_DESTINATION_ACCOUNT || "N/A",
                   amount: paymentAmount,
-                  description: `Payment for ${data.vehicle.license_plate}`,
+                  description: `Payment for ${vehicle.license_plate}`,
                 })}
                 alt="Payment QR Code"
               />

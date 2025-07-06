@@ -91,9 +91,8 @@ export function InventoryDataTable<TData, TValue>({
           />
         </div>
         <div className="flex items-center gap-4">
-          {renderAddButton ? (
-            renderAddButton()
-          ) : (
+          {renderAddButton && renderAddButton()}
+          {!renderAddButton && onAddNew && (
             <Button
               className="bg-blue-600 hover:bg-blue-700"
               onClick={onAddNew}

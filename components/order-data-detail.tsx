@@ -21,9 +21,14 @@ import ExpenseSummaryCard from "./expense-summary-card";
 type OrderDataDetailsProps = {
   orderData: OrderDataProps;
   onBack: () => void;
+  onPaymentSuccess?: () => void;
 };
 
-const OrderDetails = ({ orderData, onBack }: OrderDataDetailsProps) => {
+const OrderDetails = ({
+  orderData,
+  onBack,
+  onPaymentSuccess,
+}: OrderDataDetailsProps) => {
   const { vehicle, customer, RepairOrderWithItemsDetails } = orderData;
 
   const getStatusColor = (status: string) => {
@@ -128,7 +133,10 @@ const OrderDetails = ({ orderData, onBack }: OrderDataDetailsProps) => {
         </div>
 
         {/* Consolidated Expense Summary */}
-        <ExpenseSummaryCard orderData={orderData} />
+        <ExpenseSummaryCard
+          orderData={orderData}
+          onPaymentSuccess={onPaymentSuccess}
+        />
 
         {/* Repair Orders */}
         {RepairOrderWithItemsDetails.map(

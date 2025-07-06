@@ -26,6 +26,26 @@ export const columns: ColumnDef<VehicleWithDebt>[] = [
     },
   },
   {
+    accessorKey: "customer.phone",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Phone Number" />
+    ),
+    cell: ({ row }) => {
+      const customer = row.original.customer;
+      return <div>{customer.phone || "N/A"}</div>;
+    },
+  },
+  {
+    accessorKey: "customer.address",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Address" />
+    ),
+    cell: ({ row }) => {
+      const customer = row.original.customer;
+      return <div>{customer.address || "N/A"}</div>;
+    },
+  },
+  {
     accessorKey: "brand",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Car Brand" />

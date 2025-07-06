@@ -737,7 +737,8 @@ export async function fetchVehiclesWithDebt(): Promise<
           id,
           name,
           phone,
-          email
+          email,
+          address
         ),
         repair_orders (
           id,

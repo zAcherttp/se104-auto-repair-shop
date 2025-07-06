@@ -1,12 +1,19 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { CreditCard } from "lucide-react";
 import { OrderDataProps } from "@/types";
+import { OrderTrackingPaymentDialog } from "@/components/dialogs/order-tracking-payment-dialog";
 
 type ExpenseSummaryCardProps = {
   orderData: OrderDataProps;
+  onPaymentSuccess?: () => void;
 };
 
-const ExpenseSummaryCard = ({ orderData }: ExpenseSummaryCardProps) => {
+const ExpenseSummaryCard = ({
+  orderData,
+  onPaymentSuccess,
+}: ExpenseSummaryCardProps) => {
   const { vehicle, RepairOrderWithItemsDetails } = orderData;
 
   const formatCurrency = (amount: number) => {
@@ -91,6 +98,24 @@ const ExpenseSummaryCard = ({ orderData }: ExpenseSummaryCardProps) => {
               </span>
             </div>
           </div>
+
+          {/* Payment Button */}
+          {remainingAmount > 0 && (
+            <div className="mt-4 text-center">
+              <OrderTrackingPaymentDialog
+                trigger={
+                  <Button className="bg-green-600 hover:bg-green-700">
+                    <CreditCard className="w-4 h-4 mr-2" />
+                    Make Payment
+                  </Button>
+                }
+                vehicle={orderData.vehicle}
+                customer={orderData.customer}
+                debtAmount={remainingAmount}
+                onPaymentSuccess={onPaymentSuccess}
+              />
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
