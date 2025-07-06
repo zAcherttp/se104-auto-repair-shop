@@ -13,14 +13,6 @@
 
 ## New Tasks
 
-- [x] [Inventory report page] Update the current inventory report logic to be calculated that way, no new UI is needed, only logic update.
-
-  - [x] Update beginning stock calculation to show inventory at start of selected month
-  - [x] Update addition calculation to show parts used during selected month
-  - [x] Update ending stock calculation with formula (beginning - addition)
-  - [x] Modify inventory report queries and server actions to use new calculation logic
-  - [x] Ensure existing UI columns display the updated calculated values
-
 - [ ] [Inventory page] Show "ending stock" as above; plan to reuse function for code optimization.
 
   - [ ] Implement ending stock calculation in inventory page
