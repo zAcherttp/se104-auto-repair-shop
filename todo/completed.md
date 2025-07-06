@@ -29,6 +29,15 @@
   - [x] Update test files to match new calculation logic
   - [x] Update mock data to reflect new inventory calculation patterns
 
+- [x] [Inventory report page] Fix inventory report calculation logic bug _(Completed 2025-01-07)_
+
+  - [x] Fixed beginning stock calculation that was incorrectly incrementing
+  - [x] Corrected stock calculation to properly show beginning stock + additions = ending stock
+  - [x] Updated `calculateStockLevels` function in `lib/inventory-calculations.ts`
+  - [x] Ensured ending stock properly reflects current stock levels
+  - [x] Fixed time-based stock tracking to properly calculate beginning stock for selected periods
+  - [x] Implemented correct formula: Beginning Stock - Usage During Period = Ending Stock
+
 - [x] [Settings] Make add employee only create profiles (not Supabase accounts); parameter is just name and role; assign employee to repair order line item by fetching profile.
 
   - [x] Modified employee creation to only store in profiles table (no auth user creation)
@@ -250,3 +259,63 @@
   - [x] Update VehicleWithDebt type to include address field
   - [x] Update test mock data to include address information
   - [x] Fixed TypeScript compilation errors and ESLint issues
+
+- [x] [Inventory report page] Fix date range picker not affecting inventory report _(Completed 2025-01-07)_
+
+  - [x] Fixed query key caching issue in `useReportsQuery` hook
+  - [x] Updated inventory analytics query to include period in queryKey for proper cache invalidation
+  - [x] Changed Date objects to ISO strings in query keys to prevent serialization issues
+  - [x] Updated inventory table column header from "Additions" to "Used" (Vietnamese)
+  - [x] Verified that inventory report (b52Report) now properly refreshes when date range changes
+  - [x] Ensured sales and inventory reports both respond to date range picker changes consistently
+
+- [x] [Inventory report] Rework inventory report APIs to fix caching and period filtering issues _(Completed 2025-01-07)_
+
+  - [x] Created `useSparePartsQuery` hook to cache spare parts data with TanStack Query
+  - [x] Created `useStockCalculationsQuery` hook to cache stock calculations by period
+  - [x] Fixed SQL query syntax in inventory calculations (repair_orders!inner vs repair_order:repair_orders)
+  - [x] Optimized inventory report to use parallel execution for spare parts and stock calculations
+  - [x] Eliminated duplicate spare parts fetching between analytics and report functions
+  - [x] Added proper SQL joins with !inner to ensure correct date filtering
+  - [x] Verified variable naming scheme: `partsUsageDuringPeriod`, `totalUsageToDate`, `usageBeforePeriod` are logically correct
+  - [x] Updated query key serialization to use ISO strings for better caching
+
+- [x] [App Layout] Complete useAdmin hook integration with app sidebar _(Completed 2025-01-07)_
+
+  - [x] Fixed incomplete `useAdmin` hook implementation
+  - [x] Created `ProtectedLayoutClient` component to wrap sidebar with admin state
+  - [x] Updated protected layout to use client component for admin detection
+  - [x] Fixed inverted admin logic in AppSidebar (admins now get Settings access)
+  - [x] Added Tasks navigation item to dashboard menu
+  - [x] Implemented proper loading state with skeleton UI during admin check
+  - [x] Used TanStack Query for caching admin status with 10-minute stale time
+  - [x] Integrated admin boolean prop into AppSidebar component correctly
+
+- [x] [Inventory Calculations] Fixed beginning stock calculation logic for period-based reports _(Completed 2025-01-07)_
+
+  - [x] Fixed stock calculation logic where beginning stock was incorrectly calculated
+  - [x] Corrected calculation: beginning stock = current stock + usage between previous month and current period + current period usage
+  - [x] Ensured ending stock of one period becomes beginning stock of next period
+  - [x] Optimized Supabase queries to run in parallel using Promise.all for better performance
+  - [x] Fixed issue where July ending stock (32) should become August beginning stock (32), not 50
+  - [x] Verified that stock calculations now properly track inventory across time periods
+
+- [x] [Inventory Stock Management] Fixed stock quantity updates for spare parts inventory _(Completed 2025-01-07)_
+
+  - [x] Identified root cause: `stock_quantity` in `spare_parts` table wasn't being updated when repair orders were modified
+  - [x] Created `updateSparePartsStock` function to automatically update stock quantities when repair order items change
+  - [x] Updated `updateRepairOrder` function to handle stock updates for full item replacement
+  - [x] Updated `updateRepairOrderSmart` function to handle stock updates for granular CRUD operations
+  - [x] Added support for tracking original quantities when updating items
+  - [x] Created `recalculateAllSparePartsStock` function to fix existing data inconsistencies
+  - [x] Ensured stock quantities now properly decrease when parts are used and increase when items are deleted
+  - [x] Stock calculations now work correctly with dynamically updated stock quantities
+
+- [x] [Inventory Calculation Simplification] Simplified inventory report calculations with dynamic stock _(Completed 2025-01-07)_
+  - [x] Removed complex multi-period queries that were working backwards from static stock
+  - [x] Simplified to use current dynamic stock quantities as the source of truth
+  - [x] For period reports: beginning stock = current stock + usage during period
+  - [x] For total reports: beginning stock = current stock + total usage to date
+  - [x] Reduced from 4 parallel queries to 2 for period-based calculations
+  - [x] Eliminated complex previous month calculations and usage windowing
+  - [x] Much cleaner and more maintainable code with dynamic stock updates in place

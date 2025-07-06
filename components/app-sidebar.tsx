@@ -14,10 +14,10 @@ import { AppBanner } from "./sidebar-banner";
 import { useMemo } from "react";
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  userRole?: string;
+  isAdmin?: boolean;
 }
 
-export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
+export function AppSidebar({ isAdmin, ...props }: AppSidebarProps) {
   const data = useMemo(
     () => ({
       garageInfo: {
@@ -31,12 +31,11 @@ export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
         { name: "Inventory", url: "/inventory", icon: Package2 },
         { name: "Reports", url: "/reports", icon: BarChart3 },
       ],
-      garageItems:
-        userRole === "admin"
-          ? [{ name: "Settings", url: "/settings", icon: Cog }]
-          : [],
+      garageItems: isAdmin
+        ? [{ name: "Settings", url: "/settings", icon: Cog }]
+        : [],
     }),
-    [userRole]
+    [isAdmin]
   );
 
   return (

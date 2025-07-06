@@ -21,7 +21,7 @@ import { AlertCircle, BarChart3, Package } from "lucide-react";
 export default function Page() {
   // Use stable default values to avoid hydration mismatch
   const [selectedPeriod, setSelectedPeriod] = useState({
-    month: 6, // June (current month as default)
+    month: 7, // July (current month as default)
     year: 2025,
   });
 
@@ -153,10 +153,10 @@ export default function Page() {
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-medium">Total Revenue</span>
                       <span className="text-2xl font-bold">
-                        {salesAnalytics?.totalRevenue?.toLocaleString("vi-VN", {
+                        {salesAnalytics?.totalRevenue?.toLocaleString("en-US", {
                           style: "currency",
-                          currency: "VND",
-                        }) || "0 ₫"}
+                          currency: "USD",
+                        }) || "0.00 $"}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
@@ -171,12 +171,12 @@ export default function Page() {
                       </span>
                       <span className="text-2xl font-bold">
                         {salesAnalytics?.averageOrderValue?.toLocaleString(
-                          "vi-VN",
+                          "en-US",
                           {
                             style: "currency",
-                            currency: "VND",
+                            currency: "USD",
                           }
-                        ) || "0 ₫"}
+                        ) || "0 0.00 $"}
                       </span>
                     </div>
                   </div>
@@ -239,10 +239,10 @@ export default function Page() {
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-medium">Total Value</span>
                     <span className="text-2xl font-bold">
-                      {inventoryAnalytics?.totalValue?.toLocaleString("vi-VN", {
+                      {inventoryAnalytics?.totalValue?.toLocaleString("en-US", {
                         style: "currency",
-                        currency: "VND",
-                      }) || "0 ₫"}
+                        currency: "USD",
+                      }) || "0 0.00 $"}
                     </span>
                   </div>
                 </div>

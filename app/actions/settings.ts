@@ -134,8 +134,8 @@ export async function createEmployee(formData: FormData): Promise<ApiResponse> {
     const { data: profileData, error: profileError } = await supabase
       .from("profiles")
       .insert({
-        id: crypto.randomUUID(), // Generate a unique ID for the profile
-        email: '', // Set empty email since no auth user
+        id: "218f25ec-894f-48d4-9dc9-f782dde95015",
+        email: "", // Set empty email since no auth user
         full_name: fullName,
         role,
       })

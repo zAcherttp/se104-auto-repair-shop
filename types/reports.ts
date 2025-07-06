@@ -57,7 +57,7 @@ export interface InventoryReport {
         stt: number;
         partName: string;
         beginStock: number; // Tồn Đầu
-        purchased: number; // Phát Sinh
+        purchased: number; // Used
         endStock: number; // Tồn Cuối
     }>;
 }

@@ -71,9 +71,9 @@ export function SalesAnalyticsChart({ data }: SalesAnalyticsChartProps) {
           <p className="font-medium">{data.name}</p>
           <p className="text-blue-600">
             Revenue:{" "}
-            {data.value.toLocaleString("vi-VN", {
+            {data.value.toLocaleString("en-US", {
               style: "currency",
-              currency: "VND",
+              currency: "USD",
             })}
           </p>
           <p className="text-gray-600">Percentage: {data.percentage}%</p>

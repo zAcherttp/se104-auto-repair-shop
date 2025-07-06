@@ -35,9 +35,9 @@ export function SalesTable({ data }: SalesTableProps) {
         <div className="text-center mb-6">
           <p className="text-lg font-semibold">
             <strong>Total Revenue:</strong>{" "}
-            {data.totalRevenue.toLocaleString("vi-VN", {
+            {data.totalRevenue.toLocaleString("en-US", {
               style: "currency",
-              currency: "VND",
+              currency: "USD",
             })}
           </p>
         </div>
@@ -75,9 +75,9 @@ export function SalesTable({ data }: SalesTableProps) {
                   {item.repairCount.toLocaleString()}
                 </TableCell>
                 <TableCell className="text-right border">
-                  {item.amount.toLocaleString("vi-VN", {
+                  {item.amount.toLocaleString("en-US", {
                     style: "currency",
-                    currency: "VND",
+                    currency: "USD",
                   })}
                 </TableCell>
                 <TableCell className="text-center border">

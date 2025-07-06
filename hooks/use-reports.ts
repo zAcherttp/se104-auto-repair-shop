@@ -9,24 +9,41 @@ import { ReportPeriod } from "@/types/reports";
 
 export const useReportsQuery = (period: ReportPeriod) => {
     const salesQuery = useQuery({
-        queryKey: ["sales-analytics", period.from, period.to],
+        queryKey: [
+            "sales-analytics",
+            period.from?.toISOString(),
+            period.to?.toISOString(),
+        ],
         queryFn: () => getSalesAnalytics(period),
         enabled: Boolean(period.from && period.to),
     });
 
     const inventoryQuery = useQuery({
-        queryKey: ["inventory-analytics"],
+        queryKey: [
+            "inventory-analytics",
+            period.from?.toISOString(),
+            period.to?.toISOString(),
+        ],
         queryFn: () => getInventoryAnalytics(),
+        enabled: Boolean(period.from && period.to),
     });
 
     const b51Query = useQuery({
-        queryKey: ["b51-sales-report", period.from, period.to],
+        queryKey: [
+            "b51-sales-report",
+            period.from?.toISOString(),
+            period.to?.toISOString(),
+        ],
         queryFn: () => getSalesReport(period),
         enabled: Boolean(period.from && period.to),
     });
 
     const b52Query = useQuery({
-        queryKey: ["b52-inventory-report", period.from, period.to],
+        queryKey: [
+            "b52-inventory-report",
+            period.from?.toISOString(),
+            period.to?.toISOString(),
+        ],
         queryFn: () => getInventoryReport(period),
         enabled: Boolean(period.from && period.to),
     });

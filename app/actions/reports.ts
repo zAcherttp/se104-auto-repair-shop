@@ -185,6 +185,7 @@ export async function getInventoryAnalytics(): Promise<
             };
         }
 
+        // Get spare parts from the database directly (this will be cached by TanStack Query)
         const { data: spareParts, error: partsError } = await supabase
             .from("spare_parts")
             .select("*");
@@ -399,10 +400,13 @@ export async function getInventoryReport(
             };
         }
 
-        // Get spare parts for part names
-        const { data: spareParts, error } = await supabase
-            .from("spare_parts")
-            .select("*");
+        // Execute spare parts query and stock calculations in parallel
+        const [sparePartsResult, stockCalculations] = await Promise.all([
+            supabase.from("spare_parts").select("*"),
+            getStockCalculationsForPeriod(period.from, period.to),
+        ]);
+
+        const { data: spareParts, error } = sparePartsResult;
 
         if (error) {
             return {
@@ -411,20 +415,14 @@ export async function getInventoryReport(
             };
         }
 
-        // Use the shared stock calculation function
-        const stockCalculations = await getStockCalculationsForPeriod(
-            period.from,
-            period.to
-        );
-
         // Create a map for quick lookup of stock calculations by part ID
         const stockCalcMap = new Map(
-            stockCalculations.map(calc => [calc.partId, calc])
+            stockCalculations.map((calc) => [calc.partId, calc]),
         );
 
         const inventory = spareParts?.map((part, index) => {
             const stockCalc = stockCalcMap.get(part.id);
-            
+
             return {
                 stt: index + 1,
                 partName: part.name,
@@ -435,7 +433,7 @@ export async function getInventoryReport(
         }) || [];
 
         const report: InventoryReport = {
-            month: period.from.toLocaleDateString("vi-VN", {
+            month: period.from.toLocaleDateString("en-US", {
                 month: "long",
                 year: "numeric",
             }),

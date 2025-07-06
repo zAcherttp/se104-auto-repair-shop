@@ -47,7 +47,7 @@ export function InventoryTable({ data }: InventoryTableProps) {
                 Beginning Stock
               </TableHead>
               <TableHead className="text-center font-bold border">
-                Additions
+                Used
               </TableHead>
               <TableHead className="text-center font-bold border">
                 Ending Stock

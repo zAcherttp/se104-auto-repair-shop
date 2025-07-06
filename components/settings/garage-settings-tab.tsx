@@ -167,7 +167,7 @@ export default function GarageSettingsTab() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="maxPartsPerMonth">Max Parts Per Month</Label>
+            <Label htmlFor="maxPartsPerMonth">Max Parts</Label>
             <Input
               id="maxPartsPerMonth"
               type="number"
@@ -180,9 +180,7 @@ export default function GarageSettingsTab() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="maxLaborTypesPerMonth">
-              Max Labor Types Per Month
-            </Label>
+            <Label htmlFor="maxLaborTypesPerMonth">Max Labor Types</Label>
             <Input
               id="maxLaborTypesPerMonth"
               type="number"

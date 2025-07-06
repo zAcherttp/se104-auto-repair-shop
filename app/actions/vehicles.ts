@@ -1,5 +1,6 @@
 "use server";
 
+import { updateSparePartsStock } from "@/lib/inventory-calculations";
 import { createClient } from "@/supabase/server";
 import {
   VehicleReceptionFormData,
@@ -406,6 +407,15 @@ export async function updateRepairOrder(
   const supabase = await createClient();
 
   try {
+    // First, get the existing items to restore their stock
+    const { data: existingItems, error: fetchError } = await supabase
+      .from("repair_order_items")
+      .select("spare_part_id, quantity")
+      .eq("repair_order_id", repairOrderId)
+      .not("spare_part_id", "is", null);
+
+    if (fetchError) throw fetchError;
+
     // Update the repair order total
     const { error: orderError } = await supabase
       .from("repair_orders")
@@ -435,6 +445,20 @@ export async function updateRepairOrder(
 
       if (itemsError) throw itemsError;
     }
+
+    // Update spare parts stock
+    await updateSparePartsStock({
+      deletedItems: existingItems?.map((item) => ({
+        spare_part_id: item.spare_part_id,
+        quantity: item.quantity || 0,
+      })) || [],
+      newItems: orderItems
+        .filter((item) => item.spare_part_id)
+        .map((item) => ({
+          spare_part_id: item.spare_part_id,
+          quantity: item.quantity,
+        })),
+    });
 
     revalidatePath("/vehicles");
     return { success: true };
@@ -476,6 +500,53 @@ export async function updateRepairOrderSmart(
   const supabase = await createClient();
 
   try {
+    // Get original quantities for deleted items (to restore stock)
+    let deletedItems: Array<
+      { spare_part_id: string | null; quantity: number }
+    > = [];
+    if (changes.deletedItemIds.length > 0) {
+      const { data: itemsToDelete, error: fetchDeleteError } = await supabase
+        .from("repair_order_items")
+        .select("spare_part_id, quantity")
+        .in("id", changes.deletedItemIds)
+        .not("spare_part_id", "is", null);
+
+      if (fetchDeleteError) throw fetchDeleteError;
+      deletedItems = itemsToDelete?.map((item) => ({
+        spare_part_id: item.spare_part_id,
+        quantity: item.quantity || 0,
+      })) || [];
+    }
+
+    // Get original quantities for updated items
+    const updatedItemsWithOriginalQuantity: Array<{
+      id: string;
+      spare_part_id: string | null;
+      quantity: number;
+      originalQuantity: number;
+    }> = [];
+
+    if (changes.updatedItems.length > 0) {
+      for (const item of changes.updatedItems) {
+        const { data: originalItem, error: fetchOriginalError } = await supabase
+          .from("repair_order_items")
+          .select("spare_part_id, quantity")
+          .eq("id", item.id)
+          .single();
+
+        if (fetchOriginalError) throw fetchOriginalError;
+
+        if (item.spare_part_id) {
+          updatedItemsWithOriginalQuantity.push({
+            id: item.id,
+            spare_part_id: item.spare_part_id,
+            quantity: item.quantity,
+            originalQuantity: originalItem.quantity || 0,
+          });
+        }
+      }
+    }
+
     // Update the repair order total
     const { error: orderError } = await supabase
       .from("repair_orders")
@@ -528,6 +599,18 @@ export async function updateRepairOrderSmart(
 
       if (insertError) throw insertError;
     }
+
+    // Update spare parts stock
+    await updateSparePartsStock({
+      deletedItems: deletedItems,
+      updatedItems: updatedItemsWithOriginalQuantity,
+      newItems: changes.newItems
+        .filter((item) => item.spare_part_id)
+        .map((item) => ({
+          spare_part_id: item.spare_part_id,
+          quantity: item.quantity,
+        })),
+    });
 
     revalidatePath("/vehicles");
     return { success: true };
