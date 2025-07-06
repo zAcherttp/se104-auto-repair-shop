@@ -13,7 +13,11 @@ import { Sidebar, SidebarContent, SidebarHeader } from "./ui/sidebar";
 import { AppBanner } from "./sidebar-banner";
 import { useMemo } from "react";
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  userRole?: string;
+}
+
+export function AppSidebar({ userRole, ...props }: AppSidebarProps) {
   const data = useMemo(
     () => ({
       garageInfo: {
@@ -27,9 +31,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         { name: "Inventory", url: "/inventory", icon: Package2 },
         { name: "Reports", url: "/reports", icon: BarChart3 },
       ],
-      garageItems: [{ name: "Settings", url: "/settings", icon: Cog }],
+      garageItems:
+        userRole === "admin"
+          ? [{ name: "Settings", url: "/settings", icon: Cog }]
+          : [],
     }),
-    []
+    [userRole]
   );
 
   return (
@@ -39,7 +46,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavGroup items={data.dashboardItems} label="Dashboard" />
-        <NavGroup items={data.garageItems} label="Garage" />
+        {data.garageItems.length > 0 && (
+          <NavGroup items={data.garageItems} label="Garage" />
+        )}
       </SidebarContent>
     </Sidebar>
   );

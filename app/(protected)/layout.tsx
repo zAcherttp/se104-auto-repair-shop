@@ -13,9 +13,18 @@ export default async function Layout({ children }: { children: ReactNode }) {
     redirect("/login");
   }
 
+  // Fetch user role from profiles table
+  const { data: profileData } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", data.user.id)
+    .single();
+
+  const userRole = profileData?.role || "";
+
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar role={userRole} />
       <SidebarInset>
         <Header />
         {children}
