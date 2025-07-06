@@ -2,6 +2,17 @@
 
 ## Done ✓
 
+- [x] [Settings] Make add employee only create profiles (not Supabase accounts); parameter is just name and role; assign employee to repair order line item by fetching profile.
+
+  - [x] Modified employee creation to only store in profiles table (no auth user creation)
+  - [x] Removed Supabase user account creation from employee flow
+  - [x] Updated createEmployee action to generate UUID for profile-only employees
+  - [x] Updated updateEmployee and deleteEmployee to only work with profiles table
+  - [x] Removed email and password fields from employee creation/edit forms
+  - [x] Updated employees table display to remove email column
+  - [x] Verified employee assignment logic works correctly with profile-only data
+  - [x] Ensured repair order line item assignment uses profiles.id in assigned_to field
+
 - [x] [Task page] boom
 - [x] [Vehicles page] Implement the page with comprehensive vehicle management
 

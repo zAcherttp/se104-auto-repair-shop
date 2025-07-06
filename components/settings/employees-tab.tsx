@@ -111,9 +111,6 @@ export default function EmployeesTab() {
                     Name
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">
-                    Email
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">
                     Role
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">
@@ -136,9 +133,6 @@ export default function EmployeesTab() {
                           {employee.full_name || "N/A"}
                         </span>
                       </div>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-muted-foreground">
-                      {employee.email}
                     </td>
                     <td className="px-6 py-4">
                       <Badge

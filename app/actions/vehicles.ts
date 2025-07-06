@@ -507,6 +507,7 @@ export async function updateRepairOrderSmart(
             labor_type_id: item.labor_type_id,
             labor_cost: item.labor_cost,
             total_amount: item.total_amount,
+            assigned_to: item.assigned_to,
           })
           .eq("id", item.id);
 

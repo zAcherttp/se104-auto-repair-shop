@@ -34,21 +34,14 @@ export function AddEmployeeDialog({
 }: AddEmployeeDialogProps) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    email: "",
     fullName: "",
     role: "",
-    password: "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (
-      !formData.email ||
-      !formData.fullName ||
-      !formData.role ||
-      !formData.password
-    ) {
+    if (!formData.fullName || !formData.role) {
       toast.error("Please fill in all fields");
       return;
     }
@@ -56,16 +49,14 @@ export function AddEmployeeDialog({
     setLoading(true);
     try {
       const formDataObj = new FormData();
-      formDataObj.append("email", formData.email);
       formDataObj.append("fullName", formData.fullName);
       formDataObj.append("role", formData.role);
-      formDataObj.append("password", formData.password);
 
       const response = await createEmployee(formDataObj);
 
       if (response.success) {
         toast.success("Employee created successfully");
-        setFormData({ email: "", fullName: "", role: "", password: "" });
+        setFormData({ fullName: "", role: "" });
         onSuccess();
       } else {
         toast.error(response.error || "Failed to create employee");
@@ -94,18 +85,6 @@ export function AddEmployeeDialog({
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              value={formData.email}
-              onChange={(e) => handleInputChange("email", e.target.value)}
-              placeholder="Enter email address"
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
             <Label htmlFor="fullName">Full Name</Label>
             <Input
               id="fullName"
@@ -130,17 +109,6 @@ export function AddEmployeeDialog({
                 <SelectItem value="employee">Employee</SelectItem>
               </SelectContent>
             </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              value={formData.password}
-              onChange={(e) => handleInputChange("password", e.target.value)}
-              placeholder="Enter password"
-              required
-            />
           </div>
 
           <div className="flex justify-end gap-3 pt-4">

@@ -13,12 +13,12 @@
 
 ## New Tasks
 
-- [ ] [Settings] Make add employee only create profiles (not Supabase accounts); parameter is just name and role; assign employee to repair order line item by fetching profile.
+- [x] [Settings] Make add employee only create profiles (not Supabase accounts); parameter is just name and role; assign employee to repair order line item by fetching profile.
 
-  - [ ] Modify employee creation to only store in profiles table
-  - [ ] Remove Supabase user account creation from employee flow
-  - [ ] Update employee assignment to use profile data instead of auth users
-  - [ ] Update repair order line item assignment logic
+  - [x] Modify employee creation to only store in profiles table
+  - [x] Remove Supabase user account creation from employee flow
+  - [x] Update employee assignment to use profile data instead of auth users
+  - [x] Update repair order line item assignment logic
 
 - [ ] [Inventory report page] Update the current inventory report logic to be calculated that way, no new UI is needed, only logic update.
 

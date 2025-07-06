@@ -36,7 +36,6 @@ export function EditEmployeeDialog({
 }: EditEmployeeDialogProps) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    email: "",
     fullName: "",
     role: "",
   });
@@ -44,7 +43,6 @@ export function EditEmployeeDialog({
   useEffect(() => {
     if (employee) {
       setFormData({
-        email: employee.email,
         fullName: employee.full_name || "",
         role: employee.role,
       });
@@ -54,7 +52,7 @@ export function EditEmployeeDialog({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!employee || !formData.email || !formData.fullName || !formData.role) {
+    if (!employee || !formData.fullName || !formData.role) {
       toast.error("Please fill in all fields");
       return;
     }
@@ -62,7 +60,6 @@ export function EditEmployeeDialog({
     setLoading(true);
     try {
       const formDataObj = new FormData();
-      formDataObj.append("email", formData.email);
       formDataObj.append("fullName", formData.fullName);
       formDataObj.append("role", formData.role);
 
@@ -97,18 +94,6 @@ export function EditEmployeeDialog({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              value={formData.email}
-              onChange={(e) => handleInputChange("email", e.target.value)}
-              placeholder="Enter email address"
-              required
-            />
-          </div>
-
           <div className="space-y-2">
             <Label htmlFor="fullName">Full Name</Label>
             <Input

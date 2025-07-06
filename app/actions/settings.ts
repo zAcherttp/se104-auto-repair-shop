@@ -126,39 +126,18 @@ export async function getEmployees(): Promise<ApiResponse> {
 export async function createEmployee(formData: FormData): Promise<ApiResponse> {
   try {
     const { supabase } = await checkAdminRole();
-    const adminClient = createAdminClient();
 
-    const email = formData.get("email") as string;
     const fullName = formData.get("fullName") as string;
     const role = formData.get("role") as string;
-    const password = formData.get("password") as string;
 
-    // Create user in auth with role in metadata
-    const { data: authData, error: authError } = await adminClient.auth.admin
-      .createUser({
-        email,
-        password,
-        email_confirm: true,
-        user_metadata: {
-          is_garage_admin: role === "admin",
-        },
-      });
-
-    if (authError) throw authError;
-
-    // Wait a moment for any database triggers to complete
-    await new Promise((resolve) => setTimeout(resolve, 100));
-
-    // Create or update profile (upsert to handle potential duplicates from triggers)
+    // Only create profile entry (no auth user creation)
     const { data: profileData, error: profileError } = await supabase
       .from("profiles")
-      .upsert({
-        id: authData.user.id,
-        email,
+      .insert({
+        id: crypto.randomUUID(), // Generate a unique ID for the profile
+        email: '', // Set empty email since no auth user
         full_name: fullName,
         role,
-      }, {
-        onConflict: "id",
       })
       .select()
       .single();
@@ -179,31 +158,14 @@ export async function updateEmployee(
 ): Promise<ApiResponse> {
   try {
     const { supabase } = await checkAdminRole();
-    const adminClient = createAdminClient();
 
-    const email = formData.get("email") as string;
     const fullName = formData.get("fullName") as string;
     const role = formData.get("role") as string;
 
-    // Update user metadata in auth
-    const { error: authUpdateError } = await adminClient.auth.admin
-      .updateUserById(
-        id,
-        {
-          email,
-          user_metadata: {
-            is_garage_admin: role === "admin",
-          },
-        },
-      );
-
-    if (authUpdateError) throw authUpdateError;
-
-    // Update profile (keeping this for complementary data)
+    // Update profile only (no auth user to update)
     const { data, error } = await supabase
       .from("profiles")
       .update({
-        email,
         full_name: fullName,
         role,
       })
@@ -224,20 +186,14 @@ export async function updateEmployee(
 export async function deleteEmployee(id: string): Promise<ApiResponse> {
   try {
     const { supabase } = await checkAdminRole();
-    const adminClient = createAdminClient();
 
-    // Delete profile first
+    // Only delete profile (no auth user to delete)
     const { error: profileError } = await supabase
       .from("profiles")
       .delete()
       .eq("id", id);
 
     if (profileError) throw profileError;
-
-    // Delete user from auth using admin client
-    const { error: authError } = await adminClient.auth.admin.deleteUser(id);
-
-    if (authError) throw authError;
 
     revalidatePath("/settings");
     return { success: true };
