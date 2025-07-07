@@ -24,9 +24,12 @@ import SubmitButton from "./submit-button";
 import { toast } from "sonner";
 import { Login } from "@/app/actions/login";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export function LoginForm() {
   const router = useRouter();
+  const t = useTranslations("auth.login");
+
   const form = useForm<LoginFormData>({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
@@ -38,10 +41,10 @@ export function LoginForm() {
   const onSubmit = async (data: LoginFormData) => {
     const result = await Login(data);
     if (result.error) {
-      toast.error("Login failed");
+      toast.error(t("error"));
     } else {
       router.push("/reception");
-      toast.success("Login successful!");
+      toast.success(t("success"));
     }
   };
 
@@ -49,10 +52,8 @@ export function LoginForm() {
     <div className={cn("flex flex-col gap-6")}>
       <Card>
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account
-          </CardDescription>
+          <CardTitle>{t("title")}</CardTitle>
+          <CardDescription>{t("subtitle")}</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -62,9 +63,9 @@ export function LoginForm() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t("email")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="m@example.com" {...field} />
+                      <Input placeholder={t("emailPlaceholder")} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -75,11 +76,11 @@ export function LoginForm() {
                 name="password"
                 render={({ field }) => (
                   <FormItem className="pb-4">
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{t("password")}</FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="••••••••"
+                        placeholder={t("passwordPlaceholder")}
                         {...field}
                       />
                     </FormControl>
@@ -91,7 +92,7 @@ export function LoginForm() {
                 className="w-full"
                 disabled={form.formState.isSubmitting}
               >
-                Login
+                {t("button")}
               </SubmitButton>
             </form>
           </Form>

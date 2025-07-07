@@ -9,9 +9,21 @@ import {
   ClipboardList,
 } from "lucide-react";
 import { NavGroup } from "./nav-group";
-import { Sidebar, SidebarContent, SidebarHeader } from "./ui/sidebar";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+} from "./ui/sidebar";
 import { AppBanner } from "./sidebar-banner";
 import { useMemo } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+} from "./ui/select";
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   isAdmin?: boolean;
@@ -27,7 +39,7 @@ export function AppSidebar({ isAdmin, ...props }: AppSidebarProps) {
       dashboardItems: [
         { name: "Reception", url: "/reception", icon: ClipboardList },
         { name: "Vehicles", url: "/vehicles", icon: Car },
-        { name: "Invoices", url: "/invoices", icon: CreditCard },
+        { name: "Payments", url: "/payments", icon: CreditCard },
         { name: "Inventory", url: "/inventory", icon: Package2 },
         { name: "Reports", url: "/reports", icon: BarChart3 },
       ],
@@ -48,6 +60,17 @@ export function AppSidebar({ isAdmin, ...props }: AppSidebarProps) {
         {data.garageItems.length > 0 && (
           <NavGroup items={data.garageItems} label="Garage" />
         )}
+        <SidebarFooter>
+          <Select>
+            <SelectGroup>
+              <SelectLabel>Language</SelectLabel>
+            </SelectGroup>
+            <SelectContent>
+              <SelectItem value="en">English</SelectItem>
+              <SelectItem value="vi">Tiếng Việt</SelectItem>
+            </SelectContent>
+          </Select>
+        </SidebarFooter>
       </SidebarContent>
     </Sidebar>
   );

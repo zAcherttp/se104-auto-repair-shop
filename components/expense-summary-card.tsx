@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { CreditCard } from "lucide-react";
 import { OrderDataProps } from "@/types";
 import { OrderTrackingPaymentDialog } from "@/components/dialogs/order-tracking-payment-dialog";
+import { useVehicleDebt } from "@/hooks/use-vehicle-debt";
 
 type ExpenseSummaryCardProps = {
   orderData: OrderDataProps;
@@ -16,6 +17,16 @@ const ExpenseSummaryCard = ({
 }: ExpenseSummaryCardProps) => {
   const { vehicle, RepairOrderWithItemsDetails } = orderData;
 
+  // Use the vehicle debt hook to get real-time debt information
+  const {
+    data: debtData,
+    isLoading: debtLoading,
+    refetch: refetchDebt,
+  } = useVehicleDebt({
+    vehicleId: vehicle.id,
+    enabled: true,
+  });
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -23,18 +34,47 @@ const ExpenseSummaryCard = ({
     }).format(amount);
   };
 
-  // Calculate total expense across all repair orders
-  const totalExpense = RepairOrderWithItemsDetails.reduce(
-    (sum, order) => sum + (order.total_amount || 0),
-    0
-  );
+  // Use data from the hook if available, otherwise fallback to calculating from orderData
+  const totalExpense =
+    debtData?.totalExpense ||
+    RepairOrderWithItemsDetails.reduce(
+      (sum, order) => sum + (order.total_amount || 0),
+      0
+    );
 
-  // Calculate total paid amount from all payments
   const totalPaid =
-    vehicle.payments?.reduce((sum, payment) => sum + payment.amount, 0) || 0;
+    debtData?.totalPaid ||
+    vehicle.payments?.reduce((sum, payment) => sum + payment.amount, 0) ||
+    0;
 
-  // Calculate remaining amount
-  const remainingAmount = totalExpense - totalPaid;
+  const remainingAmount = debtData?.remainingDebt ?? totalExpense - totalPaid;
+
+  // Enhanced onPaymentSuccess that refetches debt data
+  const handlePaymentSuccess = async () => {
+    await refetchDebt();
+    onPaymentSuccess?.();
+  };
+
+  // Show loading state if debt data is being fetched
+  if (debtLoading) {
+    return (
+      <Card className="mb-6 border-l-4 border-l-primary">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">Summary</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center p-8">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+              <p className="text-muted-foreground">
+                Loading payment information...
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="mb-6 border-l-4 border-l-primary">
@@ -111,8 +151,7 @@ const ExpenseSummaryCard = ({
                 }
                 vehicle={orderData.vehicle}
                 customer={orderData.customer}
-                debtAmount={remainingAmount}
-                onPaymentSuccess={onPaymentSuccess}
+                onPaymentSuccess={handlePaymentSuccess}
               />
             </div>
           )}

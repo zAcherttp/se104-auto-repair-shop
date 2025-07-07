@@ -5,15 +5,15 @@ import "./globals.css";
 import { Providers } from "@/components/providers/providers";
 import { ReactNode } from "react";
 import { ReactScan } from "@/components/react-scan";
+import { getLocale, getMessages } from "next-intl/server";
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+const defaultUrl = "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: "Garage Management",
+  description:
+    "A comprehensive garage management system for automotive repair shops.",
 };
 
 const geistSans = Geist({
@@ -22,16 +22,19 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <ReactScan />
       <body className={`${geistSans.className} antialiased`}>
-        <Providers>
+        <Providers locale={locale} messages={messages}>
           <Toaster richColors={true} />
           {children}
         </Providers>

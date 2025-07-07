@@ -1,0 +1,106 @@
+{
+  "landing": {
+    "title": "AutoRepair Manager",
+    "subtitle": "Comprehensive vehicle repair management system",
+    "contactConfig": "Contact information can be configured in the admin settings.",
+    "staffLogin": {
+      "title": "Login as Garage Member",
+      "description": "Access the management system to handle vehicle reception, repairs, and payments",
+      "button": "Staff Login"
+    },
+    "trackOrder": {
+      "title": "Track My Order",
+      "description": "Check the status of your vehicle repair by entering your license plate number",
+      "button": "Track Order"
+    },
+    "features": {
+      "title": "Why Choose AutoRepair Manager?",
+      "vehicleManagement": {
+        "title": "Vehicle Management",
+        "description": "Complete vehicle reception and tracking system"
+      },
+      "staffManagement": {
+        "title": "Staff Management",
+        "description": "Role-based access control for admins and employees"
+      },
+      "customerTracking": {
+        "title": "Customer Tracking",
+        "description": "Real-time order tracking for customers"
+      }
+    }
+  },
+  "auth": {
+    "back": "Back",
+    "login": {
+      "title": "Login to your account",
+      "subtitle": "Enter your email below to login to your account",
+      "email": "Email",
+      "emailPlaceholder": "m@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "button": "Login",
+      "success": "Login successful!",
+      "error": "Login failed"
+    },
+    "trackOrder": {
+      "title": "Track Your Order",
+      "subtitle": "Enter your license plate to check repair status",
+      "licensePlate": "License plate number",
+      "plateplaceholder": "ABC-123",
+      "searchButton": "Search",
+      "vehicleNotFound": "Vehicle not found",
+      "backToSearch": "Back to Search",
+      "noOrders": {
+        "title": "No Repair Orders Found",
+        "description": "This vehicle has no repair orders in our system."
+      },
+      "vehicleInfo": {
+        "title": "Vehicle Information",
+        "licensePlate": "License Plate",
+        "brand": "Brand",
+        "model": "Model",
+        "year": "Year"
+      },
+      "customerInfo": {
+        "title": "Customer Information",
+        "name": "Name",
+        "phone": "Phone",
+        "address": "Address"
+      },
+      "repairHistory": {
+        "title": "Repair History",
+        "orderId": "Order ID",
+        "date": "Date",
+        "status": "Status",
+        "total": "Total",
+        "noItems": "No items in this order",
+        "serviceLabor": "Service/Labor",
+        "parts": "Parts",
+        "quantity": "Qty",
+        "unitPrice": "Unit Price",
+        "amount": "Amount",
+        "description": "Description",
+        "type": "Type",
+        "orderTotal": "Order Total",
+        "completedOn": "Completed on",
+        "partLabel": "Part",
+        "laborType": "Labor",
+        "partsType": "Parts"
+      },
+      "status": {
+        "pending": "Pending",
+        "in-progress": "In Progress",
+        "completed": "Completed"
+      }
+    },
+    "error": {
+      "title": "Something went wrong",
+      "message": "Sorry, something went wrong"
+    }
+  },
+  "language": {
+    "switch": "Switch Language",
+    "english": "English",
+    "vietnamese": "Tiếng Việt"
+  }
+}

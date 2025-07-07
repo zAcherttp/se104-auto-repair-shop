@@ -17,12 +17,12 @@ import { toast } from "sonner";
 import CurrencyInput from "react-currency-input-field";
 import { createClient } from "@/supabase/client";
 import { Vehicle, Customer } from "@/types";
+import { useVehicleDebt } from "@/hooks/use-vehicle-debt";
 
 interface OrderTrackingPaymentDialogProps {
   trigger: React.ReactNode;
   vehicle: Vehicle;
   customer: Customer;
-  debtAmount: number;
   onPaymentSuccess?: () => void;
 }
 
@@ -30,13 +30,24 @@ export function OrderTrackingPaymentDialog({
   trigger,
   vehicle,
   customer,
-  debtAmount,
   onPaymentSuccess,
 }: OrderTrackingPaymentDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [paymentAmount, setPaymentAmount] = useState<number>(0);
   const [showQRCode, setShowQRCode] = useState(false);
+
+  // Use the vehicle debt hook to fetch and manage debt data
+  const {
+    data: debtData,
+    isLoading: debtLoading,
+    refetch: refetchDebt,
+  } = useVehicleDebt({
+    vehicleId: vehicle.id,
+    enabled: open, // Only fetch when dialog is open
+  });
+
+  const debtAmount = debtData?.remainingDebt || 0;
 
   const handleProceedToPayment = () => {
     if (paymentAmount <= 0) {
@@ -67,50 +78,20 @@ export function OrderTrackingPaymentDialog({
     try {
       const supabase = createClient();
 
-      // Calculate current debt to ensure we don't overpay
-      const { data: vehicleData, error: vehicleError } = await supabase
-        .from("vehicles")
-        .select(
-          `
-          id,
-          total_paid,
-          repair_orders (
-            total_amount
-          ),
-          payments (
-            amount
-          )
-        `
-        )
-        .eq("id", vehicle.id)
-        .single();
-
-      if (vehicleError) {
-        toast.error("Failed to fetch vehicle data");
+      // Use the current debt data from the hook
+      if (!debtData) {
+        toast.error("Unable to fetch current debt information");
         return;
       }
 
-      // Calculate current debt
-      const totalRepairCosts =
-        vehicleData.repair_orders?.reduce(
-          (sum, order) => sum + (order.total_amount || 0),
-          0
-        ) || 0;
-      const totalPaid =
-        vehicleData.payments?.reduce(
-          (sum, payment) => sum + payment.amount,
-          0
-        ) || 0;
-      const remainingDebt = totalRepairCosts - totalPaid;
-
-      if (remainingDebt <= 0) {
+      if (debtData.remainingDebt <= 0) {
         toast.error("No outstanding debt found for this vehicle");
         return;
       }
 
-      if (paymentAmount > remainingDebt) {
+      if (paymentAmount > debtData.remainingDebt) {
         toast.error(
-          `Payment amount exceeds remaining debt of $${remainingDebt.toFixed(
+          `Payment amount exceeds remaining debt of $${debtData.remainingDebt.toFixed(
             2
           )}`
         );
@@ -121,7 +102,7 @@ export function OrderTrackingPaymentDialog({
       const { error: paymentError } = await supabase.from("payments").insert({
         vehicle_id: vehicle.id,
         amount: paymentAmount,
-        payment_method: "online",
+        payment_method: "bank-transfer",
         created_by: null, // Set to null for public order tracking payments
         payment_date: new Date().toISOString().split("T")[0],
       });
@@ -132,7 +113,7 @@ export function OrderTrackingPaymentDialog({
       }
 
       // Update vehicle's total_paid
-      const newTotalPaid = totalPaid + paymentAmount;
+      const newTotalPaid = debtData.totalPaid + paymentAmount;
       const { error: updateError } = await supabase
         .from("vehicles")
         .update({ total_paid: newTotalPaid })
@@ -145,6 +126,11 @@ export function OrderTrackingPaymentDialog({
 
       toast.success("Payment confirmed successfully");
       setOpen(false);
+
+      // Refetch the debt data to get updated values
+      await refetchDebt();
+
+      // Call the parent callback to refresh order data
       onPaymentSuccess?.();
     } catch (error) {
       console.error("Error processing payment:", error);
@@ -161,6 +147,28 @@ export function OrderTrackingPaymentDialog({
       setShowQRCode(false);
     }
   }, [open, debtAmount]);
+
+  // Don't render if there's no debt or if still loading
+  if (debtLoading && open) {
+    return (
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>{trigger}</DialogTrigger>
+        <DialogContent className="w-80 sm:w-full sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Payment QR Code</DialogTitle>
+          </DialogHeader>
+          <div className="flex items-center justify-center p-8">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+              <p className="text-muted-foreground">
+                Loading payment information...
+              </p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   // Don't render if there's no debt
   if (debtAmount <= 0) {

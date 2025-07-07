@@ -1,7 +1,6 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -17,6 +16,7 @@ import {
   RepairOrderWithItemsDetails,
 } from "@/types";
 import ExpenseSummaryCard from "./expense-summary-card";
+import { useTranslations } from "next-intl";
 
 type OrderDataDetailsProps = {
   orderData: OrderDataProps;
@@ -29,20 +29,8 @@ const OrderDetails = ({
   onBack,
   onPaymentSuccess,
 }: OrderDataDetailsProps) => {
+  const t = useTranslations("auth.trackOrder");
   const { vehicle, customer, RepairOrderWithItemsDetails } = orderData;
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "completed":
-        return "bg-green-100 text-green-800";
-      case "in-progress":
-        return "bg-blue-100 text-blue-800";
-      case "pending":
-        return "bg-orange-100 text-orange-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -60,15 +48,15 @@ const OrderDetails = ({
         <div className="container mx-auto max-w-4xl">
           <Button onClick={onBack} className="mb-6">
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Search
+            {t("backToSearch")}
           </Button>
           <Card>
             <CardContent className="text-center py-12">
               <Car className="w-16 h-16 mx-auto  mb-4" />
               <h3 className="text-xl font-semibold mb-2">
-                No Repair Orders Found
+                {t("noOrders.title")}
               </h3>
-              <p>This vehicle has no repair orders in our system.</p>
+              <p>{t("noOrders.description")}</p>
             </CardContent>
           </Card>
         </div>
@@ -81,7 +69,7 @@ const OrderDetails = ({
       <div className="container mx-auto max-w-4xl">
         <Button onClick={onBack} className="mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Search
+          {t("backToSearch")}
         </Button>
 
         {/* Vehicle & Customer Info */}
@@ -90,16 +78,17 @@ const OrderDetails = ({
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Car className="w-5 h-5" />
-                Vehicle Information
+                {t("vehicleInfo.title")}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
                 <div>
-                  <strong>License Plate:</strong> {vehicle.license_plate}
+                  <strong>{t("vehicleInfo.licensePlate")}:</strong>{" "}
+                  {vehicle.license_plate}
                 </div>
                 <div>
-                  <strong>Brand:</strong> {vehicle.brand}
+                  <strong>{t("vehicleInfo.brand")}:</strong> {vehicle.brand}
                 </div>
               </div>
             </CardContent>
@@ -109,17 +98,17 @@ const OrderDetails = ({
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <User className="w-5 h-5" />
-                Customer Information
+                {t("customerInfo.title")}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
                 <div>
-                  <strong>Name:</strong> {customer.name}
+                  <strong>{t("customerInfo.name")}:</strong> {customer.name}
                 </div>
                 {customer.phone && (
                   <div>
-                    <strong>Phone:</strong> {customer.phone}
+                    <strong>{t("customerInfo.phone")}:</strong> {customer.phone}
                   </div>
                 )}
                 {customer.email && (
@@ -147,31 +136,35 @@ const OrderDetails = ({
                   <div>
                     <CardTitle className="flex items-center gap-2">
                       <Calendar className="w-5 h-5" />
-                      Repair Order #{order.id.slice(0, 8)}
+                      {t("repairHistory.orderId")} #{order.id.slice(0, 8)}
                     </CardTitle>
                     <p className="text-sm text-gray-600 mt-1">
-                      Reception Date:
+                      {t("repairHistory.date")}:
                       {new Date(
                         order.reception_date || ""
                       ).toLocaleDateString()}
                     </p>
                   </div>
-                  <Badge className={getStatusColor(order.status)}>
-                    {order.status.replace("-", " ")}
-                  </Badge>
                 </div>
               </CardHeader>
               <CardContent>
                 {order && order.repair_order_items.length > 0 && (
                   <div className="mb-6">
-                    <h4 className="font-semibold mb-3">Services & Parts</h4>
+                    <h4 className="font-semibold mb-3">
+                      {t("repairHistory.serviceLabor")} &{" "}
+                      {t("repairHistory.parts")}
+                    </h4>
                     <div className="rounded-md border">
                       <Table>
                         <TableHeader>
                           <TableRow>
-                            <TableHead>Description</TableHead>
-                            <TableHead>Type</TableHead>
-                            <TableHead className="text-right">Amount</TableHead>
+                            <TableHead>
+                              {t("repairHistory.description")}
+                            </TableHead>
+                            <TableHead>{t("repairHistory.type")}</TableHead>
+                            <TableHead className="text-right">
+                              {t("repairHistory.amount")}
+                            </TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -182,13 +175,17 @@ const OrderDetails = ({
                                   {item.description}
                                   {item.spare_part_id && (
                                     <div className="text-sm text-gray-600">
-                                      Part: {item.spare_part.name} (Qty:
+                                      {t("repairHistory.partLabel")}:{" "}
+                                      {item.spare_part.name} (
+                                      {t("repairHistory.quantity")}:
                                       {item.quantity})
                                     </div>
                                   )}
                                 </TableCell>
                                 <TableCell>
-                                  {item.spare_part ? "Parts" : "Labor"}
+                                  {item.spare_part
+                                    ? t("repairHistory.partsType")
+                                    : t("repairHistory.laborType")}
                                   {item.labor_type && (
                                     <div className="text-sm text-gray-600">
                                       {item.labor_type.name}
@@ -210,7 +207,9 @@ const OrderDetails = ({
                 {/* Order Total */}
                 <div className="mt-4 pt-4 border-t">
                   <div className="flex justify-between items-center">
-                    <span className="font-semibold">Order Total:</span>
+                    <span className="font-semibold">
+                      {t("repairHistory.orderTotal")}:
+                    </span>
                     <span className="text-lg font-bold">
                       {formatCurrency(order.total_amount || 0)}
                     </span>
@@ -219,7 +218,7 @@ const OrderDetails = ({
 
                 {order.completion_date && (
                   <div className="mt-4 text-sm text-gray-600">
-                    <strong>Completed on:</strong>
+                    <strong>{t("repairHistory.completedOn")}:</strong>
                     {new Date(order.completion_date).toLocaleDateString()}
                   </div>
                 )}

@@ -312,6 +312,7 @@
   - [x] Stock calculations now work correctly with dynamically updated stock quantities
 
 - [x] [Inventory Calculation Simplification] Simplified inventory report calculations with dynamic stock _(Completed 2025-01-07)_
+
   - [x] Removed complex multi-period queries that were working backwards from static stock
   - [x] Simplified to use current dynamic stock quantities as the source of truth
   - [x] For period reports: beginning stock = current stock + usage during period
@@ -319,3 +320,46 @@
   - [x] Reduced from 4 parallel queries to 2 for period-based calculations
   - [x] Eliminated complex previous month calculations and usage windowing
   - [x] Much cleaner and more maintainable code with dynamic stock updates in place
+
+- [x] [Landing Page] Internationalization - Vietnamese and English support _(Completed 2025-01-07)_
+
+  - [x] Implemented next-intl for internationalization support
+  - [x] Created i18n configuration in `i18n/request.ts` with cookie-based locale detection
+  - [x] Added English messages file with comprehensive landing page translations
+  - [x] Added Vietnamese messages file with proper translations
+  - [x] Created LanguageSwitcher component with dropdown for language selection
+  - [x] Updated landing page to use translation keys with useTranslations hook
+  - [x] Enhanced providers to pass locale and messages to NextIntlClientProvider
+  - [x] Updated root layout to fetch locale and messages from server
+  - [x] Added language switcher to top-right corner of landing page
+  - [x] Supports dynamic language switching with page reload and cookie persistence
+  - [x] All landing page text now supports both English and Vietnamese
+  - [x] Properly integrated with existing Next.js 15 App Router architecture
+
+- [x] [Authentication Routes] Internationalization - Vietnamese and English support _(Completed 2025-01-07)_
+
+  - [x] Extended i18n support to all authentication routes (login, track-order, error)
+  - [x] Updated login page and form components to use translation keys
+  - [x] Translated track-order page including search form and vehicle information
+  - [x] Completed order-data-detail component translations for repair history
+  - [x] Added translations for table headers (Description, Type, Amount, Order Total, Completed on)
+  - [x] Translated error page with proper error messages
+  - [x] Added comprehensive Vietnamese translations for all auth flows
+  - [x] Updated translation files with all necessary keys for authentication routes
+  - [x] Integrated language switcher in track-order page
+  - [x] All authentication routes now fully support both English and Vietnamese
+  - [x] Proper translation of status labels, form fields, and user messages
+  - [x] Complete i18n coverage for landing page and authentication flow
+
+- [x] [Payment Dialog] Refactored vehicle debt fetching to use TanStack Query hook _(Completed 2025-07-07)_
+
+  - [x] Created `useVehicleDebt` hook for centralized vehicle debt data management
+  - [x] Refactored OrderTrackingPaymentDialog to use TanStack Query instead of inline Supabase calls
+  - [x] Removed `debtAmount` prop from payment dialog interface - now calculated internally
+  - [x] Updated ExpenseSummaryCard to use useVehicleDebt hook for real-time debt information
+  - [x] Implemented automatic refetching of debt data after successful payments
+  - [x] Added loading states for debt information fetching
+  - [x] Enhanced payment success handling with automatic data refresh
+  - [x] Simplified track-order page payment success logic (hook handles data refresh)
+  - [x] Improved caching and performance with TanStack Query for debt calculations
+  - [x] Ensured payment amounts are always validated against current debt levels

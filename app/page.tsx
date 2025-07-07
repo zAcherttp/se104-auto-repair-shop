@@ -6,14 +6,22 @@ import { Button } from "@/components/ui/button";
 import { Car, Users, Search, Phone, Mail, MapPin } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useGarageInfo } from "@/hooks/use-garage-info";
+import { useTranslations } from "next-intl";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 export default function Page() {
   const router = useRouter();
   const { data: garageInfo, isLoading: isGarageInfoLoading } = useGarageInfo();
+  const t = useTranslations("landing");
 
   return (
     <div className="min-h-screen bg-gradient-to-br">
       <div className="container mx-auto px-4 py-16">
+        {/* Language Switcher */}
+        <div className="flex justify-end mb-8">
+          <LanguageSwitcher />
+        </div>
+
         {/* Show loading state while fetching garage info */}
         {isGarageInfoLoading ? (
           <div className="text-center mb-16">
@@ -27,11 +35,9 @@ export default function Page() {
             {/* Header */}
             <div className="text-center mb-16">
               <h1 className="text-5xl font-bold mb-4">
-                {garageInfo?.garageName || "AutoRepair Manager"}
+                {garageInfo?.garageName || t("title")}
               </h1>
-              <p className="text-xl text-slate-600">
-                Comprehensive vehicle repair management system
-              </p>
+              <p className="text-xl text-slate-600">{t("subtitle")}</p>
 
               {/* Contact Information */}
               {garageInfo && (
@@ -62,8 +68,7 @@ export default function Page() {
                     !garageInfo.emailAddress &&
                     !garageInfo.address && (
                       <div className="text-slate-500 text-sm">
-                        Contact information can be configured in the admin
-                        settings.
+                        {t("contactConfig")}
                       </div>
                     )}
                 </div>
@@ -80,18 +85,19 @@ export default function Page() {
               <div className="mx-auto mb-4 w-16 h-16 rounded-full flex items-center justify-center">
                 <Users className="w-8 h-8 text-blue-600" />
               </div>
-              <CardTitle className="text-2xl">Login as Garage Member</CardTitle>
+              <CardTitle className="text-2xl">
+                {t("staffLogin.title")}
+              </CardTitle>
             </CardHeader>
             <CardContent className="text-center">
               <p className="text-slate-600 mb-6">
-                Access the management system to handle vehicle reception,
-                repairs, and payments
+                {t("staffLogin.description")}
               </p>
               <Button
                 onClick={() => router.push("/login")}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-lg py-3"
               >
-                Staff Login
+                {t("staffLogin.button")}
               </Button>
             </CardContent>
           </Card>
@@ -102,18 +108,19 @@ export default function Page() {
               <div className="mx-auto mb-4 w-16 h-16 rounded-full flex items-center justify-center">
                 <Search className="w-8 h-8 text-green-600" />
               </div>
-              <CardTitle className="text-2xl">Track My Order</CardTitle>
+              <CardTitle className="text-2xl">
+                {t("trackOrder.title")}
+              </CardTitle>
             </CardHeader>
             <CardContent className="text-center">
               <p className="text-slate-600 mb-6">
-                Check the status of your vehicle repair by entering your license
-                plate number
+                {t("trackOrder.description")}
               </p>
               <Button
                 onClick={() => router.push("/track-order")}
                 className="w-full bg-green-600 hover:bg-green-700 text-lg py-3"
               >
-                Track Order
+                {t("trackOrder.button")}
               </Button>
             </CardContent>
           </Card>
@@ -121,35 +128,38 @@ export default function Page() {
 
         {/* Features */}
         <div className="mt-20 text-center">
-          <h2 className="text-3xl font-bold text-slate-800 mb-8">
-            Why Choose AutoRepair Manager?
-          </h2>
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <div className="text-center">
               <div className="mx-auto mb-4 w-12 h-12 rounded-full flex items-center justify-center">
                 <Car className="w-6 h-6 text-blue-600" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">Vehicle Management</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                {t("features.vehicleManagement.title")}
+              </h3>
               <p className="text-slate-600">
-                Complete vehicle reception and tracking system
+                {t("features.vehicleManagement.description")}
               </p>
             </div>
             <div className="text-center">
               <div className="mx-auto mb-4 w-12 h-12  rounded-full flex items-center justify-center">
                 <Users className="w-6 h-6 text-green-600" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">Staff Management</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                {t("features.staffManagement.title")}
+              </h3>
               <p className="text-slate-600">
-                Role-based access control for admins and employees
+                {t("features.staffManagement.description")}
               </p>
             </div>
             <div className="text-center">
               <div className="mx-auto mb-4 w-12 h-12  rounded-full flex items-center justify-center">
                 <Search className="w-6 h-6 text-purple-600" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">Customer Tracking</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                {t("features.customerTracking.title")}
+              </h3>
               <p className="text-slate-600">
-                Real-time order tracking for customers
+                {t("features.customerTracking.description")}
               </p>
             </div>
           </div>

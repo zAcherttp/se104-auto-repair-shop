@@ -1,0 +1,105 @@
+{
+  "landing": {
+    "title": "Hệ Thống Quản Lý Xưởng Sửa Chữa",
+    "subtitle": "Hệ thống quản lý sửa chữa xe hơi toàn diện",
+    "contactConfig": "Thông tin liên hệ có thể được cấu hình trong cài đặt quản trị.",
+    "staffLogin": {
+      "title": "Đăng Nhập Nhân Viên",
+      "description": "Truy cập hệ thống quản lý để xử lý tiếp nhận xe, sửa chữa và thanh toán",
+      "button": "Đăng Nhập Nhân Viên"
+    },
+    "trackOrder": {
+      "title": "Tra Cứu Đơn Hàng",
+      "description": "Kiểm tra tình trạng sửa chữa xe của bạn bằng cách nhập biển số xe",
+      "button": "Tra Cứu Đơn Hàng"
+    },
+    "features": {
+      "vehicleManagement": {
+        "title": "Quản Lý Xe",
+        "description": "Hệ thống tiếp nhận và theo dõi xe hoàn chỉnh"
+      },
+      "staffManagement": {
+        "title": "Quản Lý Nhân Viên",
+        "description": "Kiểm soát truy cập theo vai trò cho quản trị viên và nhân viên"
+      },
+      "customerTracking": {
+        "title": "Theo Dõi Khách Hàng",
+        "description": "Theo dõi đơn hàng thời gian thực cho khách hàng"
+      }
+    }
+  },
+  "auth": {
+    "back": "Trở lại",
+    "login": {
+      "title": "Đăng nhập vào tài khoản của bạn",
+      "subtitle": "Nhập email của bạn bên dưới để đăng nhập vào tài khoản của bạn",
+      "email": "Email",
+      "emailPlaceholder": "m@example.com",
+      "password": "Mật khẩu",
+      "passwordPlaceholder": "••••••••",
+      "button": "Đăng nhập",
+      "success": "Đăng nhập thành công!",
+      "error": "Đăng nhập thất bại"
+    },
+    "trackOrder": {
+      "title": "Tra Cứu Đơn Hàng",
+      "subtitle": "Nhập biển số xe để kiểm tra tình trạng sửa chữa",
+      "licensePlate": "Số biển số xe",
+      "plateplaceholder": "30A-12345",
+      "searchButton": "Tìm kiếm",
+      "vehicleNotFound": "Không tìm thấy xe",
+      "backToSearch": "Trở lại Tìm kiếm",
+      "noOrders": {
+        "title": "Không Tìm Thấy Đơn Sửa Chữa",
+        "description": "Xe này không có đơn sửa chữa nào trong hệ thống của chúng tôi."
+      },
+      "vehicleInfo": {
+        "title": "Thông Tin Xe",
+        "licensePlate": "Biển Số Xe",
+        "brand": "Hãng Xe",
+        "model": "Mẫu Xe",
+        "year": "Năm Sản Xuất"
+      },
+      "customerInfo": {
+        "title": "Thông Tin Khách Hàng",
+        "name": "Tên",
+        "phone": "Số Điện Thoại",
+        "address": "Địa Chỉ"
+      },
+      "repairHistory": {
+        "title": "Lịch Sử Sửa Chữa",
+        "orderId": "Mã Đơn Hàng",
+        "date": "Ngày",
+        "status": "Trạng Thái",
+        "total": "Tổng Cộng",
+        "noItems": "Không có mục nào trong đơn này",
+        "serviceLabor": "Dịch Vụ/Công Việc",
+        "parts": "Linh Kiện",
+        "quantity": "SL",
+        "unitPrice": "Đơn Giá",
+        "amount": "Thành Tiền",
+        "description": "Mô Tả",
+        "type": "Loại",
+        "orderTotal": "Tổng Đơn Hàng",
+        "completedOn": "Hoàn thành vào",
+        "partLabel": "Linh kiện",
+        "laborType": "Công việc",
+        "partsType": "Linh kiện"
+      },
+      "status": {
+        "pending": "Chờ Xử Lý",
+        "in-progress": "Đang Thực Hiện",
+        "completed": "Hoàn Thành"
+      }
+    },
+    "error": {
+      "title": "Có lỗi xảy ra",
+      "message": "Xin lỗi, có lỗi xảy ra"
+    }
+  },
+  "language": {
+    "switch": "Chuyển Ngôn Ngữ",
+    "english": "English",
+    "vietnamese": "Tiếng Việt"
+  }
+}

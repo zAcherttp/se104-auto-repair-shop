@@ -31,8 +31,12 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SubmitButton from "@/components/submit-button";
+import { useTranslations } from "next-intl";
 
 export default function TrackOrderPage() {
+  const t = useTranslations("auth");
+  const tTrack = useTranslations("auth.trackOrder");
+
   const form = useForm<RepairTrackingFormData>({
     resolver: zodResolver(RepairTrackingFormSchema),
     defaultValues: {
@@ -64,7 +68,7 @@ export default function TrackOrderPage() {
         .single();
 
       if (vehicleError || !vehicle) {
-        toast.error(vehicleError?.message || "Vehicle not found");
+        toast.error(vehicleError?.message || tTrack("vehicleNotFound"));
         setOrderData(null);
         setLoading(false);
         return;
@@ -108,56 +112,13 @@ export default function TrackOrderPage() {
   };
 
   if (orderData) {
-    const handlePaymentSuccess = async () => {
-      // Refresh the order data after successful payment
-      try {
-        const { data: vehicle, error: vehicleError } = await supabase
-          .from("vehicles")
-          .select(
-            `
-            *,
-            customer:customers(*),
-            payments(*)
-          `
-          )
-          .eq("id", orderData.vehicle.id)
-          .single();
-
-        if (vehicleError || !vehicle) {
-          toast.error("Failed to refresh order data");
-          return;
-        }
-
-        // Get repair orders for this vehicle
-        const { data: repairOrders, error: ordersError } = await supabase
-          .from("repair_orders")
-          .select(
-            `
-            *,
-            repair_order_items(
-              *,
-              spare_part:spare_parts(*),
-              labor_type:labor_types(*)
-            )
-          `
-          )
-          .eq("vehicle_id", vehicle.id)
-          .order("created_at", { ascending: false });
-
-        if (ordersError) {
-          toast.error("Failed to refresh repair orders");
-          return;
-        }
-
-        setOrderData({
-          vehicle,
-          customer: vehicle.customer,
-          RepairOrderWithItemsDetails: repairOrders || [],
-        });
-      } catch (error) {
-        console.error("Error refreshing order data:", error);
-        toast.error("Failed to refresh order data");
-      }
+    const handlePaymentSuccess = () => {
+      // The ExpenseSummaryCard now uses TanStack Query and will automatically
+      // refetch debt data when payments are made, so we don't need to manually
+      // refresh the order data here. The payment information will be updated
+      // automatically via the useVehicleDebt hook.
+      // Optional: Show a success toast or perform any other actions needed
+      // after payment success, but data refresh is handled by the hook
     };
 
     return (
@@ -178,14 +139,12 @@ export default function TrackOrderPage() {
           onClick={() => router.push("/")}
         >
           <ArrowLeft className="w-4 h-4" />
-          Back
+          {t("back")}
         </Button>
         <Card className="max-w-md">
           <CardHeader>
-            <CardTitle>Track Your Order</CardTitle>
-            <CardDescription>
-              Enter your license plate to check repair status
-            </CardDescription>
+            <CardTitle>{tTrack("title")}</CardTitle>
+            <CardDescription>{tTrack("subtitle")}</CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -198,10 +157,10 @@ export default function TrackOrderPage() {
                   name="query"
                   render={({ field }) => (
                     <FormItem className="pb-4">
-                      <FormLabel>License plate number</FormLabel>
+                      <FormLabel>{tTrack("licensePlate")}</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="ABC-123"
+                          placeholder={tTrack("plateplaceholder")}
                           className="uppercase"
                           {...field}
                         />
@@ -212,7 +171,7 @@ export default function TrackOrderPage() {
                 />
 
                 <SubmitButton disabled={loading} className="w-full">
-                  Search
+                  {tTrack("searchButton")}
                 </SubmitButton>
               </form>
             </Form>
