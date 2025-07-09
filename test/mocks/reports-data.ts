@@ -1,4 +1,5 @@
-import { SalesReport, InventoryReport, SalesAnalytics } from '@/types/reports';
+import { SalesReport, InventoryReport, SalesAnalytics, InventoryAnalytics } from '@/types/reports';
+import { SparePart } from '@/types/types';
 
 // Mock data for Sales Report (B51)
 export const mockSalesReport: SalesReport = {
@@ -148,6 +149,42 @@ export const mockSalesAnalytics: SalesAnalytics = {
   ],
 };
 
+// Mock data for Inventory Analytics
+export const mockInventoryAnalytics: InventoryAnalytics = {
+  totalParts: 150,
+  totalValue: 75000,
+  lowStockItems: 8,
+  outOfStockItems: 3,
+  averagePartValue: 500,
+  topValueParts: [
+    { 
+      part: {
+        id: "part-1",
+        name: "Engine Block",
+        price: 2500,
+        stock_quantity: 6,
+        created_at: "2024-01-01T00:00:00.000Z",
+      },
+      totalValue: 15000 
+    },
+    { 
+      part: {
+        id: "part-2",
+        name: "Transmission Kit",
+        price: 1800,
+        stock_quantity: 7,
+        created_at: "2024-01-01T00:00:00.000Z",
+      },
+      totalValue: 12600 
+    },
+  ],
+  stockMovement: [
+    { month: "2025-01", used: 25, purchased: 40 },
+    { month: "2025-02", used: 32, purchased: 35 },
+    { month: "2025-03", used: 28, purchased: 45 },
+  ],
+};
+
 // Empty mock data for testing empty states
 export const mockEmptySalesReport: SalesReport = {
   month: "June 2025",
@@ -170,6 +207,12 @@ export const mockEmptySalesAnalytics: SalesAnalytics = {
   cancelledOrders: 0,
   monthlyRevenue: [],
   topServices: [],
+};
+
+// Mock report period
+export const mockReportPeriod = {
+  from: new Date("2025-07-01"),
+  to: new Date("2025-07-31"),
 };
 
 // Mock error responses
