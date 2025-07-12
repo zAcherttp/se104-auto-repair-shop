@@ -57,8 +57,8 @@ export function RepairOrderDetailsDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="p-0 max-h-[80vh] max-w-[80vw] md:max-h-[80vh] md:max-w-[50vw] lg:max-w-[60vw]">
         <ScrollArea className="max-h-[80vh]">
-          <div className="p-6">
-            <DialogHeader className="pb-6">
+          <div className="p-4">
+            <DialogHeader className="pb-4">
               <DialogTitle className="flex items-center gap-3">
                 <span>Repair Order #{order.id.slice(-8)}</span>
                 <Badge className={`${statusColor}`}>

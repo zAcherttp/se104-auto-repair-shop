@@ -13,7 +13,7 @@ export default function Page() {
 
   if (error) {
     return (
-      <div className="w-full p-6">
+      <div className="w-full p-4">
         <p className="text-red-500">
           {t("error")}: {error.message || String(error)}
         </p>
@@ -22,7 +22,7 @@ export default function Page() {
   }
 
   return (
-    <div className="w-full p-6">
+    <div className="w-full p-4">
       <InventoryDataTable
         columns={columns}
         data={spareParts || []}

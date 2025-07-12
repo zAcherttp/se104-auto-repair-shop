@@ -4,9 +4,9 @@
     "subtitle": "Comprehensive vehicle repair management system",
     "contactConfig": "Contact information can be configured in the admin settings.",
     "staffLogin": {
-      "title": "Login as Garage Member",
+      "title": "Garage Member ?",
       "description": "Access the management system to handle vehicle reception, repairs, and payments",
-      "button": "Staff Login"
+      "button": "Login"
     },
     "trackOrder": {
       "title": "Track My Order",
@@ -91,6 +91,18 @@
         "pending": "Pending",
         "in-progress": "In Progress",
         "completed": "Completed"
+      },
+      "expense": {
+        "summary": "Summary",
+        "loadingPaymentInfo": "Loading payment information...",
+        "totalExpense": "Total Expense",
+        "amountPaid": "Amount Paid",
+        "amountDue": "Amount Due",
+        "overpaid": "Overpaid",
+        "paidInFull": "Paid in Full",
+        "totalRepairOrders": "Total Repair Orders",
+        "paymentStatus": "Payment Status",
+        "makePayment": "Make Payment"
       }
     },
     "error": {
@@ -130,8 +142,62 @@
     },
     "error": "Error"
   },
+  "reception": {
+    "title": "Vehicle Reception",
+    "searchPlaceholder": "Search...",
+    "newReception": "New Reception",
+    "noResults": "No results.",
+    "ordersInDateRange": "order(s)",
+    "inSelectedDateRange": "in selected date range",
+    "rowsPerPage": "Rows per page",
+    "page": "Page",
+    "of": "of",
+    "goToFirstPage": "Go to first page",
+    "goToPreviousPage": "Go to previous page",
+    "goToNextPage": "Go to next page",
+    "goToLastPage": "Go to last page",
+    "openMenu": "Open menu",
+    "daily": "Today's Orders",
+    "columns": {
+      "licensePlate": "License Plate",
+      "customerName": "Customer Name",
+      "phoneNumber": "Phone Number",
+      "address": "Address",
+      "carBrand": "Car Brand",
+      "total": "Total",
+      "receptionDate": "Reception Date",
+      "createdAt": "Created At"
+    },
+    "actions": {
+      "update": "Update"
+    },
+    "form": {
+      "title": "New Vehicle Reception",
+      "customerName": "Customer Name",
+      "customerNamePlaceholder": "Enter customer name",
+      "licensePlate": "License Plate",
+      "licensePlatePlaceholder": "Enter license plate (e.g., ABC-123)",
+      "phoneNumber": "Phone Number",
+      "phoneNumberPlaceholder": "Enter phone number",
+      "carBrand": "Car Brand",
+      "carBrandPlaceholder": "Select car brand",
+      "carBrandSearchPlaceholder": "Search car brands...",
+      "carBrandNotFound": "No car brand found.",
+      "address": "Address",
+      "addressPlaceholder": "Enter customer address",
+      "receptionDate": "Reception Date",
+      "receptionDatePlaceholder": "Pick a date",
+      "notes": "Notes",
+      "notesPlaceholder": "Additional notes (optional)",
+      "cancel": "Cancel",
+      "submit": "Create Reception",
+      "success": "Vehicle reception created successfully!",
+      "error": "Failed to create vehicle reception",
+      "limitReached": "Cannot handle any more vehicles today. Daily capacity limit reached."
+    },
+    "error": "Error"
+  },
   "language": {
-    "switch": "Switch Language",
     "english": "English",
     "vietnamese": "Tiếng Việt"
   }

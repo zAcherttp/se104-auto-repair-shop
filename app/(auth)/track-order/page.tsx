@@ -112,21 +112,8 @@ export default function TrackOrderPage() {
   };
 
   if (orderData) {
-    const handlePaymentSuccess = () => {
-      // The ExpenseSummaryCard now uses TanStack Query and will automatically
-      // refetch debt data when payments are made, so we don't need to manually
-      // refresh the order data here. The payment information will be updated
-      // automatically via the useVehicleDebt hook.
-      // Optional: Show a success toast or perform any other actions needed
-      // after payment success, but data refresh is handled by the hook
-    };
-
     return (
-      <OrderDetails
-        orderData={orderData}
-        onBack={() => setOrderData(null)}
-        onPaymentSuccess={handlePaymentSuccess}
-      />
+      <OrderDetails orderData={orderData} onBack={() => setOrderData(null)} />
     );
   }
 

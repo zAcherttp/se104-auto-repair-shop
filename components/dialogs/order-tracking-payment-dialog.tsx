@@ -201,7 +201,7 @@ export function OrderTrackingPaymentDialog({
           </div>
 
           {/* Payment Amount */}
-          <div className="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 rounded-lg border">
+          <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 rounded-lg border">
             <p className="text-muted-foreground mb-4">Payment Amount:</p>
             <div className="space-y-2">
               <CurrencyInput

@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import {
   Dialog,
@@ -70,6 +71,7 @@ const SUBMIT_BUTTON_CLASSES = "bg-blue-600 hover:bg-blue-700 w-25";
 
 const ReceptionForm = React.memo<FormDialogProps>(
   ({ open, onClose, onSuccess }) => {
+    const t = useTranslations("reception.form");
     const { data: carBrands, isLoading: isBrandsLoading } = useCarBrands();
     const { data: vehicleLimit, isLoading: isLimitLoading } =
       useDailyVehicleLimit();
@@ -89,21 +91,19 @@ const ReceptionForm = React.memo<FormDialogProps>(
           if (
             result.error.message?.includes("Cannot handle any more vehicles")
           ) {
-            toast.error(
-              "Cannot handle any more vehicles today. Daily capacity limit reached."
-            );
+            toast.error(t("limitReached"));
             onClose(); // Close the dialog
           } else {
-            toast.error("Failed to create vehicle reception");
+            toast.error(t("error"));
           }
         } else {
-          toast.success("Vehicle reception created successfully!");
+          toast.success(t("success"));
           form.reset();
           onSuccess?.();
           onClose();
         }
       },
-      [form, onSuccess, onClose]
+      [form, onSuccess, onClose, t]
     );
 
     // Memoize license plate change handler
@@ -150,9 +150,7 @@ const ReceptionForm = React.memo<FormDialogProps>(
           className={DIALOG_CONTENT_CLASSES}
         >
           <DialogHeader>
-            <DialogTitle className={TITLE_CLASSES}>
-              Vehicle Reception Form
-            </DialogTitle>
+            <DialogTitle className={TITLE_CLASSES}>{t("title")}</DialogTitle>
           </DialogHeader>
 
           {/* Daily Vehicle Limit Warning */}
@@ -197,9 +195,12 @@ const ReceptionForm = React.memo<FormDialogProps>(
                   name="customerName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Customer Name</FormLabel>
+                      <FormLabel>{t("customerName")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter customer name" {...field} />
+                        <Input
+                          placeholder={t("customerNamePlaceholder")}
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -211,10 +212,10 @@ const ReceptionForm = React.memo<FormDialogProps>(
                   name="licensePlate"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>License Plate</FormLabel>
+                      <FormLabel>{t("licensePlate")}</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Enter license plate"
+                          placeholder={t("licensePlatePlaceholder")}
                           {...field}
                           onChange={(e) => handleLicensePlateChange(e, field)}
                         />
@@ -229,11 +230,11 @@ const ReceptionForm = React.memo<FormDialogProps>(
                   name="phoneNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
+                      <FormLabel>{t("phoneNumber")}</FormLabel>
                       <FormControl>
                         <Input
                           type="tel"
-                          placeholder="Enter phone number"
+                          placeholder={t("phoneNumberPlaceholder")}
                           {...field}
                         />
                       </FormControl>
@@ -247,7 +248,7 @@ const ReceptionForm = React.memo<FormDialogProps>(
                   name="carBrand"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Car Brand</FormLabel>
+                      <FormLabel>{t("carBrand")}</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -266,7 +267,7 @@ const ReceptionForm = React.memo<FormDialogProps>(
                                 ? carBrandOptions.find(
                                     (option) => option.value === field.value
                                   )?.label
-                                : "Select car brand..."}
+                                : t("carBrandPlaceholder")}
                               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                           </FormControl>
@@ -274,7 +275,7 @@ const ReceptionForm = React.memo<FormDialogProps>(
                         <PopoverContent className="w-full p-0">
                           <Command>
                             <CommandInput
-                              placeholder="Search car brand..."
+                              placeholder={t("carBrandSearchPlaceholder")}
                               className="h-9"
                             />
                             <CommandList>
@@ -282,7 +283,7 @@ const ReceptionForm = React.memo<FormDialogProps>(
                                 {isBrandsLoading ? (
                                   <Skeleton className="h-4 w-full" />
                                 ) : (
-                                  "No car brand found."
+                                  t("carBrandNotFound")
                                 )}
                               </CommandEmpty>
                               <CommandGroup>
@@ -332,10 +333,10 @@ const ReceptionForm = React.memo<FormDialogProps>(
                 name="address"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Address</FormLabel>
+                    <FormLabel>{t("address")}</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Enter customer address"
+                        placeholder={t("addressPlaceholder")}
                         rows={3}
                         {...field}
                       />
@@ -350,7 +351,7 @@ const ReceptionForm = React.memo<FormDialogProps>(
                 name="receptionDate"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Reception Date</FormLabel>
+                    <FormLabel>{t("receptionDate")}</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -365,7 +366,7 @@ const ReceptionForm = React.memo<FormDialogProps>(
                             {field.value ? (
                               format(field.value, "PPP")
                             ) : (
-                              <span>Pick a date</span>
+                              <span>{t("receptionDatePlaceholder")}</span>
                             )}
                           </Button>
                         </FormControl>
@@ -390,10 +391,10 @@ const ReceptionForm = React.memo<FormDialogProps>(
                 name="notes"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Notes</FormLabel>
+                    <FormLabel>{t("notes")}</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Additional notes or observations"
+                        placeholder={t("notesPlaceholder")}
                         rows={3}
                         {...field}
                       />
@@ -405,13 +406,13 @@ const ReceptionForm = React.memo<FormDialogProps>(
 
               <div className={ACTIONS_CLASSES}>
                 <Button type="button" variant="outline" onClick={onClose}>
-                  Cancel
+                  {t("cancel")}
                 </Button>
                 <SubmitButton
                   disabled={form.formState.isSubmitting}
                   className={SUBMIT_BUTTON_CLASSES}
                 >
-                  Submit
+                  {t("submit")}
                 </SubmitButton>
               </div>
             </form>

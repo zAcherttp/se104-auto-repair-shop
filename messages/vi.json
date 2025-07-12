@@ -1,29 +1,29 @@
 {
   "landing": {
-    "title": "Hệ Thống Quản Lý Xưởng Sửa Chữa",
+    "title": "Hệ thống quản lý xưởng sửa chữa",
     "subtitle": "Hệ thống quản lý sửa chữa xe hơi toàn diện",
     "contactConfig": "Thông tin liên hệ có thể được cấu hình trong cài đặt quản trị.",
     "staffLogin": {
-      "title": "Đăng Nhập Nhân Viên",
+      "title": "Bạn là nhân viên ?",
       "description": "Truy cập hệ thống quản lý để xử lý tiếp nhận xe, sửa chữa và thanh toán",
-      "button": "Đăng Nhập Nhân Viên"
+      "button": "Đăng nhập"
     },
     "trackOrder": {
-      "title": "Tra Cứu Đơn Hàng",
+      "title": "Tra cứu đơn hàng",
       "description": "Kiểm tra tình trạng sửa chữa xe của bạn bằng cách nhập biển số xe",
-      "button": "Tra Cứu Đơn Hàng"
+      "button": "Tra cứu"
     },
     "features": {
       "vehicleManagement": {
-        "title": "Quản Lý Xe",
+        "title": "Quản lý xe",
         "description": "Hệ thống tiếp nhận và theo dõi xe hoàn chỉnh"
       },
       "staffManagement": {
-        "title": "Quản Lý Nhân Viên",
+        "title": "Quản lý nhân viên",
         "description": "Kiểm soát truy cập theo vai trò cho quản trị viên và nhân viên"
       },
       "customerTracking": {
-        "title": "Theo Dõi Khách Hàng",
+        "title": "Theo dõi khách hàng",
         "description": "Theo dõi đơn hàng thời gian thực cho khách hàng"
       }
     }
@@ -41,55 +41,71 @@
       "success": "Đăng nhập thành công!",
       "error": "Đăng nhập thất bại"
     },
+    "signOut": {
+      "title": "Đăng xuất",
+      "message": "Đăng xuất thành công!"
+    },
     "trackOrder": {
-      "title": "Tra Cứu Đơn Hàng",
+      "title": "Tra cứu đơn hàng",
       "subtitle": "Nhập biển số xe để kiểm tra tình trạng sửa chữa",
       "licensePlate": "Số biển số xe",
       "plateplaceholder": "30A-12345",
       "searchButton": "Tìm kiếm",
       "vehicleNotFound": "Không tìm thấy xe",
-      "backToSearch": "Trở lại Tìm kiếm",
+      "backToSearch": "Trở lại tìm kiếm",
       "noOrders": {
-        "title": "Không Tìm Thấy Đơn Sửa Chữa",
+        "title": "Không tìm thấy đơn sửa chữa",
         "description": "Xe này không có đơn sửa chữa nào trong hệ thống của chúng tôi."
       },
       "vehicleInfo": {
-        "title": "Thông Tin Xe",
-        "licensePlate": "Biển Số Xe",
-        "brand": "Hãng Xe",
-        "model": "Mẫu Xe",
-        "year": "Năm Sản Xuất"
+        "title": "Thông tin xe",
+        "licensePlate": "Biển số xe",
+        "brand": "Hãng xe",
+        "model": "Mẫu xe",
+        "year": "Năm sản xuất"
       },
       "customerInfo": {
-        "title": "Thông Tin Khách Hàng",
+        "title": "Thông tin khách hàng",
         "name": "Tên",
-        "phone": "Số Điện Thoại",
-        "address": "Địa Chỉ"
+        "phone": "Số điện thoại",
+        "address": "Địa chỉ"
       },
       "repairHistory": {
-        "title": "Lịch Sử Sửa Chữa",
-        "orderId": "Mã Đơn Hàng",
+        "title": "Lịch sử sửa chữa",
+        "orderId": "Mã đơn hàng",
         "date": "Ngày",
-        "status": "Trạng Thái",
-        "total": "Tổng Cộng",
+        "status": "Trạng thái",
+        "total": "Tổng cộng",
         "noItems": "Không có mục nào trong đơn này",
-        "serviceLabor": "Dịch Vụ/Công Việc",
-        "parts": "Linh Kiện",
+        "serviceLabor": "Dịch vụ/Công việc",
+        "parts": "Linh kiện",
         "quantity": "SL",
-        "unitPrice": "Đơn Giá",
-        "amount": "Thành Tiền",
-        "description": "Mô Tả",
+        "unitPrice": "Đơn giá",
+        "amount": "Thành tiền",
+        "description": "Mô tả",
         "type": "Loại",
-        "orderTotal": "Tổng Đơn Hàng",
+        "orderTotal": "Tổng đơn hàng",
         "completedOn": "Hoàn thành vào",
         "partLabel": "Linh kiện",
         "laborType": "Công việc",
         "partsType": "Linh kiện"
       },
       "status": {
-        "pending": "Chờ Xử Lý",
-        "in-progress": "Đang Thực Hiện",
-        "completed": "Hoàn Thành"
+        "pending": "Chờ xử lý",
+        "in-progress": "Đang thực hiện",
+        "completed": "Hoàn thành"
+      },
+      "expense": {
+        "summary": "Tổng quan chi phí",
+        "loadingPaymentInfo": "Đang tải thông tin thanh toán...",
+        "totalExpense": "Tổng chi phí",
+        "amountPaid": "Số tiền đã thanh toán",
+        "amountDue": "Số tiền còn nợ",
+        "overpaid": "Đã thanh toán quá",
+        "paidInFull": "Đã thanh toán đầy đủ",
+        "totalRepairOrders": "Tổng số đơn sửa chữa",
+        "paymentStatus": "Trạng thái thanh toán",
+        "makePayment": "Thanh toán"
       }
     },
     "error": {
@@ -98,9 +114,9 @@
     }
   },
   "inventory": {
-    "title": "Quản Lý Kho",
-    "searchPlaceholder": "Tìm kiếm kho...",
-    "addNewPart": "Thêm Linh Kiện Mới",
+    "title": "Quản lý kho",
+    "searchPlaceholder": "Tìm kiếm linh kiện...",
+    "addNewPart": "Thêm linh kiện mới",
     "noPartsFound": "Không tìm thấy linh kiện nào.",
     "partsInInventory": "linh kiện trong kho.",
     "rowsPerPage": "Số hàng mỗi trang",
@@ -112,15 +128,15 @@
     "goToLastPage": "Đi đến trang cuối",
     "openMenu": "Mở menu",
     "columns": {
-      "partName": "Tên Linh Kiện",
+      "partName": "Tên linh kiện",
       "price": "Giá",
-      "endingStock": "Tồn Kho Cuối",
-      "createdAt": "Ngày Tạo"
+      "endingStock": "Số lượng còn lại",
+      "createdAt": "Ngày tạo"
     },
     "stockStatus": {
-      "outOfStock": "Hết Hàng",
-      "lowStock": "Sắp Hết Hàng",
-      "inStock": "Còn Hàng",
+      "outOfStock": "Hết hàng",
+      "lowStock": "Sắp hết hàng",
+      "inStock": "Còn hàng",
       "units": "cái"
     },
     "actions": {
@@ -129,8 +145,62 @@
     },
     "error": "Lỗi"
   },
+  "reception": {
+    "title": "Tiếp nhận xe",
+    "searchPlaceholder": "Tìm kiếm...",
+    "newReception": "Tiếp nhận đơn",
+    "noResults": "Không có kết quả.",
+    "ordersInDateRange": "đơn hàng",
+    "inSelectedDateRange": "trong khoảng thời gian đã chọn",
+    "rowsPerPage": "Số hàng mỗi trang",
+    "page": "Trang",
+    "of": "của",
+    "goToFirstPage": "Đi đến trang đầu",
+    "goToPreviousPage": "Đi đến trang trước",
+    "goToNextPage": "Đi đến trang tiếp theo",
+    "goToLastPage": "Đi đến trang cuối",
+    "openMenu": "Mở menu",
+    "daily": "Số đơn hôm nay",
+    "columns": {
+      "licensePlate": "Biển số xe",
+      "customerName": "Tên khách hàng",
+      "phoneNumber": "Số điện thoại",
+      "address": "Địa chỉ",
+      "carBrand": "Hãng xe",
+      "total": "Tổng cộng",
+      "receptionDate": "Ngày tiếp nhận",
+      "createdAt": "Ngày tạo"
+    },
+    "actions": {
+      "update": "Cập nhật"
+    },
+    "form": {
+      "title": "Tiếp nhận xe mới",
+      "customerName": "Tên khách hàng",
+      "customerNamePlaceholder": "Nhập tên khách hàng",
+      "licensePlate": "Biển số xe",
+      "licensePlatePlaceholder": "Nhập biển số xe (ví dụ: 30A-12345)",
+      "phoneNumber": "Số điện thoại",
+      "phoneNumberPlaceholder": "Nhập số điện thoại",
+      "carBrand": "Hãng xe",
+      "carBrandPlaceholder": "Chọn hãng xe",
+      "carBrandSearchPlaceholder": "Tìm kiếm hãng xe...",
+      "carBrandNotFound": "Không tìm thấy hãng xe.",
+      "address": "Địa chỉ",
+      "addressPlaceholder": "Nhập địa chỉ khách hàng",
+      "receptionDate": "Ngày tiếp nhận",
+      "receptionDatePlaceholder": "Chọn ngày",
+      "notes": "Ghi chú",
+      "notesPlaceholder": "Ghi chú thêm (tùy chọn)",
+      "cancel": "Hủy",
+      "submit": "Tạo",
+      "success": "Tiếp nhận xe thành công!",
+      "error": "Không thể tạo tiếp nhận xe",
+      "limitReached": "Không thể tiếp nhận thêm xe hôm nay. Đã đạt giới hạn công suất hàng ngày."
+    },
+    "error": "Lỗi"
+  },
   "language": {
-    "switch": "Chuyển Ngôn Ngữ",
     "english": "English",
     "vietnamese": "Tiếng Việt"
   }

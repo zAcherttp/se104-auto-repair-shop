@@ -28,14 +28,14 @@ export default function Page() {
 
   if (error) {
     return (
-      <div className="w-full p-6">
+      <div className="w-full p-4">
         <p className="text-red-500">An error has occurred</p>
       </div>
     );
   }
 
   return (
-    <div className="w-full p-6">
+    <div className="w-full p-4">
       <PaymentsDataTable
         columns={columns}
         data={payments || []}

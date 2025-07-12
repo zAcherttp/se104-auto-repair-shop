@@ -5,6 +5,7 @@ import { CreditCard } from "lucide-react";
 import { OrderDataProps } from "@/types";
 import { OrderTrackingPaymentDialog } from "@/components/dialogs/order-tracking-payment-dialog";
 import { useVehicleDebt } from "@/hooks/use-vehicle-debt";
+import { useTranslations } from "next-intl";
 
 type ExpenseSummaryCardProps = {
   orderData: OrderDataProps;
@@ -15,6 +16,7 @@ const ExpenseSummaryCard = ({
   orderData,
   onPaymentSuccess,
 }: ExpenseSummaryCardProps) => {
+  const t = useTranslations("auth.trackOrder.expense");
   const { vehicle, RepairOrderWithItemsDetails } = orderData;
 
   // Use the vehicle debt hook to get real-time debt information
@@ -60,15 +62,15 @@ const ExpenseSummaryCard = ({
     return (
       <Card className="mb-6 border-l-4 border-l-primary">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">Summary</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            {t("summary")}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-center p-8">
             <div className="text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
-              <p className="text-muted-foreground">
-                Loading payment information...
-              </p>
+              <p className="text-muted-foreground">{t("loadingPaymentInfo")}</p>
             </div>
           </div>
         </CardContent>
@@ -79,20 +81,22 @@ const ExpenseSummaryCard = ({
   return (
     <Card className="mb-6 border-l-4 border-l-primary">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">Summary</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          {t("summary")}
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Total Expense */}
           <div className="bg-expense-info p-4 rounded-lg text-center">
-            <div className="text-sm font-medium mb-2">Total Expense</div>
+            <div className="text-sm font-medium mb-2">{t("totalExpense")}</div>
             <div className="text-2xl font-bold text-green-600">
               {formatCurrency(totalExpense)}
             </div>
           </div>
 
           <div className="bg-expense-success p-4 rounded-lg text-center">
-            <div className="text-sm font-medium mb-2">Amount Paid</div>
+            <div className="text-sm font-medium mb-2">{t("amountPaid")}</div>
             <div className="text-2xl font-bold text-green-600">
               {formatCurrency(totalPaid)}
             </div>
@@ -101,10 +105,10 @@ const ExpenseSummaryCard = ({
           <div className="p-4 rounded-lg text-center">
             <div className="text-sm font-medium mb-2">
               {remainingAmount > 0
-                ? "Amount Due"
+                ? t("amountDue")
                 : remainingAmount < 0
-                ? "Overpaid"
-                : "Paid in Full"}
+                ? t("overpaid")
+                : t("paidInFull")}
             </div>
             <div className="text-2xl font-bold text-green-600">
               {formatCurrency(Math.abs(remainingAmount))}
@@ -116,11 +120,11 @@ const ExpenseSummaryCard = ({
         <div className="mt-4 pt-4 border-t border-border">
           <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
             <div>
-              <strong>Total Repair Orders:</strong>{" "}
+              <strong>{t("totalRepairOrders")}:</strong>{" "}
               {RepairOrderWithItemsDetails.length}
             </div>
             <div>
-              <strong>Payment Status:</strong>
+              <strong>{t("paymentStatus")}:</strong>
               <span
                 className={`ml-2 font-medium ${
                   remainingAmount > 0
@@ -131,10 +135,10 @@ const ExpenseSummaryCard = ({
                 }`}
               >
                 {remainingAmount > 0
-                  ? "Outstanding"
+                  ? t("amountDue")
                   : remainingAmount < 0
-                  ? "Overpaid"
-                  : "Paid in Full"}
+                  ? t("overpaid")
+                  : t("paidInFull")}
               </span>
             </div>
           </div>
@@ -146,7 +150,7 @@ const ExpenseSummaryCard = ({
                 trigger={
                   <Button className="bg-green-600 hover:bg-green-700">
                     <CreditCard className="w-4 h-4 mr-2" />
-                    Make Payment
+                    {t("makePayment")}
                   </Button>
                 }
                 vehicle={orderData.vehicle}

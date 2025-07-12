@@ -14,22 +14,24 @@ export type VehicleRegistration = {
   debt: number;
 };
 
-export const columns: ColumnDef<VehicleRegistration>[] = [
+export const createColumns = (
+  t: (key: string) => string
+): ColumnDef<VehicleRegistration>[] => [
   {
     accessorKey: "vehicle.license_plate",
-    header: "License Plate",
+    header: t("columns.licensePlate"),
   },
   {
     accessorKey: "customer.name",
-    header: "Customer Name",
+    header: t("columns.customerName"),
   },
   {
     accessorKey: "customer.phone",
-    header: "Phone Number",
+    header: t("columns.phoneNumber"),
   },
   {
     accessorKey: "customer.address",
-    header: "Address",
+    header: t("columns.address"),
     cell: ({ row }) => {
       const address = row.original.customer.address;
       return <div>{address || "N/A"}</div>;
@@ -37,7 +39,7 @@ export const columns: ColumnDef<VehicleRegistration>[] = [
   },
   {
     accessorKey: "vehicle.brand",
-    header: "Car Brand",
+    header: t("columns.carBrand"),
   },
   {
     header: ({ column }) => {
@@ -45,7 +47,7 @@ export const columns: ColumnDef<VehicleRegistration>[] = [
         <DataTableColumnHeader
           className="justify-end"
           column={column}
-          title="Total"
+          title={t("columns.total")}
         />
       );
     },
@@ -93,7 +95,12 @@ export const columns: ColumnDef<VehicleRegistration>[] = [
     id: "reception_date",
     accessorFn: (row) => row.repair_order.reception_date,
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Reception Date" />;
+      return (
+        <DataTableColumnHeader
+          column={column}
+          title={t("columns.receptionDate")}
+        />
+      );
     },
     cell: ({ row }) => {
       const receptionDate = row.original.repair_order.reception_date;
@@ -107,7 +114,9 @@ export const columns: ColumnDef<VehicleRegistration>[] = [
     id: "created_at",
     accessorFn: (row) => row.repair_order.created_at,
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Created At" />;
+      return (
+        <DataTableColumnHeader column={column} title={t("columns.createdAt")} />
+      );
     },
     cell: ({ row }) => {
       const createdAt = row.original.repair_order.created_at;

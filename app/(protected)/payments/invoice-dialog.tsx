@@ -42,7 +42,7 @@ export function InvoiceDialog({ trigger, payment }: InvoiceDialogProps) {
 
         <div className="space-y-6 p-0">
           {/* Payment Details */}
-          <div className="grid grid-cols-2 gap-10 p-6 bg-muted rounded-lg">
+          <div className="grid grid-cols-2 gap-10 p-4 bg-muted rounded-lg">
             <div>
               <h3 className="font-semibold mb-2">Payment Information</h3>
               <div className="space-y-1 text-sm">
@@ -98,7 +98,7 @@ export function InvoiceDialog({ trigger, payment }: InvoiceDialogProps) {
 
           {/* Created By */}
           {payment.created_by_profile && (
-            <div className="p-6 bg-muted rounded-lg">
+            <div className="p-4 bg-muted rounded-lg">
               <h3 className="font-semibold mb-2">Processed By</h3>
               <div className="text-sm">
                 <div className="flex justify-between">

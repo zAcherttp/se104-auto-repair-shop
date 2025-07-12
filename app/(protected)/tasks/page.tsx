@@ -66,7 +66,7 @@ export default function Page() {
 
   return (
     <div className="container mx-auto py-6">
-      <div className="flex items-center justify-between pb-6">
+      <div className="flex items-center justify-between pb-4">
         <div className="flex items-center space-x-2">
           <div className="relative w-80">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />

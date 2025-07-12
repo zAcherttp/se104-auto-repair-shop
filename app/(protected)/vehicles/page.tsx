@@ -16,7 +16,7 @@ export default function VehiclesPage() {
   }, [error]);
 
   return (
-    <div className="w-full p-6">
+    <div className="w-full p-4">
       <VehiclesDataTable
         columns={columns}
         data={vehicles || []}

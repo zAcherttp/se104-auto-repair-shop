@@ -42,6 +42,7 @@ import DateRangePicker from "@/components/date-range-picker";
 import { DateRange } from "react-day-picker";
 import { Badge } from "@/components/ui/badge";
 import { useDailyVehicleLimit } from "@/hooks/use-daily-vehicle-limit";
+import { useTranslations } from "next-intl";
 
 interface TasksDataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -60,6 +61,7 @@ export function VehicleDataTable<TData, TValue>({
   onDateRangeChange,
   onNewReception,
 }: TasksDataTableProps<TData, TValue>) {
+  const t = useTranslations("reception");
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = React.useState<string>("");
   const { data: vehicleLimit, isLoading: isLimitLoading } =
@@ -87,12 +89,12 @@ export function VehicleDataTable<TData, TValue>({
 
   return (
     <>
-      <div className="flex items-center justify-between pb-6">
+      <div className="flex items-center justify-between pb-4">
         <div className="flex items-center gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <Input
-              placeholder="Search..."
+              placeholder={t("searchPlaceholder")}
               value={table.getState().globalFilter ?? ""}
               onChange={(e) => table.setGlobalFilter(String(e.target.value))}
               className="pl-10 w-80"
@@ -109,9 +111,9 @@ export function VehicleDataTable<TData, TValue>({
                   ? "secondary"
                   : "outline"
               }
-              className="px-3 py-1 text-sm font-medium"
+              className="px-3 py-1 text-sm font-medium h-9 flex items-center"
             >
-              Daily: {vehicleLimit.currentCount}/
+              {t("daily")}: {vehicleLimit.currentCount}/
               {vehicleLimit.maxCapacity || "∞"}
             </Badge>
           )}
@@ -132,7 +134,7 @@ export function VehicleDataTable<TData, TValue>({
             onClick={onNewReception}
           >
             <Plus className="w-4 h-4 mr-2" />
-            New Reception
+            {t("newReception")}
           </Button>
         </div>
       </div>
@@ -190,7 +192,7 @@ export function VehicleDataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {t("noResults")}
                 </TableCell>
               </TableRow>
             )}
@@ -200,16 +202,16 @@ export function VehicleDataTable<TData, TValue>({
 
       <div className="flex items-center justify-between px-4 pt-4">
         <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
-          {table.getFilteredRowModel().rows.length} order(s)
+          {table.getFilteredRowModel().rows.length} {t("ordersInDateRange")}
           {dateRange?.from && dateRange?.to && (
-            <span className="ml-2">in selected date range</span>
+            <span className="ml-1">{t("inSelectedDateRange")}</span>
           )}
           .
         </div>
         <div className="flex w-full items-center gap-8 lg:w-fit">
           <div className="hidden items-center gap-2 lg:flex">
             <Label htmlFor="rows-per-page" className="text-sm font-medium">
-              Rows per page
+              {t("rowsPerPage")}
             </Label>
             <Select
               value={`${table.getState().pagination.pageSize}`}
@@ -232,7 +234,7 @@ export function VehicleDataTable<TData, TValue>({
             </Select>
           </div>
           <div className="flex w-fit items-center justify-center text-sm font-medium">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
+            {t("page")} {table.getState().pagination.pageIndex + 1} {t("of")}{" "}
             {table.getPageCount()}
           </div>
           <div className="ml-auto flex items-center gap-2 lg:ml-0">
@@ -242,7 +244,7 @@ export function VehicleDataTable<TData, TValue>({
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Go to first page</span>
+              <span className="sr-only">{t("goToFirstPage")}</span>
               <ChevronsLeftIcon />
             </Button>
             <Button
@@ -252,7 +254,7 @@ export function VehicleDataTable<TData, TValue>({
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Go to previous page</span>
+              <span className="sr-only">{t("goToPreviousPage")}</span>
               <ChevronLeftIcon />
             </Button>
             <Button
@@ -262,7 +264,7 @@ export function VehicleDataTable<TData, TValue>({
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Go to next page</span>
+              <span className="sr-only">{t("goToNextPage")}</span>
               <ChevronRightIcon />
             </Button>
             <Button
@@ -272,7 +274,7 @@ export function VehicleDataTable<TData, TValue>({
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Go to last page</span>
+              <span className="sr-only">{t("goToLastPage")}</span>
               <ChevronsRightIcon />
             </Button>
           </div>

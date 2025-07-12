@@ -6,7 +6,7 @@ import { Separator } from "./ui/separator";
 import React, { memo } from "react";
 import { usePathname } from "next/navigation";
 import { SignOutButton } from "./signout-button";
-import { UserAvatar } from "./user-avatar";
+import { LanguageSwitcher } from "./language-switcher";
 
 const PageTitle = memo(function PageTitle() {
   const pathname = usePathname();
@@ -27,7 +27,7 @@ const HeaderActions = memo(function HeaderActions() {
   return (
     <div className="flex items-center gap-2">
       <ThemeSwitcher />
-      <UserAvatar />
+      <LanguageSwitcher />
       <SignOutButton />
     </div>
   );
@@ -35,7 +35,7 @@ const HeaderActions = memo(function HeaderActions() {
 
 export function Header() {
   return (
-    <header className="backdrop-blur-sm sticky shrink-0 gap-2 top-0 z-10 flex transition-[width] ease-linear h-16 items-center justify-between border-b bg-background/60 px-4">
+    <header className="backdrop-blur-sm sticky shrink-0 gap-2 top-0 z-10 flex transition-[width] ease-linear h-14 items-center justify-between border-b bg-background/60 px-4">
       <div className="z-10 flex items-center gap-2">
         <SidebarTrigger />
         <Separator

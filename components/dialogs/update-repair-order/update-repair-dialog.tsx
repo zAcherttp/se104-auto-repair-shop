@@ -122,13 +122,13 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="p-0 max-h-[85vh] max-w-[90vw] md:max-h-[85vh] md:max-w-[70vw] lg:max-w-[70vw]">
         <ScrollArea className="max-h-[80vh]">
-          <div className="p-6">
-            <DialogHeader className="pb-6">
+          <div className="p-4">
+            <DialogHeader className="pb-4">
               <DialogTitle>Update Repair Order</DialogTitle>
             </DialogHeader>
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-6">
-                <Card className="p-6 gap-0">
+                <Card className="p-4 gap-0">
                   <CardHeader className="p-0 pb-2">
                     <CardTitle className="flex items-center gap-1.5 font-medium">
                       <Car className="h-4 w-4" />
@@ -149,7 +149,7 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
                   </CardContent>
                 </Card>
 
-                <Card className="p-6 gap-0">
+                <Card className="p-4 gap-0">
                   <CardHeader className="p-0 pb-2">
                     <CardTitle className="flex items-center gap-1.5 font-medium">
                       <User className="h-4 w-4" />

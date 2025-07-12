@@ -60,13 +60,6 @@ export const createColumns = (
       const quantity =
         endingStock ?? (row.getValue("stock_quantity") as number) ?? 0;
 
-      // Color coding based on stock levels
-      const getStockBadgeVariant = (qty: number) => {
-        if (qty === 0) return "destructive";
-        if (qty <= 5) return "outline";
-        return "secondary";
-      };
-
       const getStockStatusTextColor = (qty: number) => {
         if (qty === 0) return "text-red-600";
         if (qty <= 5) return "text-yellow-600";
@@ -82,7 +75,7 @@ export const createColumns = (
       return (
         <div className="text-center">
           <Badge
-            variant={getStockBadgeVariant(quantity)}
+            variant="secondary"
             className={cn(getStockStatusTextColor(quantity), "mb-1")}
           >
             {getStockText(quantity)}

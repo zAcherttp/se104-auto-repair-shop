@@ -10,17 +10,20 @@ import {
 import { MoreHorizontal, Edit } from "lucide-react";
 import { VehicleRegistration } from "./columns";
 import { UpdateDialog } from "@/components/dialogs/update-repair-order";
+import { useTranslations } from "next-intl";
 
 interface ActionsProps {
   vehicleRegistration: VehicleRegistration;
 }
 
 export function Actions({ vehicleRegistration }: ActionsProps) {
+  const t = useTranslations("reception");
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-8 w-8 p-0">
-          <span className="sr-only">Open menu</span>
+          <span className="sr-only">{t("openMenu")}</span>
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
@@ -29,7 +32,7 @@ export function Actions({ vehicleRegistration }: ActionsProps) {
           trigger={
             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
               <Edit className="mr-2 h-4 w-4" />
-              Update
+              {t("actions.update")}
             </DropdownMenuItem>
           }
           data={vehicleRegistration}
