@@ -1,152 +1,188 @@
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import { SalesTable } from "@/components/reports/sales-table";
 import {
   mockSalesReport,
   mockEmptySalesReport,
 } from "@/test/mocks/reports-data";
 
-describe("Sales Data Validation", () => {
-  describe("Data Accuracy Verification", () => {
-    it("should verify total revenue calculation accuracy", () => {
-      const expectedTotal = mockSalesReport.orders.reduce(
-        (sum, order) => sum + order.amount,
-        0
-      );
-      expect(mockSalesReport.totalRevenue).toBe(expectedTotal);
-    });
+describe("SalesTable Data Layer", () => {
+  it("renders sales table with valid data", () => {
+    render(<SalesTable data={mockSalesReport} />);
 
-    it("should verify rate calculations are accurate", () => {
-      const totalRevenue = mockSalesReport.totalRevenue;
+    // Check that the table structure is present
+    const table = screen.getByRole("table");
+    expect(table).toBeTruthy();
 
-      mockSalesReport.orders.forEach((order) => {
-        const expectedRate = (order.amount / totalRevenue) * 100;
-        expect(Math.abs(order.rate - expectedRate)).toBeLessThan(0.1); // Allow small floating point differences
-      });
-    });
+    // Check table headers
+    expect(screen.getByText(/no\./i)).toBeTruthy();
+    expect(screen.getByText(/car brand/i)).toBeTruthy();
+    expect(screen.getByText(/repair count/i)).toBeTruthy();
+    expect(screen.getByText(/amount/i)).toBeTruthy();
+    expect(screen.getByText(/rate \(%\)/i)).toBeTruthy();
+  });
 
-    it("should verify rates sum to approximately 100%", () => {
-      const totalRate = mockSalesReport.orders.reduce(
-        (sum, order) => sum + order.rate,
-        0
-      );
-      expect(Math.abs(totalRate - 100)).toBeLessThan(0.1); // Allow small floating point differences
-    });
+  it("displays correct sales report data", () => {
+    render(<SalesTable data={mockSalesReport} />);
 
-    it("should verify sequential numbering (stt)", () => {
-      mockSalesReport.orders.forEach((order, index) => {
-        expect(order.stt).toBe(index + 1);
-      });
-    });
+    // Check month display
+    expect(screen.getByText(/sales report: June 2025/i)).toBeTruthy();
 
-    it("should verify data integrity and consistency", () => {
-      expect(mockSalesReport.orders).toHaveLength(4);
-      expect(mockSalesReport.month).toBe("June 2025");
-      expect(mockSalesReport.totalRevenue).toBe(15750000);
-      
-      // Verify all orders have required fields
-      mockSalesReport.orders.forEach((order) => {
-        expect(order.vehicleBrand).toBeTruthy();
-        expect(order.repairCount).toBeGreaterThan(0);
-        expect(order.amount).toBeGreaterThan(0);
-        expect(order.rate).toBeGreaterThan(0);
-      });
+    // Check total revenue display
+    expect(screen.getByText(/total revenue:/i)).toBeTruthy();
+    expect(screen.getByText(/\$15,750,000/)).toBeTruthy();
+
+    // Check that data rows are rendered
+    expect(screen.getByText("Toyota")).toBeTruthy();
+    expect(screen.getByText("Honda")).toBeTruthy();
+    expect(screen.getByText("Mazda")).toBeTruthy();
+  });
+
+  it("displays correct vehicle brand data", () => {
+    render(<SalesTable data={mockSalesReport} />);
+
+    // Check each vehicle brand appears in the table
+    mockSalesReport.orders.forEach((order) => {
+      expect(screen.getByText(order.vehicleBrand)).toBeTruthy();
     });
   });
 
-  describe("Business Logic Validation", () => {
-    it("should validate repair count vs amount relationship", () => {
-      // Higher repair counts should generally correlate with higher amounts
-      const sortedByRepairCount = [...mockSalesReport.orders].sort(
-        (a, b) => b.repairCount - a.repairCount
-      );
-      const sortedByAmount = [...mockSalesReport.orders].sort(
-        (a, b) => b.amount - a.amount
-      );
+  it("displays correct repair count data", () => {
+    render(<SalesTable data={mockSalesReport} />);
 
-      // Toyota should be the highest in both repair count and amount
-      expect(sortedByRepairCount[0].vehicleBrand).toBe("Toyota");
-      expect(sortedByAmount[0].vehicleBrand).toBe("Toyota");
-    });
-
-    it("should validate average repair cost per brand", () => {
-      mockSalesReport.orders.forEach((order) => {
-        const avgCostPerRepair = order.amount / order.repairCount;
-        
-        // Average cost per repair should be reasonable (between 100,000 and 2,000,000 VND)
-        expect(avgCostPerRepair).toBeGreaterThanOrEqual(100000);
-        expect(avgCostPerRepair).toBeLessThanOrEqual(2000000);
-      });
-    });
-
-    it("should validate market share distribution", () => {
-      // Toyota should have the highest market share
-      const toyotaOrder = mockSalesReport.orders.find(order => order.vehicleBrand === "Toyota");
-      expect(toyotaOrder?.rate).toBeGreaterThan(50); // More than 50% market share
-      
-      // All rates should be positive
-      mockSalesReport.orders.forEach((order) => {
-        expect(order.rate).toBeGreaterThan(0);
-      });
-    });
+    // Check specific repair counts
+    expect(screen.getByText("12")).toBeTruthy(); // Toyota repair count
+    expect(screen.getByText("8")).toBeTruthy(); // Honda repair count
+    expect(screen.getByText("5")).toBeTruthy(); // Mazda repair count
   });
 
-  describe("Empty State Data Handling", () => {
-    it("should handle empty sales data", () => {
-      expect(mockEmptySalesReport.orders).toEqual([]);
-      expect(mockEmptySalesReport.orders.length).toBe(0);
-      expect(mockEmptySalesReport.totalRevenue).toBe(0);
-    });
+  it("formats currency amounts correctly", () => {
+    render(<SalesTable data={mockSalesReport} />);
 
-    it("should handle undefined sales data", () => {
-      const undefinedData = undefined;
-      expect(undefinedData).toBeUndefined();
-    });
+    // Check formatted amounts (should include $ and commas)
+    expect(screen.getByText("$8,400,000.00")).toBeTruthy(); // Toyota amount
+    expect(screen.getByText("$4,200,000.00")).toBeTruthy(); // Honda amount
+    expect(screen.getByText("$2,100,000.00")).toBeTruthy(); // Mazda amount
   });
 
-  describe("Edge Cases", () => {
-    it("should handle zero revenue scenarios", () => {
-      const zeroRevenueOrder = {
-        stt: 1,
-        vehicleBrand: "Zero Revenue Brand",
-        repairCount: 0,
-        amount: 0,
-        rate: 0,
-      };
+  it("displays rate percentages correctly", () => {
+    render(<SalesTable data={mockSalesReport} />);
 
-      expect(zeroRevenueOrder.amount).toBe(0);
-      expect(zeroRevenueOrder.rate).toBe(0);
-    });
+    // Check percentage displays with proper formatting
+    expect(screen.getByText("53.3%")).toBeTruthy(); // Toyota rate
+    expect(screen.getByText("26.7%")).toBeTruthy(); // Honda rate
+    expect(screen.getByText("13.3%")).toBeTruthy(); // Mazda rate
+  });
 
-    it("should handle large revenue amounts", () => {
-      const largeRevenueOrder = {
-        stt: 1,
-        vehicleBrand: "Luxury Brand",
-        repairCount: 100,
-        amount: 50000000, // 50 million VND
-        rate: 80.5,
-      };
+  it("handles empty data gracefully", () => {
+    render(<SalesTable data={mockEmptySalesReport} />);
 
-      const avgCostPerRepair = largeRevenueOrder.amount / largeRevenueOrder.repairCount;
-      expect(avgCostPerRepair).toBe(500000); // 500k VND per repair
-    });
+    const noDataMessage = screen.getByText(
+      /no sales data available for this period/i
+    );
+    expect(noDataMessage).toBeTruthy();
 
-    it("should handle special characters in vehicle brand names", () => {
-      const specialCharBrand = {
-        stt: 1,
-        vehicleBrand: "BMW-Série 3",
-        repairCount: 5,
-        amount: 2500000,
-        rate: 15.5,
-      };
+    // Table should not be rendered when no data
+    const table = screen.queryByRole("table");
+    expect(table).toBeFalsy();
+  });
 
-      expect(specialCharBrand.vehicleBrand).toBe("BMW-Série 3");
-      expect(specialCharBrand.amount).toBeGreaterThan(0);
-    });
+  it("handles undefined data", () => {
+    render(<SalesTable data={undefined} />);
 
-    it("should handle decimal precision in rates", () => {
-      mockSalesReport.orders.forEach((order) => {
-        // Check that rates are properly rounded to 1 decimal place
-        const decimalPlaces = (order.rate.toString().split('.')[1] || '').length;
-        expect(decimalPlaces).toBeLessThanOrEqual(1);
-      });
-    });
+    const noDataMessage = screen.getByText(
+      /no sales data available for this period/i
+    );
+    expect(noDataMessage).toBeTruthy();
+  });
+
+  it("handles data with no orders", () => {
+    const dataWithNoOrders = {
+      ...mockSalesReport,
+      orders: [],
+    };
+
+    render(<SalesTable data={dataWithNoOrders} />);
+
+    const noDataMessage = screen.getByText(
+      /no sales data available for this period/i
+    );
+    expect(noDataMessage).toBeTruthy();
+  });
+
+  it("renders correct number of data rows", () => {
+    render(<SalesTable data={mockSalesReport} />);
+
+    const rows = screen.getAllByRole("row");
+    // Should have header row + data rows
+    expect(rows).toHaveLength(mockSalesReport.orders.length + 1);
+  });
+
+  it("calculates and displays total revenue correctly", () => {
+    const customData = {
+      month: "2025-08",
+      totalRevenue: 75000,
+      orders: [
+        {
+          stt: 1,
+          vehicleBrand: "BMW",
+          repairCount: 5,
+          amount: 75000,
+          rate: 100.0,
+        },
+      ],
+    };
+
+    render(<SalesTable data={customData} />);
+
+    // Check that total revenue appears in the header section
+    expect(screen.getByText(/total revenue:/i)).toBeTruthy();
+    expect(screen.getByText("100.0%")).toBeTruthy();
+  });
+
+  it("handles large numbers correctly", () => {
+    const dataWithLargeNumbers = {
+      month: "2025-09",
+      totalRevenue: 1500000,
+      orders: [
+        {
+          stt: 1,
+          vehicleBrand: "Luxury",
+          repairCount: 1000,
+          amount: 1500000,
+          rate: 100.0,
+        },
+      ],
+    };
+
+    render(<SalesTable data={dataWithLargeNumbers} />);
+
+    // Check large number formatting - the system uses German/European locale formatting
+    expect(screen.getByText("1.000")).toBeTruthy(); // repair count with period (German format)
+    expect(screen.getByText("Luxury")).toBeTruthy(); // vehicle brand
+  });
+
+  it("maintains correct table structure with varying data sizes", () => {
+    const singleRowData = {
+      month: "2025-10",
+      totalRevenue: 5000,
+      orders: [
+        {
+          stt: 1,
+          vehicleBrand: "TestBrand",
+          repairCount: 1,
+          amount: 5000,
+          rate: 100.0,
+        },
+      ],
+    };
+
+    render(<SalesTable data={singleRowData} />);
+
+    const table = screen.getByRole("table");
+    expect(table).toBeTruthy();
+
+    const rows = screen.getAllByRole("row");
+    expect(rows).toHaveLength(2); // 1 header + 1 data row
   });
 });

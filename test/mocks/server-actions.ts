@@ -5,6 +5,9 @@ export const createReception = jest.fn();
 export const updateRepairOrder = jest.fn();
 export const getVehicleRegistrations = jest.fn();
 
+// Mock inventory actions
+export const addSparePart = jest.fn();
+
 // Mock other common server actions that might be imported
 export const checkAdminRole = jest.fn().mockResolvedValue(true);
 export const getUserProfile = jest.fn();
@@ -20,6 +23,7 @@ export default {
   createReception,
   updateRepairOrder,
   getVehicleRegistrations,
+  addSparePart,
   checkAdminRole,
   getUserProfile,
   updateGarageSettings,
