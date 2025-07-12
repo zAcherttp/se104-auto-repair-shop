@@ -38,6 +38,7 @@ import {
   Search,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useTranslations } from "next-intl";
 
 interface InventoryDataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -54,6 +55,7 @@ export function InventoryDataTable<TData, TValue>({
   onAddNew,
   renderAddButton,
 }: InventoryDataTableProps<TData, TValue>) {
+  const t = useTranslations("inventory");
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = React.useState<string>("");
 
@@ -84,7 +86,7 @@ export function InventoryDataTable<TData, TValue>({
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
-            placeholder="Search inventory..."
+            placeholder={t("searchPlaceholder")}
             value={table.getState().globalFilter ?? ""}
             onChange={(e) => table.setGlobalFilter(String(e.target.value))}
             className="pl-10 w-80"
@@ -98,7 +100,7 @@ export function InventoryDataTable<TData, TValue>({
               onClick={onAddNew}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Add New Part
+              {t("addNewPart")}
             </Button>
           )}
         </div>
@@ -157,7 +159,7 @@ export function InventoryDataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No spare parts found.
+                  {t("noPartsFound")}
                 </TableCell>
               </TableRow>
             )}
@@ -167,12 +169,12 @@ export function InventoryDataTable<TData, TValue>({
 
       <div className="flex items-center justify-between px-4 pt-4">
         <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
-          {table.getFilteredRowModel().rows.length} part(s) in inventory.
+          {table.getFilteredRowModel().rows.length} {t("partsInInventory")}
         </div>
         <div className="flex w-full items-center gap-8 lg:w-fit">
           <div className="hidden items-center gap-2 lg:flex">
             <Label htmlFor="rows-per-page" className="text-sm font-medium">
-              Rows per page
+              {t("rowsPerPage")}
             </Label>
             <Select
               value={`${table.getState().pagination.pageSize}`}
@@ -195,7 +197,7 @@ export function InventoryDataTable<TData, TValue>({
             </Select>
           </div>
           <div className="flex w-fit items-center justify-center text-sm font-medium">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
+            {t("page")} {table.getState().pagination.pageIndex + 1} {t("of")}{" "}
             {table.getPageCount()}
           </div>
           <div className="ml-auto flex items-center gap-2 lg:ml-0">
@@ -205,7 +207,7 @@ export function InventoryDataTable<TData, TValue>({
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Go to first page</span>
+              <span className="sr-only">{t("goToFirstPage")}</span>
               <ChevronsLeftIcon />
             </Button>
             <Button
@@ -215,7 +217,7 @@ export function InventoryDataTable<TData, TValue>({
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Go to previous page</span>
+              <span className="sr-only">{t("goToPreviousPage")}</span>
               <ChevronLeftIcon />
             </Button>
             <Button
@@ -225,7 +227,7 @@ export function InventoryDataTable<TData, TValue>({
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Go to next page</span>
+              <span className="sr-only">{t("goToNextPage")}</span>
               <ChevronRightIcon />
             </Button>
             <Button
@@ -235,7 +237,7 @@ export function InventoryDataTable<TData, TValue>({
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Go to last page</span>
+              <span className="sr-only">{t("goToLastPage")}</span>
               <ChevronsRightIcon />
             </Button>
           </div>

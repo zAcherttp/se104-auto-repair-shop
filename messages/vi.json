@@ -97,6 +97,38 @@
       "message": "Xin lỗi, có lỗi xảy ra"
     }
   },
+  "inventory": {
+    "title": "Quản Lý Kho",
+    "searchPlaceholder": "Tìm kiếm kho...",
+    "addNewPart": "Thêm Linh Kiện Mới",
+    "noPartsFound": "Không tìm thấy linh kiện nào.",
+    "partsInInventory": "linh kiện trong kho.",
+    "rowsPerPage": "Số hàng mỗi trang",
+    "page": "Trang",
+    "of": "của",
+    "goToFirstPage": "Đi đến trang đầu",
+    "goToPreviousPage": "Đi đến trang trước",
+    "goToNextPage": "Đi đến trang tiếp theo",
+    "goToLastPage": "Đi đến trang cuối",
+    "openMenu": "Mở menu",
+    "columns": {
+      "partName": "Tên Linh Kiện",
+      "price": "Giá",
+      "endingStock": "Tồn Kho Cuối",
+      "createdAt": "Ngày Tạo"
+    },
+    "stockStatus": {
+      "outOfStock": "Hết Hàng",
+      "lowStock": "Sắp Hết Hàng",
+      "inStock": "Còn Hàng",
+      "units": "cái"
+    },
+    "actions": {
+      "edit": "Sửa",
+      "delete": "Xóa"
+    },
+    "error": "Lỗi"
+  },
   "language": {
     "switch": "Chuyển Ngôn Ngữ",
     "english": "English",

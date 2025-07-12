@@ -98,6 +98,38 @@
       "message": "Sorry, something went wrong"
     }
   },
+  "inventory": {
+    "title": "Inventory Management",
+    "searchPlaceholder": "Search inventory...",
+    "addNewPart": "Add New Part",
+    "noPartsFound": "No spare parts found.",
+    "partsInInventory": "part(s) in inventory.",
+    "rowsPerPage": "Rows per page",
+    "page": "Page",
+    "of": "of",
+    "goToFirstPage": "Go to first page",
+    "goToPreviousPage": "Go to previous page",
+    "goToNextPage": "Go to next page",
+    "goToLastPage": "Go to last page",
+    "openMenu": "Open menu",
+    "columns": {
+      "partName": "Part Name",
+      "price": "Price",
+      "endingStock": "Ending Stock",
+      "createdAt": "Created At"
+    },
+    "stockStatus": {
+      "outOfStock": "Out of Stock",
+      "lowStock": "Low Stock",
+      "inStock": "In Stock",
+      "units": "units"
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "error": "Error"
+  },
   "language": {
     "switch": "Switch Language",
     "english": "English",

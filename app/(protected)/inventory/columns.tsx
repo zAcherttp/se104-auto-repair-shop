@@ -12,11 +12,15 @@ export interface SparePartWithEndingStock extends SparePart {
   endingStock?: number;
 }
 
-export const columns: ColumnDef<SparePartWithEndingStock>[] = [
+export const createColumns = (
+  t: (key: string) => string
+): ColumnDef<SparePartWithEndingStock>[] => [
   {
     accessorKey: "name",
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Part Name" />;
+      return (
+        <DataTableColumnHeader column={column} title={t("columns.partName")} />
+      );
     },
   },
   {
@@ -25,7 +29,7 @@ export const columns: ColumnDef<SparePartWithEndingStock>[] = [
         <DataTableColumnHeader
           className="justify-end"
           column={column}
-          title="Price"
+          title={t("columns.price")}
         />
       );
     },
@@ -46,7 +50,7 @@ export const columns: ColumnDef<SparePartWithEndingStock>[] = [
         <DataTableColumnHeader
           className="justify-center"
           column={column}
-          title="Ending Stock"
+          title={t("columns.endingStock")}
         />
       );
     },
@@ -70,9 +74,9 @@ export const columns: ColumnDef<SparePartWithEndingStock>[] = [
       };
 
       const getStockText = (qty: number) => {
-        if (qty === 0) return "Out of Stock";
-        if (qty <= 5) return "Low Stock";
-        return "In Stock";
+        if (qty === 0) return t("stockStatus.outOfStock");
+        if (qty <= 5) return t("stockStatus.lowStock");
+        return t("stockStatus.inStock");
       };
 
       return (
@@ -83,7 +87,9 @@ export const columns: ColumnDef<SparePartWithEndingStock>[] = [
           >
             {getStockText(quantity)}
           </Badge>
-          <div className="text-sm font-medium">{quantity} units</div>
+          <div className="text-sm font-medium">
+            {quantity} {t("stockStatus.units")}
+          </div>
         </div>
       );
     },
@@ -92,7 +98,9 @@ export const columns: ColumnDef<SparePartWithEndingStock>[] = [
     id: "created_at",
     accessorFn: (row) => row.created_at,
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Created At" />;
+      return (
+        <DataTableColumnHeader column={column} title={t("columns.createdAt")} />
+      );
     },
     cell: ({ row }) => {
       const createdAt = row.original.created_at;

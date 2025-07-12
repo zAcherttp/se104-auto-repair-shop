@@ -1,0 +1,60 @@
+[
+  {
+    "type": "entity",
+    "name": "AutoRepair Manager Project",
+    "entityType": "software_project",
+    "observations": [
+      "Multi-tenant garage management system built on Next.js 15 + Supabase",
+      "Uses TanStack Query for server state management",
+      "Implements Row Level Security (RLS) for data isolation",
+      "Supports English and Vietnamese internationalization",
+      "Features vehicle reception, repair tracking, inventory management, and payment processing"
+    ]
+  },
+  {
+    "type": "entity",
+    "name": "Inventory Management Module",
+    "entityType": "feature_module",
+    "observations": [
+      "Located in app/(protected)/inventory/ directory",
+      "Uses data tables with sorting, filtering, and pagination",
+      "Displays spare parts with stock levels and pricing",
+      "Shows color-coded stock status (Out of Stock, Low Stock, In Stock)",
+      "Recently translated to support i18n with next-intl",
+      "Modified columns.tsx to use createColumns function for dynamic translations",
+      "Updated page.tsx to use useTranslations hook",
+      "Added translation keys for stock status, column headers, and actions",
+      "Implemented Vietnamese translations for all inventory UI elements"
+    ]
+  },
+  {
+    "type": "entity",
+    "name": "Translation System",
+    "entityType": "technical_system",
+    "observations": [
+      "Implemented using next-intl library",
+      "Message files located in messages/en.json and messages/vi.json",
+      "Uses useTranslations hook for component-level translations",
+      "Supports English and Vietnamese languages",
+      "Recently added inventory module translations"
+    ]
+  },
+  {
+    "type": "relation",
+    "from": "AutoRepair Manager Project",
+    "to": "Inventory Management Module",
+    "relationType": "contains"
+  },
+  {
+    "type": "relation",
+    "from": "AutoRepair Manager Project",
+    "to": "Translation System",
+    "relationType": "uses"
+  },
+  {
+    "type": "relation",
+    "from": "Inventory Management Module",
+    "to": "Translation System",
+    "relationType": "integrates_with"
+  }
+]
