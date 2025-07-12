@@ -19,6 +19,7 @@ import { handleVehiclePayment } from "@/app/actions/vehicles";
 import { useQueryClient } from "@tanstack/react-query";
 import { VEHICLES_QUERY_KEY } from "@/hooks/use-vehicles";
 import CurrencyInput from "react-currency-input-field";
+import { useTranslations } from "next-intl";
 
 export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,15 +27,16 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
   const [paymentAmount, setPaymentAmount] = useState<number>(0);
   const [showQRCode, setShowQRCode] = useState(false);
   const query = useQueryClient();
+  const t = useTranslations("paymentDialog");
 
   const handleProceedToPayment = () => {
     if (paymentAmount <= 0) {
-      toast.error("Payment amount must be greater than 0");
+      toast.error(t("paymentAmountMustBeGreaterThanZero"));
       return;
     }
 
     if (paymentAmount > debtAmount) {
-      toast.error("Payment amount cannot exceed debt amount");
+      toast.error(t("paymentAmountCannotExceedDebt"));
       return;
     }
 
@@ -43,12 +45,12 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
 
   const handlePaymentSuccess = async () => {
     if (paymentAmount <= 0) {
-      toast.error("Payment amount must be greater than 0");
+      toast.error(t("paymentAmountMustBeGreaterThanZero"));
       return;
     }
 
     if (paymentAmount > debtAmount) {
-      toast.error("Payment amount cannot exceed debt amount");
+      toast.error(t("paymentAmountCannotExceedDebt"));
       return;
     }
 
@@ -57,18 +59,18 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
       const result = await handleVehiclePayment(data.vehicle.id, paymentAmount);
 
       if (result?.error) {
-        toast.error("Failed to process payment");
+        toast.error(t("failedToProcessPayment"));
         return;
       }
 
       query.invalidateQueries({
         queryKey: [VEHICLES_QUERY_KEY],
       });
-      toast.success("Payment confirmed successfully");
+      toast.success(t("paymentConfirmedSuccessfully"));
       setOpen(false);
     } catch (error) {
       console.error("Error processing payment:", error);
-      toast.error("Failed to process payment");
+      toast.error(t("failedToProcessPayment"));
     } finally {
       setIsLoading(false);
     }
@@ -94,29 +96,29 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="w-80 sm:w-full  sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Payment QR Code</DialogTitle>
+          <DialogTitle>{t("title")}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
           {/* Vehicle Info */}
           <div className="bg-slate-50 dark:bg-slate-900 p-3 rounded-lg">
             <div className="flex justify-between items-center text-sm">
-              <span className="text-muted-foreground">Vehicle:</span>
+              <span className="text-muted-foreground">{t("vehicle")}:</span>
               <span className="font-medium">{data.vehicle.license_plate}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span className="text-muted-foreground">Customer:</span>
+              <span className="text-muted-foreground">{t("customer")}:</span>
               <span className="font-medium">{data.customer.name}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span className="text-muted-foreground">Brand:</span>
+              <span className="text-muted-foreground">{t("brand")}:</span>
               <span className="font-medium">{data.vehicle.brand}</span>
             </div>
           </div>
 
           {/* Payment Amount */}
           <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 rounded-lg border">
-            <p className="text-muted-foreground mb-4">Payment Amount:</p>
+            <p className="text-muted-foreground mb-4">{t("paymentAmount")}:</p>
             <div className="space-y-2">
               <CurrencyInput
                 id="payment-amount"
@@ -134,11 +136,11 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
                 style={{
                   color: paymentAmount > debtAmount ? "#ef4444" : "#16a34a",
                 }}
-                placeholder="Enter amount"
+                placeholder={t("enterAmount")}
                 step={0.01}
               />
               <div className="text-sm text-muted-foreground">
-                Max:{" "}
+                {t("max")}:{" "}
                 {new Intl.NumberFormat("en-US", {
                   style: "currency",
                   currency: "USD",
@@ -146,12 +148,12 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
               </div>
               {paymentAmount > debtAmount && (
                 <p className="text-sm text-red-500">
-                  Payment cannot exceed debt amount
+                  {t("paymentCannotExceedDebt")}
                 </p>
               )}
               {paymentAmount <= 0 && (
                 <p className="text-sm text-red-500">
-                  Payment must be greater than 0
+                  {t("paymentMustBeGreaterThanZero")}
                 </p>
               )}
               {!showQRCode && (
@@ -160,7 +162,7 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
                   disabled={paymentAmount <= 0 || paymentAmount > debtAmount}
                   className="mt-4 bg-blue-600 hover:bg-blue-700"
                 >
-                  Proceed to Payment
+                  {t("proceedToPayment")}
                 </Button>
               )}
             </div>
@@ -185,7 +187,7 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
           {/* Actions */}
           <div className="flex justify-end gap-2 pt-4">
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline">{t("cancel")}</Button>
             </DialogClose>
             {showQRCode ? (
               <>
@@ -194,7 +196,7 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
                   onClick={() => setShowQRCode(false)}
                   className="text-blue-600 hover:text-blue-700"
                 >
-                  Back to Edit
+                  {t("backToEdit")}
                 </Button>
                 <SubmitButton
                   disabled={isLoading}
@@ -202,7 +204,7 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
                   type="button"
                   className="bg-green-600 hover:bg-green-700"
                 >
-                  Confirm Payment
+                  {t("confirmPayment")}
                 </SubmitButton>
               </>
             ) : null}

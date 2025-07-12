@@ -103,7 +103,7 @@ export default function MonthYearPicker({
   }, []); // Intentionally empty - only run once on mount
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center justify-end gap-2 ml-auto">
       <Button
         variant="outline"
         className="justify-start text-left font-normal w-48"

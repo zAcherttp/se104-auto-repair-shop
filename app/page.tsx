@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useGarageInfo } from "@/hooks/use-garage-info";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export default function Page() {
   const router = useRouter();
@@ -18,7 +19,8 @@ export default function Page() {
     <div className="min-h-screen bg-gradient-to-br">
       <div className="container mx-auto px-4 py-16">
         {/* Language Switcher */}
-        <div className="flex justify-end mb-8">
+        <div className="flex justify-end mb-8 gap-1">
+          <ThemeSwitcher />
           <LanguageSwitcher />
         </div>
 

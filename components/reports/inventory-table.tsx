@@ -10,16 +10,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useTranslations } from "next-intl";
 
 interface InventoryTableProps {
   data?: InventoryReport;
 }
 
 export function InventoryTable({ data }: InventoryTableProps) {
+  const t = useTranslations("reports.inventoryTable");
+
   if (!data?.inventory?.length) {
     return (
       <div className="text-center py-8 text-muted-foreground">
-        No inventory data available
+        {t("noData")}
       </div>
     );
   }
@@ -38,19 +41,19 @@ export function InventoryTable({ data }: InventoryTableProps) {
           <TableHeader>
             <TableRow className="bg-muted">
               <TableHead className="text-center font-bold border">
-                No.
+                {t("columns.no")}
               </TableHead>
               <TableHead className="text-center font-bold border">
-                Spare Parts & Materials
+                {t("columns.partName")}
               </TableHead>
               <TableHead className="text-center font-bold border">
-                Beginning Stock
+                {t("columns.beginningStock")}
               </TableHead>
               <TableHead className="text-center font-bold border">
-                Used
+                {t("columns.usedQuantity")}
               </TableHead>
               <TableHead className="text-center font-bold border">
-                Ending Stock
+                {t("columns.endingStock")}
               </TableHead>
             </TableRow>
           </TableHeader>

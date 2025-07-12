@@ -39,6 +39,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { useTranslations } from "next-intl";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -54,6 +55,7 @@ export function VehiclesDataTable<TData, TValue>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
+  const t = useTranslations("vehicles");
 
   const table = useReactTable({
     data,
@@ -97,7 +99,7 @@ export function VehiclesDataTable<TData, TValue>({
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
-            placeholder="Search vehicles..."
+            placeholder={t("searchPlaceholder")}
             value={globalFilter ?? ""}
             onChange={(event) => setGlobalFilter(event.target.value)}
             className="pl-8"
@@ -147,7 +149,7 @@ export function VehiclesDataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No vehicles found.
+                  {t("noVehiclesFound")}
                 </TableCell>
               </TableRow>
             )}
@@ -157,12 +159,12 @@ export function VehiclesDataTable<TData, TValue>({
 
       <div className="flex items-center justify-between px-4 pt-4">
         <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
-          {table.getFilteredRowModel().rows.length} entries in vehicles.
+          {table.getFilteredRowModel().rows.length} {t("entriesInVehicles")}
         </div>
         <div className="flex w-full items-center gap-8 lg:w-fit">
           <div className="hidden items-center gap-2 lg:flex">
             <Label htmlFor="rows-per-page" className="text-sm font-medium">
-              Rows per page
+              {t("rowsPerPage")}
             </Label>
             <Select
               value={`${table.getState().pagination.pageSize}`}
@@ -185,7 +187,7 @@ export function VehiclesDataTable<TData, TValue>({
             </Select>
           </div>
           <div className="flex w-fit items-center justify-center text-sm font-medium">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
+            {t("page")} {table.getState().pagination.pageIndex + 1} {t("of")}{" "}
             {table.getPageCount()}
           </div>
           <div className="ml-auto flex items-center gap-2 lg:ml-0">
@@ -195,7 +197,7 @@ export function VehiclesDataTable<TData, TValue>({
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Go to first page</span>
+              <span className="sr-only">{t("goToFirstPage")}</span>
               <ChevronsLeftIcon />
             </Button>
             <Button

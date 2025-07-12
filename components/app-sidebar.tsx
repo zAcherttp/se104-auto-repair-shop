@@ -9,69 +9,62 @@ import {
   ClipboardList,
 } from "lucide-react";
 import { NavGroup } from "./nav-group";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-} from "./ui/sidebar";
+import { Sidebar, SidebarContent, SidebarHeader } from "./ui/sidebar";
 import { AppBanner } from "./sidebar-banner";
-import { useMemo } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-} from "./ui/select";
+import { useMemo, memo } from "react";
+import { useTranslations } from "next-intl";
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   isAdmin?: boolean;
 }
 
-export function AppSidebar({ isAdmin, ...props }: AppSidebarProps) {
-  const data = useMemo(
-    () => ({
-      garageInfo: {
-        name: "My Garage",
-        logo: Package2,
-      },
-      dashboardItems: [
-        { name: "Reception", url: "/reception", icon: ClipboardList },
-        { name: "Vehicles", url: "/vehicles", icon: Car },
-        { name: "Payments", url: "/payments", icon: CreditCard },
-        { name: "Inventory", url: "/inventory", icon: Package2 },
-        { name: "Reports", url: "/reports", icon: BarChart3 },
-      ],
-      garageItems: isAdmin
-        ? [{ name: "Settings", url: "/settings", icon: Cog }]
-        : [],
-    }),
-    [isAdmin]
+// Memoize the static garage info to prevent recreation
+const GARAGE_INFO = {
+  name: "My Garage",
+  logo: Package2,
+};
+
+export const AppSidebar = memo(function AppSidebar({
+  isAdmin,
+  ...props
+}: AppSidebarProps) {
+  const t = useTranslations("navigation");
+  const tSidebar = useTranslations("sidebar");
+
+  // Memoize the dashboard items array with translations
+  const dashboardItems = useMemo(
+    () => [
+      { name: t("reception"), url: "/reception", icon: ClipboardList },
+      { name: t("vehicles"), url: "/vehicles", icon: Car },
+      { name: t("payments"), url: "/payments", icon: CreditCard },
+      { name: t("inventory"), url: "/inventory", icon: Package2 },
+      { name: t("reports"), url: "/reports", icon: BarChart3 },
+    ],
+    [t]
   );
+
+  // Memoize the admin items array with translations
+  const adminItems = useMemo(
+    () => [{ name: t("settings"), url: "/settings", icon: Cog }],
+    [t]
+  );
+
+  // Memoize garage items based on admin status
+  const garageItems = useMemo(() => {
+    return isAdmin ? adminItems : [];
+  }, [isAdmin, adminItems]);
 
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <AppBanner garage={data.garageInfo} />
+        <AppBanner garage={GARAGE_INFO} />
       </SidebarHeader>
       <SidebarContent>
-        <NavGroup items={data.dashboardItems} label="Dashboard" />
-        {data.garageItems.length > 0 && (
-          <NavGroup items={data.garageItems} label="Garage" />
+        <NavGroup items={dashboardItems} label={tSidebar("dashboard")} />
+        {garageItems.length > 0 && (
+          <NavGroup items={garageItems} label={tSidebar("garage")} />
         )}
-        <SidebarFooter>
-          <Select>
-            <SelectGroup>
-              <SelectLabel>Language</SelectLabel>
-            </SelectGroup>
-            <SelectContent>
-              <SelectItem value="en">English</SelectItem>
-              <SelectItem value="vi">Tiếng Việt</SelectItem>
-            </SelectContent>
-          </Select>
-        </SidebarFooter>
       </SidebarContent>
     </Sidebar>
   );
-}
+});

@@ -3,14 +3,17 @@
 import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PlusIcon, EditIcon, TrashIcon } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { EditIcon, TrashIcon } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import { getLaborTypes, deleteLaborType } from "@/app/actions/settings";
 import { AddLaborTypeDialog } from "./add-labor-type-dialog";
 import { EditLaborTypeDialog } from "./edit-labor-type-dialog";
 import type { LaborType } from "@/types/settings";
 
 export default function LaborTypesTab() {
+  const t = useTranslations("settings.labor");
   const [laborTypes, setLaborTypes] = useState<LaborType[]>([]);
   const [loading, setLoading] = useState(true);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
@@ -38,14 +41,14 @@ export default function LaborTypesTab() {
   }, [fetchLaborTypes]);
 
   const handleDeleteLaborType = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this labor type?")) {
+    if (!confirm(t("confirmDelete"))) {
       return;
     }
 
     try {
       const response = await deleteLaborType(id);
       if (response.success) {
-        toast.success("Labor type deleted successfully");
+        toast.success(t("deleteSuccess"));
         await fetchLaborTypes();
       } else {
         toast.error(response.error || "Failed to delete labor type");
@@ -82,44 +85,37 @@ export default function LaborTypesTab() {
 
   return (
     <>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h2 className="text-2xl font-bold">Labor Types Management</h2>
-        </div>
-        <Button
-          onClick={() => setAddDialogOpen(true)}
-          className="bg-green-600 hover:bg-green-700"
-        >
-          <PlusIcon className="h-4 w-4 mr-2" />
-          Add Labor Type
-        </Button>
-      </div>
-
       <Card>
-        <CardContent className="p-0">
+        <CardContent>
+          <div className="flex justify-between mb-2">
+            <Label className="self-start pl-2">{t("title")}</Label>
+            <Button className="h-8" onClick={() => setAddDialogOpen(true)}>
+              {t("addButton")}
+            </Button>
+          </div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-muted/50">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">
-                    Name
+                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                    {t("table.name")}
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">
-                    Cost
+                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                    {t("table.cost")}
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">
-                    Actions
+                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                    {t("table.actions")}
                   </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
                 {laborTypes.map((laborType) => (
                   <tr key={laborType.id} className="hover:bg-muted/50">
-                    <td className="px-6 py-4 font-medium">{laborType.name}</td>
-                    <td className="px-6 py-4 text-sm">
+                    <td className="px-4 py-3 font-medium">{laborType.name}</td>
+                    <td className="px-4 py-3 text-sm">
                       ${laborType.cost.toFixed(2)}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <Button
                           variant="ghost"

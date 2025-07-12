@@ -16,7 +16,7 @@ import { useLineItems } from "@/hooks/use-line-items";
 import { useEmployees } from "@/hooks/use-employees";
 import { ScrollArea } from "../../ui/scroll-area";
 import { LineItemDataTable } from "./data-table";
-import { lineItemColumns, LineItem } from "./columns";
+import { createLineItemColumns, LineItem } from "./columns";
 import { Textarea } from "@/components/ui/textarea";
 import { UpdateDialogProps, UpdateData } from "@/types/dialog";
 import SubmitButton from "@/components/submit-button";
@@ -25,8 +25,10 @@ import { updateRepairOrderSmart } from "@/app/actions/vehicles";
 import { useQueryClient } from "@tanstack/react-query";
 import { VEHICLE_REGISTRATION_QUERY_KEY } from "@/hooks/use-vehicle-registration";
 import { Separator } from "@/components/ui/separator";
+import { useTranslations } from "next-intl";
 
 export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
+  const t = useTranslations("updateRepairOrder");
   const [notes, setNotes] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -108,11 +110,11 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
       query.invalidateQueries({
         queryKey: [VEHICLE_REGISTRATION_QUERY_KEY],
       });
-      toast.success("Repair order updated successfully");
+      toast.success(t("updateSuccess"));
       setOpen(false);
     } catch (error) {
       console.error("Error updating repair order:", error);
-      toast.error("Failed to update repair order");
+      toast.error(t("updateError"));
     } finally {
       setIsLoading(false);
     }
@@ -124,7 +126,7 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
         <ScrollArea className="max-h-[80vh]">
           <div className="p-4">
             <DialogHeader className="pb-4">
-              <DialogTitle>Update Repair Order</DialogTitle>
+              <DialogTitle>{t("title")}</DialogTitle>
             </DialogHeader>
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-6">
@@ -132,18 +134,22 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
                   <CardHeader className="p-0 pb-2">
                     <CardTitle className="flex items-center gap-1.5 font-medium">
                       <Car className="h-4 w-4" />
-                      Vehicle
+                      {t("vehicle")}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-0 space-y-1">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">License:</span>
+                      <span className="text-muted-foreground">
+                        {t("license")}
+                      </span>
                       <span className="font-medium">
                         {data.vehicle.license_plate}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Brand:</span>
+                      <span className="text-muted-foreground">
+                        {t("brand")}
+                      </span>
                       <span className="font-medium">{data.vehicle.brand}</span>
                     </div>
                   </CardContent>
@@ -153,16 +159,18 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
                   <CardHeader className="p-0 pb-2">
                     <CardTitle className="flex items-center gap-1.5 font-medium">
                       <User className="h-4 w-4" />
-                      Customer
+                      {t("customer")}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-0 space-y-1 ">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Name:</span>
+                      <span className="text-muted-foreground">{t("name")}</span>
                       <span className="font-medium">{data.customer.name}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Phone:</span>
+                      <span className="text-muted-foreground">
+                        {t("phone")}
+                      </span>
                       <span className="font-medium">{data.customer.phone}</span>
                     </div>
                   </CardContent>
@@ -175,12 +183,14 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
                     <div className="flex items-center justify-center py-8">
                       <div className="text-center">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                        <p className="text-gray-500">Loading repair items...</p>
+                        <p className="text-gray-500">
+                          {t("loadingRepairItems")}
+                        </p>
                       </div>
                     </div>
                   ) : (
                     <LineItemDataTable
-                      columns={lineItemColumns}
+                      columns={createLineItemColumns(t)}
                       data={lineItems}
                       spareParts={spareParts}
                       laborTypes={laborTypes}
@@ -195,19 +205,19 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
               </Card>
               <Card>
                 <CardHeader className="pb-0">
-                  <CardTitle className="font-medium">Notes</CardTitle>
+                  <CardTitle className="font-medium">{t("notes")}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <Textarea
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    placeholder="Add any additional notes here..."
+                    placeholder={t("notesPlaceholder")}
                     className="w-full h-24 border rounded-md resize-none "
                   />
                   <Separator />
                   {/* Total Summary */}
                   <div className="flex justify-between items-center">
-                    <p className="font-medium">Total Amount</p>
+                    <p className="font-medium">{t("totalAmount")}</p>
                     <p className="text-xl font-bold">
                       {new Intl.NumberFormat("en-US", {
                         style: "currency",
@@ -221,7 +231,7 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
 
             <div className="flex justify-end gap-2 pt-4">
               <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
+                <Button variant="outline">{t("cancel")}</Button>
               </DialogClose>
               <SubmitButton
                 disabled={isLoading}
@@ -229,7 +239,7 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
                 type="button"
                 className="bg-blue-600 hover:bg-blue-700 w-45"
               >
-                Update Repair Order
+                {t("updateButton")}
               </SubmitButton>
             </div>
           </div>

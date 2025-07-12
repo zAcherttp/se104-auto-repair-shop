@@ -17,8 +17,10 @@ import { useReportsQuery } from "@/hooks/use-reports";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, BarChart3, Package } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function Page() {
+  const t = useTranslations("reports");
   // Use stable default values to avoid hydration mismatch
   const [selectedPeriod, setSelectedPeriod] = useState({
     month: 7, // July (current month as default)
@@ -74,11 +76,11 @@ export default function Page() {
 
   if (error) {
     return (
-      <div className="container mx-auto p-4">
+      <div className="p-4">
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
-            Failed to load reports data: {error.message}
+            {t("errorLoading")} {error.message}
           </AlertDescription>
         </Alert>
       </div>
@@ -86,40 +88,34 @@ export default function Page() {
   }
 
   return (
-    <div className="container mx-auto p-4 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Reports</h1>
-          <p className="text-muted-foreground">
-            View sales and inventory analytics for your repair shop
-          </p>
+    <div className="p-4 space-y-6">
+      <Tabs defaultValue="sales" className="space-y-4">
+        <div className="grid grid-cols-3 items-center gap-4">
+          <TabsList className="grid grid-cols-2">
+            <TabsTrigger value="sales" className="flex items-center gap-2">
+              <BarChart3 className="h-4 w-4" />
+              {t("tabs.salesAnalysis")}
+            </TabsTrigger>
+            <TabsTrigger value="inventory" className="flex items-center gap-2">
+              <Package className="h-4 w-4" />
+              {t("tabs.inventoryAnalysis")}
+            </TabsTrigger>
+          </TabsList>
+          <div></div>
+          <MonthYearPicker
+            initialMonth={selectedPeriod.month - 1}
+            initialYear={selectedPeriod.year}
+            onUpdate={handlePeriodUpdate}
+          />
         </div>
-        <MonthYearPicker
-          initialMonth={selectedPeriod.month - 1}
-          initialYear={selectedPeriod.year}
-          onUpdate={handlePeriodUpdate}
-        />
-      </div>
-
-      <Tabs defaultValue="sales" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="sales" className="flex items-center gap-2">
-            <BarChart3 className="h-4 w-4" />
-            Sales Analysis
-          </TabsTrigger>
-          <TabsTrigger value="inventory" className="flex items-center gap-2">
-            <Package className="h-4 w-4" />
-            Inventory Analysis
-          </TabsTrigger>
-        </TabsList>
 
         <TabsContent value="sales" className="space-y-6">
           <div className="grid gap-6 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>Sales Overview</CardTitle>
+                <CardTitle>{t("salesOverview.title")}</CardTitle>
                 <CardDescription>
-                  Car brands revenue distribution and market share
+                  {t("salesOverview.description")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -136,10 +132,8 @@ export default function Page() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Key Metrics</CardTitle>
-                <CardDescription>
-                  Important sales metrics for the period
-                </CardDescription>
+                <CardTitle>{t("keyMetrics.title")}</CardTitle>
+                <CardDescription>{t("keyMetrics.description")}</CardDescription>
               </CardHeader>
               <CardContent>
                 {isLoading ? (
@@ -151,7 +145,9 @@ export default function Page() {
                 ) : (
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">Total Revenue</span>
+                      <span className="text-sm font-medium">
+                        {t("keyMetrics.totalRevenue")}
+                      </span>
                       <span className="text-2xl font-bold">
                         {salesAnalytics?.totalRevenue?.toLocaleString("en-US", {
                           style: "currency",
@@ -160,14 +156,16 @@ export default function Page() {
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">Total Orders</span>
+                      <span className="text-sm font-medium">
+                        {t("keyMetrics.totalOrders")}
+                      </span>
                       <span className="text-2xl font-bold">
                         {salesAnalytics?.totalOrders || 0}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-medium">
-                        Average Order Value
+                        {t("keyMetrics.averageOrderValue")}
                       </span>
                       <span className="text-2xl font-bold">
                         {salesAnalytics?.averageOrderValue?.toLocaleString(
@@ -187,9 +185,9 @@ export default function Page() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Detailed Sales Report</CardTitle>
+              <CardTitle>{t("detailedSalesReport.title")}</CardTitle>
               <CardDescription>
-                Comprehensive breakdown of sales transactions and revenue
+                {t("detailedSalesReport.description")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -210,9 +208,9 @@ export default function Page() {
         <TabsContent value="inventory" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Inventory Metrics</CardTitle>
+              <CardTitle>{t("inventoryMetrics.title")}</CardTitle>
               <CardDescription>
-                Key inventory performance indicators
+                {t("inventoryMetrics.description")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -225,19 +223,25 @@ export default function Page() {
               ) : (
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium">Total Parts</span>
+                    <span className="text-sm font-medium">
+                      {t("inventoryMetrics.totalParts")}
+                    </span>
                     <span className="text-2xl font-bold">
                       {inventoryAnalytics?.totalParts || 0}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium">Low Stock Items</span>
+                    <span className="text-sm font-medium">
+                      {t("inventoryMetrics.lowStockItems")}
+                    </span>
                     <span className="text-2xl font-bold text-destructive">
                       {inventoryAnalytics?.lowStockItems || 0}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium">Total Value</span>
+                    <span className="text-sm font-medium">
+                      {t("inventoryMetrics.totalValue")}
+                    </span>
                     <span className="text-2xl font-bold">
                       {inventoryAnalytics?.totalValue?.toLocaleString("en-US", {
                         style: "currency",
@@ -252,9 +256,9 @@ export default function Page() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Inventory Status Report</CardTitle>
+              <CardTitle>{t("inventoryStatusReport.title")}</CardTitle>
               <CardDescription>
-                Detailed inventory levels, movements, and stock analysis
+                {t("inventoryStatusReport.description")}
               </CardDescription>
             </CardHeader>
             <CardContent>

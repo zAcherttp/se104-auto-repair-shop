@@ -1,7 +1,7 @@
 {
   "landing": {
-    "title": "Hệ thống quản lý xưởng sửa chữa",
-    "subtitle": "Hệ thống quản lý sửa chữa xe hơi toàn diện",
+    "title": "Hệ thống quản lý sửa chữa xe",
+    "subtitle": "Hệ thống quản lý sửa chữa xe toàn diện",
     "contactConfig": "Thông tin liên hệ có thể được cấu hình trong cài đặt quản trị.",
     "staffLogin": {
       "title": "Bạn là nhân viên ?",
@@ -14,6 +14,7 @@
       "button": "Tra cứu"
     },
     "features": {
+      "title": "Tại sao chọn AutoRepair Manager?",
       "vehicleManagement": {
         "title": "Quản lý xe",
         "description": "Hệ thống tiếp nhận và theo dõi xe hoàn chỉnh"
@@ -145,6 +146,21 @@
     },
     "error": "Lỗi"
   },
+  "navigation": {
+    "home": "Trang chủ",
+    "reception": "Tiếp nhận",
+    "vehicles": "Xe",
+    "payments": "Thanh toán",
+    "inventory": "Kho hàng",
+    "tasks": "Nhiệm vụ",
+    "invoices": "Hóa đơn",
+    "reports": "Báo cáo",
+    "settings": "Cài đặt"
+  },
+  "sidebar": {
+    "dashboard": "Bảng điều khiển",
+    "garage": "Xưởng"
+  },
   "reception": {
     "title": "Tiếp nhận xe",
     "searchPlaceholder": "Tìm kiếm...",
@@ -200,8 +216,252 @@
     },
     "error": "Lỗi"
   },
+  "vehicles": {
+    "title": "Quản lý xe",
+    "searchPlaceholder": "Tìm kiếm xe...",
+    "noVehiclesFound": "Không tìm thấy xe nào.",
+    "entriesInVehicles": "mục trong danh sách xe.",
+    "rowsPerPage": "Số hàng mỗi trang",
+    "page": "Trang",
+    "of": "của",
+    "goToFirstPage": "Đi đến trang đầu",
+    "goToPreviousPage": "Đi đến trang trước",
+    "goToNextPage": "Đi đến trang tiếp theo",
+    "goToLastPage": "Đi đến trang cuối",
+    "openMenu": "Mở menu",
+    "columns": {
+      "licensePlate": "Biển số xe",
+      "customerName": "Tên khách hàng",
+      "phoneNumber": "Số điện thoại",
+      "address": "Địa chỉ",
+      "carBrand": "Hãng xe",
+      "totalRepairs": "Tổng sửa chữa",
+      "totalPaid": "Tổng đã thanh toán",
+      "totalDebt": "Tổng nợ",
+      "createdAt": "Ngày tạo"
+    },
+    "actions": {
+      "title": "Thao tác",
+      "makePayment": "Thanh toán"
+    },
+    "error": "Không thể tải danh sách xe"
+  },
+  "paymentDialog": {
+    "title": "Mã QR thanh toán",
+    "vehicle": "Xe",
+    "customer": "Khách hàng",
+    "brand": "Hãng xe",
+    "paymentAmount": "Số tiền thanh toán",
+    "max": "Tối đa",
+    "paymentCannotExceedDebt": "Số tiền thanh toán không thể vượt quá số nợ",
+    "paymentMustBeGreaterThanZero": "Số tiền thanh toán phải lớn hơn 0",
+    "proceedToPayment": "Tiến hành thanh toán",
+    "cancel": "Hủy",
+    "backToEdit": "Quay lại chỉnh sửa",
+    "confirmPayment": "Xác nhận thanh toán",
+    "enterAmount": "Nhập số tiền",
+    "paymentAmountMustBeGreaterThanZero": "Số tiền thanh toán phải lớn hơn 0",
+    "paymentAmountCannotExceedDebt": "Số tiền thanh toán không thể vượt quá số nợ",
+    "failedToProcessPayment": "Không thể xử lý thanh toán",
+    "paymentConfirmedSuccessfully": "Xác nhận thanh toán thành công"
+  },
+  "payments": {
+    "title": "Quản lý thanh toán",
+    "searchPlaceholder": "Tìm kiếm thanh toán...",
+    "loadingPayments": "Đang tải thanh toán...",
+    "noPaymentsFound": "Không tìm thấy thanh toán nào.",
+    "rowsSelected": "hàng được chọn.",
+    "of": "của",
+    "rowsPerPage": "Số hàng mỗi trang",
+    "page": "Trang",
+    "goToFirstPage": "Đi đến trang đầu",
+    "goToPreviousPage": "Đi đến trang trước",
+    "goToNextPage": "Đi đến trang tiếp theo",
+    "goToLastPage": "Đi đến trang cuối",
+    "openMenu": "Mở menu",
+    "error": "Đã xảy ra lỗi",
+    "columns": {
+      "licensePlate": "Biển số xe",
+      "customerName": "Tên khách hàng",
+      "phone": "Điện thoại",
+      "amount": "Số tiền",
+      "paymentMethod": "Phương thức thanh toán",
+      "paymentDate": "Ngày thanh toán",
+      "createdAt": "Ngày tạo",
+      "createdBy": "Được tạo bởi"
+    },
+    "actions": {
+      "title": "Thao tác",
+      "viewReceipt": "Xem biên lai"
+    }
+  },
+  "updateRepairOrder": {
+    "title": "Cập nhật đơn sửa chữa",
+    "vehicle": "Xe",
+    "customer": "Khách hàng",
+    "license": "Biển số:",
+    "brand": "Hãng xe:",
+    "name": "Tên:",
+    "phone": "Điện thoại:",
+    "repairLineItems": "Danh mục sửa chữa",
+    "addItem": "Thêm mục",
+    "notes": "Ghi chú",
+    "notesPlaceholder": "Thêm ghi chú bổ sung tại đây...",
+    "totalAmount": "Tổng số tiền",
+    "cancel": "Hủy",
+    "updateButton": "Cập nhật đơn sửa chữa",
+    "loadingRepairItems": "Đang tải danh mục sửa chữa...",
+    "updateSuccess": "Cập nhật đơn sửa chữa thành công",
+    "updateError": "Không thể cập nhật đơn sửa chữa",
+    "noResults": "Không có kết quả.",
+    "rowsPerPage": "Số hàng mỗi trang",
+    "page": "Trang",
+    "of": "của",
+    "goToFirstPage": "Đi đến trang đầu",
+    "goToPreviousPage": "Đi đến trang trước",
+    "goToNextPage": "Đi đến trang tiếp theo",
+    "goToLastPage": "Đi đến trang cuối",
+    "columns": {
+      "description": "Mô tả",
+      "sparePart": "Phụ tùng",
+      "quantity": "Số lượng",
+      "unitPrice": "Đơn giá",
+      "laborType": "Loại công việc",
+      "assignedTo": "Được giao cho",
+      "laborCost": "Chi phí công việc",
+      "total": "Tổng cộng"
+    }
+  },
+  "reports": {
+    "title": "Báo cáo",
+    "subtitle": "Xem phân tích bán hàng và tồn kho cho xưởng sửa chữa của bạn",
+    "errorLoading": "Không thể tải dữ liệu báo cáo:",
+    "tabs": {
+      "salesAnalysis": "Phân tích bán hàng",
+      "inventoryAnalysis": "Phân tích tồn kho"
+    },
+    "salesOverview": {
+      "title": "Tổng quan bán hàng",
+      "description": "Phân bổ doanh thu theo thương hiệu xe và thị phần"
+    },
+    "keyMetrics": {
+      "title": "Chỉ số chính",
+      "description": "Các chỉ số bán hàng quan trọng trong kỳ",
+      "totalRevenue": "Tổng doanh thu",
+      "totalOrders": "Tổng đơn hàng",
+      "averageOrderValue": "Giá trị đơn hàng trung bình"
+    },
+    "detailedSalesReport": {
+      "title": "Báo cáo bán hàng chi tiết",
+      "description": "Phân tích toàn diện các giao dịch bán hàng và doanh thu"
+    },
+    "inventoryMetrics": {
+      "title": "Chỉ số tồn kho",
+      "description": "Các chỉ số hiệu suất tồn kho chính",
+      "totalParts": "Tổng phụ tùng",
+      "lowStockItems": "Mặt hàng sắp hết",
+      "totalValue": "Tổng giá trị"
+    },
+    "inventoryStatusReport": {
+      "title": "Báo cáo tình trạng tồn kho",
+      "description": "Phân tích chi tiết mức tồn kho, xuất nhập và stock"
+    },
+    "salesTable": {
+      "title": "Báo cáo bán hàng:",
+      "totalRevenue": "Tổng doanh thu:",
+      "noData": "Không có dữ liệu bán hàng cho kỳ này",
+      "columns": {
+        "no": "STT",
+        "vehicleBrand": "Thương hiệu xe",
+        "repairCount": "Số lượt sửa chữa",
+        "revenue": "Doanh thu",
+        "rate": "Tỷ lệ (%)"
+      }
+    },
+    "inventoryTable": {
+      "noData": "Không có dữ liệu tồn kho cho kỳ này",
+      "columns": {
+        "no": "STT",
+        "partName": "Tên phụ tùng",
+        "beginningStock": "Tồn đầu kỳ",
+        "endingStock": "Tồn cuối kỳ",
+        "usedQuantity": "Số lượng sử dụng",
+        "unitPrice": "Đơn giá",
+        "totalValue": "Tổng giá trị"
+      }
+    }
+  },
+  "settings": {
+    "tabs": {
+      "garage": "Thông tin garage",
+      "employees": "Nhân viên",
+      "parts": "Phụ tùng",
+      "labor": "Loại công việc",
+      "brands": "Thương hiệu xe"
+    },
+    "employees": {
+      "title": "Nhân viên",
+      "addButton": "Thêm nhân viên",
+      "loadingMessage": "Đang tải nhân viên...",
+      "table": {
+        "name": "Tên",
+        "role": "Vai trò",
+        "created": "Ngày tạo"
+      },
+      "actions": {
+        "edit": "Sửa",
+        "delete": "Xóa"
+      }
+    },
+    "parts": {
+      "title": "Phụ tùng",
+      "addButton": "Thêm phụ tùng",
+      "loadingMessage": "Đang tải phụ tùng...",
+      "table": {
+        "name": "Tên",
+        "price": "Giá",
+        "stock": "Tồn kho",
+        "actions": "Thao tác"
+      },
+      "actions": {
+        "edit": "Sửa",
+        "delete": "Xóa"
+      }
+    },
+    "labor": {
+      "title": "Loại công việc",
+      "addButton": "Thêm loại công việc",
+      "loadingMessage": "Đang tải loại công việc...",
+      "confirmDelete": "Bạn có chắc chắn muốn xóa loại công việc này?",
+      "deleteSuccess": "Xóa loại công việc thành công",
+      "table": {
+        "name": "Tên",
+        "cost": "Chi phí",
+        "actions": "Thao tác"
+      },
+      "actions": {
+        "edit": "Sửa",
+        "delete": "Xóa"
+      }
+    },
+    "brands": {
+      "title": "Thương hiệu xe",
+      "loadingMessage": "Đang tải thương hiệu xe...",
+      "addNewBrand": "Thêm thương hiệu xe mới",
+      "placeholder": "Nhập tên thương hiệu xe (ví dụ: Toyota, BMW)",
+      "addButton": "Thêm",
+      "currentBrands": "Thương hiệu xe hiện tại",
+      "noBrands": "Chưa có thương hiệu xe nào được cấu hình. Thêm một số thương hiệu để bắt đầu.",
+      "saveChanges": "Lưu thay đổi",
+      "saving": "Đang lưu...",
+      "enterBrandError": "Vui lòng nhập tên thương hiệu xe",
+      "brandExistsError": "Thương hiệu xe này đã tồn tại",
+      "saveSuccess": "Cập nhật thương hiệu xe thành công",
+      "saveError": "Không thể lưu thương hiệu xe"
+    }
+  },
   "language": {
-    "english": "English",
+    "english": "Tiếng Anh",
     "vietnamese": "Tiếng Việt"
   }
 }

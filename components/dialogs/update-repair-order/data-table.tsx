@@ -25,7 +25,8 @@ import {
   ChevronsRightIcon,
   Plus,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
+import { useTranslations } from "next-intl";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -39,7 +40,11 @@ interface DataTableProps<TData, TValue> {
   onAddRow?: () => { newRow: unknown; newIndex: number } | void;
 }
 
-export function LineItemDataTable<TData, TValue>({
+// Memoized data table component to prevent unnecessary re-renders
+export const LineItemDataTable = React.memo(function LineItemDataTable<
+  TData,
+  TValue
+>({
   columns,
   data,
   spareParts = [],
@@ -50,46 +55,61 @@ export function LineItemDataTable<TData, TValue>({
   onRemoveRow,
   onAddRow,
 }: DataTableProps<TData, TValue>) {
+  const t = useTranslations("updateRepairOrder");
   const [editedRows, setEditedRows] = useState<Record<string, boolean>>({});
 
-  const handleAddRow = () => {
+  const handleAddRow = useCallback(() => {
     if (onAddRow) {
       const result = onAddRow();
       // If the addRow function returns a newIndex, automatically enter edit mode
       if (result && typeof result === "object" && "newIndex" in result) {
         setEditedRows((prev) => ({
           ...prev,
-          [result.newIndex]: true,
+          [result.newIndex as number]: true,
         }));
       }
     }
-  };
+  }, [onAddRow]);
+
+  const tableMeta = useMemo(
+    () => ({
+      editedRows,
+      setEditedRows,
+      spareParts,
+      laborTypes,
+      employees,
+      updateData: onUpdateData,
+      revertData: onRevertData,
+      removeRow: onRemoveRow,
+      addRow: onAddRow,
+    }),
+    [
+      editedRows,
+      spareParts,
+      laborTypes,
+      employees,
+      onUpdateData,
+      onRevertData,
+      onRemoveRow,
+      onAddRow,
+    ]
+  );
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    meta: {
-      editedRows,
-      setEditedRows,
-      updateData: onUpdateData,
-      revertData: onRevertData,
-      removeRow: onRemoveRow,
-      addRow: onAddRow,
-      spareParts,
-      laborTypes,
-      employees,
-    },
+    meta: tableMeta,
   });
 
   return (
     <>
       <div className="font-medium pb-4 flex justify-between items-center w-full">
-        <span>Repair Line Items</span>
+        <span>{t("repairLineItems")}</span>
         <Button size="sm" onClick={handleAddRow}>
           <Plus className="h-4 w-4 mr-2" />
-          Add Item
+          {t("addItem")}
         </Button>
       </div>
       <div className="rounded-md border w-full">
@@ -135,60 +155,74 @@ export function LineItemDataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {t("noResults")}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-between px-4 pt-4">
-        <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
-          {table.getFilteredRowModel().rows.length} line item(s) .
+
+      <div className="flex items-center justify-between space-x-2 py-4">
+        <div className="flex-1 text-sm text-muted-foreground">
+          {table.getFilteredSelectedRowModel().rows.length} of{" "}
+          {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="flex w-full items-center gap-8 lg:w-fit">
-          <div className="flex w-fit items-center justify-center text-sm font-medium">
-            Page {table.getState().pagination.pageIndex + 1} of
+        <div className="flex items-center space-x-6 lg:space-x-8">
+          <div className="flex items-center space-x-2">
+            <p className="text-sm font-medium">{t("rowsPerPage")}</p>
+            <select
+              value={table.getState().pagination.pageSize}
+              onChange={(e) => {
+                table.setPageSize(Number(e.target.value));
+              }}
+            >
+              {[10, 20, 30, 40, 50].map((pageSize) => (
+                <option key={pageSize} value={pageSize}>
+                  {pageSize}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+            {t("page")} {table.getState().pagination.pageIndex + 1} {t("of")}{" "}
             {table.getPageCount()}
           </div>
-          <div className="ml-auto flex items-center gap-2 lg:ml-0">
+          <div className="flex items-center space-x-2">
             <Button
               variant="outline"
               className="hidden h-8 w-8 p-0 lg:flex"
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Go to first page</span>
+              <span className="sr-only">{t("goToFirstPage")}</span>
               <ChevronsLeftIcon />
             </Button>
             <Button
               variant="outline"
-              className="size-8"
-              size="icon"
+              className="h-8 w-8 p-0"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Go to previous page</span>
+              <span className="sr-only">{t("goToPreviousPage")}</span>
               <ChevronLeftIcon />
             </Button>
             <Button
               variant="outline"
-              className="size-8"
-              size="icon"
+              className="h-8 w-8 p-0"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Go to next page</span>
+              <span className="sr-only">{t("goToNextPage")}</span>
               <ChevronRightIcon />
             </Button>
             <Button
               variant="outline"
-              className="hidden size-8 lg:flex"
-              size="icon"
+              className="hidden h-8 w-8 p-0 lg:flex"
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Go to last page</span>
+              <span className="sr-only">{t("goToLastPage")}</span>
               <ChevronsRightIcon />
             </Button>
           </div>
@@ -196,4 +230,6 @@ export function LineItemDataTable<TData, TValue>({
       </div>
     </>
   );
-}
+}) as <TData, TValue>(
+  props: DataTableProps<TData, TValue>
+) => React.JSX.Element;

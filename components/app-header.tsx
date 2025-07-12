@@ -7,11 +7,36 @@ import React, { memo } from "react";
 import { usePathname } from "next/navigation";
 import { SignOutButton } from "./signout-button";
 import { LanguageSwitcher } from "./language-switcher";
+import { useTranslations } from "next-intl";
 
 const PageTitle = memo(function PageTitle() {
   const pathname = usePathname();
+  const t = useTranslations("navigation");
 
-  function formatPathname(path: string) {
+  function getPageTitle(path: string): string {
+    // Remove leading slash and get the first segment
+    const segments = path.replace(/^\//, "").split("/");
+    const mainSegment = segments[0];
+
+    // Map path segments to translation keys
+    const pageMap: Record<string, string> = {
+      "": "home", // root path
+      home: "home",
+      reception: "reception",
+      vehicles: "vehicles",
+      inventory: "inventory",
+      payments: "payments",
+      reports: "reports",
+      settings: "settings",
+    };
+
+    // Get translation key, fallback to formatted path if not found
+    const translationKey = pageMap[mainSegment];
+    if (translationKey && t.has(translationKey)) {
+      return t(translationKey);
+    }
+
+    // Fallback to formatted path name
     return path
       .replace(/^\//, "")
       .replace(/-/g, " ")
@@ -20,7 +45,7 @@ const PageTitle = memo(function PageTitle() {
       .join(" ");
   }
 
-  return <h1 className="text-base font-medium">{formatPathname(pathname)}</h1>;
+  return <h1 className="text-base font-medium">{getPageTitle(pathname)}</h1>;
 });
 
 const HeaderActions = memo(function HeaderActions() {
@@ -36,7 +61,7 @@ const HeaderActions = memo(function HeaderActions() {
 export function Header() {
   return (
     <header className="backdrop-blur-sm sticky shrink-0 gap-2 top-0 z-10 flex transition-[width] ease-linear h-14 items-center justify-between border-b bg-background/60 px-4">
-      <div className="z-10 flex items-center gap-2">
+      <div className="z-10 flex items-center gap-1">
         <SidebarTrigger />
         <Separator
           orientation="vertical"

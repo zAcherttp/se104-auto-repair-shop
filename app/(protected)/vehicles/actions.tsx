@@ -11,12 +11,15 @@ import { MoreHorizontal, CreditCard } from "lucide-react";
 import { VehicleWithDebt } from "@/types/types";
 import { PaymentDialog } from "@/components/dialogs/payment-dialog";
 import { VehicleRegistration } from "../reception/columns";
+import { useTranslations } from "next-intl";
 
 interface ActionsProps {
   vehicle: VehicleWithDebt;
 }
 
 export function Actions({ vehicle }: ActionsProps) {
+  const t = useTranslations("vehicles");
+
   // Transform vehicle data to match VehicleRegistration format for PaymentDialog
   const vehicleRegistration: VehicleRegistration = {
     vehicle: {
@@ -53,7 +56,7 @@ export function Actions({ vehicle }: ActionsProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-8 w-8 p-0">
-          <span className="sr-only">Open menu</span>
+          <span className="sr-only">{t("openMenu")}</span>
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
@@ -63,7 +66,7 @@ export function Actions({ vehicle }: ActionsProps) {
             trigger={
               <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                 <CreditCard className="mr-2 h-4 w-4" />
-                Make Payment
+                {t("actions.makePayment")}
               </DropdownMenuItem>
             }
             data={vehicleRegistration}
@@ -71,7 +74,7 @@ export function Actions({ vehicle }: ActionsProps) {
         ) : (
           <DropdownMenuItem disabled className="text-muted-foreground">
             <CreditCard className="mr-2 h-4 w-4" />
-            Make Payment
+            {t("actions.makePayment")}
           </DropdownMenuItem>
         )}
       </DropdownMenuContent>

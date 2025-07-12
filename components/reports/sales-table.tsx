@@ -10,16 +10,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useTranslations } from "next-intl";
 
 interface SalesTableProps {
   data?: SalesReport;
 }
 
 export function SalesTable({ data }: SalesTableProps) {
+  const t = useTranslations("reports.salesTable");
+
   if (!data?.orders?.length) {
     return (
       <div className="text-center py-8 text-muted-foreground">
-        No sales data available for this period
+        {t("noData")}
       </div>
     );
   }
@@ -28,13 +31,15 @@ export function SalesTable({ data }: SalesTableProps) {
     <Card>
       <CardHeader>
         <CardTitle className="text-center">
-          <span className="text-lg font-bold">Sales Report: {data.month}</span>
+          <span className="text-lg font-bold">
+            {t("title")} {data.month}
+          </span>
         </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="text-center mb-6">
           <p className="text-lg font-semibold">
-            <strong>Total Revenue:</strong>{" "}
+            <strong>{t("totalRevenue")}</strong>{" "}
             {data.totalRevenue.toLocaleString("en-US", {
               style: "currency",
               currency: "USD",
@@ -46,19 +51,19 @@ export function SalesTable({ data }: SalesTableProps) {
           <TableHeader>
             <TableRow className="bg-muted">
               <TableHead className="text-center font-bold border">
-                No.
+                {t("columns.no")}
               </TableHead>
               <TableHead className="text-center font-bold border">
-                Car Brand
+                {t("columns.vehicleBrand")}
               </TableHead>
               <TableHead className="text-center font-bold border">
-                Repair Count
+                {t("columns.repairCount")}
               </TableHead>
               <TableHead className="text-center font-bold border">
-                Amount
+                {t("columns.revenue")}
               </TableHead>
               <TableHead className="text-center font-bold border">
-                Rate (%)
+                {t("columns.rate")}
               </TableHead>
             </TableRow>
           </TableHeader>

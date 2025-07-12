@@ -1,11 +1,14 @@
 "use client";
 
 import { DateRange } from "react-day-picker";
-import { columns } from "./columns";
+import { createColumns } from "./columns";
 import { PaymentsDataTable } from "./data-table";
 import { usePayments } from "@/hooks/use-payments";
+import { useTranslations } from "next-intl";
 
 export default function Page() {
+  const t = useTranslations("payments");
+
   // Set default date range to today
   const getDefaultDateRange = (): DateRange => {
     const today = new Date();
@@ -29,7 +32,7 @@ export default function Page() {
   if (error) {
     return (
       <div className="w-full p-4">
-        <p className="text-red-500">An error has occurred</p>
+        <p className="text-red-500">{t("error")}</p>
       </div>
     );
   }
@@ -37,7 +40,7 @@ export default function Page() {
   return (
     <div className="w-full p-4">
       <PaymentsDataTable
-        columns={columns}
+        columns={createColumns(t)}
         data={payments || []}
         isLoading={isLoading}
         dateRange={dateRange}

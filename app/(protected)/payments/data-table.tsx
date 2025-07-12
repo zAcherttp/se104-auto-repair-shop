@@ -39,6 +39,7 @@ import {
 import { Input } from "@/components/ui/input";
 import DateRangePicker from "@/components/date-range-picker";
 import { DateRange } from "react-day-picker";
+import { useTranslations } from "next-intl";
 
 interface PaymentsDataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -57,6 +58,7 @@ export function PaymentsDataTable<TData, TValue>({
 }: PaymentsDataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
+  const t = useTranslations("payments");
 
   const table = useReactTable({
     data,
@@ -86,7 +88,7 @@ export function PaymentsDataTable<TData, TValue>({
           <div className="relative w-80">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search payments..."
+              placeholder={t("searchPlaceholder")}
               value={globalFilter ?? ""}
               onChange={(e) => setGlobalFilter(e.target.value)}
               className="pl-8"
@@ -133,7 +135,7 @@ export function PaymentsDataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  Loading payments...
+                  {t("loadingPayments")}
                 </TableCell>
               </TableRow>
             ) : table.getRowModel().rows?.length ? (
@@ -158,7 +160,7 @@ export function PaymentsDataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No payments found.
+                  {t("noPaymentsFound")}
                 </TableCell>
               </TableRow>
             )}
@@ -169,13 +171,13 @@ export function PaymentsDataTable<TData, TValue>({
       {/* Pagination */}
       <div className="flex items-center justify-between px-2">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {table.getFilteredSelectedRowModel().rows.length} {t("of")}{" "}
+          {table.getFilteredRowModel().rows.length} {t("rowsSelected")}
         </div>
         <div className="flex items-center space-x-6 lg:space-x-8">
           <div className="flex items-center space-x-2">
             <Label htmlFor="pageSize" className="text-sm font-medium">
-              Rows per page
+              {t("rowsPerPage")}
             </Label>
             <Select
               value={`${table.getState().pagination.pageSize}`}
@@ -198,7 +200,7 @@ export function PaymentsDataTable<TData, TValue>({
             </Select>
           </div>
           <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
+            {t("page")} {table.getState().pagination.pageIndex + 1} {t("of")}{" "}
             {table.getPageCount()}
           </div>
           <div className="flex items-center space-x-2">
@@ -208,7 +210,7 @@ export function PaymentsDataTable<TData, TValue>({
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Go to first page</span>
+              <span className="sr-only">{t("goToFirstPage")}</span>
               <ChevronsLeftIcon className="h-4 w-4" />
             </Button>
             <Button
@@ -217,7 +219,7 @@ export function PaymentsDataTable<TData, TValue>({
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Go to previous page</span>
+              <span className="sr-only">{t("goToPreviousPage")}</span>
               <ChevronLeftIcon className="h-4 w-4" />
             </Button>
             <Button
@@ -226,7 +228,7 @@ export function PaymentsDataTable<TData, TValue>({
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Go to next page</span>
+              <span className="sr-only">{t("goToNextPage")}</span>
               <ChevronRightIcon className="h-4 w-4" />
             </Button>
             <Button
@@ -235,7 +237,7 @@ export function PaymentsDataTable<TData, TValue>({
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Go to last page</span>
+              <span className="sr-only">{t("goToLastPage")}</span>
               <ChevronsRightIcon className="h-4 w-4" />
             </Button>
           </div>

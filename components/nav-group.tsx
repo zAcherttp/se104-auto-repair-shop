@@ -9,7 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "../components/ui/sidebar";
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { usePathname } from "next/navigation";
 
 type NavGroupProps = {
@@ -26,7 +26,11 @@ export const NavGroup = memo(function NavGroup({
   label,
 }: NavGroupProps) {
   const pathname = usePathname();
-  const isActive = (url: string) => pathname === url;
+
+  // Memoize the isActive function to prevent recreation on every render
+  const isActive = useMemo(() => {
+    return (url: string) => pathname === url;
+  }, [pathname]);
 
   return (
     <SidebarGroup>

@@ -10,12 +10,15 @@ import {
 import { MoreHorizontal, FileText } from "lucide-react";
 import { PaymentWithDetails } from "@/types";
 import { InvoiceDialog } from "./invoice-dialog";
+import { useTranslations } from "next-intl";
 
 interface ActionsProps {
   payment: PaymentWithDetails;
 }
 
 export function Actions({ payment }: ActionsProps) {
+  const t = useTranslations("payments.actions");
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,7 +32,7 @@ export function Actions({ payment }: ActionsProps) {
           trigger={
             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
               <FileText className="mr-2 h-4 w-4" />
-              View Receipt
+              {t("viewReceipt")}
             </DropdownMenuItem>
           }
           payment={payment}

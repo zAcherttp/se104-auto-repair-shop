@@ -280,12 +280,30 @@ pnpm test __tests__/page.test.tsx
 #### Pre-Task Requirements
 
 - **Read Related Files**: Always read existing code to understand patterns before making changes
+- **Check Current File State**: ALWAYS read the current file contents before making edits to avoid repetitive changes
+- **Verify Previous Edits**: Check if changes have already been made to prevent duplicate work
 - **Check Project Status**: Review `\todo` for current priorities and completed
 - **Check Current Tasks**: Review `tasks.md` for tasks in progress and planned features
 - **Move completed Tasks**: move completed tasks to `completed.md` after implementation
 - **Understand User Roles**: Know the difference between admin and employee permissions
 - **Review Dependencies**: Check related components, hooks, and actions for consistency
 - **Identify Patterns**: Look for established patterns in similar features
+
+#### File Editing Best Practices
+
+##### Before Making Changes
+
+- **Read Current State**: Always use `read_file` to check the current state of files before editing
+- **Avoid Redundant Edits**: Check if translations, imports, or functionality already exist
+- **Verify File Contents**: Don't assume file contents - verify them before making changes
+- **Check for Previous Work**: Look for evidence of previous translation work or similar changes
+
+##### During Implementation
+
+- **Single Purpose Edits**: Make focused changes rather than repeatedly editing the same content
+- **Progressive Updates**: Build upon existing work rather than starting fresh each time
+- **File State Awareness**: Keep track of what has been changed in the current session
+- **Stop Repetitive Work**: If a file already has the required changes, move on to the next task
 
 #### Common Context Files to Review
 

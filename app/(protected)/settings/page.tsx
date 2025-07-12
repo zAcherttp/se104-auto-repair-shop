@@ -27,14 +27,10 @@ export default async function SettingsPage() {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
-        <p className="text-muted-foreground">
-          Manage your garage settings, employees, parts, and labor types.
-        </p>
+    <div className="flex flex-col h-screen">
+      <div className="flex-1 p-4 overflow-hidden">
+        <SettingsTabs />
       </div>
-      <SettingsTabs />
     </div>
   );
 }

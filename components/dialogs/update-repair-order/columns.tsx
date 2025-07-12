@@ -39,9 +39,24 @@ export type LineItem = {
 };
 
 // Stable header components to prevent recreation
-const UnitPriceHeader = () => <div className="text-right">Unit Price</div>;
-const LaborCostHeader = () => <div className="text-right">Labor Cost</div>;
-const TotalHeader = () => <div className="text-right">Total</div>;
+const createStableHeaders = (t: (key: string) => string) => {
+  const UnitPriceHeader = React.memo(() => (
+    <div className="text-right">{t("columns.unitPrice")}</div>
+  ));
+  UnitPriceHeader.displayName = "UnitPriceHeader";
+
+  const LaborCostHeader = React.memo(() => (
+    <div className="text-right">{t("columns.laborCost")}</div>
+  ));
+  LaborCostHeader.displayName = "LaborCostHeader";
+
+  const TotalHeader = React.memo(() => (
+    <div className="text-right">{t("columns.total")}</div>
+  ));
+  TotalHeader.displayName = "TotalHeader";
+
+  return { UnitPriceHeader, LaborCostHeader, TotalHeader };
+};
 
 // Memoized component wrappers for better performance
 const MemoizedEditCell = React.memo(EditCell);
@@ -49,193 +64,216 @@ const MemoizedTableCell = React.memo(TableCell);
 const MemoizedActions = React.memo(Actions);
 const MemoizedRowActions = React.memo(RowActions);
 
-export const lineItemColumns: ColumnDef<LineItem>[] = [
-  {
-    accessorKey: "description",
-    header: "Description",
-    cell: ({ getValue, row, column, table }) => {
-      const isEditing = table.options.meta?.editedRows?.[row.index];
-      return isEditing ? (
-        <MemoizedEditCell
-          getValue={getValue}
-          row={row}
-          column={column}
-          table={table}
-        />
-      ) : (
-        <MemoizedTableCell
-          getValue={getValue}
-          row={row}
-          column={column}
-          table={table}
-        />
-      );
-    },
-  },
-  {
-    accessorKey: "sparePart",
-    header: "Spare Part",
-    cell: ({ getValue, row, column, table }) => {
-      const isEditing = table.options.meta?.editedRows?.[row.index];
-      return isEditing ? (
-        <MemoizedEditCell
-          getValue={getValue}
-          row={row}
-          column={column}
-          table={table}
-          spareParts={table.options.meta?.spareParts}
-        />
-      ) : (
-        <MemoizedTableCell
-          getValue={getValue}
-          row={row}
-          column={column}
-          table={table}
-        />
-      );
-    },
-  },
-  {
-    accessorKey: "quantity",
-    header: "Quantity",
-    cell: ({ getValue, row, column, table }) => {
-      const isEditing = table.options.meta?.editedRows?.[row.index];
-      return isEditing ? (
-        <MemoizedEditCell
-          getValue={getValue}
-          row={row}
-          column={column}
-          table={table}
-        />
-      ) : (
-        <MemoizedTableCell
-          getValue={getValue}
-          row={row}
-          column={column}
-          table={table}
-        />
-      );
-    },
-  },
-  {
-    accessorKey: "unitPrice",
-    header: UnitPriceHeader,
-    cell: ({ getValue, row, column, table }) => {
-      const isEditing = table.options.meta?.editedRows?.[row.index];
-      return isEditing ? (
-        <MemoizedEditCell
-          getValue={getValue}
-          row={row}
-          column={column}
-          table={table}
-        />
-      ) : (
-        <MemoizedTableCell
-          getValue={getValue}
-          row={row}
-          column={column}
-          table={table}
-        />
-      );
-    },
-  },
-  {
-    accessorKey: "laborType",
-    header: "Labor Type",
-    cell: ({ getValue, row, column, table }) => {
-      const isEditing = table.options.meta?.editedRows?.[row.index];
-      return isEditing ? (
-        <MemoizedEditCell
-          getValue={getValue}
-          row={row}
-          column={column}
-          table={table}
-          laborTypes={table.options.meta?.laborTypes}
-        />
-      ) : (
-        <MemoizedTableCell
-          getValue={getValue}
-          row={row}
-          column={column}
-          table={table}
-        />
-      );
-    },
-  },
-  {
-    accessorKey: "assignedTo",
-    header: "Assigned To",
-    cell: ({ getValue, row, column, table }) => {
-      const isEditing = table.options.meta?.editedRows?.[row.index];
-      return isEditing ? (
-        <MemoizedEditCell
-          getValue={getValue}
-          row={row}
-          column={column}
-          table={table}
-          employees={table.options.meta?.employees}
-        />
-      ) : (
-        <MemoizedTableCell
-          getValue={getValue}
-          row={row}
-          column={column}
-          table={table}
-        />
-      );
-    },
-  },
-  {
-    accessorKey: "laborCost",
-    header: LaborCostHeader,
-    cell: ({ getValue, row, column, table }) => {
-      const isEditing = table.options.meta?.editedRows?.[row.index];
-      return isEditing ? (
-        <MemoizedEditCell
-          getValue={getValue}
-          row={row}
-          column={column}
-          table={table}
-        />
-      ) : (
-        <MemoizedTableCell
-          getValue={getValue}
-          row={row}
-          column={column}
-          table={table}
-        />
-      );
-    },
-  },
-  {
-    accessorKey: "total",
-    header: TotalHeader,
-    cell: ({ getValue, row, column, table }) => {
-      // Total is always read-only
-      return (
-        <MemoizedTableCell
-          getValue={getValue}
-          row={row}
-          column={column}
-          table={table}
-        />
-      );
-    },
-  },
-  {
-    id: "actions",
-    header: "",
-    cell: ({ row, table }) => {
-      const isEditing = table.options.meta?.editedRows?.[row.index];
+export const createLineItemColumns = (
+  t: (key: string) => string
+): ColumnDef<LineItem>[] => {
+  const { UnitPriceHeader, LaborCostHeader, TotalHeader } =
+    createStableHeaders(t);
 
-      return isEditing ? (
-        <MemoizedRowActions row={row} table={table} />
-      ) : (
-        <MemoizedActions
-          lineItem={row.original}
-          onRemove={() => table.options.meta?.removeRow?.(row.index)}
-        />
-      );
+  return [
+    {
+      accessorKey: "description",
+      header: t("columns.description"),
+      cell: ({ getValue, row, column, table }) => {
+        const isEditing = table.options.meta?.editedRows?.[row.index];
+        return isEditing ? (
+          <MemoizedEditCell
+            getValue={getValue}
+            row={row}
+            column={column}
+            table={table}
+          />
+        ) : (
+          <MemoizedTableCell
+            getValue={getValue}
+            row={row}
+            column={column}
+            table={table}
+          />
+        );
+      },
     },
-  },
-];
+    {
+      accessorKey: "sparePart",
+      header: t("columns.sparePart"),
+      cell: ({ getValue, row, column, table }) => {
+        const isEditing = table.options.meta?.editedRows?.[row.index];
+        return isEditing ? (
+          <MemoizedEditCell
+            getValue={getValue}
+            row={row}
+            column={column}
+            table={table}
+            spareParts={table.options.meta?.spareParts}
+          />
+        ) : (
+          <MemoizedTableCell
+            getValue={getValue}
+            row={row}
+            column={column}
+            table={table}
+          />
+        );
+      },
+    },
+    {
+      accessorKey: "quantity",
+      header: t("columns.quantity"),
+      cell: ({ getValue, row, column, table }) => {
+        const isEditing = table.options.meta?.editedRows?.[row.index];
+        return isEditing ? (
+          <MemoizedEditCell
+            getValue={getValue}
+            row={row}
+            column={column}
+            table={table}
+          />
+        ) : (
+          <MemoizedTableCell
+            getValue={getValue}
+            row={row}
+            column={column}
+            table={table}
+          />
+        );
+      },
+    },
+    {
+      accessorKey: "unitPrice",
+      header: UnitPriceHeader,
+      cell: ({ getValue, row, column, table }) => {
+        const isEditing = table.options.meta?.editedRows?.[row.index];
+        return isEditing ? (
+          <MemoizedEditCell
+            getValue={getValue}
+            row={row}
+            column={column}
+            table={table}
+          />
+        ) : (
+          <MemoizedTableCell
+            getValue={getValue}
+            row={row}
+            column={column}
+            table={table}
+          />
+        );
+      },
+    },
+    {
+      accessorKey: "laborType",
+      header: t("columns.laborType"),
+      cell: ({ getValue, row, column, table }) => {
+        const isEditing = table.options.meta?.editedRows?.[row.index];
+        return isEditing ? (
+          <MemoizedEditCell
+            getValue={getValue}
+            row={row}
+            column={column}
+            table={table}
+            laborTypes={table.options.meta?.laborTypes}
+          />
+        ) : (
+          <MemoizedTableCell
+            getValue={getValue}
+            row={row}
+            column={column}
+            table={table}
+          />
+        );
+      },
+    },
+    {
+      accessorKey: "assignedTo",
+      header: t("columns.assignedTo"),
+      cell: ({ getValue, row, column, table }) => {
+        const isEditing = table.options.meta?.editedRows?.[row.index];
+        return isEditing ? (
+          <MemoizedEditCell
+            getValue={getValue}
+            row={row}
+            column={column}
+            table={table}
+            employees={table.options.meta?.employees}
+          />
+        ) : (
+          <MemoizedTableCell
+            getValue={getValue}
+            row={row}
+            column={column}
+            table={table}
+          />
+        );
+      },
+    },
+    {
+      accessorKey: "laborCost",
+      header: LaborCostHeader,
+      cell: ({ getValue, row, column, table }) => {
+        const isEditing = table.options.meta?.editedRows?.[row.index];
+        return isEditing ? (
+          <MemoizedEditCell
+            getValue={getValue}
+            row={row}
+            column={column}
+            table={table}
+          />
+        ) : (
+          <MemoizedTableCell
+            getValue={getValue}
+            row={row}
+            column={column}
+            table={table}
+          />
+        );
+      },
+    },
+    {
+      accessorKey: "total",
+      header: TotalHeader,
+      cell: ({ getValue, row, column, table }) => {
+        // Total is always read-only
+        return (
+          <MemoizedTableCell
+            getValue={getValue}
+            row={row}
+            column={column}
+            table={table}
+          />
+        );
+      },
+    },
+    {
+      id: "actions",
+      header: "",
+      cell: ({ row, table }) => {
+        const isEditing = table.options.meta?.editedRows?.[row.index];
+
+        return isEditing ? (
+          <MemoizedRowActions row={row} table={table} />
+        ) : (
+          <MemoizedActions
+            lineItem={row.original}
+            onRemove={() => table.options.meta?.removeRow?.(row.index)}
+          />
+        );
+      },
+    },
+  ];
+};
+
+// Export the original columns for backward compatibility
+export const lineItemColumns = createLineItemColumns((key: string) => {
+  // Fallback to English strings if no translation is provided
+  const fallbackTranslations: Record<string, string> = {
+    "columns.description": "Description",
+    "columns.sparePart": "Spare Part",
+    "columns.quantity": "Quantity",
+    "columns.unitPrice": "Unit Price",
+    "columns.laborType": "Labor Type",
+    "columns.assignedTo": "Assigned To",
+    "columns.laborCost": "Labor Cost",
+    "columns.total": "Total",
+  };
+  return fallbackTranslations[key] || key;
+});

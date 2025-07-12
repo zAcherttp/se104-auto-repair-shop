@@ -7,18 +7,38 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowLeft } from "lucide-react";
 import { Actions } from "./actions";
 
-export const columns: ColumnDef<PaymentWithDetails>[] = [
+export const createColumns = (
+  t: (key: string) => string
+): ColumnDef<PaymentWithDetails>[] => [
   {
     accessorKey: "vehicle.license_plate",
-    header: "License Plate",
+    header: ({ column }) => {
+      return (
+        <DataTableColumnHeader
+          column={column}
+          title={t("columns.licensePlate")}
+        />
+      );
+    },
   },
   {
     accessorKey: "vehicle.customer.name",
-    header: "Customer Name",
+    header: ({ column }) => {
+      return (
+        <DataTableColumnHeader
+          column={column}
+          title={t("columns.customerName")}
+        />
+      );
+    },
   },
   {
     accessorKey: "vehicle.customer.phone",
-    header: "Phone",
+    header: ({ column }) => {
+      return (
+        <DataTableColumnHeader column={column} title={t("columns.phone")} />
+      );
+    },
   },
   {
     header: ({ column }) => {
@@ -26,7 +46,7 @@ export const columns: ColumnDef<PaymentWithDetails>[] = [
         <DataTableColumnHeader
           className="justify-end"
           column={column}
-          title="Amount"
+          title={t("columns.amount")}
         />
       );
     },
@@ -48,7 +68,14 @@ export const columns: ColumnDef<PaymentWithDetails>[] = [
   },
   {
     accessorKey: "payment_method",
-    header: "Payment Method",
+    header: ({ column }) => {
+      return (
+        <DataTableColumnHeader
+          column={column}
+          title={t("columns.paymentMethod")}
+        />
+      );
+    },
     cell: ({ row }) => {
       const method = row.getValue("payment_method") as string;
       return (
@@ -62,7 +89,12 @@ export const columns: ColumnDef<PaymentWithDetails>[] = [
     id: "payment_date",
     accessorFn: (row) => row.payment_date,
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Payment Date" />;
+      return (
+        <DataTableColumnHeader
+          column={column}
+          title={t("columns.paymentDate")}
+        />
+      );
     },
     cell: ({ row }) => {
       const paymentDate = row.original.payment_date;
@@ -76,7 +108,9 @@ export const columns: ColumnDef<PaymentWithDetails>[] = [
     id: "created_at",
     accessorFn: (row) => row.created_at,
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Created At" />;
+      return (
+        <DataTableColumnHeader column={column} title={t("columns.createdAt")} />
+      );
     },
     cell: ({ row }) => {
       const createdAt = row.original.created_at;
@@ -95,7 +129,11 @@ export const columns: ColumnDef<PaymentWithDetails>[] = [
   },
   {
     accessorKey: "created_by_profile.full_name",
-    header: "Created By",
+    header: ({ column }) => {
+      return (
+        <DataTableColumnHeader column={column} title={t("columns.createdBy")} />
+      );
+    },
     cell: ({ row }) => {
       const fullName = row.original.created_by_profile?.full_name;
       const email = row.original.created_by_profile?.email;
@@ -113,7 +151,7 @@ export const columns: ColumnDef<PaymentWithDetails>[] = [
     },
   },
   {
-    header: "Actions",
+    header: t("actions.title"),
     id: "actions",
     cell: ({ row }) => {
       const payment = row.original;

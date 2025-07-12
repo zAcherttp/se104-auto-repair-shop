@@ -1,16 +1,18 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Plus, X, Save } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import { getCarBrands, updateCarBrands } from "@/app/actions/settings";
 
 export default function CarBrandsTab() {
+  const t = useTranslations("settings.brands");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [carBrands, setCarBrands] = useState<string[]>([]);
@@ -41,7 +43,7 @@ export default function CarBrandsTab() {
   const handleAddBrand = () => {
     const trimmedBrand = newBrand.trim();
     if (!trimmedBrand) {
-      toast.error("Please enter a car brand name");
+      toast.error(t("enterBrandError"));
       return;
     }
 
@@ -50,7 +52,7 @@ export default function CarBrandsTab() {
         (brand) => brand.toLowerCase() === trimmedBrand.toLowerCase()
       )
     ) {
-      toast.error("This car brand already exists");
+      toast.error(t("brandExistsError"));
       return;
     }
 
@@ -67,14 +69,14 @@ export default function CarBrandsTab() {
     try {
       const response = await updateCarBrands(carBrands);
       if (response.success) {
-        toast.success("Car brands updated successfully");
+        toast.success(t("saveSuccess"));
         await fetchCarBrands();
       } else {
         throw new Error(response.error || "Failed to update car brands");
       }
     } catch (error) {
       console.error("Error saving car brands:", error);
-      toast.error("Failed to save car brands");
+      toast.error(t("saveError"));
     } finally {
       setSaving(false);
     }
@@ -89,16 +91,14 @@ export default function CarBrandsTab() {
   if (loading) {
     return (
       <Card>
-        <CardHeader>
-          <CardTitle>Car Brands</CardTitle>
-        </CardHeader>
         <CardContent>
           <div className="animate-pulse space-y-4">
-            <div className="h-4 bg-gray-200 rounded w-1/4"></div>
-            <div className="h-10 bg-gray-200 rounded"></div>
+            <div className="h-4 bg-muted rounded w-1/4"></div>
+            <div className="h-10 bg-muted rounded"></div>
+            <div className="h-10 bg-muted rounded"></div>
             <div className="flex flex-wrap gap-2">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="h-8 bg-gray-200 rounded w-20"></div>
+                <div key={i} className="h-8 bg-muted rounded w-20"></div>
               ))}
             </div>
           </div>
@@ -112,11 +112,11 @@ export default function CarBrandsTab() {
       <CardContent className="space-y-6">
         {/* Add New Brand */}
         <div className="space-y-2">
-          <Label htmlFor="newBrand">Add New Car Brand</Label>
+          <Label htmlFor="newBrand">{t("addNewBrand")}</Label>
           <div className="flex gap-2">
             <Input
               id="newBrand"
-              placeholder="Enter car brand name (e.g., Toyota, BMW)"
+              placeholder={t("placeholder")}
               value={newBrand}
               onChange={(e) => setNewBrand(e.target.value)}
               onKeyPress={handleKeyPress}
@@ -124,20 +124,20 @@ export default function CarBrandsTab() {
             />
             <Button onClick={handleAddBrand} size="sm">
               <Plus className="w-4 h-4 mr-2" />
-              Add
+              {t("addButton")}
             </Button>
           </div>
         </div>
 
         {/* Current Brands */}
         <div className="space-y-2">
-          <Label>Current Car Brands ({carBrands.length})</Label>
+          <Label>
+            {t("currentBrands")} ({carBrands.length})
+          </Label>
           {carBrands.length === 0 ? (
-            <p className="text-sm text-muted-foreground">
-              No car brands configured. Add some brands to get started.
-            </p>
+            <p className="text-sm text-muted-foreground">{t("noBrands")}</p>
           ) : (
-            <div className="flex flex-wrap gap-2 p-4 border rounded-lg bg-gray-50">
+            <div className="flex flex-wrap gap-2 p-4 border rounded-lg bg-muted/50">
               {carBrands.map((brand, index) => (
                 <Badge
                   key={index}
@@ -163,10 +163,10 @@ export default function CarBrandsTab() {
           <Button
             onClick={handleSaveChanges}
             disabled={saving}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="bg-primary hover:bg-primary/90"
           >
             <Save className="w-4 h-4 mr-2" />
-            {saving ? "Saving..." : "Save Changes"}
+            {saving ? t("saving") : t("saveChanges")}
           </Button>
         </div>
       </CardContent>
