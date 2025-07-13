@@ -293,7 +293,8 @@
     "actions": {
       "title": "Thao tác",
       "viewReceipt": "Xem biên lai"
-    }
+    },
+    "customer": "Khách hàng"
   },
   "updateRepairOrder": {
     "title": "Cập nhật đơn sửa chữa",

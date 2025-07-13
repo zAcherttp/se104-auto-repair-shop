@@ -138,7 +138,8 @@ export const createColumns = (
       const fullName = row.original.created_by_profile?.full_name;
       const email = row.original.created_by_profile?.email;
 
-      if (!fullName && !email) return "N/A";
+      // If no profile data, it means the payment was created by the customer
+      if (!fullName && !email) return t("customer");
 
       return (
         <div className="flex flex-col">

@@ -4,7 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { SparePart } from "@/types/types";
 import { ColumnDef } from "@tanstack/react-table";
-import { Actions } from "./actions";
 import { cn } from "@/lib/utils";
 
 // Extended type to include calculated ending stock
@@ -108,13 +107,6 @@ export const createColumns = (
           </span>
         </div>
       );
-    },
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const sparePart = row.original;
-      return <Actions sparePart={sparePart} />;
     },
   },
 ];

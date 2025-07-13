@@ -42,6 +42,10 @@
       "success": "Login successful!",
       "error": "Login failed"
     },
+    "signOut": {
+      "title": "Log out",
+      "message": "Logged out successfully!"
+    },
     "trackOrder": {
       "title": "Track Your Order",
       "subtitle": "Enter your license plate to check repair status",
@@ -289,7 +293,8 @@
     "actions": {
       "title": "Actions",
       "viewReceipt": "View Receipt"
-    }
+    },
+    "customer": "Customer"
   },
   "updateRepairOrder": {
     "title": "Update Repair Order",
