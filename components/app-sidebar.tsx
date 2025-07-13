@@ -18,11 +18,7 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   isAdmin?: boolean;
 }
 
-// Memoize the static garage info to prevent recreation
-const GARAGE_INFO = {
-  name: "My Garage",
-  logo: Package2,
-};
+import { useGarageInfo } from "@/hooks/use-garage-info";
 
 export const AppSidebar = memo(function AppSidebar({
   isAdmin,
@@ -54,10 +50,16 @@ export const AppSidebar = memo(function AppSidebar({
     return isAdmin ? adminItems : [];
   }, [isAdmin, adminItems]);
 
+  const { data: garageInfo } = useGarageInfo();
+  const garageData = {
+    name: garageInfo?.garageName || "My Garage",
+    logo: Package2, // Keep default until banner image implemented
+  };
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <AppBanner garage={GARAGE_INFO} />
+        <AppBanner garage={garageData} />
       </SidebarHeader>
       <SidebarContent>
         <NavGroup items={dashboardItems} label={tSidebar("dashboard")} />

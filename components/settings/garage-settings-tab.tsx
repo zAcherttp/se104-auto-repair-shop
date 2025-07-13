@@ -2,12 +2,17 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { getSystemSettings, updateSystemSetting } from "@/app/actions/settings";
+import {
+  getSystemSettings,
+  updateSystemSettings,
+} from "@/app/actions/settings";
+import { uploadBannerImage } from "@/app/actions/upload-banner-image";
 import type { SystemSetting } from "@/types/settings";
 
 export default function GarageSettingsTab() {
@@ -22,7 +27,41 @@ export default function GarageSettingsTab() {
     maximumCarCapacity: "",
     maxPartsPerMonth: "",
     maxLaborTypesPerMonth: "",
+    bannerImageUrl: "",
   });
+  const [bannerImageFile, setBannerImageFile] = useState<File | null>(null);
+
+  // Banner image file input handler (must be in component scope, not nested)
+  const handleBannerImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    if (file) {
+      // Check file size (10MB limit)
+      const maxSize = 10 * 1024 * 1024; // 10MB
+      if (file.size > maxSize) {
+        toast.error("Image file too large. Please select an image under 10MB.");
+        e.target.value = ""; // Clear the input
+        return;
+      }
+
+      // Check file type
+      if (!file.type.startsWith("image/")) {
+        toast.error("Please select a valid image file (JPEG, PNG, WebP).");
+        e.target.value = ""; // Clear the input
+        return;
+      }
+
+      setBannerImageFile(file);
+      // Show preview
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        setFormData((prev) => ({
+          ...prev,
+          bannerImageUrl: ev.target?.result as string,
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const fetchSettings = useCallback(async () => {
     try {
@@ -45,6 +84,7 @@ export default function GarageSettingsTab() {
           maximumCarCapacity: settingsMap.maximum_car_capacity || "",
           maxPartsPerMonth: settingsMap.max_parts_per_month || "",
           maxLaborTypesPerMonth: settingsMap.max_labor_types_per_month || "",
+          bannerImageUrl: settingsMap.banner_image_url || "",
         });
       }
     } catch (error) {
@@ -69,6 +109,23 @@ export default function GarageSettingsTab() {
   const handleSaveSettings = async () => {
     setSaving(true);
     try {
+      let bannerImageUrl = formData.bannerImageUrl;
+      // If a new file is selected, upload it (and remove previous if exists)
+      if (bannerImageFile) {
+        const arrayBuffer = await bannerImageFile.arrayBuffer();
+        const uploadedUrl = await uploadBannerImage({
+          buffer: arrayBuffer,
+          fileName: bannerImageFile.name,
+          contentType: bannerImageFile.type,
+          previousUrl: formData.bannerImageUrl,
+        });
+        if (uploadedUrl) {
+          bannerImageUrl = uploadedUrl;
+        } else {
+          throw new Error("Failed to upload banner image");
+        }
+      }
+
       const settingUpdates = [
         { key: "garage_name", value: formData.garageName },
         { key: "phone_number", value: formData.phoneNumber },
@@ -80,21 +137,18 @@ export default function GarageSettingsTab() {
           key: "max_labor_types_per_month",
           value: formData.maxLaborTypesPerMonth,
         },
+        { key: "banner_image_url", value: bannerImageUrl },
       ];
 
-      const updatePromises = settingUpdates.map((setting) =>
-        updateSystemSetting(setting.key, setting.value)
-      );
+      // Use bulk update instead of individual requests
+      const response = await updateSystemSettings(settingUpdates);
 
-      const responses = await Promise.all(updatePromises);
-
-      const failedUpdate = responses.find((response) => !response.success);
-      if (failedUpdate) {
-        throw new Error(failedUpdate.error || "Failed to update setting");
+      if (!response.success) {
+        throw new Error(response.error || "Failed to update settings");
       }
 
       toast.success("Garage settings updated successfully");
-
+      setBannerImageFile(null);
       await fetchSettings();
     } catch (error) {
       console.error("Error saving settings:", error);
@@ -202,6 +256,34 @@ export default function GarageSettingsTab() {
             placeholder="Enter garage address"
             rows={3}
           />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="bannerImage">Banner Image</Label>
+          <Input
+            id="bannerImage"
+            type="file"
+            accept="image/*"
+            onChange={handleBannerImageChange}
+            disabled={saving}
+          />
+          <p className="text-sm text-muted-foreground">
+            Upload an image for your garage banner (max 10MB). Images will be
+            automatically cropped to square and optimized to under 1MB.
+          </p>
+          {formData.bannerImageUrl && (
+            <div className="mt-2">
+              <Image
+                src={formData.bannerImageUrl}
+                alt="Banner preview"
+                width={512}
+                height={128}
+                className="max-h-32 rounded border"
+                style={{ objectFit: "cover", width: "100%", height: "auto" }}
+                priority
+              />
+            </div>
+          )}
         </div>
 
         <div className="flex justify-end">

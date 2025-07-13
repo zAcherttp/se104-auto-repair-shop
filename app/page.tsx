@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Car, Users, Search, Phone, Mail, MapPin } from "lucide-react";
@@ -34,6 +35,20 @@ export default function Page() {
           </div>
         ) : (
           <>
+            {/* Banner Image */}
+            {garageInfo?.bannerImageUrl ? (
+              <div className="mb-8 flex justify-center">
+                <Image
+                  src={garageInfo.bannerImageUrl}
+                  alt="Garage Banner"
+                  width={1024}
+                  height={256}
+                  className="rounded shadow max-h-64 object-cover w-full"
+                  style={{ maxWidth: "100%", height: "auto" }}
+                  priority
+                />
+              </div>
+            ) : null}
             {/* Header */}
             <div className="text-center mb-16">
               <h1 className="text-5xl font-bold mb-4">

@@ -37,3 +37,11 @@ export interface LaborType {
   created_at: string | null;
   updated_at: string | null;
 }
+
+export interface GarageInfo {
+  garageName: string;
+  phoneNumber: string;
+  emailAddress: string;
+  address: string;
+  bannerImageUrl: string;
+}

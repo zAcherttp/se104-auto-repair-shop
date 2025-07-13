@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import type { ApiResponse } from "@/types/settings";
 
 // Helper function to check admin role
-async function checkAdminRole() {
+export async function checkAdminRole() {
   const supabase = await createClient();
 
   const {
@@ -91,6 +91,33 @@ export async function updateSystemSetting(
   } catch (error) {
     console.error("Error updating system setting:", error);
     return { success: false, error: "Failed to update setting" };
+  }
+}
+
+export async function updateSystemSettings(
+  settings: Array<{ key: string; value: string }>,
+): Promise<ApiResponse> {
+  try {
+    const { supabase } = await checkAdminRole();
+
+    // Prepare bulk upsert data
+    const upsertData = settings.map(({ key, value }) => ({
+      setting_key: key,
+      setting_value: value,
+    }));
+
+    const { data, error } = await supabase
+      .from("system_settings")
+      .upsert(upsertData, { onConflict: "setting_key" })
+      .select();
+
+    if (error) throw error;
+
+    revalidatePath("/settings");
+    return { success: true, data };
+  } catch (error) {
+    console.error("Error updating system settings:", error);
+    return { success: false, error: "Failed to update settings" };
   }
 }
 
@@ -559,14 +586,9 @@ export async function migrateExistingAdmins(): Promise<ApiResponse> {
 }
 
 // Public function to get garage information for landing page (no admin required)
-export async function getGarageInfo(): Promise<
-  ApiResponse<{
-    garageName: string;
-    phoneNumber: string;
-    emailAddress: string;
-    address: string;
-  }>
-> {
+import type { GarageInfo } from "@/types/settings";
+
+export async function getGarageInfo(): Promise<ApiResponse<GarageInfo>> {
   try {
     const supabase = await createClient();
 
@@ -578,6 +600,7 @@ export async function getGarageInfo(): Promise<
         "phone_number",
         "email_address",
         "address",
+        "banner_image_url",
       ])
       .order("setting_key");
 
@@ -603,6 +626,7 @@ export async function getGarageInfo(): Promise<
       phoneNumber: settingsMap.phone_number || "",
       emailAddress: settingsMap.email_address || "",
       address: settingsMap.address || "",
+      bannerImageUrl: settingsMap.banner_image_url || "",
     };
 
     return {
@@ -618,6 +642,7 @@ export async function getGarageInfo(): Promise<
         phoneNumber: "",
         emailAddress: "",
         address: "",
+        bannerImageUrl: "",
       },
     };
   }
