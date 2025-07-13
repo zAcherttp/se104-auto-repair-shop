@@ -200,9 +200,9 @@
    - Create image processing for sidebar-appropriate sizes
    - Fallback to default Package2 icon when no image uploaded
 
-### Notes:
+### Notes
 
-- **Image Processing**: Consider image optimization/resizing
+- **Image Processing**: image optimization/resizing
 - **Validation**: File type, size limits
 - **Caching**: Update TanStack Query cache on image upload
 - **Error Handling**: Graceful fallbacks for missing/broken images

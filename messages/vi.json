@@ -411,6 +411,11 @@
       "actions": {
         "edit": "Sửa",
         "delete": "Xóa"
+      },
+      "columns": {
+        "name": "Tên",
+        "role": "Vai trò",
+        "created": "Ngày tạo"
       }
     },
     "parts": {

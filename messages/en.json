@@ -407,6 +407,11 @@
       "actions": {
         "edit": "Edit",
         "delete": "Delete"
+      },
+      "columns": {
+        "name": "Name",
+        "role": "Role",
+        "created": "Created"
       }
     },
     "parts": {
