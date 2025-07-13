@@ -411,7 +411,8 @@
       "columns": {
         "name": "Name",
         "role": "Role",
-        "created": "Created"
+        "created": "Created",
+        "actions": "Actions"
       }
     },
     "parts": {

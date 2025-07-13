@@ -415,7 +415,8 @@
       "columns": {
         "name": "Tên",
         "role": "Vai trò",
-        "created": "Ngày tạo"
+        "created": "Ngày tạo",
+        "actions": "Thao tác"
       }
     },
     "parts": {
