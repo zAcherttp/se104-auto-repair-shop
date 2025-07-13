@@ -376,7 +376,7 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
           className={inputClassName}
         />
       )}
-      {error && <div className={ERROR_TEXT_CLASSES}>{error}</div>}
+      {error ? <div className={ERROR_TEXT_CLASSES}>{error}</div> : null}
     </div>
   );
 });

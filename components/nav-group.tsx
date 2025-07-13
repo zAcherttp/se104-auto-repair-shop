@@ -47,7 +47,7 @@ export const NavGroup = memo(function NavGroup({
               className="text-muted-foreground"
             >
               <a href={item.url}>
-                {item.icon && <item.icon />}
+                {item.icon ? <item.icon /> : null}
                 <span>{item.name}</span>
               </a>
             </SidebarMenuButton>
