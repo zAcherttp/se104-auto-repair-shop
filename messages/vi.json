@@ -465,6 +465,54 @@
       "brandExistsError": "Thương hiệu xe này đã tồn tại",
       "saveSuccess": "Cập nhật thương hiệu xe thành công",
       "saveError": "Không thể lưu thương hiệu xe"
+    },
+    "garage": {
+      "title": "Cài đặt garage",
+      "form": {
+        "garageName": "Tên garage",
+        "garageNamePlaceholder": "Garage sửa chữa ô tô",
+        "phoneNumber": "Số điện thoại",
+        "phoneNumberPlaceholder": "Nhập số điện thoại",
+        "emailAddress": "Địa chỉ email",
+        "emailAddressPlaceholder": "Nhập địa chỉ email",
+        "address": "Địa chỉ",
+        "addressPlaceholder": "Nhập địa chỉ garage",
+        "maximumCarCapacity": "Sức chứa xe tối đa",
+        "maxPartsPerMonth": "Số phụ tùng tối đa",
+        "maxLaborTypesPerMonth": "Số loại công việc tối đa",
+        "bannerImage": "Ảnh banner",
+        "logoImage": "Ảnh logo",
+        "logoPosition": "Vị trí logo"
+      },
+      "logoPositions": {
+        "left": "Bên trái",
+        "right": "Bên phải",
+        "none": "Không hiển thị logo",
+        "placeholder": "Chọn vị trí logo"
+      },
+      "fileUpload": {
+        "bannerDescription": "Tải lên ảnh banner cho garage của bạn (tối đa 10MB). Ảnh sẽ được tự động cắt theo tỷ lệ 4:1 và tối ưu hóa dưới 2MB.",
+        "logoDescription": "Tải lên logo cho garage của bạn (tối đa 10MB). Ảnh sẽ được tự động cắt theo tỷ lệ 1:1 (hình vuông) và tối ưu hóa dưới 1MB. Khuyến nghị sử dụng định dạng PNG cho nền trong suốt.",
+        "logoPositionDescription": "Chọn vị trí hiển thị logo. Trái/Phải sẽ tạo một khu vực hình vuông riêng cho logo.",
+        "sizeError": "Tệp ảnh quá lớn. Vui lòng chọn ảnh dưới 10MB.",
+        "typeError": "Vui lòng chọn tệp ảnh hợp lệ (JPEG, PNG, WebP)."
+      },
+      "preview": {
+        "title": "Xem trước banner",
+        "noBanner": "Không có ảnh banner",
+        "description": "Đây là cách banner và logo của bạn sẽ hiển thị cùng nhau ở trang chủ."
+      },
+      "actions": {
+        "saveSettings": "Lưu cài đặt",
+        "saving": "Đang lưu..."
+      },
+      "messages": {
+        "loadError": "Không thể tải cài đặt garage",
+        "saveSuccess": "Cập nhật cài đặt garage thành công",
+        "saveError": "Không thể lưu cài đặt garage",
+        "bannerUploadError": "Không thể tải lên ảnh banner",
+        "logoUploadError": "Không thể tải lên ảnh logo"
+      }
     }
   },
   "language": {

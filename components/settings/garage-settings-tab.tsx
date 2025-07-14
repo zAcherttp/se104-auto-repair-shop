@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import {
   getSystemSettings,
   updateSystemSettings,
@@ -21,9 +22,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import type { SystemSetting } from "@/types/settings";
 
 export default function GarageSettingsTab() {
+  const t = useTranslations("settings.garage");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -49,14 +56,14 @@ export default function GarageSettingsTab() {
       // Check file size (10MB limit)
       const maxSize = 10 * 1024 * 1024; // 10MB
       if (file.size > maxSize) {
-        toast.error("Image file too large. Please select an image under 10MB.");
+        toast.error(t("fileUpload.sizeError"));
         e.target.value = ""; // Clear the input
         return;
       }
 
       // Check file type
       if (!file.type.startsWith("image/")) {
-        toast.error("Please select a valid image file (JPEG, PNG, WebP).");
+        toast.error(t("fileUpload.typeError"));
         e.target.value = ""; // Clear the input
         return;
       }
@@ -81,14 +88,14 @@ export default function GarageSettingsTab() {
       // Check file size (10MB limit)
       const maxSize = 10 * 1024 * 1024; // 10MB
       if (file.size > maxSize) {
-        toast.error("Image file too large. Please select an image under 10MB.");
+        toast.error(t("fileUpload.sizeError"));
         e.target.value = ""; // Clear the input
         return;
       }
 
       // Check file type
       if (!file.type.startsWith("image/")) {
-        toast.error("Please select a valid image file (JPEG, PNG, WebP).");
+        toast.error(t("fileUpload.typeError"));
         e.target.value = ""; // Clear the input
         return;
       }
@@ -134,11 +141,11 @@ export default function GarageSettingsTab() {
       }
     } catch (error) {
       console.error("Error fetching settings:", error);
-      toast.error("Failed to load garage settings");
+      toast.error(t("messages.loadError"));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     fetchSettings();
@@ -169,7 +176,7 @@ export default function GarageSettingsTab() {
         if (uploadedUrl) {
           bannerImageUrl = uploadedUrl;
         } else {
-          throw new Error("Failed to upload banner image");
+          throw new Error(t("messages.bannerUploadError"));
         }
       }
 
@@ -185,7 +192,7 @@ export default function GarageSettingsTab() {
         if (uploadedUrl) {
           logoImageUrl = uploadedUrl;
         } else {
-          throw new Error("Failed to upload logo image");
+          throw new Error(t("messages.logoUploadError"));
         }
       }
 
@@ -212,13 +219,13 @@ export default function GarageSettingsTab() {
         throw new Error(response.error || "Failed to update settings");
       }
 
-      toast.success("Garage settings updated successfully");
+      toast.success(t("messages.saveSuccess"));
       setBannerImageFile(null);
       setLogoImageFile(null);
       await fetchSettings();
     } catch (error) {
       console.error("Error saving settings:", error);
-      toast.error("Failed to save garage settings");
+      toast.error(t("messages.saveError"));
     } finally {
       setSaving(false);
     }
@@ -241,27 +248,29 @@ export default function GarageSettingsTab() {
       <CardContent className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <Label htmlFor="garageName">Garage Name</Label>
+            <Label htmlFor="garageName">{t("form.garageName")}</Label>
             <Input
               id="garageName"
               value={formData.garageName}
               onChange={(e) => handleInputChange("garageName", e.target.value)}
-              placeholder="AutoRepair Shop"
+              placeholder={t("form.garageNamePlaceholder")}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="phoneNumber">Phone Number</Label>
+            <Label htmlFor="phoneNumber">{t("form.phoneNumber")}</Label>
             <Input
               id="phoneNumber"
               value={formData.phoneNumber}
               onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
-              placeholder="Enter phone number"
+              placeholder={t("form.phoneNumberPlaceholder")}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="maximumCarCapacity">Maximum Car Capacity</Label>
+            <Label htmlFor="maximumCarCapacity">
+              {t("form.maximumCarCapacity")}
+            </Label>
             <Input
               id="maximumCarCapacity"
               type="number"
@@ -274,7 +283,7 @@ export default function GarageSettingsTab() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="emailAddress">Email Address</Label>
+            <Label htmlFor="emailAddress">{t("form.emailAddress")}</Label>
             <Input
               id="emailAddress"
               type="email"
@@ -282,12 +291,14 @@ export default function GarageSettingsTab() {
               onChange={(e) =>
                 handleInputChange("emailAddress", e.target.value)
               }
-              placeholder="Enter email address"
+              placeholder={t("form.emailAddressPlaceholder")}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="maxPartsPerMonth">Max Parts</Label>
+            <Label htmlFor="maxPartsPerMonth">
+              {t("form.maxPartsPerMonth")}
+            </Label>
             <Input
               id="maxPartsPerMonth"
               type="number"
@@ -300,7 +311,9 @@ export default function GarageSettingsTab() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="maxLaborTypesPerMonth">Max Labor Types</Label>
+            <Label htmlFor="maxLaborTypesPerMonth">
+              {t("form.maxLaborTypesPerMonth")}
+            </Label>
             <Input
               id="maxLaborTypesPerMonth"
               type="number"
@@ -314,74 +327,78 @@ export default function GarageSettingsTab() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="address">Address</Label>
+          <Label htmlFor="address">{t("form.address")}</Label>
           <Textarea
             id="address"
             value={formData.address}
             onChange={(e) => handleInputChange("address", e.target.value)}
-            placeholder="Enter garage address"
+            placeholder={t("form.addressPlaceholder")}
             rows={3}
           />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <Label htmlFor="bannerImage">Banner Image</Label>
-            <Input
-              id="bannerImage"
-              type="file"
-              accept="image/*"
-              onChange={handleBannerImageChange}
-              disabled={saving}
-            />
-            <p className="text-sm text-muted-foreground">
-              Upload an image for your garage banner (max 10MB). Images will be
-              automatically cropped to 4:1 aspect ratio and optimized to under
-              2MB.
-            </p>
+            <Tooltip delayDuration={500}>
+              <TooltipTrigger asChild>
+                <div className="space-y-2">
+                  <Label htmlFor="bannerImage">{t("form.bannerImage")}</Label>
+                  <Input
+                    id="bannerImage"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleBannerImageChange}
+                    disabled={saving}
+                  />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="max-w-xs">{t("fileUpload.bannerDescription")}</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="logoImage">Logo Image</Label>
-            <Input
-              id="logoImage"
-              type="file"
-              accept="image/*"
-              onChange={handleLogoImageChange}
-              disabled={saving}
-            />
-            <p className="text-sm text-muted-foreground">
-              Upload a logo for your garage (max 10MB). Images will be
-              automatically cropped to 1:1 aspect ratio (square) and optimized
-              to under 1MB. PNG format recommended for transparent backgrounds.
-            </p>
+            <Tooltip delayDuration={500}>
+              <TooltipTrigger asChild>
+                <div className="space-y-2">
+                  <Label htmlFor="logoImage">{t("form.logoImage")}</Label>
+                  <Input
+                    id="logoImage"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleLogoImageChange}
+                    disabled={saving}
+                  />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="max-w-xs">{t("fileUpload.logoDescription")}</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="logoPosition">Logo Position</Label>
+        <div className="space-y-2 select-none">
+          <Label htmlFor="logoPosition">{t("form.logoPosition")}</Label>
           <Select
             value={formData.logoPosition}
             onValueChange={(value) => handleInputChange("logoPosition", value)}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select logo position" />
+              <SelectValue placeholder={t("logoPositions.placeholder")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="left">Left Side</SelectItem>
-              <SelectItem value="right">Right Side</SelectItem>
-              <SelectItem value="none">No Logo Overlay</SelectItem>
+              <SelectItem value="left">{t("logoPositions.left")}</SelectItem>
+              <SelectItem value="right">{t("logoPositions.right")}</SelectItem>
+              <SelectItem value="none">{t("logoPositions.none")}</SelectItem>
             </SelectContent>
           </Select>
-          <p className="text-sm text-muted-foreground">
-            Choose where to position the logo. Left/Right will create a
-            dedicated square area for the logo.
-          </p>
         </div>
 
         {formData.bannerImageUrl || formData.logoImageUrl ? (
           <div className="space-y-2">
-            <Label>Banner Preview</Label>
+            <Label>{t("preview.title")}</Label>
             <div className="relative w-full bg-gray-100 rounded border overflow-hidden aspect-[4/1]">
               {/* Banner Image */}
               {formData.bannerImageUrl && (
@@ -427,14 +444,14 @@ export default function GarageSettingsTab() {
               {/* Fallback when no banner */}
               {!formData.bannerImageUrl && formData.logoImageUrl && (
                 <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                  <span className="text-gray-500 text-sm">No banner image</span>
+                  <span className="text-gray-500 text-sm">
+                    {t("preview.noBanner")}
+                  </span>
                 </div>
               )}
             </div>
             <p className="text-sm text-muted-foreground">
-              This is how your banner and logo will appear together. The logo
-              will be positioned in a dedicated area and automatically invert
-              colors in dark mode for better visibility.
+              {t("preview.description")}
             </p>
           </div>
         ) : null}
@@ -445,7 +462,7 @@ export default function GarageSettingsTab() {
             disabled={saving}
             className="w-32"
           >
-            {saving ? "Saving..." : "Save Settings"}
+            {saving ? t("actions.saving") : t("actions.saveSettings")}
           </Button>
         </div>
       </CardContent>

@@ -465,6 +465,54 @@
       "brandExistsError": "This car brand already exists",
       "saveSuccess": "Car brands updated successfully",
       "saveError": "Failed to save car brands"
+    },
+    "garage": {
+      "title": "Garage Settings",
+      "form": {
+        "garageName": "Garage Name",
+        "garageNamePlaceholder": "AutoRepair Shop",
+        "phoneNumber": "Phone Number",
+        "phoneNumberPlaceholder": "Enter phone number",
+        "emailAddress": "Email Address",
+        "emailAddressPlaceholder": "Enter email address",
+        "address": "Address",
+        "addressPlaceholder": "Enter garage address",
+        "maximumCarCapacity": "Maximum Car Capacity",
+        "maxPartsPerMonth": "Max Parts",
+        "maxLaborTypesPerMonth": "Max Labor Types",
+        "bannerImage": "Banner Image",
+        "logoImage": "Logo Image",
+        "logoPosition": "Logo Position"
+      },
+      "logoPositions": {
+        "left": "Left Side",
+        "right": "Right Side",
+        "none": "No Logo Overlay",
+        "placeholder": "Select logo position"
+      },
+      "fileUpload": {
+        "bannerDescription": "Upload an image for your garage banner (max 10MB). Images will be automatically cropped to 4:1 aspect ratio and optimized to under 2MB.",
+        "logoDescription": "Upload a logo for your garage (max 10MB). Images will be automatically cropped to 1:1 aspect ratio (square) and optimized to under 1MB. PNG format recommended for transparent backgrounds.",
+        "logoPositionDescription": "Choose where to position the logo. Left/Right will create a dedicated square area for the logo.",
+        "sizeError": "Image file too large. Please select an image under 10MB.",
+        "typeError": "Please select a valid image file (JPEG, PNG, WebP)."
+      },
+      "preview": {
+        "title": "Banner Preview",
+        "noBanner": "No banner image",
+        "description": "This is how your banner and logo will appear together. The logo will be positioned in a dedicated area and automatically invert colors in dark mode for better visibility."
+      },
+      "actions": {
+        "saveSettings": "Save Settings",
+        "saving": "Saving..."
+      },
+      "messages": {
+        "loadError": "Failed to load garage settings",
+        "saveSuccess": "Garage settings updated successfully",
+        "saveError": "Failed to save garage settings",
+        "bannerUploadError": "Failed to upload banner image",
+        "logoUploadError": "Failed to upload logo image"
+      }
     }
   },
   "language": {
