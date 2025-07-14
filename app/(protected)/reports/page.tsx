@@ -18,6 +18,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, BarChart3, Package } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Label } from "@/components/ui/label";
 
 export default function Page() {
   const t = useTranslations("reports");

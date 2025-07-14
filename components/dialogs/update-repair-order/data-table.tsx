@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { useState, useMemo, useCallback } from "react";
 import { useTranslations } from "next-intl";
+import { Label } from "@/components/ui/label";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

@@ -11,6 +11,7 @@ import { MoreHorizontal, FileText } from "lucide-react";
 import { PaymentWithDetails } from "@/types";
 import { InvoiceDialog } from "./invoice-dialog";
 import { useTranslations } from "next-intl";
+import { Label } from "@/components/ui/label";
 
 interface ActionsProps {
   payment: PaymentWithDetails;

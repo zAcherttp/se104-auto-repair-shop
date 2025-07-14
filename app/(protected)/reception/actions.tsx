@@ -11,6 +11,7 @@ import { MoreHorizontal, Edit } from "lucide-react";
 import { VehicleRegistration } from "./columns";
 import { UpdateDialog } from "@/components/dialogs/update-repair-order";
 import { useTranslations } from "next-intl";
+import { Label } from "@/components/ui/label";
 
 interface ActionsProps {
   vehicleRegistration: VehicleRegistration;

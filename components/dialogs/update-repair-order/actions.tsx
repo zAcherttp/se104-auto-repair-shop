@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Trash2 } from "lucide-react";
 import { LineItem } from "./columns";
+import { Label } from "@/components/ui/label";
 
 interface ActionsProps {
   lineItem: LineItem;

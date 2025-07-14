@@ -12,6 +12,7 @@ import { VehicleWithDebt } from "@/types/types";
 import { PaymentDialog } from "@/components/dialogs/payment-dialog";
 import { VehicleRegistration } from "../reception/columns";
 import { useTranslations } from "next-intl";
+import { Label } from "@/components/ui/label";
 
 interface ActionsProps {
   vehicle: VehicleWithDebt;

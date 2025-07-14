@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { VehicleWithDebt } from "@/types/types";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { Actions } from "./actions";
+import { Label } from "@/components/ui/label";
 
 export function createColumns(
   t: (key: string) => string

@@ -4,6 +4,7 @@ import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 import { Customer, RepairOrder, Vehicle } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Actions } from "./actions";
+import { Label } from "@/components/ui/label";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.

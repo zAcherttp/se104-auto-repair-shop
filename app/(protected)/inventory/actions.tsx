@@ -10,6 +10,7 @@ import {
 import { MoreHorizontal, Edit, Trash2 } from "lucide-react";
 import { SparePart } from "@/types/types";
 import { useTranslations } from "next-intl";
+import { Label } from "@/components/ui/label";
 
 interface ActionsProps {
   sparePart: SparePart;
