@@ -64,7 +64,7 @@ export function SettingsTabs() {
                   className={`w-full justify-start p-3 rounded-md text-left font-medium transition-all duration-200 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 transform ${
                     activeTab === tab.value
                       ? "bg-primary text-primary shadow-sm"
-                      : "bg-transparent text-sidebar-foreground hover:bg-muted"
+                      : "text-sidebar-foreground hover:bg-primary/10 bg-muted/30"
                   }`}
                 >
                   <IconComponent className="w-4 h-4 mr-2" />

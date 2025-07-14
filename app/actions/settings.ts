@@ -601,6 +601,8 @@ export async function getGarageInfo(): Promise<ApiResponse<GarageInfo>> {
         "email_address",
         "address",
         "banner_image_url",
+        "logo_image_url",
+        "logo_position",
       ])
       .order("setting_key");
 
@@ -627,6 +629,9 @@ export async function getGarageInfo(): Promise<ApiResponse<GarageInfo>> {
       emailAddress: settingsMap.email_address || "",
       address: settingsMap.address || "",
       bannerImageUrl: settingsMap.banner_image_url || "",
+      logoImageUrl: settingsMap.logo_image_url || "",
+      logoPosition: (settingsMap.logo_position as "left" | "right" | "none") ||
+        "left",
     };
 
     return {
@@ -643,6 +648,8 @@ export async function getGarageInfo(): Promise<ApiResponse<GarageInfo>> {
         emailAddress: "",
         address: "",
         bannerImageUrl: "",
+        logoImageUrl: "",
+        logoPosition: "left" as const,
       },
     };
   }

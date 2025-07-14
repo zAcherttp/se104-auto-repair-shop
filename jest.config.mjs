@@ -24,7 +24,7 @@ const customJestConfig = {
   ],
   testPathIgnorePatterns: ["<rootDir>/.next/", "<rootDir>/node_modules/"],
   transformIgnorePatterns: [
-    "/node_modules/",
+    "/node_modules/(?!(next-intl|use-intl)/)",
     "^.+\\.module\\.(css|sass|scss)$",
   ],
   // Add test match patterns to include our test directory

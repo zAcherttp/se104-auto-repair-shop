@@ -44,4 +44,6 @@ export interface GarageInfo {
   emailAddress: string;
   address: string;
   bannerImageUrl: string;
+  logoImageUrl: string;
+  logoPosition: "left" | "right" | "none";
 }

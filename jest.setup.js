@@ -168,3 +168,69 @@ jest.mock("sonner", () => ({
     warning: jest.fn(),
   },
 }));
+
+// Mock next-intl for testing
+jest.mock("next-intl", () => ({
+  useTranslations: jest.fn((namespace) => {
+    // Translation mappings for different namespaces
+    const translations = {
+      "reports.salesTable": {
+        title: "Sales Report:",
+        totalRevenue: "Total Revenue:",
+        noData: "No sales data available for this period",
+        columns: {
+          no: "No.",
+          vehicleBrand: "Car Brand",
+          repairCount: "Repair Count",
+          revenue: "Amount",
+          rate: "Rate",
+        },
+      },
+      "reports.inventoryTable": {
+        title: "Inventory Report:",
+        totalParts: "Total Parts:",
+        noData: "No inventory data available for this period",
+        columns: {
+          no: "No.",
+          partName: "Part Name",
+          beginningStock: "Beginning Stock",
+          usedQuantity: "Usage",
+          endingStock: "Ending Stock",
+        },
+      },
+      settings: {
+        tabs: {
+          garage: "Garage",
+          employees: "Employees",
+          parts: "Parts",
+          labor: "Labor",
+          brands: "Brands",
+        },
+      },
+    };
+
+    return (key) => {
+      // Handle nested keys like "columns.no"
+      if (key.startsWith("columns.")) {
+        const columnKey = key.replace("columns.", "");
+        const columnTranslations = translations[namespace]?.columns || {};
+        return columnTranslations[columnKey] || key;
+      }
+
+      // Handle regular keys
+      const keys = key.split(".");
+      let result = translations[namespace];
+
+      for (const k of keys) {
+        result = result?.[k];
+      }
+
+      return result || key;
+    };
+  }),
+  useLocale: jest.fn(() => "en"),
+  useFormatter: jest.fn(() => ({
+    number: jest.fn((value) => value.toString()),
+    dateTime: jest.fn((value) => value.toString()),
+  })),
+}));

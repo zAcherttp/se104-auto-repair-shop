@@ -1,21 +1,24 @@
-# Supabase Storage Setup for Banner Images
+# Supabase Storage Setup for Banner and Logo Images
 
 ## Required Storage Bucket Configuration
 
-To enable banner image uploads, you need to configure the `garage-banners` storage bucket in your Supabase dashboard.
+To enable banner and logo image uploads, you need to configure storage buckets in your Supabase dashboard.
 
-### 1. Create Storage Bucket
+### 1. Create Storage Buckets
 
 1. Go to your Supabase project dashboard
 2. Navigate to Storage
-3. Create a new bucket named `garage-banners`
-4. Set it as **Public** (so banner images can be displayed on the landing page)
+3. Create two new buckets:
+   - `garage-banners` - Set as **Public** (so banner images can be displayed)
+   - `garage-logos` - Set as **Public** (so logo images can be displayed)
 
 ### 2. Storage Policies
 
-Add these RLS policies to the `garage-banners` bucket:
+Add these RLS policies to both buckets:
 
-#### Policy 1: Allow Admin Upload
+#### Policies for `garage-banners` bucket:
+
+**Policy 1: Allow Admin Upload**
 
 ```sql
 -- Policy for uploading banner images (admin only)
@@ -26,7 +29,7 @@ FOR INSERT WITH CHECK (
 );
 ```
 
-#### Policy 2: Allow Admin Delete
+**Policy 2: Allow Admin Delete**
 
 ```sql
 -- Policy for deleting banner images (admin only)
@@ -37,12 +40,44 @@ FOR DELETE USING (
 );
 ```
 
-#### Policy 3: Allow Public Read
+**Policy 3: Allow Public Read**
 
 ```sql
 -- Policy for public access to banner images (anyone can view)
 CREATE POLICY "Public read access for banner images" ON storage.objects
 FOR SELECT USING (bucket_id = 'garage-banners');
+```
+
+#### Policies for `garage-logos` bucket:
+
+**Policy 1: Allow Admin Upload**
+
+```sql
+-- Policy for uploading logo images (admin only)
+CREATE POLICY "Admin can upload logo images" ON storage.objects
+FOR INSERT WITH CHECK (
+  bucket_id = 'garage-logos'
+  AND auth.jwt() ->> 'user_metadata' ->> 'is_garage_admin' = 'true'
+);
+```
+
+**Policy 2: Allow Admin Delete**
+
+```sql
+-- Policy for deleting logo images (admin only)
+CREATE POLICY "Admin can delete logo images" ON storage.objects
+FOR DELETE USING (
+  bucket_id = 'garage-logos'
+  AND auth.jwt() ->> 'user_metadata' ->> 'is_garage_admin' = 'true'
+);
+```
+
+**Policy 3: Allow Public Read**
+
+```sql
+-- Policy for public access to logo images (anyone can view)
+CREATE POLICY "Public read access for logo images" ON storage.objects
+FOR SELECT USING (bucket_id = 'garage-logos');
 ```
 
 ### 3. Alternative: Profile-based Policies

@@ -16,9 +16,9 @@ describe("InventoryTable Data Layer", () => {
 
     // Check table headers
     expect(screen.getByText(/no\./i)).toBeTruthy();
-    expect(screen.getByText(/spare parts & materials/i)).toBeTruthy();
+    expect(screen.getByText(/part name/i)).toBeTruthy();
     expect(screen.getByText(/beginning stock/i)).toBeTruthy();
-    expect(screen.getByText(/used/i)).toBeTruthy();
+    expect(screen.getByText(/usage/i)).toBeTruthy();
     expect(screen.getByText(/ending stock/i)).toBeTruthy();
   });
 

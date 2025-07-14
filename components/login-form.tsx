@@ -92,14 +92,23 @@ export function LoginForm() {
                           type="button"
                           variant="ghost"
                           size="sm"
-                          className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                          className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-primary/5"
                           onClick={() => setShowPassword(!showPassword)}
                         >
-                          {showPassword ? (
-                            <EyeOff className="h-4 w-4" />
-                          ) : (
+                          <span
+                            className={`transition-all duration-300 ease-in-out ${
+                              showPassword ? "opacity-0" : "opacity-100"
+                            }`}
+                          >
                             <Eye className="h-4 w-4" />
-                          )}
+                          </span>
+                          <span
+                            className={`absolute transition-all duration-200 ease-in-out ${
+                              showPassword ? "opacity-100" : "opacity-0"
+                            }`}
+                          >
+                            <EyeOff className="h-4 w-4" />
+                          </span>
                         </Button>
                       </div>
                     </FormControl>

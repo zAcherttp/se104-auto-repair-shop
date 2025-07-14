@@ -19,7 +19,7 @@ describe("SalesTable Data Layer", () => {
     expect(screen.getByText(/car brand/i)).toBeTruthy();
     expect(screen.getByText(/repair count/i)).toBeTruthy();
     expect(screen.getByText(/amount/i)).toBeTruthy();
-    expect(screen.getByText(/rate \(%\)/i)).toBeTruthy();
+    expect(screen.getByText(/rate/i)).toBeTruthy();
   });
 
   it("displays correct sales report data", () => {
@@ -157,8 +157,8 @@ describe("SalesTable Data Layer", () => {
 
     render(<SalesTable data={dataWithLargeNumbers} />);
 
-    // Check large number formatting - the system uses German/European locale formatting
-    expect(screen.getByText("1.000")).toBeTruthy(); // repair count with period (German format)
+    // Check large number formatting - the system uses US locale formatting in tests
+    expect(screen.getByText("1,000")).toBeTruthy(); // repair count with comma (US format)
     expect(screen.getByText("Luxury")).toBeTruthy(); // vehicle brand
   });
 

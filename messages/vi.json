@@ -32,7 +32,7 @@
   "auth": {
     "back": "Trở lại",
     "login": {
-      "title": "Đăng nhập vào tài khoản của bạn",
+      "title": "Đăng nhập",
       "subtitle": "Nhập email của bạn bên dưới để đăng nhập vào tài khoản của bạn",
       "email": "Email",
       "emailPlaceholder": "m@example.com",

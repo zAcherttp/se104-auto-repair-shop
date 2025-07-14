@@ -36,20 +36,64 @@ export default function Page() {
           </div>
         ) : (
           <>
-            {/* Banner Image */}
-            {garageInfo?.bannerImageUrl ? (
+            {/* Banner Image with Logo */}
+            {garageInfo?.bannerImageUrl || garageInfo?.logoImageUrl ? (
               <div className="mb-8 flex justify-center">
-                <Image
-                  src={garageInfo.bannerImageUrl}
-                  alt="Garage Banner"
-                  width={2048}
-                  height={512}
-                  className="rounded shadow max-h-64 object-cover w-full"
-                  style={{ maxWidth: "100%", height: "auto" }}
-                  priority
-                />
+                <div className="relative w-full bg-gray-100 rounded-2xl border overflow-hidden aspect-[4/1] max-w-7xl">
+                  {/* Banner Image */}
+                  {garageInfo.bannerImageUrl && (
+                    <div className="absolute inset-0">
+                      <Image
+                        src={garageInfo.bannerImageUrl}
+                        alt="Garage Banner"
+                        width={2048}
+                        height={512}
+                        className={`w-full h-full object-cover ${
+                          garageInfo.logoPosition === "left"
+                            ? "object-[75%_center]"
+                            : garageInfo.logoPosition === "right"
+                            ? "object-[25%_center]"
+                            : "object-center"
+                        }`}
+                        priority
+                      />
+                    </div>
+                  )}
+
+                  {/* Logo Overlay */}
+                  {garageInfo.logoImageUrl &&
+                  garageInfo.logoPosition !== "none" ? (
+                    <div
+                      className={`absolute inset-0 flex items-center ${
+                        garageInfo.logoPosition === "left"
+                          ? "justify-start pl-16"
+                          : "justify-end pr-16"
+                      }`}
+                    >
+                      <div className="w-64 h-64 bg-white rounded-lg flex items-center justify-center">
+                        <Image
+                          src={garageInfo.logoImageUrl}
+                          alt="Garage Logo"
+                          width={196}
+                          height={196}
+                          priority
+                        />
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {/* Fallback when no banner */}
+                  {!garageInfo.bannerImageUrl && garageInfo.logoImageUrl && (
+                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                      <span className="text-gray-500 text-sm">
+                        No banner image
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
             ) : null}
+
             {/* Header */}
             <div className="text-center mb-16">
               <h1 className="text-5xl font-bold mb-4">
