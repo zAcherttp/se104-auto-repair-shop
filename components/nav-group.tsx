@@ -11,6 +11,7 @@ import {
 } from "../components/ui/sidebar";
 import { memo, useMemo } from "react";
 import { usePathname } from "next/navigation";
+import { Label } from "./ui/label";
 
 type NavGroupProps = {
   items: {
@@ -48,7 +49,7 @@ export const NavGroup = memo(function NavGroup({
             >
               <a href={item.url}>
                 {item.icon ? <item.icon /> : null}
-                <span>{item.name}</span>
+                <Label>{item.name}</Label>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

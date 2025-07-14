@@ -106,7 +106,7 @@ export const LineItemDataTable = React.memo(function LineItemDataTable<
   return (
     <>
       <div className="font-medium pb-4 flex justify-between items-center w-full">
-        <span>{t("repairLineItems")}</span>
+        <Label>{t("repairLineItems")}</Label>
         <Button size="sm" onClick={handleAddRow}>
           <Plus className="h-4 w-4 mr-2" />
           {t("addItem")}
@@ -195,7 +195,7 @@ export const LineItemDataTable = React.memo(function LineItemDataTable<
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">{t("goToFirstPage")}</span>
+              <Label className="sr-only">{t("goToFirstPage")}</Label>
               <ChevronsLeftIcon />
             </Button>
             <Button
@@ -204,7 +204,7 @@ export const LineItemDataTable = React.memo(function LineItemDataTable<
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">{t("goToPreviousPage")}</span>
+              <Label className="sr-only">{t("goToPreviousPage")}</Label>
               <ChevronLeftIcon />
             </Button>
             <Button
@@ -213,7 +213,7 @@ export const LineItemDataTable = React.memo(function LineItemDataTable<
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">{t("goToNextPage")}</span>
+              <Label className="sr-only">{t("goToNextPage")}</Label>
               <ChevronRightIcon />
             </Button>
             <Button
@@ -222,7 +222,7 @@ export const LineItemDataTable = React.memo(function LineItemDataTable<
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">{t("goToLastPage")}</span>
+              <Label className="sr-only">{t("goToLastPage")}</Label>
               <ChevronsRightIcon />
             </Button>
           </div>

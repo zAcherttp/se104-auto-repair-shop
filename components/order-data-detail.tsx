@@ -17,6 +17,7 @@ import {
 } from "@/types";
 import ExpenseSummaryCard from "./expense-summary-card";
 import { useTranslations } from "next-intl";
+import { Label } from "./ui/label";
 
 type OrderDataDetailsProps = {
   orderData: OrderDataProps;
@@ -207,12 +208,12 @@ const OrderDetails = ({
                 {/* Order Total */}
                 <div className="mt-4 pt-4 border-t">
                   <div className="flex justify-between items-center">
-                    <span className="font-semibold">
+                    <Label className="font-semibold">
                       {t("repairHistory.orderTotal")}:
-                    </span>
-                    <span className="text-lg font-bold">
+                    </Label>
+                    <Label className="text-lg font-bold">
                       {formatCurrency(order.total_amount || 0)}
-                    </span>
+                    </Label>
                   </div>
                 </div>
 

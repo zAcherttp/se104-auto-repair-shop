@@ -47,24 +47,28 @@ const RepairOrderCardContent = memo(
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <User className="h-3 w-3" />
-              <span className="truncate">{order.vehicle?.customer?.name}</span>
+              <Label className="truncate">
+                {order.vehicle?.customer?.name}
+              </Label>
             </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Car className="h-3 w-3" />
-              <span className="truncate">
+              <Label className="truncate">
                 {order.vehicle?.brand} ({order.vehicle?.license_plate})
-              </span>
+              </Label>
             </div>
 
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Calendar className="h-3 w-3" />
-              <span>{new Date(order.reception_date).toLocaleDateString()}</span>
+              <Label>
+                {new Date(order.reception_date).toLocaleDateString()}
+              </Label>
             </div>
 
             {order.total_amount && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <DollarSign className="h-3 w-3" />
-                <span>${order.total_amount.toFixed(2)}</span>
+                <Label>${order.total_amount.toFixed(2)}</Label>
               </div>
             )}
 

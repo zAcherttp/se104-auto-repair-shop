@@ -26,6 +26,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { VEHICLE_REGISTRATION_QUERY_KEY } from "@/hooks/use-vehicle-registration";
 import { Separator } from "@/components/ui/separator";
 import { useTranslations } from "next-intl";
+import { Label } from "@/components/ui/label";
 
 export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
   const t = useTranslations("updateRepairOrder");
@@ -139,18 +140,20 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
                   </CardHeader>
                   <CardContent className="p-0 space-y-1">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">
+                      <Label className="text-muted-foreground">
                         {t("license")}
-                      </span>
-                      <span className="font-medium">
+                      </Label>
+                      <Label className="font-medium">
                         {data.vehicle.license_plate}
-                      </span>
+                      </Label>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">
+                      <Label className="text-muted-foreground">
                         {t("brand")}
-                      </span>
-                      <span className="font-medium">{data.vehicle.brand}</span>
+                      </Label>
+                      <Label className="font-medium">
+                        {data.vehicle.brand}
+                      </Label>
                     </div>
                   </CardContent>
                 </Card>
@@ -164,14 +167,20 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
                   </CardHeader>
                   <CardContent className="p-0 space-y-1 ">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">{t("name")}</span>
-                      <span className="font-medium">{data.customer.name}</span>
+                      <Label className="text-muted-foreground">
+                        {t("name")}
+                      </Label>
+                      <Label className="font-medium">
+                        {data.customer.name}
+                      </Label>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">
+                      <Label className="text-muted-foreground">
                         {t("phone")}
-                      </span>
-                      <span className="font-medium">{data.customer.phone}</span>
+                      </Label>
+                      <Label className="font-medium">
+                        {data.customer.phone}
+                      </Label>
                     </div>
                   </CardContent>
                 </Card>

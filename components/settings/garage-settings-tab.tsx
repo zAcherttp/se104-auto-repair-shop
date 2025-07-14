@@ -269,16 +269,17 @@ export default function GarageSettingsTab() {
           />
           <p className="text-sm text-muted-foreground">
             Upload an image for your garage banner (max 10MB). Images will be
-            automatically cropped to square and optimized to under 1MB.
+            automatically cropped to 4:1 aspect ratio and optimized to under
+            2MB.
           </p>
           {formData.bannerImageUrl && (
             <div className="mt-2">
               <Image
                 src={formData.bannerImageUrl}
                 alt="Banner preview"
-                width={512}
-                height={128}
-                className="max-h-32 rounded border"
+                width={2048}
+                height={512}
+                className="max-h-64 rounded border"
                 style={{ objectFit: "cover", width: "100%", height: "auto" }}
                 priority
               />

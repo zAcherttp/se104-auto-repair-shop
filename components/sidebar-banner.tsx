@@ -10,6 +10,7 @@ import { LucideIcon } from "lucide-react";
 import { Poppins } from "next/font/google";
 import { memo } from "react";
 import { useRouter } from "next/navigation";
+import { Label } from "./ui/label";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -37,11 +38,11 @@ export const AppBanner = memo(function AppBanner({
             <garage.logo className="h-6 w-6" />
           </div>
           <div className="grid flex-1 text-left text-sm leading-tight">
-            <span
+            <Label
               className={`${poppins.variable} truncate font-semibold text-xl text-foreground`}
             >
               {garage.name}
-            </span>
+            </Label>
           </div>
         </SidebarMenuButton>
       </SidebarMenuItem>

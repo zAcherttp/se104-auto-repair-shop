@@ -51,6 +51,7 @@ import { useCarBrands } from "@/hooks/use-car-brands";
 import { useDailyVehicleLimit } from "@/hooks/use-daily-vehicle-limit";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Label } from "../ui/label";
 
 // Stable references - moved outside component to prevent recreation
 const FORM_DEFAULT_VALUES: VehicleReceptionFormData = {
@@ -366,7 +367,7 @@ const ReceptionForm = React.memo<FormDialogProps>(
                             {field.value ? (
                               format(field.value, "PPP")
                             ) : (
-                              <span>{t("receptionDatePlaceholder")}</span>
+                              <Label>{t("receptionDatePlaceholder")}</Label>
                             )}
                           </Button>
                         </FormControl>

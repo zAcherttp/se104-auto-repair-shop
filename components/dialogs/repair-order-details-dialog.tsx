@@ -22,6 +22,7 @@ import {
   Package,
 } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
+import { Label } from "../ui/label";
 
 interface RepairOrderDetailsDialogProps {
   open: boolean;
@@ -60,7 +61,7 @@ export function RepairOrderDetailsDialog({
           <div className="p-4">
             <DialogHeader className="pb-4">
               <DialogTitle className="flex items-center gap-3">
-                <span>Repair Order #{order.id.slice(-8)}</span>
+                <Label>Repair Order #{order.id.slice(-8)}</Label>
                 <Badge className={`${statusColor}`}>
                   {order.status.replace("-", " ").toUpperCase()}
                 </Badge>

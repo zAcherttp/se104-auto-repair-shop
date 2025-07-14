@@ -18,6 +18,7 @@ import CurrencyInput from "react-currency-input-field";
 import { createClient } from "@/supabase/client";
 import { Vehicle, Customer } from "@/types";
 import { useVehicleDebt } from "@/hooks/use-vehicle-debt";
+import { Label } from "../ui/label";
 
 interface OrderTrackingPaymentDialogProps {
   trigger: React.ReactNode;
@@ -187,16 +188,16 @@ export function OrderTrackingPaymentDialog({
           {/* Vehicle Info */}
           <div className="bg-slate-50 dark:bg-slate-900 p-3 rounded-lg">
             <div className="flex justify-between items-center text-sm">
-              <span className="text-muted-foreground">Vehicle:</span>
-              <span className="font-medium">{vehicle.license_plate}</span>
+              <Label className="text-muted-foreground">Vehicle:</Label>
+              <Label className="font-medium">{vehicle.license_plate}</Label>
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span className="text-muted-foreground">Customer:</span>
-              <span className="font-medium">{customer.name}</span>
+              <Label className="text-muted-foreground">Customer:</Label>
+              <Label className="font-medium">{customer.name}</Label>
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span className="text-muted-foreground">Brand:</span>
-              <span className="font-medium">{vehicle.brand}</span>
+              <Label className="text-muted-foreground">Brand:</Label>
+              <Label className="font-medium">{vehicle.brand}</Label>
             </div>
           </div>
 

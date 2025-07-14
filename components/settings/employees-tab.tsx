@@ -5,6 +5,14 @@ import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { EditIcon, TrashIcon, UserIcon } from "lucide-react";
 import { toast } from "sonner";
 import { getEmployees, deleteEmployee } from "@/app/actions/settings";
@@ -108,74 +116,64 @@ export default function EmployeesTab() {
               {t("addButton")}
             </Button>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-muted/50">
-                <tr>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                    {t("columns.name")}
-                  </th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                    {t("columns.role")}
-                  </th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                    {t("columns.created")}
-                  </th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                    {t("columns.actions")}
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {employees.map((employee) => (
-                  <tr key={employee.id} className="hover:bg-muted/50">
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        <div className="flex items-center justify-center w-8 h-8 bg-primary/10 rounded-full">
-                          <UserIcon className="h-4 w-4 text-primary" />
-                        </div>
-                        <span className="font-medium">
-                          {employee.full_name || "N/A"}
-                        </span>
+          <Table>
+            <TableHeader className="bg-muted/50">
+              <TableRow>
+                <TableHead>{t("columns.name")}</TableHead>
+                <TableHead>{t("columns.role")}</TableHead>
+                <TableHead>{t("columns.created")}</TableHead>
+                <TableHead>{t("columns.actions")}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {employees.map((employee) => (
+                <TableRow key={employee.id}>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center justify-center w-8 h-8 bg-primary/10 rounded-full">
+                        <UserIcon className="h-4 w-4 text-primary" />
                       </div>
-                    </td>
-                    <td className="px-4 py-3">
-                      <Badge
-                        variant={
-                          employee.role === "admin" ? "default" : "secondary"
-                        }
+                      <Label className="font-medium">
+                        {employee.full_name || "N/A"}
+                      </Label>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={
+                        employee.role === "admin" ? "default" : "secondary"
+                      }
+                    >
+                      {employee.role}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {employee.created_at
+                      ? new Date(employee.created_at).toLocaleDateString()
+                      : "N/A"}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEditEmployee(employee)}
                       >
-                        {employee.role}
-                      </Badge>
-                    </td>
-                    <td className="px-4 py-3 text-sm text-muted-foreground">
-                      {employee.created_at
-                        ? new Date(employee.created_at).toLocaleDateString()
-                        : "N/A"}
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleEditEmployee(employee)}
-                        >
-                          <EditIcon className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDeleteEmployee(employee)}
-                        >
-                          <TrashIcon className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                        <EditIcon className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDeleteEmployee(employee)}
+                      >
+                        <TrashIcon className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
 

@@ -5,6 +5,14 @@ import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { EditIcon, TrashIcon } from "lucide-react";
 import { toast } from "sonner";
 import { getSpareParts, deleteSparePart } from "@/app/actions/settings";
@@ -91,57 +99,43 @@ export default function PartsTab() {
               {t("addButton")}
             </Button>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-muted/50">
-                <tr>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                    {t("table.name")}
-                  </th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                    {t("table.price")}
-                  </th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                    {t("table.stock")}
-                  </th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                    {t("table.actions")}
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {parts.map((part) => (
-                  <tr key={part.id} className="hover:bg-muted/50">
-                    <td className="px-4 py-3 font-medium">{part.name}</td>
-                    <td className="px-4 py-3 text-sm">
-                      ${part.price.toFixed(2)}
-                    </td>
-                    <td className="px-4 py-3 text-sm">
-                      {part.stock_quantity ?? "N/A"}
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleEditPart(part)}
-                        >
-                          <EditIcon className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDeletePart(part.id)}
-                        >
-                          <TrashIcon className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <Table>
+            <TableHeader className="bg-muted/50">
+              <TableRow>
+                <TableHead>{t("table.name")}</TableHead>
+                <TableHead>{t("table.price")}</TableHead>
+                <TableHead>{t("table.stock")}</TableHead>
+                <TableHead>{t("table.actions")}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {parts.map((part) => (
+                <TableRow key={part.id}>
+                  <TableCell className="font-medium">{part.name}</TableCell>
+                  <TableCell>${part.price.toFixed(2)}</TableCell>
+                  <TableCell>{part.stock_quantity ?? "N/A"}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEditPart(part)}
+                      >
+                        <EditIcon className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDeletePart(part.id)}
+                      >
+                        <TrashIcon className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
 

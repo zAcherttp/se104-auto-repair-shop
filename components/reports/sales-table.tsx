@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslations } from "next-intl";
+import { Label } from "../ui/label";
 
 interface SalesTableProps {
   data?: SalesReport;
@@ -31,9 +32,9 @@ export function SalesTable({ data }: SalesTableProps) {
     <Card>
       <CardHeader>
         <CardTitle className="text-center">
-          <span className="text-lg font-bold">
+          <Label className="text-lg font-bold">
             {t("title")} {data.month}
-          </span>
+          </Label>
         </CardTitle>
       </CardHeader>
       <CardContent>

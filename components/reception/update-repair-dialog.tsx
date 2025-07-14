@@ -46,6 +46,7 @@ import {
   fetchExistingRepairOrderItems,
   updateRepairOrder,
 } from "@/app/actions/vehicles";
+import { Label } from "../ui/label";
 
 interface UpdateRepairDialogProps {
   vehicle: VehicleWithDetails | undefined;
@@ -297,19 +298,19 @@ export function UpdateRepairDialog({
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                   <div>
-                    <span className="font-semibold">License Plate:</span>
+                    <Label className="font-semibold">License Plate:</Label>
                     <div>{vehicle.license_plate}</div>
                   </div>
                   <div>
-                    <span className="font-semibold">Brand:</span>
+                    <Label className="font-semibold">Brand:</Label>
                     <div>{vehicle.brand}</div>
                   </div>
                   <div>
-                    <span className="font-semibold">Owner:</span>
+                    <Label className="font-semibold">Owner:</Label>
                     <div>{vehicle.customer?.name}</div>
                   </div>
                   <div>
-                    <span className="font-semibold">Phone:</span>
+                    <Label className="font-semibold">Phone:</Label>
                     <div>{vehicle.customer?.phone}</div>
                   </div>
                 </div>
@@ -494,10 +495,12 @@ export function UpdateRepairDialog({
               <Card className="bg-green-50">
                 <CardContent className="p-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-lg font-semibold">Grand Total:</span>
-                    <span className="text-2xl font-bold text-green-700">
+                    <Label className="text-lg font-semibold">
+                      Grand Total:
+                    </Label>
+                    <Label className="text-2xl font-bold text-green-700">
                       ${grandTotal.toFixed(2)}
-                    </span>
+                    </Label>
                   </div>
                 </CardContent>
               </Card>

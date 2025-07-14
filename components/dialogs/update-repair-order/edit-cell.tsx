@@ -20,6 +20,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Label } from "@/components/ui/label";
 
 // Stable constants to prevent recreation
 const READONLY_CELL_STYLE =
@@ -253,9 +254,9 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
               aria-expanded={open}
               className={buttonClassName}
             >
-              <span className="truncate">
+              <Label className="truncate">
                 {(value as string) || "Select spare part..."}
-              </span>
+              </Label>
               <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
@@ -272,10 +273,10 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
                       onSelect={handleSparePartSelect}
                     >
                       <div className="flex justify-between w-full">
-                        <span className="truncate">{part.name}</span>
-                        <span className="text-muted-foreground ml-2 flex-shrink-0">
+                        <Label className="truncate">{part.name}</Label>
+                        <Label className="text-muted-foreground ml-2 flex-shrink-0">
                           ${part.price.toFixed(2)}
-                        </span>
+                        </Label>
                       </div>
                     </CommandItem>
                   ))}
@@ -293,9 +294,9 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
               aria-expanded={open}
               className={buttonClassName}
             >
-              <span className="truncate">
+              <Label className="truncate">
                 {(value as string) || "Select labor type..."}
-              </span>
+              </Label>
               <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
@@ -312,10 +313,10 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
                       onSelect={handleLaborTypeSelect}
                     >
                       <div className="flex justify-between w-full">
-                        <span className="truncate">{labor.name}</span>
-                        <span className="text-muted-foreground ml-2 flex-shrink-0">
+                        <Label className="truncate">{labor.name}</Label>
+                        <Label className="text-muted-foreground ml-2 flex-shrink-0">
                           ${labor.cost.toFixed(2)}
-                        </span>
+                        </Label>
                       </div>
                     </CommandItem>
                   ))}
@@ -333,9 +334,9 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
               aria-expanded={open}
               className={buttonClassName}
             >
-              <span className="truncate">
+              <Label className="truncate">
                 {(value as string) || "Select employee..."}
-              </span>
+              </Label>
               <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
@@ -352,10 +353,10 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
                       onSelect={handleEmployeeSelect}
                     >
                       <div className="flex justify-between w-full">
-                        <span className="truncate">{employee.full_name}</span>
-                        <span className="text-muted-foreground ml-2 flex-shrink-0">
+                        <Label className="truncate">{employee.full_name}</Label>
+                        <Label className="text-muted-foreground ml-2 flex-shrink-0">
                           {employee.role}
-                        </span>
+                        </Label>
                       </div>
                     </CommandItem>
                   ))}

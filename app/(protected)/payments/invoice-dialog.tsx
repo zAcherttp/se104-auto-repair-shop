@@ -47,22 +47,22 @@ export function InvoiceDialog({ trigger, payment }: InvoiceDialogProps) {
               <h3 className="font-semibold mb-2">Payment Information</h3>
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
-                  <span>Amount:</span>
-                  <span className="font-medium text-green-600">
+                  <Label>Amount:</Label>
+                  <Label className="font-medium text-green-600">
                     {formatCurrency(payment.amount)}
-                  </span>
+                  </Label>
                 </div>
                 <div className="flex justify-between">
-                  <span>Method:</span>
-                  <span className="capitalize">{payment.payment_method}</span>
+                  <Label>Method:</Label>
+                  <Label className="capitalize">{payment.payment_method}</Label>
                 </div>
                 <div className="flex justify-between">
-                  <span>Date:</span>
-                  <span>{formatDate(payment.payment_date)}</span>
+                  <Label>Date:</Label>
+                  <Label>{formatDate(payment.payment_date)}</Label>
                 </div>
                 <div className="flex justify-between">
-                  <span>Processed:</span>
-                  <span>{formatDate(payment.created_at)}</span>
+                  <Label>Processed:</Label>
+                  <Label>{formatDate(payment.created_at)}</Label>
                 </div>
               </div>
             </div>
@@ -71,25 +71,25 @@ export function InvoiceDialog({ trigger, payment }: InvoiceDialogProps) {
               <h3 className="font-semibold mb-2">Vehicle Information</h3>
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
-                  <span>License Plate:</span>
-                  <span className="font-medium">
+                  <Label>License Plate:</Label>
+                  <Label className="font-medium">
                     {payment.vehicle.license_plate}
-                  </span>
+                  </Label>
                 </div>
                 <div className="flex justify-between">
-                  <span>Brand:</span>
-                  <span>{payment.vehicle.brand}</span>
+                  <Label>Brand:</Label>
+                  <Label>{payment.vehicle.brand}</Label>
                 </div>
                 <div className="flex justify-between">
-                  <span>Customer:</span>
-                  <span className="font-medium">
+                  <Label>Customer:</Label>
+                  <Label className="font-medium">
                     {payment.vehicle.customer.name}
-                  </span>
+                  </Label>
                 </div>
                 {payment.vehicle.customer.phone && (
                   <div className="flex justify-between">
-                    <span>Phone:</span>
-                    <span>{payment.vehicle.customer.phone}</span>
+                    <Label>Phone:</Label>
+                    <Label>{payment.vehicle.customer.phone}</Label>
                   </div>
                 )}
               </div>
@@ -102,15 +102,15 @@ export function InvoiceDialog({ trigger, payment }: InvoiceDialogProps) {
               <h3 className="font-semibold mb-2">Processed By</h3>
               <div className="text-sm">
                 <div className="flex justify-between">
-                  <span>Employee:</span>
-                  <span>
+                  <Label>Employee:</Label>
+                  <Label>
                     {payment.created_by_profile.full_name || "Unknown"}
-                  </span>
+                  </Label>
                 </div>
                 {payment.created_by_profile.email && (
                   <div className="flex justify-between">
-                    <span>Email:</span>
-                    <span>{payment.created_by_profile.email}</span>
+                    <Label>Email:</Label>
+                    <Label>{payment.created_by_profile.email}</Label>
                   </div>
                 )}
               </div>

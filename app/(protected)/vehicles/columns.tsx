@@ -149,10 +149,10 @@ export function createColumns(
         const date = new Date(createdAt);
         return (
           <div className="flex flex-col">
-            <span>{date.toLocaleDateString()}</span>
-            <span className="text-xs text-muted-foreground">
+            <Label>{date.toLocaleDateString()}</Label>
+            <Label className="text-xs text-muted-foreground">
               {date.toLocaleTimeString()}
-            </span>
+            </Label>
           </div>
         );
       },

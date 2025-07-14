@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { Label } from "../ui/label";
 
 interface SalesAnalyticsChartProps {
   data?: SalesAnalytics;
@@ -143,7 +144,7 @@ export function SalesAnalyticsChart({ data }: SalesAnalyticsChartProps) {
           verticalAlign="bottom"
           height={36}
           formatter={(value: string, entry: { color?: string }) => (
-            <span style={{ color: entry.color || "#000" }}>{value}</span>
+            <Label style={{ color: entry.color || "#000" }}>{value}</Label>
           )}
         />
       </PieChart>

@@ -404,9 +404,9 @@ export const DataTableColumnHeader = ({ children, ...props }: any) => {
 export const Badge = ({ children, variant, ...props }: any) => {
   const { className, ...domProps } = props;
   return (
-    <span data-testid="badge" className={className} {...domProps}>
+    <Label data-testid="badge" className={className} {...domProps}>
       {children}
-    </span>
+    </Label>
   );
 };
 
@@ -483,9 +483,9 @@ export const SelectItem = ({ children, value, onSelect, ...props }: any) => (
 );
 
 export const SelectValue = ({ placeholder, ...props }: any) => (
-  <span data-testid="select-value" {...props}>
+  <Label data-testid="select-value" {...props}>
     {placeholder}
-  </span>
+  </Label>
 );
 
 // Mock icons and other primitives
@@ -551,7 +551,7 @@ export const Slot = ({ children, ...props }: any) => {
     const childProps = (children as any).props || {};
     return React.cloneElement(children, { ...childProps, ...props });
   }
-  return <span {...props}>{children}</span>;
+  return <Label {...props}>{children}</Label>;
 };
 
 // Create a slot function mock
@@ -564,9 +564,9 @@ export const createSlot = () => ({
 export const Primitive = {
   span: {
     SlotClone: ({ children, ...props }: any) => (
-      <span data-testid="primitive-span-slot-clone" {...props}>
+      <Label data-testid="primitive-span-slot-clone" {...props}>
         {children}
-      </span>
+      </Label>
     ),
   },
 };

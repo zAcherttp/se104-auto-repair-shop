@@ -4,7 +4,7 @@ import { checkAdminRole } from "./settings";
 import sharp from "sharp";
 
 /**
- * Processes images under 10MB, crops to square, and compresses to under 1MB
+ * Processes images under 10MB, crops to 4:1 aspect ratio, and compresses to under 2MB
  * @param buffer - The image buffer
  * @param contentType - The MIME type
  * @returns Processed buffer and potentially updated content type
@@ -14,7 +14,7 @@ async function processImage(
     contentType: string,
 ): Promise<{ buffer: ArrayBuffer; contentType: string }> {
     const MAX_INPUT_SIZE = 10 * 1024 * 1024; // 10MB
-    const TARGET_SIZE = 1 * 1024 * 1024; // 1MB
+    const TARGET_SIZE = 2 * 1024 * 1024; // 2MB
 
     // Reject if over 10MB
     if (buffer.byteLength > MAX_INPUT_SIZE) {
@@ -25,18 +25,26 @@ async function processImage(
         // Convert ArrayBuffer to Buffer for sharp
         const inputBuffer = Buffer.from(buffer);
 
-        // Get image metadata to determine square crop dimensions
+        // Get image metadata to determine 4:1 crop dimensions
         const metadata = await sharp(inputBuffer).metadata();
         const { width = 1920, height = 1080 } = metadata;
 
-        // Determine square size (use the smaller dimension)
-        const squareSize = Math.min(width, height);
+        // Calculate 4:1 aspect ratio crop dimensions
+        const targetAspectRatio = 4; // 4:1 (width:height)
+        let cropWidth = width;
+        let cropHeight = Math.floor(width / targetAspectRatio);
 
-        // Calculate crop position to center the square
-        const left = Math.floor((width - squareSize) / 2);
-        const top = Math.floor((height - squareSize) / 2);
+        // If calculated height is larger than available height, adjust based on height
+        if (cropHeight > height) {
+            cropHeight = height;
+            cropWidth = cropHeight * targetAspectRatio;
+        }
 
-        // Start with high quality and progressively reduce until under 1MB
+        // Calculate crop position to center the 4:1 rectangle
+        const left = Math.floor((width - cropWidth) / 2);
+        const top = Math.floor((height - cropHeight) / 2);
+
+        // Start with high quality and progressively reduce until under 2MB
         let quality = 90;
         let processedBuffer: Buffer;
 
@@ -46,10 +54,10 @@ async function processImage(
                     .extract({
                         left,
                         top,
-                        width: squareSize,
-                        height: squareSize,
+                        width: cropWidth,
+                        height: cropHeight,
                     })
-                    .resize(1024, 1024) // Standard square banner size
+                    .resize(2048, 512) // 4:1 aspect ratio banner size
                     .jpeg({ quality, progressive: true })
                     .toBuffer();
             } else if (contentType.includes("png")) {
@@ -57,10 +65,10 @@ async function processImage(
                     .extract({
                         left,
                         top,
-                        width: squareSize,
-                        height: squareSize,
+                        width: cropWidth,
+                        height: cropHeight,
                     })
-                    .resize(1024, 1024)
+                    .resize(2048, 512)
                     .png({ quality, progressive: true })
                     .toBuffer();
             } else if (contentType.includes("webp")) {
@@ -68,10 +76,10 @@ async function processImage(
                     .extract({
                         left,
                         top,
-                        width: squareSize,
-                        height: squareSize,
+                        width: cropWidth,
+                        height: cropHeight,
                     })
-                    .resize(1024, 1024)
+                    .resize(2048, 512)
                     .webp({ quality })
                     .toBuffer();
             } else {
@@ -80,10 +88,10 @@ async function processImage(
                     .extract({
                         left,
                         top,
-                        width: squareSize,
-                        height: squareSize,
+                        width: cropWidth,
+                        height: cropHeight,
                     })
-                    .resize(1024, 1024)
+                    .resize(2048, 512)
                     .jpeg({ quality, progressive: true })
                     .toBuffer();
                 contentType = "image/jpeg";
@@ -128,7 +136,7 @@ export async function uploadBannerImage({
         // Check admin role first
         const { supabase } = await checkAdminRole();
 
-        // Process image: crop to square and compress to under 1MB
+        // Process image: crop to 4:1 aspect ratio and compress to under 2MB
         const { buffer: processedBuffer, contentType: finalContentType } =
             await processImage(buffer, contentType);
 

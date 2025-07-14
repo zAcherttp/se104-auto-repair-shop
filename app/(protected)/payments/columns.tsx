@@ -6,6 +6,7 @@ import { PaymentWithDetails } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowLeft } from "lucide-react";
 import { Actions } from "./actions";
+import { Label } from "@/components/ui/label";
 
 export const createColumns = (
   t: (key: string) => string
@@ -61,7 +62,7 @@ export const createColumns = (
       return (
         <div className="text-right font-medium flex items-center justify-end gap-2">
           <ArrowLeft className="h-4 w-4 text-green-600" />
-          <span className="text-green-600">{formatted}</span>
+          <Label className="text-green-600">{formatted}</Label>
         </div>
       );
     },
@@ -119,10 +120,10 @@ export const createColumns = (
       const date = new Date(createdAt);
       return (
         <div className="flex flex-col">
-          <span>{date.toLocaleDateString()}</span>
-          <span className="text-xs text-muted-foreground">
+          <Label>{date.toLocaleDateString()}</Label>
+          <Label className="text-xs text-muted-foreground">
             {date.toLocaleTimeString()}
-          </span>
+          </Label>
         </div>
       );
     },
@@ -143,9 +144,9 @@ export const createColumns = (
 
       return (
         <div className="flex flex-col">
-          <span>{fullName || "Unknown"}</span>
+          <Label>{fullName || "Unknown"}</Label>
           {email && (
-            <span className="text-xs text-muted-foreground">{email}</span>
+            <Label className="text-xs text-muted-foreground">{email}</Label>
           )}
         </div>
       );

@@ -145,29 +145,29 @@ export default function Page() {
                 ) : (
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">
+                      <Label className="text-sm font-medium">
                         {t("keyMetrics.totalRevenue")}
-                      </span>
-                      <span className="text-2xl font-bold">
+                      </Label>
+                      <Label className="text-2xl font-bold">
                         {salesAnalytics?.totalRevenue?.toLocaleString("en-US", {
                           style: "currency",
                           currency: "USD",
                         }) || "0.00 $"}
-                      </span>
+                      </Label>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">
+                      <Label className="text-sm font-medium">
                         {t("keyMetrics.totalOrders")}
-                      </span>
-                      <span className="text-2xl font-bold">
+                      </Label>
+                      <Label className="text-2xl font-bold">
                         {salesAnalytics?.totalOrders || 0}
-                      </span>
+                      </Label>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">
+                      <Label className="text-sm font-medium">
                         {t("keyMetrics.averageOrderValue")}
-                      </span>
-                      <span className="text-2xl font-bold">
+                      </Label>
+                      <Label className="text-2xl font-bold">
                         {salesAnalytics?.averageOrderValue?.toLocaleString(
                           "en-US",
                           {
@@ -175,7 +175,7 @@ export default function Page() {
                             currency: "USD",
                           }
                         ) || "0 0.00 $"}
-                      </span>
+                      </Label>
                     </div>
                   </div>
                 )}
@@ -223,31 +223,31 @@ export default function Page() {
               ) : (
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium">
+                    <Label className="text-sm font-medium">
                       {t("inventoryMetrics.totalParts")}
-                    </span>
-                    <span className="text-2xl font-bold">
+                    </Label>
+                    <Label className="text-2xl font-bold">
                       {inventoryAnalytics?.totalParts || 0}
-                    </span>
+                    </Label>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium">
+                    <Label className="text-sm font-medium">
                       {t("inventoryMetrics.lowStockItems")}
-                    </span>
-                    <span className="text-2xl font-bold text-destructive">
+                    </Label>
+                    <Label className="text-2xl font-bold text-destructive">
                       {inventoryAnalytics?.lowStockItems || 0}
-                    </span>
+                    </Label>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium">
+                    <Label className="text-sm font-medium">
                       {t("inventoryMetrics.totalValue")}
-                    </span>
-                    <span className="text-2xl font-bold">
+                    </Label>
+                    <Label className="text-2xl font-bold">
                       {inventoryAnalytics?.totalValue?.toLocaleString("en-US", {
                         style: "currency",
                         currency: "USD",
                       }) || "0 0.00 $"}
-                    </span>
+                    </Label>
                   </div>
                 </div>
               )}

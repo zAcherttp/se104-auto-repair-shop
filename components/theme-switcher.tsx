@@ -6,6 +6,7 @@ import { useTheme } from "next-themes";
 import { useMetaColor } from "@/hooks/use-meta-colors";
 import { Button } from "./ui/button";
 import { Moon, Sun } from "lucide-react";
+import { Label } from "./ui/label";
 
 export function ThemeSwitcher() {
   const { setTheme, resolvedTheme } = useTheme();
@@ -43,7 +44,7 @@ export function ThemeSwitcher() {
             : "opacity-0 scale-95 -rotate-180"
         }`}
       />
-      <span className="sr-only">Toggle theme</span>
+      <Label className="sr-only">Toggle theme</Label>
     </Button>
   );
 }

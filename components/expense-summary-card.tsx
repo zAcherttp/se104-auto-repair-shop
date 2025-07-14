@@ -6,6 +6,7 @@ import { OrderDataProps } from "@/types";
 import { OrderTrackingPaymentDialog } from "@/components/dialogs/order-tracking-payment-dialog";
 import { useVehicleDebt } from "@/hooks/use-vehicle-debt";
 import { useTranslations } from "next-intl";
+import { Label } from "./ui/label";
 
 type ExpenseSummaryCardProps = {
   orderData: OrderDataProps;
@@ -125,7 +126,7 @@ const ExpenseSummaryCard = ({
             </div>
             <div>
               <strong>{t("paymentStatus")}:</strong>
-              <span
+              <Label
                 className={`ml-2 font-medium ${
                   remainingAmount > 0
                     ? "text-expense-error-foreground"
@@ -139,7 +140,7 @@ const ExpenseSummaryCard = ({
                   : remainingAmount < 0
                   ? t("overpaid")
                   : t("paidInFull")}
-              </span>
+              </Label>
             </div>
           </div>
 

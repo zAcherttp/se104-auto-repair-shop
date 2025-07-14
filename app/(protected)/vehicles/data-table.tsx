@@ -197,7 +197,7 @@ export function VehiclesDataTable<TData, TValue>({
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">{t("goToFirstPage")}</span>
+              <Label className="sr-only">{t("goToFirstPage")}</Label>
               <ChevronsLeftIcon />
             </Button>
             <Button
@@ -207,7 +207,7 @@ export function VehiclesDataTable<TData, TValue>({
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">Go to previous page</span>
+              <Label className="sr-only">Go to previous page</Label>
               <ChevronLeftIcon />
             </Button>
             <Button
@@ -217,7 +217,7 @@ export function VehiclesDataTable<TData, TValue>({
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Go to next page</span>
+              <Label className="sr-only">Go to next page</Label>
               <ChevronRightIcon />
             </Button>
             <Button
@@ -227,7 +227,7 @@ export function VehiclesDataTable<TData, TValue>({
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">Go to last page</span>
+              <Label className="sr-only">Go to last page</Label>
               <ChevronsRightIcon />
             </Button>
           </div>

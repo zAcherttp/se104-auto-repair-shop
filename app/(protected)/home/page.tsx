@@ -4,6 +4,7 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
 import DateRangePicker from "@/components/date-range-picker";
+import { Label } from "recharts";
 
 export default function Page() {
   const [isDark, setIsDark] = React.useState(false);
@@ -37,7 +38,7 @@ export default function Page() {
           }`}
         />
 
-        <span className="sr-only">Toggle theme</span>
+        <Label className="sr-only">Toggle theme</Label>
       </Button>
 
       <DateRangePicker />

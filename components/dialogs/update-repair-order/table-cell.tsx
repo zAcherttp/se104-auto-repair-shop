@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Edit } from "lucide-react";
 import { LineItem } from "./columns";
 import { Table } from "@tanstack/react-table";
+import { Label } from "@/components/ui/label";
 
 interface TableCellProps {
   getValue: () => unknown;
@@ -53,7 +54,7 @@ export const TableCell = React.memo<TableCellProps>(function TableCell({
 
   return (
     <div className="flex items-center justify-between group">
-      <span className={isTotal ? "font-medium" : ""}>{formattedValue}</span>
+      <Label className={isTotal ? "font-medium" : ""}>{formattedValue}</Label>
       {!isTotal && (
         <Button
           variant="ghost"

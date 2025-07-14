@@ -23,7 +23,7 @@ export function Actions({ vehicleRegistration }: ActionsProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-8 w-8 p-0">
-          <span className="sr-only">{t("openMenu")}</span>
+          <Label className="sr-only">{t("openMenu")}</Label>
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>

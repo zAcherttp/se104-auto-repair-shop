@@ -210,7 +210,7 @@ export function PaymentsDataTable<TData, TValue>({
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">{t("goToFirstPage")}</span>
+              <Label className="sr-only">{t("goToFirstPage")}</Label>
               <ChevronsLeftIcon className="h-4 w-4" />
             </Button>
             <Button
@@ -219,7 +219,7 @@ export function PaymentsDataTable<TData, TValue>({
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
-              <span className="sr-only">{t("goToPreviousPage")}</span>
+              <Label className="sr-only">{t("goToPreviousPage")}</Label>
               <ChevronLeftIcon className="h-4 w-4" />
             </Button>
             <Button
@@ -228,7 +228,7 @@ export function PaymentsDataTable<TData, TValue>({
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">{t("goToNextPage")}</span>
+              <Label className="sr-only">{t("goToNextPage")}</Label>
               <ChevronRightIcon className="h-4 w-4" />
             </Button>
             <Button
@@ -237,7 +237,7 @@ export function PaymentsDataTable<TData, TValue>({
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
-              <span className="sr-only">{t("goToLastPage")}</span>
+              <Label className="sr-only">{t("goToLastPage")}</Label>
               <ChevronsRightIcon className="h-4 w-4" />
             </Button>
           </div>

@@ -10,6 +10,7 @@ import { useGarageInfo } from "@/hooks/use-garage-info";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { Label } from "@/components/ui/label";
 
 export default function Page() {
   const router = useRouter();
@@ -41,8 +42,8 @@ export default function Page() {
                 <Image
                   src={garageInfo.bannerImageUrl}
                   alt="Garage Banner"
-                  width={1024}
-                  height={256}
+                  width={2048}
+                  height={512}
                   className="rounded shadow max-h-64 object-cover w-full"
                   style={{ maxWidth: "100%", height: "auto" }}
                   priority
@@ -63,19 +64,19 @@ export default function Page() {
                     {garageInfo.phoneNumber && (
                       <div className="flex items-center gap-2">
                         <Phone className="w-4 h-4" />
-                        <span>{garageInfo.phoneNumber}</span>
+                        <Label>{garageInfo.phoneNumber}</Label>
                       </div>
                     )}
                     {garageInfo.emailAddress && (
                       <div className="flex items-center gap-2">
                         <Mail className="w-4 h-4" />
-                        <span>{garageInfo.emailAddress}</span>
+                        <Label>{garageInfo.emailAddress}</Label>
                       </div>
                     )}
                     {garageInfo.address && (
                       <div className="flex items-center gap-2">
                         <MapPin className="w-4 h-4" />
-                        <span>{garageInfo.address}</span>
+                        <Label>{garageInfo.address}</Label>
                       </div>
                     )}
                   </div>

@@ -20,6 +20,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { VEHICLES_QUERY_KEY } from "@/hooks/use-vehicles";
 import CurrencyInput from "react-currency-input-field";
 import { useTranslations } from "next-intl";
+import { Label } from "../ui/label";
 
 export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
@@ -103,16 +104,18 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
           {/* Vehicle Info */}
           <div className="bg-slate-50 dark:bg-slate-900 p-3 rounded-lg">
             <div className="flex justify-between items-center text-sm">
-              <span className="text-muted-foreground">{t("vehicle")}:</span>
-              <span className="font-medium">{data.vehicle.license_plate}</span>
+              <Label className="text-muted-foreground">{t("vehicle")}:</Label>
+              <Label className="font-medium">
+                {data.vehicle.license_plate}
+              </Label>
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span className="text-muted-foreground">{t("customer")}:</span>
-              <span className="font-medium">{data.customer.name}</span>
+              <Label className="text-muted-foreground">{t("customer")}:</Label>
+              <Label className="font-medium">{data.customer.name}</Label>
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span className="text-muted-foreground">{t("brand")}:</span>
-              <span className="font-medium">{data.vehicle.brand}</span>
+              <Label className="text-muted-foreground">{t("brand")}:</Label>
+              <Label className="font-medium">{data.vehicle.brand}</Label>
             </div>
           </div>
 
