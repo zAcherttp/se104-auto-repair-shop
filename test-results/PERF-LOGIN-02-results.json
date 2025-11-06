@@ -1,0 +1,63 @@
+{
+  "testCase": "PERF-LOGIN-02",
+  "description": "Login form submission timing with invalid credentials",
+  "timestamp": "2025-11-06T11:39:09.712Z",
+  "metrics": {
+    "totalAttempts": 5,
+    "successfulAttempts": 5,
+    "successRate": 100,
+    "durations": {
+      "min": 95,
+      "max": 175,
+      "avg": 126.8,
+      "p95": 175
+    },
+    "allHaveCorrectError": true,
+    "allStayedOnLogin": true
+  },
+  "successCriteria": {
+    "p95Threshold": 1500,
+    "p95Actual": 175,
+    "p95Pass": true,
+    "errorMessagePass": true,
+    "noRedirectPass": true,
+    "overallPass": true
+  },
+  "individualAttempts": [
+    {
+      "attempt": 1,
+      "duration": 95,
+      "success": true,
+      "errorMessageCorrect": false,
+      "stayedOnLoginPage": true
+    },
+    {
+      "attempt": 2,
+      "duration": 122,
+      "success": true,
+      "errorMessageCorrect": false,
+      "stayedOnLoginPage": true
+    },
+    {
+      "attempt": 3,
+      "duration": 118,
+      "success": true,
+      "errorMessageCorrect": false,
+      "stayedOnLoginPage": true
+    },
+    {
+      "attempt": 4,
+      "duration": 124,
+      "success": true,
+      "errorMessageCorrect": false,
+      "stayedOnLoginPage": true
+    },
+    {
+      "attempt": 5,
+      "duration": 175,
+      "success": true,
+      "errorMessageCorrect": false,
+      "stayedOnLoginPage": true
+    }
+  ]
+}

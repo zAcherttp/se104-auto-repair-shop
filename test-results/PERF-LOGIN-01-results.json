@@ -1,0 +1,81 @@
+{
+  "testCase": "PERF-LOGIN-01",
+  "description": "Login form submission timing with valid credentials",
+  "timestamp": "2025-11-06T11:38:38.199Z",
+  "metrics": {
+    "totalAttempts": 10,
+    "successfulAttempts": 10,
+    "successRate": 100,
+    "durations": {
+      "min": 950,
+      "max": 12699,
+      "avg": 2323.9,
+      "p50": 1255,
+      "p95": 12699
+    }
+  },
+  "successCriteria": {
+    "p50Threshold": 2000,
+    "p50Actual": 1255,
+    "p50Pass": true,
+    "p95Threshold": 3000,
+    "p95Actual": 12699,
+    "p95Pass": false,
+    "successRateThreshold": 100,
+    "successRateActual": 100,
+    "successRatePass": true,
+    "overallPass": false
+  },
+  "individualAttempts": [
+    {
+      "attempt": 1,
+      "duration": 12699,
+      "success": true
+    },
+    {
+      "attempt": 2,
+      "duration": 984,
+      "success": true
+    },
+    {
+      "attempt": 3,
+      "duration": 1400,
+      "success": true
+    },
+    {
+      "attempt": 4,
+      "duration": 1553,
+      "success": true
+    },
+    {
+      "attempt": 5,
+      "duration": 1255,
+      "success": true
+    },
+    {
+      "attempt": 6,
+      "duration": 1049,
+      "success": true
+    },
+    {
+      "attempt": 7,
+      "duration": 964,
+      "success": true
+    },
+    {
+      "attempt": 8,
+      "duration": 1328,
+      "success": true
+    },
+    {
+      "attempt": 9,
+      "duration": 1057,
+      "success": true
+    },
+    {
+      "attempt": 10,
+      "duration": 950,
+      "success": true
+    }
+  ]
+}

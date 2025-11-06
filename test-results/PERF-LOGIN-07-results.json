@@ -1,0 +1,61 @@
+{
+  "testCase": "PERF-LOGIN-07",
+  "description": "Login page memory baseline measurement",
+  "timestamp": "2025-11-06T11:40:33.819Z",
+  "metrics": {
+    "totalAttempts": 5,
+    "avgHeap": 19300000,
+    "minHeap": 19300000,
+    "maxHeap": 19300000,
+    "maxIncrease": 0,
+    "domNodeChange": 0,
+    "domNodeIncreasePercent": 0
+  },
+  "successCriteria": {
+    "avgHeapThreshold": 8388608,
+    "avgHeapActual": 19300000,
+    "avgHeapPass": false,
+    "maxIncreaseThreshold": 10,
+    "maxIncreaseActual": 0,
+    "maxIncreasePass": true,
+    "noDomLeaksPass": true,
+    "overallPass": false
+  },
+  "individualAttempts": [
+    {
+      "attempt": 1,
+      "heapSize": 19300000,
+      "heapLimit": 2330000000,
+      "domNodes": 95,
+      "jsEventListeners": 0
+    },
+    {
+      "attempt": 2,
+      "heapSize": 19300000,
+      "heapLimit": 2330000000,
+      "domNodes": 95,
+      "jsEventListeners": 0
+    },
+    {
+      "attempt": 3,
+      "heapSize": 19300000,
+      "heapLimit": 2330000000,
+      "domNodes": 95,
+      "jsEventListeners": 0
+    },
+    {
+      "attempt": 4,
+      "heapSize": 19300000,
+      "heapLimit": 2330000000,
+      "domNodes": 95,
+      "jsEventListeners": 0
+    },
+    {
+      "attempt": 5,
+      "heapSize": 19300000,
+      "heapLimit": 2330000000,
+      "domNodes": 95,
+      "jsEventListeners": 0
+    }
+  ]
+}

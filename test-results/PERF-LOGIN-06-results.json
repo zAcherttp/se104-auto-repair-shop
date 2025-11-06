@@ -1,0 +1,70 @@
+{
+  "testCase": "PERF-LOGIN-06",
+  "description": "Logout flow latency measurement",
+  "timestamp": "2025-11-06T11:40:09.076Z",
+  "metrics": {
+    "totalAttempts": 5,
+    "successfulAttempts": 5,
+    "successRate": 100,
+    "durations": {
+      "min": 650,
+      "max": 1805,
+      "avg": 1019.4,
+      "p95": 1805
+    },
+    "allRedirected": false,
+    "allCookiesCleared": true,
+    "allAccessBlocked": true
+  },
+  "successCriteria": {
+    "p95Threshold": 1000,
+    "p95Actual": 1805,
+    "p95Pass": false,
+    "redirectPass": false,
+    "cookiesPass": true,
+    "accessPass": true,
+    "overallPass": false
+  },
+  "individualAttempts": [
+    {
+      "attempt": 1,
+      "duration": 919,
+      "redirectSuccess": false,
+      "cookiesCleared": true,
+      "accessBlocked": true,
+      "success": true
+    },
+    {
+      "attempt": 2,
+      "duration": 1805,
+      "redirectSuccess": false,
+      "cookiesCleared": true,
+      "accessBlocked": true,
+      "success": true
+    },
+    {
+      "attempt": 3,
+      "duration": 1058,
+      "redirectSuccess": false,
+      "cookiesCleared": true,
+      "accessBlocked": true,
+      "success": true
+    },
+    {
+      "attempt": 4,
+      "duration": 665,
+      "redirectSuccess": false,
+      "cookiesCleared": true,
+      "accessBlocked": true,
+      "success": true
+    },
+    {
+      "attempt": 5,
+      "duration": 650,
+      "redirectSuccess": false,
+      "cookiesCleared": true,
+      "accessBlocked": true,
+      "success": true
+    }
+  ]
+}

@@ -1,0 +1,3685 @@
+{
+  "config": {
+    "configFile": "D:\\Github\\se104-auto-repair-shop\\playwright.config.ts",
+    "rootDir": "D:/Github/se104-auto-repair-shop/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "D:/Github/se104-auto-repair-shop/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "D:/Github/se104-auto-repair-shop/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 1,
+    "webServer": {
+      "command": "pnpm dev",
+      "url": "http://localhost:3000",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "login\\PERF-LOGIN-01.spec.ts",
+      "file": "login/PERF-LOGIN-01.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "PERF-LOGIN-01: Login Form Performance",
+          "file": "login/PERF-LOGIN-01.spec.ts",
+          "line": 24,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Attempt 1/10: Login performance measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 19792,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📸 Screenshot saved: login-form-1.png\n"
+                        },
+                        {
+                          "text": "🔍 Attempt 1: Email filled: saladegg24@gmail.com\n"
+                        },
+                        {
+                          "text": "🔍 Attempt 1: Submit button - Visible: true, Enabled: true\n"
+                        },
+                        {
+                          "text": "⏱️ Attempt 1: Starting timer at 1762429071112\n"
+                        },
+                        {
+                          "text": "🖱️ Attempt 1: Button clicked\n"
+                        },
+                        {
+                          "text": "✅ Attempt 1: Navigated to http://localhost:3000/reception in 12699ms\n"
+                        },
+                        {
+                          "text": "✓ Attempt 1: 12699ms - Success\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:37:43.989Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a18e3a772dc1c2fe8a18-45bdc3e1ae68733b7f0e",
+              "file": "login/PERF-LOGIN-01.spec.ts",
+              "line": 43,
+              "column": 9
+            },
+            {
+              "title": "Attempt 2/10: Login performance measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3623,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Attempt 2: Email filled: saladegg24@gmail.com\n"
+                        },
+                        {
+                          "text": "🔍 Attempt 2: Submit button - Visible: true, Enabled: true\n"
+                        },
+                        {
+                          "text": "⏱️ Attempt 2: Starting timer at 1762429086576\n"
+                        },
+                        {
+                          "text": "🖱️ Attempt 2: Button clicked\n"
+                        },
+                        {
+                          "text": "✅ Attempt 2: Navigated to http://localhost:3000/reception in 984ms\n"
+                        },
+                        {
+                          "text": "✓ Attempt 2: 984ms - Success\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:38:04.060Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a18e3a772dc1c2fe8a18-280f01e4c615afb27a3b",
+              "file": "login/PERF-LOGIN-01.spec.ts",
+              "line": 43,
+              "column": 9
+            },
+            {
+              "title": "Attempt 3/10: Login performance measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4130,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Attempt 3: Email filled: saladegg24@gmail.com\n"
+                        },
+                        {
+                          "text": "🔍 Attempt 3: Submit button - Visible: true, Enabled: true\n"
+                        },
+                        {
+                          "text": "⏱️ Attempt 3: Starting timer at 1762429090326\n"
+                        },
+                        {
+                          "text": "🖱️ Attempt 3: Button clicked\n"
+                        },
+                        {
+                          "text": "✅ Attempt 3: Navigated to http://localhost:3000/reception in 1400ms\n"
+                        },
+                        {
+                          "text": "✓ Attempt 3: 1400ms - Success\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:38:07.710Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a18e3a772dc1c2fe8a18-522cf59ef6d658c38b5f",
+              "file": "login/PERF-LOGIN-01.spec.ts",
+              "line": 43,
+              "column": 9
+            },
+            {
+              "title": "Attempt 4/10: Login performance measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4062,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Attempt 4: Email filled: saladegg24@gmail.com\n"
+                        },
+                        {
+                          "text": "🔍 Attempt 4: Submit button - Visible: true, Enabled: true\n"
+                        },
+                        {
+                          "text": "⏱️ Attempt 4: Starting timer at 1762429094240\n"
+                        },
+                        {
+                          "text": "🖱️ Attempt 4: Button clicked\n"
+                        },
+                        {
+                          "text": "✅ Attempt 4: Navigated to http://localhost:3000/reception in 1553ms\n"
+                        },
+                        {
+                          "text": "✓ Attempt 4: 1553ms - Success\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:38:11.862Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a18e3a772dc1c2fe8a18-14da5cdcf141fba34fa9",
+              "file": "login/PERF-LOGIN-01.spec.ts",
+              "line": 43,
+              "column": 9
+            },
+            {
+              "title": "Attempt 5/10: Login performance measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3671,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Attempt 5: Email filled: saladegg24@gmail.com\n"
+                        },
+                        {
+                          "text": "🔍 Attempt 5: Submit button - Visible: true, Enabled: true\n"
+                        },
+                        {
+                          "text": "⏱️ Attempt 5: Starting timer at 1762429098244\n"
+                        },
+                        {
+                          "text": "🖱️ Attempt 5: Button clicked\n"
+                        },
+                        {
+                          "text": "✅ Attempt 5: Navigated to http://localhost:3000/reception in 1255ms\n"
+                        },
+                        {
+                          "text": "✓ Attempt 5: 1255ms - Success\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:38:15.943Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a18e3a772dc1c2fe8a18-646633623bb8f4ac7c16",
+              "file": "login/PERF-LOGIN-01.spec.ts",
+              "line": 43,
+              "column": 9
+            },
+            {
+              "title": "Attempt 6/10: Login performance measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3455,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Attempt 6: Email filled: saladegg24@gmail.com\n"
+                        },
+                        {
+                          "text": "🔍 Attempt 6: Submit button - Visible: true, Enabled: true\n"
+                        },
+                        {
+                          "text": "⏱️ Attempt 6: Starting timer at 1762429101929\n"
+                        },
+                        {
+                          "text": "🖱️ Attempt 6: Button clicked\n"
+                        },
+                        {
+                          "text": "✅ Attempt 6: Navigated to http://localhost:3000/reception in 1049ms\n"
+                        },
+                        {
+                          "text": "✓ Attempt 6: 1049ms - Success\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:38:19.634Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a18e3a772dc1c2fe8a18-02a75f66db040ff0f011",
+              "file": "login/PERF-LOGIN-01.spec.ts",
+              "line": 43,
+              "column": 9
+            },
+            {
+              "title": "Attempt 7/10: Login performance measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3662,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Attempt 7: Email filled: saladegg24@gmail.com\n"
+                        },
+                        {
+                          "text": "🔍 Attempt 7: Submit button - Visible: true, Enabled: true\n"
+                        },
+                        {
+                          "text": "⏱️ Attempt 7: Starting timer at 1762429105698\n"
+                        },
+                        {
+                          "text": "🖱️ Attempt 7: Button clicked\n"
+                        },
+                        {
+                          "text": "✅ Attempt 7: Navigated to http://localhost:3000/reception in 964ms\n"
+                        },
+                        {
+                          "text": "✓ Attempt 7: 964ms - Success\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:38:23.106Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a18e3a772dc1c2fe8a18-a788275a4894f224a937",
+              "file": "login/PERF-LOGIN-01.spec.ts",
+              "line": 43,
+              "column": 9
+            },
+            {
+              "title": "Attempt 8/10: Login performance measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3936,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Attempt 8: Email filled: saladegg24@gmail.com\n"
+                        },
+                        {
+                          "text": "🔍 Attempt 8: Submit button - Visible: true, Enabled: true\n"
+                        },
+                        {
+                          "text": "⏱️ Attempt 8: Starting timer at 1762429109297\n"
+                        },
+                        {
+                          "text": "🖱️ Attempt 8: Button clicked\n"
+                        },
+                        {
+                          "text": "✅ Attempt 8: Navigated to http://localhost:3000/reception in 1328ms\n"
+                        },
+                        {
+                          "text": "✓ Attempt 8: 1328ms - Success\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:38:26.789Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a18e3a772dc1c2fe8a18-4f89bdfca60442aadf35",
+              "file": "login/PERF-LOGIN-01.spec.ts",
+              "line": 43,
+              "column": 9
+            },
+            {
+              "title": "Attempt 9/10: Login performance measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3620,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Attempt 9: Email filled: saladegg24@gmail.com\n"
+                        },
+                        {
+                          "text": "🔍 Attempt 9: Submit button - Visible: true, Enabled: true\n"
+                        },
+                        {
+                          "text": "⏱️ Attempt 9: Starting timer at 1762429113009\n"
+                        },
+                        {
+                          "text": "🖱️ Attempt 9: Button clicked\n"
+                        },
+                        {
+                          "text": "✅ Attempt 9: Navigated to http://localhost:3000/reception in 1057ms\n"
+                        },
+                        {
+                          "text": "✓ Attempt 9: 1057ms - Success\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:38:30.742Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a18e3a772dc1c2fe8a18-ccb8f588a491d494f0ed",
+              "file": "login/PERF-LOGIN-01.spec.ts",
+              "line": 43,
+              "column": 9
+            },
+            {
+              "title": "Attempt 10/10: Login performance measurement",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 3765,
+                      "error": {
+                        "message": "Error: p95 should be ≤ 3000ms, got 12699ms\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m3000\u001b[39m\nReceived:    \u001b[31m12699\u001b[39m",
+                        "stack": "Error: p95 should be ≤ 3000ms, got 12699ms\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m3000\u001b[39m\nReceived:    \u001b[31m12699\u001b[39m\n    at D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-01.spec.ts:270:57",
+                        "location": {
+                          "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-01.spec.ts",
+                          "column": 57,
+                          "line": 270
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 268 |\u001b[39m     \u001b[90m// Assert final results\u001b[39m\n \u001b[90m 269 |\u001b[39m     expect(p50\u001b[33m,\u001b[39m \u001b[32m`p50 should be ≤ 2000ms, got ${p50}ms`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2000\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 270 |\u001b[39m     expect(p95\u001b[33m,\u001b[39m \u001b[32m`p95 should be ≤ 3000ms, got ${p95}ms`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m3000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 271 |\u001b[39m     expect(successRate\u001b[33m,\u001b[39m \u001b[32m`Success rate should be 100%, got ${successRate.toFixed(1)}%`\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[35m100\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 272 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 273 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-01.spec.ts",
+                            "column": 57,
+                            "line": 270
+                          },
+                          "message": "Error: p95 should be ≤ 3000ms, got 12699ms\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m3000\u001b[39m\nReceived:    \u001b[31m12699\u001b[39m\n\n\u001b[0m \u001b[90m 268 |\u001b[39m     \u001b[90m// Assert final results\u001b[39m\n \u001b[90m 269 |\u001b[39m     expect(p50\u001b[33m,\u001b[39m \u001b[32m`p50 should be ≤ 2000ms, got ${p50}ms`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2000\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 270 |\u001b[39m     expect(p95\u001b[33m,\u001b[39m \u001b[32m`p95 should be ≤ 3000ms, got ${p95}ms`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m3000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 271 |\u001b[39m     expect(successRate\u001b[33m,\u001b[39m \u001b[32m`Success rate should be 100%, got ${successRate.toFixed(1)}%`\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[35m100\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 272 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 273 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-01.spec.ts:270:57\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🔍 Attempt 10: Email filled: saladegg24@gmail.com\n"
+                        },
+                        {
+                          "text": "🔍 Attempt 10: Submit button - Visible: true, Enabled: true\n"
+                        },
+                        {
+                          "text": "⏱️ Attempt 10: Starting timer at 1762429117095\n"
+                        },
+                        {
+                          "text": "🖱️ Attempt 10: Button clicked\n"
+                        },
+                        {
+                          "text": "✅ Attempt 10: Navigated to http://localhost:3000/reception in 950ms\n"
+                        },
+                        {
+                          "text": "✓ Attempt 10: 950ms - Success\n"
+                        },
+                        {
+                          "text": "\n================================================================================\n"
+                        },
+                        {
+                          "text": "PERF-LOGIN-01: Performance Test Results\n"
+                        },
+                        {
+                          "text": "================================================================================\n"
+                        },
+                        {
+                          "text": "\n📊 Individual Attempts:\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 1: 12699ms\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 2: 984ms\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 3: 1400ms\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 4: 1553ms\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 5: 1255ms\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 6: 1049ms\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 7: 964ms\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 8: 1328ms\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 9: 1057ms\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 10: 950ms\n"
+                        },
+                        {
+                          "text": "\n📈 Statistical Analysis:\n"
+                        },
+                        {
+                          "text": "  Total Attempts: 10\n"
+                        },
+                        {
+                          "text": "  Successful: 10 (100.0%)\n"
+                        },
+                        {
+                          "text": "  Failed: 0\n"
+                        },
+                        {
+                          "text": "  Min: 950ms\n"
+                        },
+                        {
+                          "text": "  Max: 12699ms\n"
+                        },
+                        {
+                          "text": "  Average: 2323.90ms\n"
+                        },
+                        {
+                          "text": "  p50 (Median): 1255ms\n"
+                        },
+                        {
+                          "text": "  p95: 12699ms\n"
+                        },
+                        {
+                          "text": "\n✅ Success Criteria:\n"
+                        },
+                        {
+                          "text": "  ✓ p50 ≤ 2000ms: 1255ms (PASS)\n"
+                        },
+                        {
+                          "text": "  ✗ p95 ≤ 3000ms: 12699ms (FAIL)\n"
+                        },
+                        {
+                          "text": "  ✓ Success rate: 100.0% (PASS)\n"
+                        },
+                        {
+                          "text": "\n❌ SOME CRITERIA FAILED\n"
+                        },
+                        {
+                          "text": "================================================================================\n\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:38:34.386Z",
+                      "annotations": [],
+                      "attachments": [],
+                      "errorLocation": {
+                        "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-01.spec.ts",
+                        "column": 57,
+                        "line": 270
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "a18e3a772dc1c2fe8a18-67e5a9bfbe608fedf715",
+              "file": "login/PERF-LOGIN-01.spec.ts",
+              "line": 43,
+              "column": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "login\\PERF-LOGIN-02.spec.ts",
+      "file": "login/PERF-LOGIN-02.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "PERF-LOGIN-02: Invalid Credentials Error Handling Performance",
+          "file": "login/PERF-LOGIN-02.spec.ts",
+          "line": 26,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Attempt 1/5: Invalid credentials error timing",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5072,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "⏱️ Attempt 1: Starting timer at 1762429128354\n"
+                        },
+                        {
+                          "text": "🖱️ Attempt 1: Button clicked\n"
+                        },
+                        {
+                          "text": "✅ Attempt 1: Error toast appeared in 95ms\n"
+                        },
+                        {
+                          "text": "   Error message: \"đăng nhập thất bại\" (raw: \"Đăng nhập thất bại\")\n"
+                        },
+                        {
+                          "text": "   Still on login page: true\n"
+                        },
+                        {
+                          "text": "   Has expected error message: false\n"
+                        },
+                        {
+                          "text": "✓ Attempt 1: 95ms - Success\n"
+                        },
+                        {
+                          "text": "📸 Screenshot saved: PERF-LOGIN-02-error-state-1.png\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:38:45.570Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b5e609b2270aaf8e06a9-8348a7d4c005887b35e6",
+              "file": "login/PERF-LOGIN-02.spec.ts",
+              "line": 45,
+              "column": 9
+            },
+            {
+              "title": "Attempt 2/5: Invalid credentials error timing",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4718,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "⏱️ Attempt 2: Starting timer at 1762429133154\n"
+                        },
+                        {
+                          "text": "🖱️ Attempt 2: Button clicked\n"
+                        },
+                        {
+                          "text": "✅ Attempt 2: Error toast appeared in 122ms\n"
+                        },
+                        {
+                          "text": "   Error message: \"đăng nhập thất bại\" (raw: \"Đăng nhập thất bại\")\n"
+                        },
+                        {
+                          "text": "   Still on login page: true\n"
+                        },
+                        {
+                          "text": "   Has expected error message: false\n"
+                        },
+                        {
+                          "text": "✓ Attempt 2: 122ms - Success\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:38:50.767Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b5e609b2270aaf8e06a9-6c7a0cd78e737026df7f",
+              "file": "login/PERF-LOGIN-02.spec.ts",
+              "line": 45,
+              "column": 9
+            },
+            {
+              "title": "Attempt 3/5: Invalid credentials error timing",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4570,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "⏱️ Attempt 3: Starting timer at 1762429137795\n"
+                        },
+                        {
+                          "text": "🖱️ Attempt 3: Button clicked\n"
+                        },
+                        {
+                          "text": "✅ Attempt 3: Error toast appeared in 118ms\n"
+                        },
+                        {
+                          "text": "   Error message: \"đăng nhập thất bại\" (raw: \"Đăng nhập thất bại\")\n"
+                        },
+                        {
+                          "text": "   Still on login page: true\n"
+                        },
+                        {
+                          "text": "   Has expected error message: false\n"
+                        },
+                        {
+                          "text": "✓ Attempt 3: 118ms - Success\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:38:55.503Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b5e609b2270aaf8e06a9-30d8fc814faffc208df9",
+              "file": "login/PERF-LOGIN-02.spec.ts",
+              "line": 45,
+              "column": 9
+            },
+            {
+              "title": "Attempt 4/5: Invalid credentials error timing",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4653,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "⏱️ Attempt 4: Starting timer at 1762429142446\n"
+                        },
+                        {
+                          "text": "🖱️ Attempt 4: Button clicked\n"
+                        },
+                        {
+                          "text": "✅ Attempt 4: Error toast appeared in 124ms\n"
+                        },
+                        {
+                          "text": "   Error message: \"đăng nhập thất bại\" (raw: \"Đăng nhập thất bại\")\n"
+                        },
+                        {
+                          "text": "   Still on login page: true\n"
+                        },
+                        {
+                          "text": "   Has expected error message: false\n"
+                        },
+                        {
+                          "text": "✓ Attempt 4: 124ms - Success\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:39:00.093Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b5e609b2270aaf8e06a9-c149a45767716d71d7ee",
+              "file": "login/PERF-LOGIN-02.spec.ts",
+              "line": 45,
+              "column": 9
+            },
+            {
+              "title": "Attempt 5/5: Invalid credentials error timing",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4908,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "⏱️ Attempt 5: Starting timer at 1762429147311\n"
+                        },
+                        {
+                          "text": "🖱️ Attempt 5: Button clicked\n"
+                        },
+                        {
+                          "text": "✅ Attempt 5: Error toast appeared in 175ms\n"
+                        },
+                        {
+                          "text": "   Error message: \"đăng nhập thất bại\" (raw: \"Đăng nhập thất bại\")\n"
+                        },
+                        {
+                          "text": "   Still on login page: true\n"
+                        },
+                        {
+                          "text": "   Has expected error message: false\n"
+                        },
+                        {
+                          "text": "✓ Attempt 5: 175ms - Success\n"
+                        },
+                        {
+                          "text": "\n================================================================================\n"
+                        },
+                        {
+                          "text": "PERF-LOGIN-02: Performance Test Results\n"
+                        },
+                        {
+                          "text": "================================================================================\n"
+                        },
+                        {
+                          "text": "\n📊 Individual Attempts:\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 1: 95ms - Error correct: false, Stayed on login: true\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 2: 122ms - Error correct: false, Stayed on login: true\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 3: 118ms - Error correct: false, Stayed on login: true\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 4: 124ms - Error correct: false, Stayed on login: true\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 5: 175ms - Error correct: false, Stayed on login: true\n"
+                        },
+                        {
+                          "text": "\n📈 Statistical Analysis:\n"
+                        },
+                        {
+                          "text": "  Total Attempts: 5\n"
+                        },
+                        {
+                          "text": "  Successful: 5 (100.0%)\n"
+                        },
+                        {
+                          "text": "  Failed: 0\n"
+                        },
+                        {
+                          "text": "  Min: 95ms\n"
+                        },
+                        {
+                          "text": "  Max: 175ms\n"
+                        },
+                        {
+                          "text": "  Average: 126.80ms\n"
+                        },
+                        {
+                          "text": "  p95: 175ms\n"
+                        },
+                        {
+                          "text": "\n✅ Success Criteria:\n"
+                        },
+                        {
+                          "text": "  ✓ p95 ≤ 1500ms: 175ms (PASS)\n"
+                        },
+                        {
+                          "text": "  ✓ Error toast displays correct message (PASS)\n"
+                        },
+                        {
+                          "text": "  ✓ User remains on /login page (PASS)\n"
+                        },
+                        {
+                          "text": "\n🎉 ALL CRITERIA PASSED\n"
+                        },
+                        {
+                          "text": "================================================================================\n\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:39:04.768Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b5e609b2270aaf8e06a9-b859800ab561494c6f44",
+              "file": "login/PERF-LOGIN-02.spec.ts",
+              "line": 45,
+              "column": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "login\\PERF-LOGIN-03.spec.ts",
+      "file": "login/PERF-LOGIN-03.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "PERF-LOGIN-03: Login Page Core Web Vitals",
+          "file": "login/PERF-LOGIN-03.spec.ts",
+          "line": 27,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Attempt 1/3: Core Web Vitals measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3337,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Attempt 1: Measuring Core Web Vitals...\n"
+                        },
+                        {
+                          "text": "✅ Attempt 1: Core Web Vitals captured\n"
+                        },
+                        {
+                          "text": "   LCP: 416.00ms\n"
+                        },
+                        {
+                          "text": "   FCP: 416.00ms\n"
+                        },
+                        {
+                          "text": "   TBT: 5.00ms\n"
+                        },
+                        {
+                          "text": "   CLS: 0.000\n"
+                        },
+                        {
+                          "text": "   Performance Score: 99.0\n"
+                        },
+                        {
+                          "text": "✓ Attempt 1: Metrics captured successfully\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:39:09.991Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5e70497fd0376031bc61-30fc57eb17a44788878d",
+              "file": "login/PERF-LOGIN-03.spec.ts",
+              "line": 40,
+              "column": 9
+            },
+            {
+              "title": "Attempt 2/3: Core Web Vitals measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3304,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Attempt 2: Measuring Core Web Vitals...\n"
+                        },
+                        {
+                          "text": "✅ Attempt 2: Core Web Vitals captured\n"
+                        },
+                        {
+                          "text": "   LCP: 432.00ms\n"
+                        },
+                        {
+                          "text": "   FCP: 432.00ms\n"
+                        },
+                        {
+                          "text": "   TBT: 9.00ms\n"
+                        },
+                        {
+                          "text": "   CLS: 0.000\n"
+                        },
+                        {
+                          "text": "   Performance Score: 99.0\n"
+                        },
+                        {
+                          "text": "✓ Attempt 2: Metrics captured successfully\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:39:13.346Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5e70497fd0376031bc61-86250057b2b038d229dd",
+              "file": "login/PERF-LOGIN-03.spec.ts",
+              "line": 40,
+              "column": 9
+            },
+            {
+              "title": "Attempt 3/3: Core Web Vitals measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3326,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Attempt 3: Measuring Core Web Vitals...\n"
+                        },
+                        {
+                          "text": "✅ Attempt 3: Core Web Vitals captured\n"
+                        },
+                        {
+                          "text": "   LCP: 432.00ms\n"
+                        },
+                        {
+                          "text": "   FCP: 432.00ms\n"
+                        },
+                        {
+                          "text": "   TBT: 9.00ms\n"
+                        },
+                        {
+                          "text": "   CLS: 0.000\n"
+                        },
+                        {
+                          "text": "   Performance Score: 99.0\n"
+                        },
+                        {
+                          "text": "✓ Attempt 3: Metrics captured successfully\n"
+                        },
+                        {
+                          "text": "\n================================================================================\n"
+                        },
+                        {
+                          "text": "PERF-LOGIN-03: Core Web Vitals Test Results\n"
+                        },
+                        {
+                          "text": "================================================================================\n"
+                        },
+                        {
+                          "text": "\n📊 Individual Attempts:\n"
+                        },
+                        {
+                          "text": "  Attempt 1:\n"
+                        },
+                        {
+                          "text": "    LCP: 416.00ms\n"
+                        },
+                        {
+                          "text": "    FCP: 416.00ms\n"
+                        },
+                        {
+                          "text": "    TBT: 5.00ms\n"
+                        },
+                        {
+                          "text": "    CLS: 0.000\n"
+                        },
+                        {
+                          "text": "    Performance Score: 99.0\n"
+                        },
+                        {
+                          "text": "  Attempt 2:\n"
+                        },
+                        {
+                          "text": "    LCP: 432.00ms\n"
+                        },
+                        {
+                          "text": "    FCP: 432.00ms\n"
+                        },
+                        {
+                          "text": "    TBT: 9.00ms\n"
+                        },
+                        {
+                          "text": "    CLS: 0.000\n"
+                        },
+                        {
+                          "text": "    Performance Score: 99.0\n"
+                        },
+                        {
+                          "text": "  Attempt 3:\n"
+                        },
+                        {
+                          "text": "    LCP: 432.00ms\n"
+                        },
+                        {
+                          "text": "    FCP: 432.00ms\n"
+                        },
+                        {
+                          "text": "    TBT: 9.00ms\n"
+                        },
+                        {
+                          "text": "    CLS: 0.000\n"
+                        },
+                        {
+                          "text": "    Performance Score: 99.0\n"
+                        },
+                        {
+                          "text": "\n📈 Median Values:\n"
+                        },
+                        {
+                          "text": "  LCP: 432.00ms\n"
+                        },
+                        {
+                          "text": "  FCP: 432.00ms\n"
+                        },
+                        {
+                          "text": "  TBT: 9.00ms\n"
+                        },
+                        {
+                          "text": "  CLS: 0.000\n"
+                        },
+                        {
+                          "text": "  Performance Score: 99.0\n"
+                        },
+                        {
+                          "text": "\n✅ Success Criteria:\n"
+                        },
+                        {
+                          "text": "  ✓ LCP ≤ 2500ms: 432.00ms (PASS)\n"
+                        },
+                        {
+                          "text": "  ✓ FCP ≤ 1800ms: 432.00ms (PASS)\n"
+                        },
+                        {
+                          "text": "  ✓ TBT ≤ 300ms: 9.00ms (PASS)\n"
+                        },
+                        {
+                          "text": "  ✓ CLS ≤ 0.1: 0.000 (PASS)\n"
+                        },
+                        {
+                          "text": "  ✓ Performance Score ≥ 85: 99.0 (PASS)\n"
+                        },
+                        {
+                          "text": "\n🎉 ALL CRITERIA PASSED\n"
+                        },
+                        {
+                          "text": "================================================================================\n\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:39:16.669Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "5e70497fd0376031bc61-753218a8866881ed93a5",
+              "file": "login/PERF-LOGIN-03.spec.ts",
+              "line": 40,
+              "column": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "login\\PERF-LOGIN-04.spec.ts",
+      "file": "login/PERF-LOGIN-04.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "PERF-LOGIN-04: Login Page Initial Load Time",
+          "file": "login/PERF-LOGIN-04.spec.ts",
+          "line": 26,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Attempt 1/5: Cold page load measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1084,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Attempt 1: Starting cold page load...\n"
+                        },
+                        {
+                          "text": "✅ Attempt 1: Page loaded in 509ms\n"
+                        },
+                        {
+                          "text": "   Navigation Timing API loadEventEnd: 480ms\n"
+                        },
+                        {
+                          "text": "   DOM Content Loaded: 313ms\n"
+                        },
+                        {
+                          "text": "   First Paint: 400.00ms\n"
+                        },
+                        {
+                          "text": "   Resource Errors: 0\n"
+                        },
+                        {
+                          "text": "✓ Attempt 1: Metrics captured successfully\n"
+                        },
+                        {
+                          "text": "📸 Screenshot saved: PERF-LOGIN-04-loaded-1.png\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:39:20.078Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6c49b06a8375745a9e42-a5d294a643bbe6d45923",
+              "file": "login/PERF-LOGIN-04.spec.ts",
+              "line": 39,
+              "column": 9
+            },
+            {
+              "title": "Attempt 2/5: Cold page load measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 788,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Attempt 2: Starting cold page load...\n"
+                        },
+                        {
+                          "text": "✅ Attempt 2: Page loaded in 532ms\n"
+                        },
+                        {
+                          "text": "   Navigation Timing API loadEventEnd: 502ms\n"
+                        },
+                        {
+                          "text": "   DOM Content Loaded: 337ms\n"
+                        },
+                        {
+                          "text": "   First Paint: 424.00ms\n"
+                        },
+                        {
+                          "text": "   Resource Errors: 0\n"
+                        },
+                        {
+                          "text": "✓ Attempt 2: Metrics captured successfully\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:39:21.185Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6c49b06a8375745a9e42-244c246c03d8e366b7c4",
+              "file": "login/PERF-LOGIN-04.spec.ts",
+              "line": 39,
+              "column": 9
+            },
+            {
+              "title": "Attempt 3/5: Cold page load measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 704,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Attempt 3: Starting cold page load...\n"
+                        },
+                        {
+                          "text": "✅ Attempt 3: Page loaded in 456ms\n"
+                        },
+                        {
+                          "text": "   Navigation Timing API loadEventEnd: 430ms\n"
+                        },
+                        {
+                          "text": "   DOM Content Loaded: 292ms\n"
+                        },
+                        {
+                          "text": "   First Paint: 364.00ms\n"
+                        },
+                        {
+                          "text": "   Resource Errors: 0\n"
+                        },
+                        {
+                          "text": "✓ Attempt 3: Metrics captured successfully\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:39:21.991Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6c49b06a8375745a9e42-b9f3eade1475795945b7",
+              "file": "login/PERF-LOGIN-04.spec.ts",
+              "line": 39,
+              "column": 9
+            },
+            {
+              "title": "Attempt 4/5: Cold page load measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 733,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Attempt 4: Starting cold page load...\n"
+                        },
+                        {
+                          "text": "✅ Attempt 4: Page loaded in 482ms\n"
+                        },
+                        {
+                          "text": "   Navigation Timing API loadEventEnd: 449ms\n"
+                        },
+                        {
+                          "text": "   DOM Content Loaded: 303ms\n"
+                        },
+                        {
+                          "text": "   First Paint: 368.00ms\n"
+                        },
+                        {
+                          "text": "   Resource Errors: 0\n"
+                        },
+                        {
+                          "text": "✓ Attempt 4: Metrics captured successfully\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:39:22.712Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6c49b06a8375745a9e42-144cea9f6ce2dc1ce417",
+              "file": "login/PERF-LOGIN-04.spec.ts",
+              "line": 39,
+              "column": 9
+            },
+            {
+              "title": "Attempt 5/5: Cold page load measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 770,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Attempt 5: Starting cold page load...\n"
+                        },
+                        {
+                          "text": "✅ Attempt 5: Page loaded in 504ms\n"
+                        },
+                        {
+                          "text": "   Navigation Timing API loadEventEnd: 472ms\n"
+                        },
+                        {
+                          "text": "   DOM Content Loaded: 310ms\n"
+                        },
+                        {
+                          "text": "   First Paint: 392.00ms\n"
+                        },
+                        {
+                          "text": "   Resource Errors: 0\n"
+                        },
+                        {
+                          "text": "✓ Attempt 5: Metrics captured successfully\n"
+                        },
+                        {
+                          "text": "\n================================================================================\n"
+                        },
+                        {
+                          "text": "PERF-LOGIN-04: Initial Load Time Test Results\n"
+                        },
+                        {
+                          "text": "================================================================================\n"
+                        },
+                        {
+                          "text": "\n📊 Individual Attempts:\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 1: 480.00ms - Resource Errors: 0\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 2: 502.00ms - Resource Errors: 0\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 3: 430.00ms - Resource Errors: 0\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 4: 449.00ms - Resource Errors: 0\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 5: 472.00ms - Resource Errors: 0\n"
+                        },
+                        {
+                          "text": "\n📈 Statistical Analysis:\n"
+                        },
+                        {
+                          "text": "  Total Attempts: 5\n"
+                        },
+                        {
+                          "text": "  Successful: 5 (100.0%)\n"
+                        },
+                        {
+                          "text": "  Failed: 0\n"
+                        },
+                        {
+                          "text": "  Min: 430.00ms\n"
+                        },
+                        {
+                          "text": "  Max: 502.00ms\n"
+                        },
+                        {
+                          "text": "  Average: 466.60ms\n"
+                        },
+                        {
+                          "text": "  p50 (Median): 472.00ms\n"
+                        },
+                        {
+                          "text": "  p95: 502.00ms\n"
+                        },
+                        {
+                          "text": "  Total Resource Errors: 0\n"
+                        },
+                        {
+                          "text": "\n✅ Success Criteria:\n"
+                        },
+                        {
+                          "text": "  ✓ p50 ≤ 1500ms: 472.00ms (PASS)\n"
+                        },
+                        {
+                          "text": "  ✓ p95 ≤ 2000ms: 502.00ms (PASS)\n"
+                        },
+                        {
+                          "text": "  ✓ All resources loaded without errors (PASS)\n"
+                        },
+                        {
+                          "text": "\n🎉 ALL CRITERIA PASSED\n"
+                        },
+                        {
+                          "text": "================================================================================\n\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:39:23.461Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6c49b06a8375745a9e42-6f0e29ed5390b14eaad0",
+              "file": "login/PERF-LOGIN-04.spec.ts",
+              "line": 39,
+              "column": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "login\\PERF-LOGIN-05.spec.ts",
+      "file": "login/PERF-LOGIN-05.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "PERF-LOGIN-05: JavaScript Bundle Size",
+          "file": "login/PERF-LOGIN-05.spec.ts",
+          "line": 23,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Measure JS bundle size and compression",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 3352,
+                      "error": {
+                        "message": "Error: Total JS parsed size should be ≤ 1MB, got 5500.35KB\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1048576\u001b[39m\nReceived:    \u001b[31m5632358\u001b[39m",
+                        "stack": "Error: Total JS parsed size should be ≤ 1MB, got 5500.35KB\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1048576\u001b[39m\nReceived:    \u001b[31m5632358\u001b[39m\n    at D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-05.spec.ts:163:119",
+                        "location": {
+                          "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-05.spec.ts",
+                          "column": 119,
+                          "line": 163
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 161 |\u001b[39m     \u001b[90m// Assert final results\u001b[39m\n \u001b[90m 162 |\u001b[39m     expect(totalTransferSize\u001b[33m,\u001b[39m \u001b[32m`Total JS transfer size should be ≤ 1MB, got ${(totalTransferSize / 1024).toFixed(2)}KB`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m1\u001b[39m \u001b[33m*\u001b[39m \u001b[35m1024\u001b[39m \u001b[33m*\u001b[39m \u001b[35m1024\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 163 |\u001b[39m     expect(totalResourceSize\u001b[33m,\u001b[39m \u001b[32m`Total JS parsed size should be ≤ 1MB, got ${(totalResourceSize / 1024).toFixed(2)}KB`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m1\u001b[39m \u001b[33m*\u001b[39m \u001b[35m1024\u001b[39m \u001b[33m*\u001b[39m \u001b[35m1024\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 164 |\u001b[39m     expect(allCompressed\u001b[33m,\u001b[39m \u001b[32m\"All JS resources should be served with compression\"\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 165 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 166 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-05.spec.ts",
+                            "column": 119,
+                            "line": 163
+                          },
+                          "message": "Error: Total JS parsed size should be ≤ 1MB, got 5500.35KB\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1048576\u001b[39m\nReceived:    \u001b[31m5632358\u001b[39m\n\n\u001b[0m \u001b[90m 161 |\u001b[39m     \u001b[90m// Assert final results\u001b[39m\n \u001b[90m 162 |\u001b[39m     expect(totalTransferSize\u001b[33m,\u001b[39m \u001b[32m`Total JS transfer size should be ≤ 1MB, got ${(totalTransferSize / 1024).toFixed(2)}KB`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m1\u001b[39m \u001b[33m*\u001b[39m \u001b[35m1024\u001b[39m \u001b[33m*\u001b[39m \u001b[35m1024\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 163 |\u001b[39m     expect(totalResourceSize\u001b[33m,\u001b[39m \u001b[32m`Total JS parsed size should be ≤ 1MB, got ${(totalResourceSize / 1024).toFixed(2)}KB`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m1\u001b[39m \u001b[33m*\u001b[39m \u001b[35m1024\u001b[39m \u001b[33m*\u001b[39m \u001b[35m1024\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 164 |\u001b[39m     expect(allCompressed\u001b[33m,\u001b[39m \u001b[32m\"All JS resources should be served with compression\"\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 165 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 166 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-05.spec.ts:163:119\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Starting JavaScript bundle size measurement...\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: %5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_bf59ab28._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 1.01KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 0.71KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✗\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: _e69f0d32._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 0.78KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 0.49KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✗\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: 61dca_%40swc_helpers_cjs_e27e0aca._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 1.28KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 3.56KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✓\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: _b2c928f2._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 16.13KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 65.43KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✓\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: app_favicon_ico_mjs_fda98ee4._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 0.54KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 0.25KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✗\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: 941e2_next_dist_28a124c3._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 18.00KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 100.91KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✓\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: 941e2_next_dist_39bb7435._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 18.70KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 123.68KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✓\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: components_cdbc2c3c._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 2.09KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 11.40KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✓\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: app_layout_tsx_ba776184._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 0.70KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 0.41KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✗\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: 8484d_tailwind-merge_dist_bundle-mjs_mjs_4d8e7d9e._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 17.13KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 134.74KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✓\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: node_modules__pnpm_7841e4ee._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 93.47KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 584.62KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✓\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: app_(auth)_login_page_tsx_51c9281a._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 0.70KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 0.41KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✗\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: _ae7a56ff._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 9.98KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 96.19KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✓\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: node_modules__pnpm_b903fbb5._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 29.49KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 180.78KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✓\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: 52853_react-scan_dist_index_mjs_08b78d28._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 124.44KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 995.08KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✓\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: 941e2_next_dist_compiled_a984fc90._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 193.21KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 1089.92KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✓\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: 941e2_next_dist_client_f55b483d._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 169.59KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 1048.32KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✓\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: ba893_zod_dist_esm_v4_d5db1c4a._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 78.79KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 1048.06KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✓\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: %5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_cb49c9f6._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 0.57KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 0.28KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✗\n"
+                        },
+                        {
+                          "text": "📦 JS Resource: %5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_61dcf9ba._.js\n"
+                        },
+                        {
+                          "text": "   Transfer Size: 4.04KB\n"
+                        },
+                        {
+                          "text": "   Uncompressed: 15.12KB\n"
+                        },
+                        {
+                          "text": "   Compressed: ✓\n"
+                        },
+                        {
+                          "text": "\n================================================================================\n"
+                        },
+                        {
+                          "text": "PERF-LOGIN-05: JavaScript Bundle Size Results\n"
+                        },
+                        {
+                          "text": "================================================================================\n"
+                        },
+                        {
+                          "text": "\n📦 JavaScript Resources:\n"
+                        },
+                        {
+                          "text": "  1. %5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_bf59ab28._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 1.01KB | Uncompressed: 0.71KB | ✗ Not Compressed\n"
+                        },
+                        {
+                          "text": "  2. _e69f0d32._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 0.78KB | Uncompressed: 0.49KB | ✗ Not Compressed\n"
+                        },
+                        {
+                          "text": "  3. 61dca_%40swc_helpers_cjs_e27e0aca._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 1.28KB | Uncompressed: 3.56KB | ✓ Compressed\n"
+                        },
+                        {
+                          "text": "  4. _b2c928f2._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 16.13KB | Uncompressed: 65.43KB | ✓ Compressed\n"
+                        },
+                        {
+                          "text": "  5. app_favicon_ico_mjs_fda98ee4._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 0.54KB | Uncompressed: 0.25KB | ✗ Not Compressed\n"
+                        },
+                        {
+                          "text": "  6. 941e2_next_dist_28a124c3._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 18.00KB | Uncompressed: 100.91KB | ✓ Compressed\n"
+                        },
+                        {
+                          "text": "  7. 941e2_next_dist_39bb7435._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 18.70KB | Uncompressed: 123.68KB | ✓ Compressed\n"
+                        },
+                        {
+                          "text": "  8. components_cdbc2c3c._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 2.09KB | Uncompressed: 11.40KB | ✓ Compressed\n"
+                        },
+                        {
+                          "text": "  9. app_layout_tsx_ba776184._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 0.70KB | Uncompressed: 0.41KB | ✗ Not Compressed\n"
+                        },
+                        {
+                          "text": "  10. 8484d_tailwind-merge_dist_bundle-mjs_mjs_4d8e7d9e._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 17.13KB | Uncompressed: 134.74KB | ✓ Compressed\n"
+                        },
+                        {
+                          "text": "  11. node_modules__pnpm_7841e4ee._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 93.47KB | Uncompressed: 584.62KB | ✓ Compressed\n"
+                        },
+                        {
+                          "text": "  12. app_(auth)_login_page_tsx_51c9281a._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 0.70KB | Uncompressed: 0.41KB | ✗ Not Compressed\n"
+                        },
+                        {
+                          "text": "  13. _ae7a56ff._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 9.98KB | Uncompressed: 96.19KB | ✓ Compressed\n"
+                        },
+                        {
+                          "text": "  14. node_modules__pnpm_b903fbb5._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 29.49KB | Uncompressed: 180.78KB | ✓ Compressed\n"
+                        },
+                        {
+                          "text": "  15. 52853_react-scan_dist_index_mjs_08b78d28._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 124.44KB | Uncompressed: 995.08KB | ✓ Compressed\n"
+                        },
+                        {
+                          "text": "  16. 941e2_next_dist_compiled_a984fc90._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 193.21KB | Uncompressed: 1089.92KB | ✓ Compressed\n"
+                        },
+                        {
+                          "text": "  17. 941e2_next_dist_client_f55b483d._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 169.59KB | Uncompressed: 1048.32KB | ✓ Compressed\n"
+                        },
+                        {
+                          "text": "  18. ba893_zod_dist_esm_v4_d5db1c4a._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 78.79KB | Uncompressed: 1048.06KB | ✓ Compressed\n"
+                        },
+                        {
+                          "text": "  19. %5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_cb49c9f6._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 0.57KB | Uncompressed: 0.28KB | ✗ Not Compressed\n"
+                        },
+                        {
+                          "text": "  20. %5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_61dcf9ba._.js\n"
+                        },
+                        {
+                          "text": "     Transfer: 4.04KB | Uncompressed: 15.12KB | ✓ Compressed\n"
+                        },
+                        {
+                          "text": "\n📈 Summary:\n"
+                        },
+                        {
+                          "text": "  Total JS Files: 20\n"
+                        },
+                        {
+                          "text": "  Total Transfer Size: 780.63KB (gzipped)\n"
+                        },
+                        {
+                          "text": "  Total Uncompressed Size: 5500.35KB\n"
+                        },
+                        {
+                          "text": "  Compression Rate: 85.8%\n"
+                        },
+                        {
+                          "text": "  All Files Compressed: ✗\n"
+                        },
+                        {
+                          "text": "\n✅ Success Criteria:\n"
+                        },
+                        {
+                          "text": "  ✓ Total JS transfer size ≤ 1MB: 780.63KB (PASS)\n"
+                        },
+                        {
+                          "text": "  ✗ Total JS parsed size ≤ 1MB: 5500.35KB (FAIL)\n"
+                        },
+                        {
+                          "text": "  ✗ All JS served with compression (FAIL)\n"
+                        },
+                        {
+                          "text": "\n❌ SOME CRITERIA FAILED\n"
+                        },
+                        {
+                          "text": "================================================================================\n\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:39:24.343Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\Github\\se104-auto-repair-shop\\test-results\\login-PERF-LOGIN-05-PERF-L-db96e-bundle-size-and-compression-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\Github\\se104-auto-repair-shop\\test-results\\login-PERF-LOGIN-05-PERF-L-db96e-bundle-size-and-compression-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-05.spec.ts",
+                        "column": 119,
+                        "line": 163
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "5a2eb7e485dfabb6d735-43b88d6509c34bf319b5",
+              "file": "login/PERF-LOGIN-05.spec.ts",
+              "line": 24,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "login\\PERF-LOGIN-06.spec.ts",
+      "file": "login/PERF-LOGIN-06.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "PERF-LOGIN-06: Logout Flow Latency",
+          "file": "login/PERF-LOGIN-06.spec.ts",
+          "line": 27,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Attempt 1/5: Logout latency measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8341,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Attempt 1: Starting logout flow test...\n"
+                        },
+                        {
+                          "text": "   ✓ Logged in successfully\n"
+                        },
+                        {
+                          "text": "   ✓ Found logout button\n"
+                        },
+                        {
+                          "text": "   ✓ Redirected to http://localhost:3000/ in 919ms\n"
+                        },
+                        {
+                          "text": "   ✓ Auth cookies cleared (0 remaining)\n"
+                        },
+                        {
+                          "text": "   ✓ Access to /reception blocked: http://localhost:3000/login\n"
+                        },
+                        {
+                          "text": "✓ Attempt 1: 919ms - Success\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:39:30.070Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a9c2d17452aa6f622709-ce18d70e29211e195b1c",
+              "file": "login/PERF-LOGIN-06.spec.ts",
+              "line": 36,
+              "column": 9
+            },
+            {
+              "title": "Attempt 2/5: Logout latency measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7534,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Attempt 2: Starting logout flow test...\n"
+                        },
+                        {
+                          "text": "   ✓ Logged in successfully\n"
+                        },
+                        {
+                          "text": "   ✓ Found logout button\n"
+                        },
+                        {
+                          "text": "   ✓ Redirected to http://localhost:3000/ in 1805ms\n"
+                        },
+                        {
+                          "text": "   ✓ Auth cookies cleared (0 remaining)\n"
+                        },
+                        {
+                          "text": "   ✓ Access to /reception blocked: http://localhost:3000/login\n"
+                        },
+                        {
+                          "text": "✓ Attempt 2: 1805ms - Success\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:39:38.534Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a9c2d17452aa6f622709-25c16f220bc9e5dcc31b",
+              "file": "login/PERF-LOGIN-06.spec.ts",
+              "line": 36,
+              "column": 9
+            },
+            {
+              "title": "Attempt 3/5: Logout latency measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6730,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Attempt 3: Starting logout flow test...\n"
+                        },
+                        {
+                          "text": "   ✓ Logged in successfully\n"
+                        },
+                        {
+                          "text": "   ✓ Found logout button\n"
+                        },
+                        {
+                          "text": "   ✓ Redirected to http://localhost:3000/ in 1058ms\n"
+                        },
+                        {
+                          "text": "   ✓ Auth cookies cleared (0 remaining)\n"
+                        },
+                        {
+                          "text": "   ✓ Access to /reception blocked: http://localhost:3000/login\n"
+                        },
+                        {
+                          "text": "✓ Attempt 3: 1058ms - Success\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:39:46.086Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a9c2d17452aa6f622709-427147dc64867920f2a1",
+              "file": "login/PERF-LOGIN-06.spec.ts",
+              "line": 36,
+              "column": 9
+            },
+            {
+              "title": "Attempt 4/5: Logout latency measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 9378,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Attempt 4: Starting logout flow test...\n"
+                        },
+                        {
+                          "text": "   ✓ Logged in successfully\n"
+                        },
+                        {
+                          "text": "   ✓ Found logout button\n"
+                        },
+                        {
+                          "text": "   ✓ Redirected to http://localhost:3000/ in 665ms\n"
+                        },
+                        {
+                          "text": "   ✓ Auth cookies cleared (0 remaining)\n"
+                        },
+                        {
+                          "text": "   ✓ Access to /reception blocked: http://localhost:3000/login\n"
+                        },
+                        {
+                          "text": "✓ Attempt 4: 665ms - Success\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:39:52.833Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a9c2d17452aa6f622709-5c16c904bd785729d39f",
+              "file": "login/PERF-LOGIN-06.spec.ts",
+              "line": 36,
+              "column": 9
+            },
+            {
+              "title": "Attempt 5/5: Logout latency measurement",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 6823,
+                      "error": {
+                        "message": "Error: p95 should be ≤ 1000ms, got 1805ms\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1000\u001b[39m\nReceived:    \u001b[31m1805\u001b[39m",
+                        "stack": "Error: p95 should be ≤ 1000ms, got 1805ms\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1000\u001b[39m\nReceived:    \u001b[31m1805\u001b[39m\n    at D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-06.spec.ts:324:57",
+                        "location": {
+                          "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-06.spec.ts",
+                          "column": 57,
+                          "line": 324
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 322 |\u001b[39m\n \u001b[90m 323 |\u001b[39m     \u001b[90m// Assert final results\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 324 |\u001b[39m     expect(p95\u001b[33m,\u001b[39m \u001b[32m`p95 should be ≤ 1000ms, got ${p95}ms`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 325 |\u001b[39m     expect(allRedirected\u001b[33m,\u001b[39m \u001b[32m\"All attempts should redirect to /login\"\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 326 |\u001b[39m     expect(allCookiesCleared\u001b[33m,\u001b[39m \u001b[32m\"All attempts should clear auth cookies\"\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 327 |\u001b[39m     expect(allAccessBlocked\u001b[33m,\u001b[39m \u001b[32m\"All attempts should block access to /reception\"\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-06.spec.ts",
+                            "column": 57,
+                            "line": 324
+                          },
+                          "message": "Error: p95 should be ≤ 1000ms, got 1805ms\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m1000\u001b[39m\nReceived:    \u001b[31m1805\u001b[39m\n\n\u001b[0m \u001b[90m 322 |\u001b[39m\n \u001b[90m 323 |\u001b[39m     \u001b[90m// Assert final results\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 324 |\u001b[39m     expect(p95\u001b[33m,\u001b[39m \u001b[32m`p95 should be ≤ 1000ms, got ${p95}ms`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 325 |\u001b[39m     expect(allRedirected\u001b[33m,\u001b[39m \u001b[32m\"All attempts should redirect to /login\"\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 326 |\u001b[39m     expect(allCookiesCleared\u001b[33m,\u001b[39m \u001b[32m\"All attempts should clear auth cookies\"\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 327 |\u001b[39m     expect(allAccessBlocked\u001b[33m,\u001b[39m \u001b[32m\"All attempts should block access to /reception\"\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-06.spec.ts:324:57\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Attempt 5: Starting logout flow test...\n"
+                        },
+                        {
+                          "text": "   ✓ Logged in successfully\n"
+                        },
+                        {
+                          "text": "   ✓ Found logout button\n"
+                        },
+                        {
+                          "text": "   ✓ Redirected to http://localhost:3000/ in 650ms\n"
+                        },
+                        {
+                          "text": "   ✓ Auth cookies cleared (0 remaining)\n"
+                        },
+                        {
+                          "text": "   ✓ Access to /reception blocked: http://localhost:3000/login\n"
+                        },
+                        {
+                          "text": "✓ Attempt 5: 650ms - Success\n"
+                        },
+                        {
+                          "text": "\n================================================================================\n"
+                        },
+                        {
+                          "text": "PERF-LOGIN-06: Logout Flow Latency Results\n"
+                        },
+                        {
+                          "text": "================================================================================\n"
+                        },
+                        {
+                          "text": "\n📊 Individual Attempts:\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 1: 919ms - Redirect: false, Cookies: true, Blocked: true\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 2: 1805ms - Redirect: false, Cookies: true, Blocked: true\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 3: 1058ms - Redirect: false, Cookies: true, Blocked: true\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 4: 665ms - Redirect: false, Cookies: true, Blocked: true\n"
+                        },
+                        {
+                          "text": "  ✓ Attempt 5: 650ms - Redirect: false, Cookies: true, Blocked: true\n"
+                        },
+                        {
+                          "text": "\n📈 Statistical Analysis:\n"
+                        },
+                        {
+                          "text": "  Total Attempts: 5\n"
+                        },
+                        {
+                          "text": "  Successful: 5 (100.0%)\n"
+                        },
+                        {
+                          "text": "  Failed: 0\n"
+                        },
+                        {
+                          "text": "  Min: 650ms\n"
+                        },
+                        {
+                          "text": "  Max: 1805ms\n"
+                        },
+                        {
+                          "text": "  Average: 1019.40ms\n"
+                        },
+                        {
+                          "text": "  p95: 1805ms\n"
+                        },
+                        {
+                          "text": "\n✅ Success Criteria:\n"
+                        },
+                        {
+                          "text": "  ✗ p95 ≤ 1000ms: 1805ms (FAIL)\n"
+                        },
+                        {
+                          "text": "  ✗ Redirect to /login completes (FAIL)\n"
+                        },
+                        {
+                          "text": "  ✓ Auth cookies cleared (PASS)\n"
+                        },
+                        {
+                          "text": "  ✓ Cannot access /reception without re-login (PASS)\n"
+                        },
+                        {
+                          "text": "\n❌ SOME CRITERIA FAILED\n"
+                        },
+                        {
+                          "text": "================================================================================\n\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:40:02.229Z",
+                      "annotations": [],
+                      "attachments": [],
+                      "errorLocation": {
+                        "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-06.spec.ts",
+                        "column": 57,
+                        "line": 324
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "a9c2d17452aa6f622709-2dce85bdd0601a5d5c64",
+              "file": "login/PERF-LOGIN-06.spec.ts",
+              "line": 36,
+              "column": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "login\\PERF-LOGIN-07.spec.ts",
+      "file": "login/PERF-LOGIN-07.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "PERF-LOGIN-07: Login Page Memory Baseline",
+          "file": "login/PERF-LOGIN-07.spec.ts",
+          "line": 24,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Attempt 1/5: Memory measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3745,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Attempt 1: Measuring memory usage...\n"
+                        },
+                        {
+                          "text": "✅ Attempt 1: Memory captured\n"
+                        },
+                        {
+                          "text": "   JS Heap Used: 18.41MB\n"
+                        },
+                        {
+                          "text": "   JS Heap Limit: 2222.06MB\n"
+                        },
+                        {
+                          "text": "   DOM Nodes: 95\n"
+                        },
+                        {
+                          "text": "   Event Listeners: 0\n"
+                        },
+                        {
+                          "text": "✓ Attempt 1: Metrics captured successfully\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:40:16.912Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b99b69fd7c6d63c90f4c-9c9ed5c092ef49b6a907",
+              "file": "login/PERF-LOGIN-07.spec.ts",
+              "line": 31,
+              "column": 9
+            },
+            {
+              "title": "Attempt 2/5: Memory measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3228,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Attempt 2: Measuring memory usage...\n"
+                        },
+                        {
+                          "text": "✅ Attempt 2: Memory captured\n"
+                        },
+                        {
+                          "text": "   JS Heap Used: 18.41MB\n"
+                        },
+                        {
+                          "text": "   JS Heap Limit: 2222.06MB\n"
+                        },
+                        {
+                          "text": "   DOM Nodes: 95\n"
+                        },
+                        {
+                          "text": "   Event Listeners: 0\n"
+                        },
+                        {
+                          "text": "✓ Attempt 2: Metrics captured successfully\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:40:20.776Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b99b69fd7c6d63c90f4c-7319164f8139a6afb322",
+              "file": "login/PERF-LOGIN-07.spec.ts",
+              "line": 31,
+              "column": 9
+            },
+            {
+              "title": "Attempt 3/5: Memory measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3279,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Attempt 3: Measuring memory usage...\n"
+                        },
+                        {
+                          "text": "✅ Attempt 3: Memory captured\n"
+                        },
+                        {
+                          "text": "   JS Heap Used: 18.41MB\n"
+                        },
+                        {
+                          "text": "   JS Heap Limit: 2222.06MB\n"
+                        },
+                        {
+                          "text": "   DOM Nodes: 95\n"
+                        },
+                        {
+                          "text": "   Event Listeners: 0\n"
+                        },
+                        {
+                          "text": "✓ Attempt 3: Metrics captured successfully\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:40:24.021Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b99b69fd7c6d63c90f4c-867ccc96b8e426a03886",
+              "file": "login/PERF-LOGIN-07.spec.ts",
+              "line": 31,
+              "column": 9
+            },
+            {
+              "title": "Attempt 4/5: Memory measurement",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3234,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Attempt 4: Measuring memory usage...\n"
+                        },
+                        {
+                          "text": "✅ Attempt 4: Memory captured\n"
+                        },
+                        {
+                          "text": "   JS Heap Used: 18.41MB\n"
+                        },
+                        {
+                          "text": "   JS Heap Limit: 2222.06MB\n"
+                        },
+                        {
+                          "text": "   DOM Nodes: 95\n"
+                        },
+                        {
+                          "text": "   Event Listeners: 0\n"
+                        },
+                        {
+                          "text": "✓ Attempt 4: Metrics captured successfully\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:40:27.320Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b99b69fd7c6d63c90f4c-07f473f441b84843aa8d",
+              "file": "login/PERF-LOGIN-07.spec.ts",
+              "line": 31,
+              "column": 9
+            },
+            {
+              "title": "Attempt 5/5: Memory measurement",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 3219,
+                      "error": {
+                        "message": "Error: Average JS heap should be ≤ 8MB, got 18.41MB\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m8388608\u001b[39m\nReceived:    \u001b[31m19300000\u001b[39m",
+                        "stack": "Error: Average JS heap should be ≤ 8MB, got 18.41MB\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m8388608\u001b[39m\nReceived:    \u001b[31m19300000\u001b[39m\n    at D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-07.spec.ts:226:101",
+                        "location": {
+                          "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-07.spec.ts",
+                          "column": 101,
+                          "line": 226
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 224 |\u001b[39m\n \u001b[90m 225 |\u001b[39m     \u001b[90m// Assert final results\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 226 |\u001b[39m     expect(avgHeap\u001b[33m,\u001b[39m \u001b[32m`Average JS heap should be ≤ 8MB, got ${(avgHeap / 1024 / 1024).toFixed(2)}MB`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m8\u001b[39m \u001b[33m*\u001b[39m \u001b[35m1024\u001b[39m \u001b[33m*\u001b[39m \u001b[35m1024\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 227 |\u001b[39m     expect(maxIncrease\u001b[33m,\u001b[39m \u001b[32m`Max heap increase should be ≤ 10%, got ${maxIncrease.toFixed(2)}%`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m10\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 228 |\u001b[39m     expect(noDomLeaks\u001b[33m,\u001b[39m \u001b[32m\"No DOM node leaks should be detected\"\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 229 |\u001b[39m   })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-07.spec.ts",
+                            "column": 101,
+                            "line": 226
+                          },
+                          "message": "Error: Average JS heap should be ≤ 8MB, got 18.41MB\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m8388608\u001b[39m\nReceived:    \u001b[31m19300000\u001b[39m\n\n\u001b[0m \u001b[90m 224 |\u001b[39m\n \u001b[90m 225 |\u001b[39m     \u001b[90m// Assert final results\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 226 |\u001b[39m     expect(avgHeap\u001b[33m,\u001b[39m \u001b[32m`Average JS heap should be ≤ 8MB, got ${(avgHeap / 1024 / 1024).toFixed(2)}MB`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m8\u001b[39m \u001b[33m*\u001b[39m \u001b[35m1024\u001b[39m \u001b[33m*\u001b[39m \u001b[35m1024\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 227 |\u001b[39m     expect(maxIncrease\u001b[33m,\u001b[39m \u001b[32m`Max heap increase should be ≤ 10%, got ${maxIncrease.toFixed(2)}%`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m10\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 228 |\u001b[39m     expect(noDomLeaks\u001b[33m,\u001b[39m \u001b[32m\"No DOM node leaks should be detected\"\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 229 |\u001b[39m   })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-07.spec.ts:226:101\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Attempt 5: Measuring memory usage...\n"
+                        },
+                        {
+                          "text": "✅ Attempt 5: Memory captured\n"
+                        },
+                        {
+                          "text": "   JS Heap Used: 18.41MB\n"
+                        },
+                        {
+                          "text": "   JS Heap Limit: 2222.06MB\n"
+                        },
+                        {
+                          "text": "   DOM Nodes: 95\n"
+                        },
+                        {
+                          "text": "   Event Listeners: 0\n"
+                        },
+                        {
+                          "text": "✓ Attempt 5: Metrics captured successfully\n"
+                        },
+                        {
+                          "text": "\n================================================================================\n"
+                        },
+                        {
+                          "text": "PERF-LOGIN-07: Memory Baseline Test Results\n"
+                        },
+                        {
+                          "text": "================================================================================\n"
+                        },
+                        {
+                          "text": "\n📊 Individual Attempts:\n"
+                        },
+                        {
+                          "text": "  Attempt 1:\n"
+                        },
+                        {
+                          "text": "    JS Heap: 18.41MB\n"
+                        },
+                        {
+                          "text": "    DOM Nodes: 95\n"
+                        },
+                        {
+                          "text": "    Event Listeners: 0\n"
+                        },
+                        {
+                          "text": "  Attempt 2:\n"
+                        },
+                        {
+                          "text": "    JS Heap: 18.41MB\n"
+                        },
+                        {
+                          "text": "    DOM Nodes: 95\n"
+                        },
+                        {
+                          "text": "    Event Listeners: 0\n"
+                        },
+                        {
+                          "text": "  Attempt 3:\n"
+                        },
+                        {
+                          "text": "    JS Heap: 18.41MB\n"
+                        },
+                        {
+                          "text": "    DOM Nodes: 95\n"
+                        },
+                        {
+                          "text": "    Event Listeners: 0\n"
+                        },
+                        {
+                          "text": "  Attempt 4:\n"
+                        },
+                        {
+                          "text": "    JS Heap: 18.41MB\n"
+                        },
+                        {
+                          "text": "    DOM Nodes: 95\n"
+                        },
+                        {
+                          "text": "    Event Listeners: 0\n"
+                        },
+                        {
+                          "text": "  Attempt 5:\n"
+                        },
+                        {
+                          "text": "    JS Heap: 18.41MB\n"
+                        },
+                        {
+                          "text": "    DOM Nodes: 95\n"
+                        },
+                        {
+                          "text": "    Event Listeners: 0\n"
+                        },
+                        {
+                          "text": "\n📈 Statistical Analysis:\n"
+                        },
+                        {
+                          "text": "  Average JS Heap: 18.41MB\n"
+                        },
+                        {
+                          "text": "  Min JS Heap: 18.41MB\n"
+                        },
+                        {
+                          "text": "  Max JS Heap: 18.41MB\n"
+                        },
+                        {
+                          "text": "  Max Heap Increase: 0.00%\n"
+                        },
+                        {
+                          "text": "  DOM Node Change: 0 (0.0%)\n"
+                        },
+                        {
+                          "text": "\n✅ Success Criteria:\n"
+                        },
+                        {
+                          "text": "  ✗ Average JS heap ≤ 8MB: 18.41MB (FAIL)\n"
+                        },
+                        {
+                          "text": "  ✓ Max heap increase ≤ 10%: 0.00% (PASS)\n"
+                        },
+                        {
+                          "text": "  ✓ No DOM node leaks detected (PASS)\n"
+                        },
+                        {
+                          "text": "\n❌ SOME CRITERIA FAILED\n"
+                        },
+                        {
+                          "text": "================================================================================\n\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:40:30.568Z",
+                      "annotations": [],
+                      "attachments": [],
+                      "errorLocation": {
+                        "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-07.spec.ts",
+                        "column": 101,
+                        "line": 226
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "b99b69fd7c6d63c90f4c-9fbe29e6220e3021cc19",
+              "file": "login/PERF-LOGIN-07.spec.ts",
+              "line": 31,
+              "column": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "login\\PERF-LOGIN-08.spec.ts",
+      "file": "login/PERF-LOGIN-08.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "PERF-LOGIN-08: Form Input Responsiveness",
+          "file": "login/PERF-LOGIN-08.spec.ts",
+          "line": 20,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Measure input responsiveness",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2484,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Starting input responsiveness test...\n"
+                        },
+                        {
+                          "text": "\n📝 Testing email input field...\n"
+                        },
+                        {
+                          "text": "   ⚠️ Slow response for 't': 80.41ms\n"
+                        },
+                        {
+                          "text": "   ✓ Email field: Average delay 21.87ms\n"
+                        },
+                        {
+                          "text": "\n📝 Testing password input field...\n"
+                        },
+                        {
+                          "text": "   ✓ Password field: Average delay 17.21ms\n"
+                        },
+                        {
+                          "text": "   ✓ Password masking: Enabled\n"
+                        },
+                        {
+                          "text": "\n================================================================================\n"
+                        },
+                        {
+                          "text": "PERF-LOGIN-08: Form Input Responsiveness Results\n"
+                        },
+                        {
+                          "text": "================================================================================\n"
+                        },
+                        {
+                          "text": "\n📈 Statistical Analysis:\n"
+                        },
+                        {
+                          "text": "  Total Keystrokes: 40\n"
+                        },
+                        {
+                          "text": "  Average Delay: 19.54ms\n"
+                        },
+                        {
+                          "text": "  Min Delay: 15.05ms\n"
+                        },
+                        {
+                          "text": "  Max Delay: 80.41ms\n"
+                        },
+                        {
+                          "text": "  Email Field Average: 21.87ms\n"
+                        },
+                        {
+                          "text": "  Password Field Average: 17.21ms\n"
+                        },
+                        {
+                          "text": "  Laggy Keystrokes (>100ms): 0\n"
+                        },
+                        {
+                          "text": "\n✅ Success Criteria:\n"
+                        },
+                        {
+                          "text": "  ✓ Average keystroke delay ≤ 50ms: 19.54ms (PASS)\n"
+                        },
+                        {
+                          "text": "  ✓ No visible lag during typing (PASS)\n"
+                        },
+                        {
+                          "text": "  ✓ Password masking renders immediately (PASS)\n"
+                        },
+                        {
+                          "text": "\n🎉 ALL CRITERIA PASSED\n"
+                        },
+                        {
+                          "text": "================================================================================\n\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:40:35.533Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0d856e2e6ee9f22dc7b0-3a88f6c8ca2fba496bed",
+              "file": "login/PERF-LOGIN-08.spec.ts",
+              "line": 21,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "login\\PERF-LOGIN-09.spec.ts",
+      "file": "login/PERF-LOGIN-09.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "PERF-LOGIN-09: Concurrent Login Sessions",
+          "file": "login/PERF-LOGIN-09.spec.ts",
+          "line": 25,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Concurrent login load test",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30266,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-09.spec.ts",
+                            "column": 41,
+                            "line": 145
+                          },
+                          "message": "Error: browserContext.cookies: Test ended.\n\n\u001b[0m \u001b[90m 143 |\u001b[39m       \u001b[36mconst\u001b[39m isolationChecks \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m.\u001b[39mall(\n \u001b[90m 144 |\u001b[39m         pages\u001b[33m.\u001b[39mmap(\u001b[36masync\u001b[39m ({ contextId\u001b[33m,\u001b[39m page\u001b[33m,\u001b[39m context }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 145 |\u001b[39m           \u001b[36mconst\u001b[39m cookies \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39mcookies()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 146 |\u001b[39m           \u001b[36mconst\u001b[39m authCookies \u001b[33m=\u001b[39m cookies\u001b[33m.\u001b[39mfilter((c) \u001b[33m=>\u001b[39m \n \u001b[90m 147 |\u001b[39m             c\u001b[33m.\u001b[39mname\u001b[33m.\u001b[39mincludes(\u001b[32m\"auth\"\u001b[39m) \u001b[33m||\u001b[39m \n \u001b[90m 148 |\u001b[39m             c\u001b[33m.\u001b[39mname\u001b[33m.\u001b[39mincludes(\u001b[32m\"session\"\u001b[39m) \u001b[33m||\u001b[39m \u001b[0m\n\u001b[2m    at map (D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-09.spec.ts:145:41)\u001b[22m\n\u001b[2m    at D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-09.spec.ts:144:15\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Starting concurrent login test with 5 sessions...\n"
+                        },
+                        {
+                          "text": "✓ Created 5 browser contexts\n"
+                        },
+                        {
+                          "text": "✓ All contexts navigated to /login\n"
+                        },
+                        {
+                          "text": "   ✓ Context 2: Form filled\n"
+                        },
+                        {
+                          "text": "   ✓ Context 1: Form filled\n"
+                        },
+                        {
+                          "text": "   ✓ Context 4: Form filled\n"
+                        },
+                        {
+                          "text": "   ✓ Context 3: Form filled\n"
+                        },
+                        {
+                          "text": "   ✓ Context 5: Form filled\n"
+                        },
+                        {
+                          "text": "✓ All forms filled, submitting simultaneously...\n"
+                        },
+                        {
+                          "text": "   ✓ Context 5: Success in 2931ms → http://localhost:3000/reception\n"
+                        },
+                        {
+                          "text": "   ✗ Context 2: Failed in 27293ms\n"
+                        },
+                        {
+                          "text": "      Error: page.waitForURL: Test ended.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n"
+                        },
+                        {
+                          "text": "   ✗ Context 3: Failed in 27306ms\n"
+                        },
+                        {
+                          "text": "      Error: page.waitForURL: Test ended.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n"
+                        },
+                        {
+                          "text": "   ✗ Context 4: Failed in 27308ms\n"
+                        },
+                        {
+                          "text": "      Error: page.waitForURL: Test ended.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n"
+                        },
+                        {
+                          "text": "   ✗ Context 1: Failed in 27330ms\n"
+                        },
+                        {
+                          "text": "      Error: page.waitForURL: Test ended.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n============================================================\n"
+                        },
+                        {
+                          "text": "\n✓ All submissions completed in 27331ms\n"
+                        },
+                        {
+                          "text": "\n🔒 Verifying session isolation...\n"
+                        },
+                        {
+                          "text": "✗ Concurrent login test failed: Error: browserContext.cookies: Test ended.\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:40:38.209Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\Github\\se104-auto-repair-shop\\test-results\\login-PERF-LOGIN-09-PERF-L-df91d--Concurrent-login-load-test-chromium\\test-failed-5.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\Github\\se104-auto-repair-shop\\test-results\\login-PERF-LOGIN-09-PERF-L-df91d--Concurrent-login-load-test-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\Github\\se104-auto-repair-shop\\test-results\\login-PERF-LOGIN-09-PERF-L-df91d--Concurrent-login-load-test-chromium\\test-failed-4.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\Github\\se104-auto-repair-shop\\test-results\\login-PERF-LOGIN-09-PERF-L-df91d--Concurrent-login-load-test-chromium\\test-failed-3.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\Github\\se104-auto-repair-shop\\test-results\\login-PERF-LOGIN-09-PERF-L-df91d--Concurrent-login-load-test-chromium\\test-failed-2.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\Github\\se104-auto-repair-shop\\test-results\\login-PERF-LOGIN-09-PERF-L-df91d--Concurrent-login-load-test-chromium\\error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "832320a112a3309dd39b-191cc4f015810745feef",
+              "file": "login/PERF-LOGIN-09.spec.ts",
+              "line": 37,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "login\\PERF-LOGIN-10.spec.ts",
+      "file": "login/PERF-LOGIN-10.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "PERF-LOGIN-10: Login Form Validation Speed",
+          "file": "login/PERF-LOGIN-10.spec.ts",
+          "line": 24,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Empty email field validation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2172,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Testing empty email validation...\n"
+                        },
+                        {
+                          "text": "   ✓ Validation error shown in 95ms\n"
+                        },
+                        {
+                          "text": "   Message: \"Email\"\n"
+                        },
+                        {
+                          "text": "   Expected error: ✓\n"
+                        },
+                        {
+                          "text": "   Server request made: ✓\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:41:16.297Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8a3999e628251f63bd62-94d86497363ff6b2fb1d",
+              "file": "login/PERF-LOGIN-10.spec.ts",
+              "line": 39,
+              "column": 7
+            },
+            {
+              "title": "Invalid email format validation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1366,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Testing invalid email format validation...\n"
+                        },
+                        {
+                          "text": "   ✓ Validation error shown in 98ms\n"
+                        },
+                        {
+                          "text": "   Message: \"Email\"\n"
+                        },
+                        {
+                          "text": "   Expected error: ✓\n"
+                        },
+                        {
+                          "text": "   Server request made: ✓\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:41:18.594Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8a3999e628251f63bd62-89698b712669c1dc9c6a",
+              "file": "login/PERF-LOGIN-10.spec.ts",
+              "line": 91,
+              "column": 7
+            },
+            {
+              "title": "Short password validation",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 1381,
+                      "error": {
+                        "message": "Error: Should show correct error message\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: Should show correct error message\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-10.spec.ts:191:69",
+                        "location": {
+                          "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-10.spec.ts",
+                          "column": 69,
+                          "line": 191
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 189 |\u001b[39m       \u001b[90m// Verify criteria\u001b[39m\n \u001b[90m 190 |\u001b[39m       expect(responseTime\u001b[33m,\u001b[39m \u001b[32m\"Validation should respond within 200ms\"\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m200\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 191 |\u001b[39m       expect(hasExpectedError\u001b[33m,\u001b[39m \u001b[32m\"Should show correct error message\"\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 192 |\u001b[39m       expect(serverRequestMade\u001b[33m,\u001b[39m \u001b[32m\"Should not make server request\"\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mfalse\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 193 |\u001b[39m     } \u001b[36mcatch\u001b[39m (error) {\n \u001b[90m 194 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`   ✗ Validation error not shown`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-10.spec.ts",
+                            "column": 69,
+                            "line": 191
+                          },
+                          "message": "Error: Should show correct error message\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n\u001b[0m \u001b[90m 189 |\u001b[39m       \u001b[90m// Verify criteria\u001b[39m\n \u001b[90m 190 |\u001b[39m       expect(responseTime\u001b[33m,\u001b[39m \u001b[32m\"Validation should respond within 200ms\"\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m200\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 191 |\u001b[39m       expect(hasExpectedError\u001b[33m,\u001b[39m \u001b[32m\"Should show correct error message\"\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 192 |\u001b[39m       expect(serverRequestMade\u001b[33m,\u001b[39m \u001b[32m\"Should not make server request\"\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mfalse\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 193 |\u001b[39m     } \u001b[36mcatch\u001b[39m (error) {\n \u001b[90m 194 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`   ✗ Validation error not shown`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-10.spec.ts:191:69\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Testing short password validation...\n"
+                        },
+                        {
+                          "text": "   ✓ Validation error shown in 94ms\n"
+                        },
+                        {
+                          "text": "   Message: \"Email\"\n"
+                        },
+                        {
+                          "text": "   Expected error: ✗\n"
+                        },
+                        {
+                          "text": "   Server request made: ✓\n"
+                        },
+                        {
+                          "text": "   ✗ Validation error not shown\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:41:19.981Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\Github\\se104-auto-repair-shop\\test-results\\login-PERF-LOGIN-10-PERF-L-e9ee9-d-Short-password-validation-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\Github\\se104-auto-repair-shop\\test-results\\login-PERF-LOGIN-10-PERF-L-e9ee9-d-Short-password-validation-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-10.spec.ts",
+                        "column": 69,
+                        "line": 191
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "8a3999e628251f63bd62-0a28bab4a4745590ca56",
+              "file": "login/PERF-LOGIN-10.spec.ts",
+              "line": 145,
+              "column": 7
+            },
+            {
+              "title": "Empty form validation",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 1847,
+                      "error": {
+                        "message": "Error: Should show correct error message\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: Should show correct error message\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-10.spec.ts:242:69",
+                        "location": {
+                          "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-10.spec.ts",
+                          "column": 69,
+                          "line": 242
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 240 |\u001b[39m       \u001b[90m// Verify criteria\u001b[39m\n \u001b[90m 241 |\u001b[39m       expect(responseTime\u001b[33m,\u001b[39m \u001b[32m\"Validation should respond within 200ms\"\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m200\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 242 |\u001b[39m       expect(hasExpectedError\u001b[33m,\u001b[39m \u001b[32m\"Should show correct error message\"\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 243 |\u001b[39m       expect(serverRequestMade\u001b[33m,\u001b[39m \u001b[32m\"Should not make server request\"\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mfalse\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 244 |\u001b[39m       \n \u001b[90m 245 |\u001b[39m       \u001b[90m// Take screenshot\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-10.spec.ts",
+                            "column": 69,
+                            "line": 242
+                          },
+                          "message": "Error: Should show correct error message\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n\u001b[0m \u001b[90m 240 |\u001b[39m       \u001b[90m// Verify criteria\u001b[39m\n \u001b[90m 241 |\u001b[39m       expect(responseTime\u001b[33m,\u001b[39m \u001b[32m\"Validation should respond within 200ms\"\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m200\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 242 |\u001b[39m       expect(hasExpectedError\u001b[33m,\u001b[39m \u001b[32m\"Should show correct error message\"\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 243 |\u001b[39m       expect(serverRequestMade\u001b[33m,\u001b[39m \u001b[32m\"Should not make server request\"\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mfalse\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 244 |\u001b[39m       \n \u001b[90m 245 |\u001b[39m       \u001b[90m// Take screenshot\u001b[39m\u001b[0m\n\u001b[2m    at D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-10.spec.ts:242:69\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "\n⏱️ Testing empty form validation...\n"
+                        },
+                        {
+                          "text": "   ✓ Validation error shown in 142ms\n"
+                        },
+                        {
+                          "text": "   Message: \"Email\"\n"
+                        },
+                        {
+                          "text": "   Expected error: ✗\n"
+                        },
+                        {
+                          "text": "   Server request made: ✓\n"
+                        },
+                        {
+                          "text": "   ✗ Validation error not shown\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-06T11:41:22.903Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\Github\\se104-auto-repair-shop\\test-results\\login-PERF-LOGIN-10-PERF-L-2876d-Speed-Empty-form-validation-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\Github\\se104-auto-repair-shop\\test-results\\login-PERF-LOGIN-10-PERF-L-2876d-Speed-Empty-form-validation-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\login\\PERF-LOGIN-10.spec.ts",
+                        "column": 69,
+                        "line": 242
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "8a3999e628251f63bd62-9f7ec774540754f79feb",
+              "file": "login/PERF-LOGIN-10.spec.ts",
+              "line": 199,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-11-06T11:36:55.462Z",
+    "duration": 270011.347,
+    "expected": 33,
+    "skipped": 0,
+    "unexpected": 7,
+    "flaky": 0
+  }
+}

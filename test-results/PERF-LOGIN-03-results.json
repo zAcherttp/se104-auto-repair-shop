@@ -1,0 +1,59 @@
+{
+  "testCase": "PERF-LOGIN-03",
+  "description": "Login page Core Web Vitals measurement",
+  "timestamp": "2025-11-06T11:39:20.023Z",
+  "metrics": {
+    "totalAttempts": 3,
+    "medianValues": {
+      "lcp": 432,
+      "fcp": 432,
+      "tbt": 9,
+      "cls": 0,
+      "performanceScore": 99
+    }
+  },
+  "successCriteria": {
+    "lcpThreshold": 2500,
+    "lcpActual": 432,
+    "lcpPass": true,
+    "fcpThreshold": 1800,
+    "fcpActual": 432,
+    "fcpPass": true,
+    "tbtThreshold": 300,
+    "tbtActual": 9,
+    "tbtPass": true,
+    "clsThreshold": 0.1,
+    "clsActual": 0,
+    "clsPass": true,
+    "perfScoreThreshold": 85,
+    "perfScoreActual": 99,
+    "perfPass": true,
+    "overallPass": true
+  },
+  "individualAttempts": [
+    {
+      "attempt": 1,
+      "lcp": 416,
+      "fcp": 416,
+      "tbt": 5,
+      "cls": 0,
+      "performanceScore": 99
+    },
+    {
+      "attempt": 2,
+      "lcp": 432,
+      "fcp": 432,
+      "tbt": 9,
+      "cls": 0,
+      "performanceScore": 99
+    },
+    {
+      "attempt": 3,
+      "lcp": 432,
+      "fcp": 432,
+      "tbt": 9,
+      "cls": 0,
+      "performanceScore": 99
+    }
+  ]
+}
