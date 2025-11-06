@@ -35,7 +35,7 @@ interface PerformanceMetrics {
 
 test.describe("PERF-PROFILE-01: Navigate to Employees Tab Performance", () => {
   // Increase the default test timeout for this suite to avoid flaky timeouts
-  test.setTimeout(120000);
+  test.setTimeout(30000);
   const TEST_ITERATIONS = 5;
   const TEST_EMAIL = "saladegg24@gmail.com";
   const TEST_PASSWORD = "123456";

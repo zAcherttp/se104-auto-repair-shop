@@ -86,9 +86,9 @@ Measures update operation speed.
 **Iterations:** 5 attempts
 **Dependency:** PERF-PROFILE-04
 
-### 🚧 PERF-PROFILE-06: Delete Employee
+### ✅ PERF-PROFILE-05: Delete Employee
 
-**Status:** To be implemented
+**File:** `PERF-PROFILE-05.spec.ts`
 
 Measures deletion speed and UI update.
 
@@ -102,15 +102,15 @@ Measures deletion speed and UI update.
 **Iterations:** 3 attempts
 **Dependency:** PERF-PROFILE-04
 
-### 🚧 PERF-PROFILE-07: Add Employee Dialog Load Time
+### ✅ PERF-PROFILE-06: Add Employee Dialog Load Time
 
-**Status:** To be implemented
+**File:** `PERF-PROFILE-06.spec.ts`
 
 Measures dialog render performance.
 
 **Success Criteria:**
 
-- p95 ≤ 300ms
+- p95 ≤ 500ms
 - Dialog renders completely
 - All fields visible
 - Form is immediately interactive
@@ -118,19 +118,39 @@ Measures dialog render performance.
 **Iterations:** 5 attempts
 **Dependency:** PERF-PROFILE-01
 
-### 🚧 PERF-PROFILE-08: Role Selector Dropdown Performance
+### ✅ PERF-PROFILE-07: Role Selector Dropdown Performance
 
-**Status:** To be implemented
+**File:** `PERF-PROFILE-07.spec.ts`
 
 Measures dropdown render and interaction speed.
 
 **Success Criteria:**
 
 - Average dropdown open time ≤ 100ms
-- Selection updates immediately
+- Selection updates immediately (≤ 50ms)
 - No keyboard navigation lag
+- Admin and Employee options visible
 
-**Dependency:** PERF-PROFILE-07
+**Iterations:** 5 attempts
+**Dependency:** PERF-PROFILE-06
+
+### ✅ PERF-PROFILE-08: Employee Table Pagination/Scrolling
+
+**File:** `PERF-PROFILE-08.spec.ts`
+
+Measures large list performance with 100+ employees.
+
+**Success Criteria:**
+
+- Initial render ≤ 3000ms
+- Scroll FPS ≥ 30 (average and minimum)
+- All 100 employees render without crash
+- Memory usage stable (no leak)
+- No layout shifts during scroll
+
+**Iterations:** 3 attempts
+**Dependency:** PERF-PROFILE-02
+**Note:** Requires database seeded with 100+ employees
 
 ### 🚧 PERF-PROFILE-09: Concurrent Employee Operations
 
@@ -147,21 +167,20 @@ Simulates multiple admin actions simultaneously.
 
 **Dependencies:** PERF-PROFILE-04, 05, 06
 
-### 🚧 PERF-PROFILE-10: Employee Table Pagination/Scrolling
+### 🚧 PERF-PROFILE-10: Employee Table Memory Leak Test
 
 **Status:** To be implemented
 
-Measures large list performance with 100+ employees.
+Long-running test to verify memory stability.
 
 **Success Criteria:**
 
-- Initial render ≤ 3000ms
-- Scroll FPS ≥30
-- All 100 employees render without crash
-- Memory usage stable
+- Memory growth < 20% over 100 operations
+- No performance degradation over time
+- Garbage collection works properly
 
-**Iterations:** 3 attempts
-**Dependency:** PERF-PROFILE-02
+**Iterations:** 100 operations
+**Dependencies:** PERF-PROFILE-02, 08
 
 ## Running the Tests
 
@@ -186,23 +205,42 @@ pnpm playwright test e2e/PERF-PROFILE-01.spec.ts --ui
 ## Prerequisites
 
 - Admin account credentials (default: saladegg24@gmail.com / 123456)
-- Database seeded with employee records for PERF-PROFILE-02, 10
-- Clean database state for CRUD tests (04, 05, 06)
+- Database access for automatic seeding (tests handle this)
+- Supabase admin client configured in `supabase/admin.ts`
+- Environment variables in `.env.local`:
+  - `E2E_ADMIN_EMAIL`
+  - `E2E_ADMIN_PASSWORD`
+  - `NEXT_PUBLIC_SUPABASE_URL`
+  - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+  - `SUPABASE_SERVICE_ROLE_KEY`
 
 ## Test Data Setup
 
-For PERF-PROFILE-02 and PERF-PROFILE-10, seed the database with test employees:
+For PERF-PROFILE-02, seed the database with 50+ test employees.
+For PERF-PROFILE-08, seed the database with 100+ test employees.
+
+The tests automatically seed the database using `createAdminClient()` if insufficient records exist:
+
+```typescript
+// Automatic seeding happens in test.beforeAll()
+// Tests will create employees with email pattern:
+// perf.employee.{timestamp}.{random}@example.com
+// perf.emp.{timestamp}.{random}@example.com
+```
+
+Manual seeding (optional):
 
 ```sql
--- Insert 50+ test employees (example)
-INSERT INTO profiles (user_id, garage_id, full_name, created_at, updated_at)
+-- Insert test employees
+INSERT INTO profiles (id, email, full_name, role, created_at, updated_at)
 SELECT
   gen_random_uuid(),
-  (SELECT id FROM garages LIMIT 1),
-  'Test Employee ' || generate_series,
+  'perf.employee.' || generate_series || '@example.com',
+  'Performance Test Employee ' || generate_series,
+  'employee',
   NOW(),
   NOW()
-FROM generate_series(1, 50);
+FROM generate_series(1, 100);
 ```
 
 ## Results
@@ -215,8 +253,8 @@ Test results are saved to:
 
 ## Test Status
 
-- ✅ Implemented: 3 tests
-- 🚧 Pending: 7 tests
+- ✅ Implemented: 7 tests (01, 02, 03, 05, 06, 07, 08)
+- 🚧 Pending: 3 tests (04, 09, 10)
 - **Total:** 10 test cases
 
 ## Next Steps
