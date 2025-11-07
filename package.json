@@ -14,7 +14,8 @@
     "load-test:stress": "k6 run k6-tests/stress-test.js",
     "load-test:journey": "k6 run k6-tests/user-journey-test.js",
     "load-test:spike": "k6 run k6-tests/spike-test.js",
-    "load-test:all": "pnpm load-test:smoke && pnpm load-test:api && pnpm load-test:auth && pnpm load-test:stress && pnpm load-test:journey && pnpm load-test:spike"
+    "load-test:vehicles": "k6 run k6-tests/vehicles-api-test.js",
+    "load-test:all": "pnpm load-test:smoke && pnpm load-test:api && pnpm load-test:auth && pnpm load-test:stress && pnpm load-test:journey && pnpm load-test:spike && pnpm load-test:vehicles"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

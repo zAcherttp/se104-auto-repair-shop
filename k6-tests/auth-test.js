@@ -10,10 +10,10 @@ const logoutSuccessRate = new Rate("logout_success");
 // Test options - Limited to 10 users
 export const options = {
   stages: [
-    { duration: "30s", target: 2 }, // Ramp up to 2 users
-    { duration: "1m", target: 5 }, // Ramp up to 5 users
-    { duration: "1m", target: 10 }, // Ramp up to 10 users (max)
-    { duration: "1m", target: 10 }, // Stay at 10 users
+    { duration: "30s", target: 5 }, // Ramp up to 2 users
+    { duration: "1m", target: 10 }, // Ramp up to 5 users
+    { duration: "1m", target: 20 }, // Ramp up to 10 users (max)
+    { duration: "1m", target: 20 }, // Stay at 10 users
     { duration: "30s", target: 0 }, // Ramp down to 0 users
   ],
   thresholds: {

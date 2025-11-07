@@ -102,6 +102,26 @@ pnpm load-test:journey
 pnpm load-test:spike
 ```
 
+### 7. `vehicles-api-test.js` - Vehicle Search API Load Test 🚗
+
+- **VUs:** Ramps from 10 → 50 → 100 users
+- **Duration:** ~8.5 minutes
+- **Purpose:** Load test vehicle search, filter, pagination, and debt calculations
+- **Max concurrent users:** 100
+- **Tests:**
+  - Vehicle page loading
+  - License plate search
+  - Brand filtering
+  - Customer name search
+  - Pagination
+  - Debt calculations
+  - Sorting
+  - Multiple filters combined
+
+```powershell
+pnpm load-test:vehicles
+```
+
 ## Configuration
 
 Edit `config.js` to customize:
