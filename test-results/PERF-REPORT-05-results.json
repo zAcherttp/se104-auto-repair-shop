@@ -1,0 +1,33 @@
+{
+  "testName": "PERF-REPORT-05",
+  "description": "Reports dashboard page load",
+  "medianLcp": 904,
+  "avgLoadTime": 10660,
+  "runs": [
+    {
+      "run": 1,
+      "lcp": 784,
+      "loadTime": 10368,
+      "tabsVisible": false
+    },
+    {
+      "run": 2,
+      "lcp": 928,
+      "loadTime": 11052,
+      "tabsVisible": false
+    },
+    {
+      "run": 3,
+      "lcp": 904,
+      "loadTime": 10560,
+      "tabsVisible": false
+    }
+  ],
+  "successCriteria": {
+    "medianLcp": {
+      "threshold": 2500,
+      "actual": 904,
+      "pass": true
+    }
+  }
+}

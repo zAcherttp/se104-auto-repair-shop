@@ -1,0 +1,19 @@
+{
+  "testName": "PERF-REPORT-01",
+  "description": "Monthly revenue report",
+  "p95": 1022,
+  "runs": [
+    {
+      "run": 1,
+      "duration": 1022,
+      "rowCount": 5
+    }
+  ],
+  "successCriteria": {
+    "p95": {
+      "threshold": 2500,
+      "actual": 1022,
+      "pass": true
+    }
+  }
+}
