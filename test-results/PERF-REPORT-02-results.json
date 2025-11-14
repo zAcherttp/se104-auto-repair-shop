@@ -1,7 +1,7 @@
 {
   "testName": "PERF-REPORT-02",
   "description": "Monthly inventory report",
-  "p95": 1047,
+  "p95": 1017,
   "runs": [
     {
       "run": 1,
@@ -10,29 +10,29 @@
     },
     {
       "run": 2,
-      "duration": 1024,
+      "duration": 1015,
       "rowCount": 0
     },
     {
       "run": 3,
-      "duration": 1018,
-      "rowCount": 0
-    },
-    {
-      "run": 4,
       "duration": 1017,
       "rowCount": 0
     },
     {
+      "run": 4,
+      "duration": 1012,
+      "rowCount": 0
+    },
+    {
       "run": 5,
-      "duration": 1047,
+      "duration": 1008,
       "rowCount": 0
     }
   ],
   "successCriteria": {
     "p95": {
       "threshold": 3000,
-      "actual": 1047,
+      "actual": 1017,
       "pass": true
     }
   }

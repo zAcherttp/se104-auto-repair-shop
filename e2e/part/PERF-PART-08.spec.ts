@@ -35,7 +35,7 @@ test.describe.serial("PERF-PART-08: Delete spare part", () => {
     await loginUser(page);
     
     // Navigate to settings
-    const settingsLink = page.locator('a[href="/settings"], a:has-text("Settings")').first();
+    const settingsLink = page.locator('a[href="/settings"]').first();
     if (await settingsLink.isVisible().catch(() => false)) {
       await settingsLink.click();
     } else {

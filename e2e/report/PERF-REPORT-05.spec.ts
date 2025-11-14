@@ -52,8 +52,8 @@ test.describe.serial("PERF-REPORT-05: Reports dashboard page load", () => {
       const loadTime = Date.now() - startTime;
 
       // Check if tabs are visible
-      const salesTabVisible = await page.locator('text=/Sales.*Report/i, button:has-text("Sales"), [role="tab"]:has-text("Sales")').isVisible().catch(() => false);
-      const inventoryTabVisible = await page.locator('text=/Inventory.*Report/i, button:has-text("Inventory"), [role="tab"]:has-text("Inventory")').isVisible().catch(() => false);
+      const salesTabVisible = await page.locator('[role="tab"]:has-text("Phân tích bán hàng"), button:has-text("Phân tích bán hàng")').isVisible().catch(() => false);
+      const inventoryTabVisible = await page.locator('[role="tab"]:has-text("Phân tích tồn kho"), button:has-text("Phân tích tồn kho")').isVisible().catch(() => false);
       
       const tabsVisible = salesTabVisible || inventoryTabVisible;
 

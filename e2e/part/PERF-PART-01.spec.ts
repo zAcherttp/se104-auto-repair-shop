@@ -26,6 +26,8 @@ test.describe.serial("PERF-PART-01: Navigate to Inventory page", () => {
   const REPEAT = 3;
   const results: Array<{ run: number; lcp: number; loadTime: number; requestCount: number; cls: number }> = [];
 
+  test.setTimeout(30000);
+
   test.beforeEach(async ({ page }) => {
     await loginUser(page);
   });
@@ -38,8 +40,23 @@ test.describe.serial("PERF-PART-01: Navigate to Inventory page", () => {
 
       const startTime = Date.now();
 
-      // Navigate to inventory
-      await navigateToInventory(page);
+      // Navigate to inventory with retry
+      let navigated = false;
+      for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+          await navigateToInventory(page);
+          navigated = true;
+          break;
+        } catch (e) {
+          console.log(`Navigation attempt ${attempt + 1} failed:`, e);
+          if (attempt === 2) throw e;
+          await page.waitForTimeout(1000);
+        }
+      }
+      
+      if (!navigated) {
+        throw new Error('Failed to navigate to inventory page after 3 attempts');
+      }
 
       const loadTime = Date.now() - startTime;
 
@@ -89,9 +106,14 @@ test.describe.serial("PERF-PART-01: Navigate to Inventory page", () => {
   }
 
   test.afterAll(async () => {
+    if (results.length === 0) {
+      console.log('No test results collected - all tests may have failed');
+      return;
+    }
+
     const lcpValues = results.map(r => r.lcp).sort((a, b) => a - b);
-    const medianLcp = lcpValues[Math.floor(lcpValues.length / 2)];
-    const avgRequests = results.reduce((sum, r) => sum + r.requestCount, 0) / results.length;
+    const medianLcp = lcpValues.length > 0 ? lcpValues[Math.floor(lcpValues.length / 2)] : 0;
+    const avgRequests = results.length > 0 ? results.reduce((sum, r) => sum + r.requestCount, 0) / results.length : 0;
 
     console.log("\n=== PERF-PART-01 Results ===");
     console.log(`Median LCP: ${medianLcp}ms`);
@@ -110,6 +132,8 @@ test.describe.serial("PERF-PART-01: Navigate to Inventory page", () => {
       },
     });
 
-    expect(medianLcp, `Median LCP should be ≤ 2500ms`).toBeLessThanOrEqual(2500);
+    if (results.length > 0) {
+      expect(medianLcp, `Median LCP should be ≤ 2500ms`).toBeLessThanOrEqual(2500);
+    }
   });
 });

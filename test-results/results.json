@@ -81,7 +81,7 @@
           "specs": [
             {
               "title": "Run 1/5: Generate sales report",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -94,47 +94,22 @@
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "timedOut",
-                      "duration": 30304,
-                      "error": {
-                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
-                      },
-                      "errors": [
-                        {
-                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 15401,
+                      "errors": [],
                       "stdout": [
                         {
-                          "text": "Run 1: Generated report in 1022ms - 5 rows\n"
-                        },
-                        {
-                          "text": "\n=== PERF-REPORT-01 Results ===\n"
-                        },
-                        {
-                          "text": "p95: 1022ms\n"
+                          "text": "Run 1: Generated report in 1008ms - 0 rows\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:08:58.775Z",
+                      "startTime": "2025-11-14T10:40:07.895Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "D:\\Github\\se104-auto-repair-shop\\test-results\\report-PERF-REPORT-01-PERF-14c20-n-1-5-Generate-sales-report-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "D:\\Github\\se104-auto-repair-shop\\test-results\\report-PERF-REPORT-01-PERF-14c20-n-1-5-Generate-sales-report-chromium\\error-context.md"
-                        }
-                      ]
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "6809b37b59755b4fabe7-5ada08db315a69d1f00a",
@@ -155,20 +130,24 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": -1,
-                      "parallelIndex": -1,
-                      "status": "skipped",
-                      "duration": 0,
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8017,
                       "errors": [],
-                      "stdout": [],
+                      "stdout": [
+                        {
+                          "text": "Run 2: Generated report in 1018ms - 0 rows\n"
+                        }
+                      ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:09:31.148Z",
+                      "startTime": "2025-11-14T10:40:25.008Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "skipped"
+                  "status": "expected"
                 }
               ],
               "id": "6809b37b59755b4fabe7-a01509ce103acdda4a78",
@@ -189,20 +168,24 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": -1,
-                      "parallelIndex": -1,
-                      "status": "skipped",
-                      "duration": 0,
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6910,
                       "errors": [],
-                      "stdout": [],
+                      "stdout": [
+                        {
+                          "text": "Run 3: Generated report in 1019ms - 0 rows\n"
+                        }
+                      ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:09:31.150Z",
+                      "startTime": "2025-11-14T10:40:33.080Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "skipped"
+                  "status": "expected"
                 }
               ],
               "id": "6809b37b59755b4fabe7-076e097b621a1987cafe",
@@ -223,20 +206,24 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": -1,
-                      "parallelIndex": -1,
-                      "status": "skipped",
-                      "duration": 0,
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7301,
                       "errors": [],
-                      "stdout": [],
+                      "stdout": [
+                        {
+                          "text": "Run 4: Generated report in 1010ms - 0 rows\n"
+                        }
+                      ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:09:31.151Z",
+                      "startTime": "2025-11-14T10:40:40.028Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "skipped"
+                  "status": "expected"
                 }
               ],
               "id": "6809b37b59755b4fabe7-90abee1bd01e6f51ecd6",
@@ -257,20 +244,30 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": -1,
-                      "parallelIndex": -1,
-                      "status": "skipped",
-                      "duration": 0,
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6859,
                       "errors": [],
-                      "stdout": [],
+                      "stdout": [
+                        {
+                          "text": "Run 5: Generated report in 1013ms - 0 rows\n"
+                        },
+                        {
+                          "text": "\n=== PERF-REPORT-01 Results ===\n"
+                        },
+                        {
+                          "text": "p95: 1019ms\n"
+                        }
+                      ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:09:31.153Z",
+                      "startTime": "2025-11-14T10:40:47.358Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "skipped"
+                  "status": "expected"
                 }
               ],
               "id": "6809b37b59755b4fabe7-f6f213950ad991c20dac",
@@ -308,10 +305,10 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 13380,
+                      "duration": 6636,
                       "errors": [],
                       "stdout": [
                         {
@@ -320,7 +317,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:09:39.218Z",
+                      "startTime": "2025-11-14T10:40:54.951Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -346,19 +343,19 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 11906,
+                      "duration": 6646,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "Run 2: Generated inventory report in 1024ms - 0 rows\n"
+                          "text": "Run 2: Generated inventory report in 1015ms - 0 rows\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:09:53.147Z",
+                      "startTime": "2025-11-14T10:41:01.752Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -384,19 +381,19 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 11233,
+                      "duration": 7171,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "Run 3: Generated inventory report in 1018ms - 0 rows\n"
+                          "text": "Run 3: Generated inventory report in 1017ms - 0 rows\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:10:05.083Z",
+                      "startTime": "2025-11-14T10:41:08.434Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -422,19 +419,19 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 11698,
+                      "duration": 6401,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "Run 4: Generated inventory report in 1017ms - 0 rows\n"
+                          "text": "Run 4: Generated inventory report in 1012ms - 0 rows\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:10:16.339Z",
+                      "startTime": "2025-11-14T10:41:15.643Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -460,25 +457,25 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 10311,
+                      "duration": 7528,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "Run 5: Generated inventory report in 1047ms - 0 rows\n"
+                          "text": "Run 5: Generated inventory report in 1008ms - 0 rows\n"
                         },
                         {
                           "text": "\n=== PERF-REPORT-02 Results ===\n"
                         },
                         {
-                          "text": "p95: 1047ms\n"
+                          "text": "p95: 1017ms\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:10:28.065Z",
+                      "startTime": "2025-11-14T10:41:22.078Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -521,19 +518,19 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 11856,
+                      "duration": 7712,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "Run 1: COLD=810ms, WARM=518ms\n"
+                          "text": "Run 1: COLD=817ms, WARM=568ms\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:10:39.007Z",
+                      "startTime": "2025-11-14T10:41:30.317Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -559,19 +556,19 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 12927,
+                      "duration": 8092,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "Run 2: COLD=828ms, WARM=534ms\n"
+                          "text": "Run 2: COLD=809ms, WARM=560ms\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:10:51.123Z",
+                      "startTime": "2025-11-14T10:41:38.350Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -597,56 +594,56 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 14831,
+                      "duration": 7382,
                       "error": {
-                        "message": "Error: Cache should reduce latency by ≥40%\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m40\u001b[39m\nReceived:    \u001b[31m35.8974358974359\u001b[39m",
-                        "stack": "Error: Cache should reduce latency by ≥40%\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m40\u001b[39m\nReceived:    \u001b[31m35.8974358974359\u001b[39m\n    at D:\\Github\\se104-auto-repair-shop\\e2e\\report\\PERF-REPORT-03.spec.ts:110:62",
+                        "message": "Error: Cache should reduce latency by ≥40%\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m40\u001b[39m\nReceived:    \u001b[31m28.782894736842096\u001b[39m",
+                        "stack": "Error: Cache should reduce latency by ≥40%\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m40\u001b[39m\nReceived:    \u001b[31m28.782894736842096\u001b[39m\n    at D:\\Github\\se104-auto-repair-shop\\e2e\\report\\PERF-REPORT-03.spec.ts:107:62",
                         "location": {
                           "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\report\\PERF-REPORT-03.spec.ts",
                           "column": 62,
-                          "line": 110
+                          "line": 107
                         },
-                        "snippet": "\u001b[0m \u001b[90m 108 |\u001b[39m     expect(avgCold\u001b[33m,\u001b[39m \u001b[32m`Average cold load should be ≤ 2500ms`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2500\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 109 |\u001b[39m     expect(avgWarm\u001b[33m,\u001b[39m \u001b[32m`Average warm load should be ≤ 900ms`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m900\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 110 |\u001b[39m     expect(reduction\u001b[33m,\u001b[39m \u001b[32m`Cache should reduce latency by ≥40%`\u001b[39m)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m40\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 111 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 112 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 113 |\u001b[39m\u001b[0m"
+                        "snippet": "\u001b[0m \u001b[90m 105 |\u001b[39m     expect(avgCold\u001b[33m,\u001b[39m \u001b[32m`Average cold load should be ≤ 2500ms`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2500\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 106 |\u001b[39m     expect(avgWarm\u001b[33m,\u001b[39m \u001b[32m`Average warm load should be ≤ 900ms`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m900\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 107 |\u001b[39m     expect(reduction\u001b[33m,\u001b[39m \u001b[32m`Cache should reduce latency by ≥40%`\u001b[39m)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m40\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 108 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 109 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 110 |\u001b[39m\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
                             "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\report\\PERF-REPORT-03.spec.ts",
                             "column": 62,
-                            "line": 110
+                            "line": 107
                           },
-                          "message": "Error: Cache should reduce latency by ≥40%\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m40\u001b[39m\nReceived:    \u001b[31m35.8974358974359\u001b[39m\n\n\u001b[0m \u001b[90m 108 |\u001b[39m     expect(avgCold\u001b[33m,\u001b[39m \u001b[32m`Average cold load should be ≤ 2500ms`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2500\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 109 |\u001b[39m     expect(avgWarm\u001b[33m,\u001b[39m \u001b[32m`Average warm load should be ≤ 900ms`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m900\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 110 |\u001b[39m     expect(reduction\u001b[33m,\u001b[39m \u001b[32m`Cache should reduce latency by ≥40%`\u001b[39m)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m40\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 111 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 112 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 113 |\u001b[39m\u001b[0m\n\u001b[2m    at D:\\Github\\se104-auto-repair-shop\\e2e\\report\\PERF-REPORT-03.spec.ts:110:62\u001b[22m"
+                          "message": "Error: Cache should reduce latency by ≥40%\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m40\u001b[39m\nReceived:    \u001b[31m28.782894736842096\u001b[39m\n\n\u001b[0m \u001b[90m 105 |\u001b[39m     expect(avgCold\u001b[33m,\u001b[39m \u001b[32m`Average cold load should be ≤ 2500ms`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2500\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 106 |\u001b[39m     expect(avgWarm\u001b[33m,\u001b[39m \u001b[32m`Average warm load should be ≤ 900ms`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m900\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 107 |\u001b[39m     expect(reduction\u001b[33m,\u001b[39m \u001b[32m`Cache should reduce latency by ≥40%`\u001b[39m)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m40\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 108 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 109 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 110 |\u001b[39m\u001b[0m\n\u001b[2m    at D:\\Github\\se104-auto-repair-shop\\e2e\\report\\PERF-REPORT-03.spec.ts:107:62\u001b[22m"
                         }
                       ],
                       "stdout": [
                         {
-                          "text": "Run 3: COLD=819ms, WARM=523ms\n"
+                          "text": "Run 3: COLD=806ms, WARM=604ms\n"
                         },
                         {
                           "text": "\n=== PERF-REPORT-03 Results ===\n"
                         },
                         {
-                          "text": "Avg Cold: 819ms\n"
+                          "text": "Avg Cold: 811ms\n"
                         },
                         {
-                          "text": "Avg Warm: 525ms\n"
+                          "text": "Avg Warm: 577ms\n"
                         },
                         {
-                          "text": "Reduction: 35.9%\n"
+                          "text": "Reduction: 28.8%\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:11:04.078Z",
+                      "startTime": "2025-11-14T10:41:46.479Z",
                       "annotations": [],
                       "attachments": [],
                       "errorLocation": {
                         "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\report\\PERF-REPORT-03.spec.ts",
                         "column": 62,
-                        "line": 110
+                        "line": 107
                       }
                     }
                   ],
@@ -688,10 +685,10 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 12551,
+                      "duration": 7757,
                       "errors": [],
                       "stdout": [
                         {
@@ -700,7 +697,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:11:28.587Z",
+                      "startTime": "2025-11-14T10:42:02.428Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -726,10 +723,10 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 11849,
+                      "duration": 6856,
                       "errors": [],
                       "stdout": [
                         {
@@ -738,7 +735,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:11:41.832Z",
+                      "startTime": "2025-11-14T10:42:11.129Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -764,10 +761,10 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 10066,
+                      "duration": 6909,
                       "errors": [],
                       "stdout": [
                         {
@@ -785,7 +782,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:11:53.706Z",
+                      "startTime": "2025-11-14T10:42:18.039Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -828,19 +825,19 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 12875,
+                      "duration": 8467,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "Run 1: LCP=784ms, LoadTime=10368ms, Tabs=false\n"
+                          "text": "Run 1: LCP=1144ms, LoadTime=4665ms, Tabs=true\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:12:04.342Z",
+                      "startTime": "2025-11-14T10:42:25.822Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -866,19 +863,19 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 13646,
+                      "duration": 8191,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "Run 2: LCP=928ms, LoadTime=11052ms, Tabs=false\n"
+                          "text": "Run 2: LCP=1244ms, LoadTime=5087ms, Tabs=true\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:12:17.237Z",
+                      "startTime": "2025-11-14T10:42:34.332Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -904,28 +901,28 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 13233,
+                      "duration": 7924,
                       "errors": [],
                       "stdout": [
                         {
-                          "text": "Run 3: LCP=904ms, LoadTime=10560ms, Tabs=false\n"
+                          "text": "Run 3: LCP=920ms, LoadTime=4821ms, Tabs=true\n"
                         },
                         {
                           "text": "\n=== PERF-REPORT-05 Results ===\n"
                         },
                         {
-                          "text": "Median LCP: 904ms\n"
+                          "text": "Median LCP: 1144ms\n"
                         },
                         {
-                          "text": "Avg Load Time: 10660ms\n"
+                          "text": "Avg Load Time: 4858ms\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-08T08:12:30.913Z",
+                      "startTime": "2025-11-14T10:42:42.559Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -945,11 +942,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-11-08T08:08:53.050Z",
-    "duration": 231332.64,
-    "expected": 13,
-    "skipped": 4,
-    "unexpected": 2,
+    "startTime": "2025-11-14T10:40:02.812Z",
+    "duration": 167865.60400000002,
+    "expected": 18,
+    "skipped": 0,
+    "unexpected": 1,
     "flaky": 0
   }
 }

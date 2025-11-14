@@ -40,29 +40,19 @@ test.describe.serial("PERF-REPORT-01: Monthly revenue report", () => {
     test(`Run ${run}/${REPEAT}: Generate sales report`, async ({ page }) => {
       await navigateToReports(page);
 
-      // Look for Sales Report tab
-      const salesTab = page.locator('text=/Sales.*Report/i, button:has-text("Sales"), [role="tab"]:has-text("Sales")').first();
+      // Look for Sales Analysis tab (Vietnamese: Phân tích bán hàng)
+      const salesTab = page.locator('[role="tab"]:has-text("Phân tích bán hàng"), [role="tab"]:has-text("salesAnalysis"), button:has-text("Phân tích bán hàng")').first();
       
-      if (await salesTab.isVisible().catch(() => false)) {
+      if (await salesTab.isVisible({ timeout: 3000 }).catch(() => false)) {
         await salesTab.click();
-        await page.waitForTimeout(300);
+        await page.waitForTimeout(500);
       }
 
       const startTime = Date.now();
 
-      // Set date range to current month (if date picker exists)
-      const datePicker = page.locator('input[type="date"], button:has-text("month")').first();
-      if (await datePicker.isVisible().catch(() => false)) {
-        // If there's a generate button, click it
-        const generateBtn = page.locator('button:has-text("Generate"), button:has-text("Apply")').first();
-        if (await generateBtn.isVisible().catch(() => false)) {
-          await generateBtn.click();
-        }
-      }
-
-      // Wait for report table to render
+      // Wait for report to auto-load (no generate button, just date selection)
       await page.waitForTimeout(1000);
-      await page.waitForLoadState("networkidle");
+      await page.waitForLoadState("domcontentloaded");
 
       const duration = Date.now() - startTime;
 

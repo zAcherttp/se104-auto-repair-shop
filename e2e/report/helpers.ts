@@ -57,8 +57,25 @@ export function loadEnvFile() {
  * Navigate to reports page
  */
 export async function navigateToReports(page: Page) {
-  await page.goto("/reports", { waitUntil: "domcontentloaded" });
-  await page.waitForLoadState("networkidle");
+  // Try clicking reports link in sidebar first (supports Vietnamese "Báo cáo")
+  const reportsLinkSelectors = [
+    'a[href="/reports"]',
+    'nav a[href="/reports"]',
+  ];
+
+  for (const selector of reportsLinkSelectors) {
+    const link = page.locator(selector).first();
+    if (await link.isVisible({ timeout: 3000 }).catch(() => false)) {
+      await link.click();
+      await page.waitForLoadState("domcontentloaded", { timeout: 10000 });
+      await page.waitForTimeout(500);
+      return;
+    }
+  }
+
+  // Fallback: direct navigation
+  await page.goto("/reports", { waitUntil: "domcontentloaded", timeout: 10000 });
+  await page.waitForTimeout(500);
 }
 
 /**

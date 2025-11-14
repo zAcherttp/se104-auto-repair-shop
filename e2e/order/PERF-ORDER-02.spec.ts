@@ -57,7 +57,11 @@ test.describe.serial("PERF-ORDER-02: Create new repair order", () => {
 
       // Submit form
       const submitButton = page.locator('button[type="submit"], button:has-text("Save"), button:has-text("Create")').first();
-      await submitButton.click();
+      if (await submitButton.isVisible({ timeout: 5000 }).catch(() => false)) {
+        await submitButton.click();
+      } else {
+        throw new Error('Submit button not found or not visible');
+      }
 
       // Wait for success indicator
       try {

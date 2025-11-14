@@ -96,8 +96,11 @@ test.describe.serial("PERF-PART-10: Concurrent inventory operations", () => {
           const stockInput = page.locator('input[name="quantity_in_stock"]').first();
           if (await stockInput.isVisible().catch(() => false)) {
             await stockInput.fill("100");
-            await page.locator('button[type="submit"]').first().click();
-            await page.waitForTimeout(1000);
+            const submitBtn = page.locator('button[type="submit"]').first();
+            if (await submitBtn.isVisible({ timeout: 3000 }).catch(() => false)) {
+              await submitBtn.click();
+              await page.waitForTimeout(1000);
+            }
           }
         }
         

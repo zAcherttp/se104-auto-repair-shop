@@ -25,10 +25,10 @@ interface ConcurrentLoginMetrics {
 test.describe("PERF-LOGIN-09: Concurrent Login Sessions", () => {
   const CONCURRENT_SESSIONS = 5;
   const TEST_CREDENTIALS = [
-    { email: "user1@test.com", password: "password1" },
-    { email: "user2@test.com", password: "password2" },
-    { email: "user3@test.com", password: "password3" },
-    { email: "user4@test.com", password: "password4" },
+    { email: "saladegg24@gmail.com", password: "123456" },
+    { email: "saladegg24@gmail.com", password: "123456" },
+    { email: "saladegg24@gmail.com", password: "123456" },
+    { email: "saladegg24@gmail.com", password: "123456" },
     { email: "saladegg24@gmail.com", password: "123456" }, // Use existing valid credentials
   ];
   

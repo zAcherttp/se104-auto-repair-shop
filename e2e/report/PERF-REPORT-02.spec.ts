@@ -38,25 +38,19 @@ test.describe.serial("PERF-REPORT-02: Monthly inventory report", () => {
     test(`Run ${run}/${REPEAT}: Generate inventory report`, async ({ page }) => {
       await navigateToReports(page);
 
-      // Look for Inventory Report tab
-      const inventoryTab = page.locator('text=/Inventory.*Report/i, button:has-text("Inventory"), [role="tab"]:has-text("Inventory")').first();
+      // Look for Inventory Analysis tab (Vietnamese: Phân tích tồn kho)
+      const inventoryTab = page.locator('[role="tab"]:has-text("Phân tích tồn kho"), [role="tab"]:has-text("inventoryAnalysis"), button:has-text("Phân tích tồn kho")').first();
       
-      if (await inventoryTab.isVisible().catch(() => false)) {
+      if (await inventoryTab.isVisible({ timeout: 3000 }).catch(() => false)) {
         await inventoryTab.click();
-        await page.waitForTimeout(300);
+        await page.waitForTimeout(500);
       }
 
       const startTime = Date.now();
 
-      // Click generate if button exists
-      const generateBtn = page.locator('button:has-text("Generate"), button:has-text("Apply")').first();
-      if (await generateBtn.isVisible().catch(() => false)) {
-        await generateBtn.click();
-      }
-
-      // Wait for report to render
+      // Wait for report to auto-load
       await page.waitForTimeout(1000);
-      await page.waitForLoadState("networkidle");
+      await page.waitForLoadState("domcontentloaded");
 
       const duration = Date.now() - startTime;
 

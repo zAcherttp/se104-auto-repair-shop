@@ -1,40 +1,40 @@
 {
   "testName": "PERF-REPORT-03",
   "description": "Report caching effectiveness",
-  "avgCold": 819,
-  "avgWarm": 525,
-  "latencyReduction": 35.8974358974359,
+  "avgCold": 810.6666666666666,
+  "avgWarm": 577.3333333333334,
+  "latencyReduction": 28.782894736842096,
   "runs": [
     {
       "run": 1,
-      "coldDuration": 810,
-      "warmDuration": 518
+      "coldDuration": 817,
+      "warmDuration": 568
     },
     {
       "run": 2,
-      "coldDuration": 828,
-      "warmDuration": 534
+      "coldDuration": 809,
+      "warmDuration": 560
     },
     {
       "run": 3,
-      "coldDuration": 819,
-      "warmDuration": 523
+      "coldDuration": 806,
+      "warmDuration": 604
     }
   ],
   "successCriteria": {
     "cold": {
       "threshold": 2500,
-      "actual": 819,
+      "actual": 810.6666666666666,
       "pass": true
     },
     "warm": {
       "threshold": 900,
-      "actual": 525,
+      "actual": 577.3333333333334,
       "pass": true
     },
     "reduction": {
       "threshold": 40,
-      "actual": 35.8974358974359,
+      "actual": 28.782894736842096,
       "pass": false
     }
   }

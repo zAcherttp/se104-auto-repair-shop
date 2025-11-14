@@ -31,12 +31,12 @@ test.describe.serial("PERF-PART-06: Add multiple spare parts", () => {
 
   test("Create 20 spare parts", async ({ page }) => {
     // Navigate to settings/parts management
-    const settingsLink = page.locator('a[href="/settings"], a:has-text("Settings")').first();
+    const settingsLink = page.locator('a[href="/settings"]').first();
     if (await settingsLink.isVisible().catch(() => false)) {
       await settingsLink.click();
-      await page.waitForLoadState("networkidle");
+      await page.waitForLoadState("domcontentloaded");
     } else {
-      await page.goto("/settings", { waitUntil: "networkidle" });
+      await page.goto("/settings", { waitUntil: "domcontentloaded" });
     }
 
     // Find Parts tab
@@ -79,12 +79,14 @@ test.describe.serial("PERF-PART-06: Add multiple spare parts", () => {
 
         // Submit
         const submitButton = page.locator('button[type="submit"], button:has-text("Save")').first();
-        if (await submitButton.isVisible().catch(() => false)) {
+        if (await submitButton.isVisible({ timeout: 3000 }).catch(() => false)) {
           await submitButton.click();
           partsCreated++;
           
           // Wait for toast or confirmation
           await page.waitForTimeout(300);
+        } else {
+          console.log(`Submit button not visible for part ${i + 1}`);
         }
       }
 

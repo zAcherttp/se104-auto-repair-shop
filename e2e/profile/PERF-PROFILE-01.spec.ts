@@ -84,7 +84,7 @@ test.describe("PERF-PROFILE-01: Navigate to Employees Tab Performance", () => {
         await Promise.any([
           navigationPromise,
           page.waitForSelector('header', { state: 'visible', timeout: 60000 }).catch(() => null),
-          page.waitForSelector('a:has-text("Settings"), button:has-text("Settings")', { state: 'visible', timeout: 15000 }).catch(() => null),
+          page.waitForSelector('a[href="/settings"]', { state: 'visible', timeout: 15000 }).catch(() => null),
         ]);
         
         console.log(`   ✓ Logged in successfully`);

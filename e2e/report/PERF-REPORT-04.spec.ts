@@ -38,13 +38,13 @@ test.describe.serial("PERF-REPORT-04: Export report to PDF", () => {
       await navigateToReports(page);
 
       // Generate report first
-      const salesTab = page.locator('text=/Sales.*Report/i, button:has-text("Sales")').first();
-      if (await salesTab.isVisible().catch(() => false)) {
+      const salesTab = page.locator('[role="tab"]:has-text("Phân tích bán hàng"), button:has-text("Phân tích bán hàng")').first();
+      if (await salesTab.isVisible({ timeout: 3000 }).catch(() => false)) {
         await salesTab.click();
         await page.waitForTimeout(300);
       }
 
-      await page.waitForLoadState("networkidle");
+      await page.waitForLoadState("domcontentloaded");
       await page.waitForTimeout(1000);
 
       // Look for export/print button

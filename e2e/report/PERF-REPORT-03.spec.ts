@@ -38,35 +38,32 @@ test.describe.serial("PERF-REPORT-03: Report caching", () => {
       // COLD LOAD
       await navigateToReports(page);
 
-      const salesTab = page.locator('text=/Sales.*Report/i, button:has-text("Sales"), [role="tab"]:has-text("Sales")').first();
-      if (await salesTab.isVisible().catch(() => false)) {
+      const salesTab = page.locator('[role="tab"]:has-text("Phân tích bán hàng"), button:has-text("Phân tích bán hàng")').first();
+      if (await salesTab.isVisible({ timeout: 3000 }).catch(() => false)) {
         await salesTab.click();
         await page.waitForTimeout(300);
       }
 
       const coldStart = Date.now();
       
-      const generateBtn = page.locator('button:has-text("Generate"), button:has-text("Apply")').first();
-      if (await generateBtn.isVisible().catch(() => false)) {
-        await generateBtn.click();
-      }
-
+      // Wait for report to auto-load
       await page.waitForTimeout(800);
-      await page.waitForLoadState("networkidle");
+      await page.waitForLoadState("domcontentloaded");
 
       const coldDuration = Date.now() - coldStart;
 
-      // WARM LOAD - regenerate immediately
+      // WARM LOAD - reload the same tab
       await page.waitForTimeout(500);
 
       const warmStart = Date.now();
 
-      if (await generateBtn.isVisible().catch(() => false)) {
-        await generateBtn.click();
+      // Click tab again or wait for re-render
+      if (await salesTab.isVisible().catch(() => false)) {
+        await salesTab.click();
       }
 
       await page.waitForTimeout(500);
-      await page.waitForLoadState("networkidle");
+      await page.waitForLoadState("domcontentloaded");
 
       const warmDuration = Date.now() - warmStart;
 

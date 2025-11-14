@@ -57,7 +57,11 @@ test.describe.serial("PERF-PART-04: Update spare part stock", () => {
 
           // Save
           const saveButton = page.locator('button[type="submit"], button:has-text("Save")').first();
-          await saveButton.click();
+          if (await saveButton.isVisible({ timeout: 5000 }).catch(() => false)) {
+            await saveButton.click();
+          } else {
+            throw new Error('Save button not found');
+          }
 
           // Wait for success toast
           try {

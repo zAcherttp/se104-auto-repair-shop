@@ -65,12 +65,6 @@ test.describe("PERF-LOGIN-01: Login Form Performance", () => {
         throw new Error(`Form elements not found: ${error}`);
       }
       
-      // Take a screenshot for first attempt debugging
-      if (i === 1) {
-        await page.screenshot({ path: `test-results/login-form-${i}.png` });
-        console.log(`📸 Screenshot saved: login-form-${i}.png`);
-      }
-      
       // Fill email field using name attribute
       const emailInput = page.locator('input[name="email"]');
       await emailInput.clear();

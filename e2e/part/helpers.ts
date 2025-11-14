@@ -142,13 +142,15 @@ export async function navigateToInventory(page: Page) {
     const link = page.locator(selector).first();
     if (await link.isVisible().catch(() => false)) {
       await link.click();
-      await page.waitForLoadState("networkidle");
+      await page.waitForLoadState("domcontentloaded", { timeout: 15000 });
+      await page.waitForTimeout(500);
       return;
     }
   }
 
   // Fallback: direct navigation
-  await page.goto("/inventory", { waitUntil: "networkidle" });
+  await page.goto("/inventory", { waitUntil: "domcontentloaded", timeout: 15000 });
+  await page.waitForTimeout(500);
 }
 
 /**

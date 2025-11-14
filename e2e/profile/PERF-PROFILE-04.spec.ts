@@ -243,12 +243,45 @@ test.describe("PERF-PROFILE-04: Edit employee information - measure update opera
       ]).catch(() => null);
       const duration = Date.now() - start;
 
-      // Verify updated data visible in table (poll a few times)
+      // Wait for dialog to close
+      await page.waitForTimeout(500);
+      await page.waitForLoadState('networkidle');
+
+      // Verify updated data visible in table (poll for longer with more attempts)
       let visible = false;
-      for (let t = 0; t < 10; t++) {
+      for (let t = 0; t < 20; t++) {
         const cnt = await page.locator(`text=${updatedName}`).count();
-        if (cnt > 0) { visible = true; break; }
-        await page.waitForTimeout(200);
+        if (cnt > 0) { 
+          visible = true; 
+          break; 
+        }
+        await page.waitForTimeout(300);
+      }
+      
+      // If still not found, try searching for it
+      if (!visible) {
+        const searchSelectors = [
+          'input[placeholder*="Search"]',
+          'input[placeholder*="Tìm"]',
+          'input[aria-label*="search" i]',
+          'input[type="search"]',
+          'input[name="search"]',
+        ];
+        for (const sel of searchSelectors) {
+          const input = page.locator(sel).first();
+          try {
+            if ((await input.count()) > 0) {
+              await input.fill(updatedName);
+              await input.press('Enter').catch(() => null);
+              await page.waitForTimeout(500);
+              const cnt = await page.locator(`text=${updatedName}`).count();
+              if (cnt > 0) { 
+                visible = true; 
+                break; 
+              }
+            }
+          } catch {}
+        }
       }
 
       // Verify DB record updated

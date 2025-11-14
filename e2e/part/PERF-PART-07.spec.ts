@@ -35,7 +35,7 @@ test.describe.serial("PERF-PART-07: Edit spare part", () => {
     await loginUser(page);
     
     // Navigate to settings
-    const settingsLink = page.locator('a[href="/settings"], a:has-text("Settings")').first();
+    const settingsLink = page.locator('a[href="/settings"]').first();
     if (await settingsLink.isVisible().catch(() => false)) {
       await settingsLink.click();
     } else {
@@ -77,7 +77,11 @@ test.describe.serial("PERF-PART-07: Edit spare part", () => {
 
         // Save
         const saveButton = page.locator('button[type="submit"], button:has-text("Save")').first();
-        await saveButton.click();
+        if (await saveButton.isVisible({ timeout: 5000 }).catch(() => false)) {
+          await saveButton.click();
+        } else {
+          throw new Error('Save button not found');
+        }
 
         // Wait for success toast
         try {
