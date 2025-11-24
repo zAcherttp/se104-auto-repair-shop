@@ -1,9 +1,14 @@
 // Mock server actions to prevent Next.js server code from running in test environment
 
+// Mock login/auth actions
+export const Login = jest.fn();
+export const SignOut = jest.fn();
+
 // Mock vehicles actions
 export const createReception = jest.fn();
 export const updateRepairOrder = jest.fn();
 export const getVehicleRegistrations = jest.fn();
+export const removeVehicle = jest.fn();
 
 // Mock inventory actions
 export const addSparePart = jest.fn();
@@ -20,9 +25,12 @@ export const addCarBrand = jest.fn();
 
 // Export default for any default imports
 export default {
+  Login,
+  SignOut,
   createReception,
   updateRepairOrder,
   getVehicleRegistrations,
+  removeVehicle,
   addSparePart,
   checkAdminRole,
   getUserProfile,

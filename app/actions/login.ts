@@ -7,7 +7,7 @@ import { ApiResponse } from "@/types/types";
 
 export async function Login(
   credentials: LoginFormData,
-): Promise<ApiResponse<{ success: true }>> {
+): Promise<ApiResponse<{ success: any }>> {
   try {
     const supabase = await createClient();
 
@@ -28,7 +28,7 @@ export async function Login(
   } catch (error) {
     return {
       error: error instanceof Error ? error : new Error("Login failed"),
-      data: undefined,
+      data: { success: false },
     };
   }
 }

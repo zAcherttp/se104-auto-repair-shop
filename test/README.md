@@ -2,12 +2,39 @@
 
 ## Overview
 
-This test suite provides comprehensive unit testing for the Reports page and its components using Jest and React Testing Library. The tests follow professional testing conventions and ensure data accuracy, component behavior, and user interactions.
+This test suite provides comprehensive testing for the automobile repair shop application using Jest and React Testing Library.
+
+## Test Types
+
+### Unit Tests
+
+- **Location**: `test/components/`, `test/pages/`
+- **Purpose**: Component rendering, user interactions, mocked dependencies
+- **Coverage**: Reports page, sales/inventory tables, analytics charts
+
+### Integration Tests ✅
+
+- **Location**: `test/integration/`
+- **Purpose**: Real database workflows, multi-tenant isolation, end-to-end flows
+- **Coverage**: Reception, inventory, payments, RLS security
 
 ## Test Structure
 
 ```
 test/
+├── integration/                    # Integration tests (NEW)
+│   ├── setup/
+│   │   └── supabase-test.ts       # Test database clients
+│   ├── fixtures/
+│   │   ├── seed.ts                # DB seeding/cleanup
+│   │   └── factories.ts           # Test data factories
+│   ├── workflows/
+│   │   └── reception.test.ts      # Reception flow
+│   ├── modules/
+│   │   ├── inventory.test.ts      # Stock management
+│   │   └── payments.test.ts       # Payment processing
+│   └── security/
+│       └── rls.test.ts            # RLS & authentication
 ├── components/
 │   └── reports/
 │       ├── sales-table.test.tsx
@@ -23,6 +50,48 @@ test/
 ├── setup.js
 └── README.md
 ```
+
+## Running Tests
+
+### Unit Tests
+
+```bash
+pnpm test              # Run all unit tests
+pnpm test:watch        # Watch mode
+pnpm test -- --coverage
+```
+
+### Integration Tests
+
+```bash
+pnpm test:integration              # Run all integration tests
+pnpm test:integration:watch        # Watch mode
+pnpm test:integration reception    # Specific test file
+pnpm test:integration --coverage
+```
+
+## Integration Test Setup
+
+### Requirements
+
+1. Create `.env.test.local` from `.env.test.local.example`
+2. Set `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`
+3. **Use a dedicated test database** (never production!)
+
+### Test Coverage
+
+- ✅ **Reception Workflow** (10 tests): Customer → Vehicle → Repair Order
+- ✅ **Inventory Management** (8 tests): Stock updates with spare parts
+- ✅ **Payment Processing** (9 tests): Debt tracking, payment history
+- ✅ **RLS Security** (7 tests): Multi-tenant isolation, authentication
+
+### Test Patterns
+
+- Real Supabase database operations (no mocks)
+- Service role for admin operations
+- `beforeEach`: cleanupDatabase()
+- Factories for consistent test data
+- 30s timeout for database operations
 
 ## Key Features
 
