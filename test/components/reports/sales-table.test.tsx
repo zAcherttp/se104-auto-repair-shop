@@ -157,8 +157,10 @@ describe("SalesTable Data Layer", () => {
 
     render(<SalesTable data={dataWithLargeNumbers} />);
 
-    // Check large number formatting - the system uses US locale formatting in tests
-    expect(screen.getByText("1,000")).toBeTruthy(); // repair count with comma (US format)
+    // Check large number formatting - the actual format depends on locale settings
+    // The component uses toLocaleString() which can format as "1,000" or "1.000" depending on locale
+    const repairCountElement = screen.getByText(/1[.,]000/); // Accept both comma and dot as thousand separator
+    expect(repairCountElement).toBeTruthy();
     expect(screen.getByText("Luxury")).toBeTruthy(); // vehicle brand
   });
 
