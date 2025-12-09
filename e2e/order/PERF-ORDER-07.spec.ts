@@ -36,7 +36,8 @@ test.describe.serial("PERF-ORDER-07: Add multiple repair items to order", () => 
 
   test.beforeEach(async ({ page }) => {
     await loginUser(page);
-    await page.goto("/vehicles", { waitUntil: "networkidle" });
+    await page.goto("/vehicles", { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(500);
   });
 
   for (let run = 1; run <= REPEAT; run++) {
@@ -66,7 +67,7 @@ test.describe.serial("PERF-ORDER-07: Add multiple repair items to order", () => 
 
           // Submit
           const saveButton = page.locator('button:has-text("Add"), button:has-text("Save")').last();
-          if (await saveButton.isVisible().catch(() => false)) {
+          if (await saveButton.isVisible({ timeout: 3000 }).catch(() => false)) {
             await saveButton.click();
             itemsAdded++;
             await page.waitForTimeout(200);

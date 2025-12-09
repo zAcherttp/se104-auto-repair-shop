@@ -28,7 +28,8 @@ test.describe.serial("PERF-ORDER-02: Create new repair order", () => {
 
   test.beforeEach(async ({ page }) => {
     await loginUser(page);
-    await page.goto("/vehicles", { waitUntil: "networkidle" });
+    await page.goto("/vehicles", { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(500);
   });
 
   for (let run = 1; run <= REPEAT; run++) {
@@ -83,9 +84,14 @@ test.describe.serial("PERF-ORDER-02: Create new repair order", () => {
   }
 
   test.afterAll(async () => {
-    const successful = results.filter(r => r.success);
-    const durations = successful.map(r => r.duration).sort((a, b) => a - b);
-    const p95 = calculatePercentile(durations, 95);
+    if (results.length === 0) {
+      console.log('No test results collected');
+      return;
+    }
+
+    const successfulResults = results.filter(r => r.success);
+    const durations = successfulResults.map(r => r.duration).sort((a, b) => a - b);
+    const p95 = durations.length > 0 ? calculatePercentile(durations, 95) : 0;
 
     console.log("\n=== PERF-ORDER-02 Results ===");
     console.log(`p95: ${p95}ms`);

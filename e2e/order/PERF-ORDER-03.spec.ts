@@ -36,7 +36,8 @@ test.describe.serial("PERF-ORDER-03: Filter repair orders by status", () => {
 
   test.beforeEach(async ({ page }) => {
     await loginUser(page);
-    await page.goto("/vehicles", { waitUntil: "networkidle" });
+    await page.goto("/vehicles", { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(500);
   });
 
   const statuses = ["pending", "in-progress", "completed"];

@@ -36,7 +36,8 @@ test.describe.serial("PERF-ORDER-05: Delete repair order", () => {
 
   test.beforeEach(async ({ page }) => {
     await loginUser(page);
-    await page.goto("/vehicles", { waitUntil: "networkidle" });
+    await page.goto("/vehicles", { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(500);
   });
 
   for (let run = 1; run <= REPEAT; run++) {

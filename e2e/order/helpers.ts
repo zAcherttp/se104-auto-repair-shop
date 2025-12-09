@@ -14,15 +14,26 @@ export const TEST_CREDENTIALS = {
  * Login helper for tests
  */
 export async function loginUser(page: Page) {
-  await page.goto("/login", { waitUntil: "domcontentloaded" });
-  await page.waitForLoadState("networkidle");
+  // Navigate to login with full URL
+  await page.goto("http://localhost:3000/login", { waitUntil: "domcontentloaded", timeout: 15000 });
+  await page.waitForTimeout(1000);
 
+  // Wait for email input to be visible with retry
+  try {
+    await page.waitForSelector('input[name="email"]', { state: 'visible', timeout: 10000 });
+  } catch (e) {
+    // Retry navigation once if input not found
+    await page.goto("http://localhost:3000/login", { waitUntil: "domcontentloaded", timeout: 15000 });
+    await page.waitForTimeout(1000);
+    await page.waitForSelector('input[name="email"]', { state: 'visible', timeout: 10000 });
+  }
+  
   await page.fill('input[name="email"]', TEST_CREDENTIALS.email);
   await page.fill('input[name="password"]', TEST_CREDENTIALS.password);
 
   const navigationPromise = page.waitForURL((url) => {
     const urlStr = url.toString();
-    return urlStr.includes("/reception") || urlStr.includes("/home");
+    return urlStr.includes("/reception") || urlStr.includes("/home") || urlStr.includes("/vehicles");
   }, { timeout: 30000 });
 
   await page.click('button[type="submit"]');

@@ -36,7 +36,8 @@ test.describe.serial("PERF-ORDER-04: Update repair order details", () => {
 
   test.beforeEach(async ({ page }) => {
     await loginUser(page);
-    await page.goto("/vehicles", { waitUntil: "networkidle" });
+    await page.goto("/vehicles", { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(500);
   });
 
   for (let run = 1; run <= REPEAT; run++) {
@@ -64,7 +65,11 @@ test.describe.serial("PERF-ORDER-04: Update repair order details", () => {
 
       // Save changes
       const saveButton = page.locator('button[type="submit"], button:has-text("Save")').first();
-      await saveButton.click();
+      if (await saveButton.isVisible({ timeout: 5000 }).catch(() => false)) {
+        await saveButton.click();
+      } else {
+        throw new Error('Save button not found');
+      }
 
       // Wait for success toast
       try {

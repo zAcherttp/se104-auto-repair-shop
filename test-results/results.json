@@ -67,522 +67,20 @@
   },
   "suites": [
     {
-      "title": "report\\PERF-REPORT-01.spec.ts",
-      "file": "report/PERF-REPORT-01.spec.ts",
+      "title": "order\\PERF-ORDER-01.spec.ts",
+      "file": "order/PERF-ORDER-01.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "PERF-REPORT-01: Monthly revenue report",
-          "file": "report/PERF-REPORT-01.spec.ts",
-          "line": 27,
-          "column": 15,
-          "specs": [
-            {
-              "title": "Run 1/5: Generate sales report",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 15401,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Run 1: Generated report in 1008ms - 0 rows\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-14T10:40:07.895Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "6809b37b59755b4fabe7-5ada08db315a69d1f00a",
-              "file": "report/PERF-REPORT-01.spec.ts",
-              "line": 40,
-              "column": 9
-            },
-            {
-              "title": "Run 2/5: Generate sales report",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 8017,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Run 2: Generated report in 1018ms - 0 rows\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-14T10:40:25.008Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "6809b37b59755b4fabe7-a01509ce103acdda4a78",
-              "file": "report/PERF-REPORT-01.spec.ts",
-              "line": 40,
-              "column": 9
-            },
-            {
-              "title": "Run 3/5: Generate sales report",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 6910,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Run 3: Generated report in 1019ms - 0 rows\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-14T10:40:33.080Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "6809b37b59755b4fabe7-076e097b621a1987cafe",
-              "file": "report/PERF-REPORT-01.spec.ts",
-              "line": 40,
-              "column": 9
-            },
-            {
-              "title": "Run 4/5: Generate sales report",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 7301,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Run 4: Generated report in 1010ms - 0 rows\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-14T10:40:40.028Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "6809b37b59755b4fabe7-90abee1bd01e6f51ecd6",
-              "file": "report/PERF-REPORT-01.spec.ts",
-              "line": 40,
-              "column": 9
-            },
-            {
-              "title": "Run 5/5: Generate sales report",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 6859,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Run 5: Generated report in 1013ms - 0 rows\n"
-                        },
-                        {
-                          "text": "\n=== PERF-REPORT-01 Results ===\n"
-                        },
-                        {
-                          "text": "p95: 1019ms\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-14T10:40:47.358Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "6809b37b59755b4fabe7-f6f213950ad991c20dac",
-              "file": "report/PERF-REPORT-01.spec.ts",
-              "line": 40,
-              "column": 9
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "report\\PERF-REPORT-02.spec.ts",
-      "file": "report/PERF-REPORT-02.spec.ts",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "PERF-REPORT-02: Monthly inventory report",
-          "file": "report/PERF-REPORT-02.spec.ts",
-          "line": 25,
-          "column": 15,
-          "specs": [
-            {
-              "title": "Run 1/5: Generate inventory report",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 6636,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Run 1: Generated inventory report in 1014ms - 0 rows\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-14T10:40:54.951Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "929d38c29d2983a60322-60fa8972caca1a6cda7d",
-              "file": "report/PERF-REPORT-02.spec.ts",
-              "line": 38,
-              "column": 9
-            },
-            {
-              "title": "Run 2/5: Generate inventory report",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 6646,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Run 2: Generated inventory report in 1015ms - 0 rows\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-14T10:41:01.752Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "929d38c29d2983a60322-bd330a8682732ac5717f",
-              "file": "report/PERF-REPORT-02.spec.ts",
-              "line": 38,
-              "column": 9
-            },
-            {
-              "title": "Run 3/5: Generate inventory report",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 7171,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Run 3: Generated inventory report in 1017ms - 0 rows\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-14T10:41:08.434Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "929d38c29d2983a60322-dca01bdac2cf695ee4a8",
-              "file": "report/PERF-REPORT-02.spec.ts",
-              "line": 38,
-              "column": 9
-            },
-            {
-              "title": "Run 4/5: Generate inventory report",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 6401,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Run 4: Generated inventory report in 1012ms - 0 rows\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-14T10:41:15.643Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "929d38c29d2983a60322-ad5b8ac70fdf237abe07",
-              "file": "report/PERF-REPORT-02.spec.ts",
-              "line": 38,
-              "column": 9
-            },
-            {
-              "title": "Run 5/5: Generate inventory report",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 7528,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Run 5: Generated inventory report in 1008ms - 0 rows\n"
-                        },
-                        {
-                          "text": "\n=== PERF-REPORT-02 Results ===\n"
-                        },
-                        {
-                          "text": "p95: 1017ms\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-14T10:41:22.078Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "929d38c29d2983a60322-65736c28acbe731fbd36",
-              "file": "report/PERF-REPORT-02.spec.ts",
-              "line": 38,
-              "column": 9
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "report\\PERF-REPORT-03.spec.ts",
-      "file": "report/PERF-REPORT-03.spec.ts",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "PERF-REPORT-03: Report caching",
-          "file": "report/PERF-REPORT-03.spec.ts",
+          "title": "PERF-ORDER-01: Navigate to Vehicles page",
+          "file": "order/PERF-ORDER-01.spec.ts",
           "line": 24,
           "column": 15,
           "specs": [
             {
-              "title": "Run 1/3: Cold vs Warm load",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 7712,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Run 1: COLD=817ms, WARM=568ms\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-14T10:41:30.317Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "8c09d5c52aaef87a85db-27d67066b6a88e04eb86",
-              "file": "report/PERF-REPORT-03.spec.ts",
-              "line": 37,
-              "column": 9
-            },
-            {
-              "title": "Run 2/3: Cold vs Warm load",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 8092,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Run 2: COLD=809ms, WARM=560ms\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-14T10:41:38.350Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "8c09d5c52aaef87a85db-12d637ee0fc30dc5b33f",
-              "file": "report/PERF-REPORT-03.spec.ts",
-              "line": 37,
-              "column": 9
-            },
-            {
-              "title": "Run 3/3: Cold vs Warm load",
+              "title": "Run 1/3: Measure page load and LCP",
               "ok": false,
               "tags": [],
               "tests": [
@@ -597,261 +95,65 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 7382,
+                      "duration": 11817,
                       "error": {
-                        "message": "Error: Cache should reduce latency by ≥40%\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m40\u001b[39m\nReceived:    \u001b[31m28.782894736842096\u001b[39m",
-                        "stack": "Error: Cache should reduce latency by ≥40%\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m40\u001b[39m\nReceived:    \u001b[31m28.782894736842096\u001b[39m\n    at D:\\Github\\se104-auto-repair-shop\\e2e\\report\\PERF-REPORT-03.spec.ts:107:62",
+                        "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]') to be visible\u001b[22m\n",
+                        "stack": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]') to be visible\u001b[22m\n\n    at loginUser (D:\\Github\\se104-auto-repair-shop\\e2e\\order\\helpers.ts:21:14)\n    at D:\\Github\\se104-auto-repair-shop\\e2e\\order\\PERF-ORDER-01.spec.ts:29:5",
                         "location": {
-                          "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\report\\PERF-REPORT-03.spec.ts",
-                          "column": 62,
-                          "line": 107
+                          "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\order\\helpers.ts",
+                          "column": 14,
+                          "line": 21
                         },
-                        "snippet": "\u001b[0m \u001b[90m 105 |\u001b[39m     expect(avgCold\u001b[33m,\u001b[39m \u001b[32m`Average cold load should be ≤ 2500ms`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2500\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 106 |\u001b[39m     expect(avgWarm\u001b[33m,\u001b[39m \u001b[32m`Average warm load should be ≤ 900ms`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m900\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 107 |\u001b[39m     expect(reduction\u001b[33m,\u001b[39m \u001b[32m`Cache should reduce latency by ≥40%`\u001b[39m)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m40\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 108 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 109 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 110 |\u001b[39m\u001b[0m"
+                        "snippet": "\u001b[90m   at \u001b[39morder\\helpers.ts:21\n\n\u001b[0m \u001b[90m 19 |\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[90m// Wait for email input to be visible\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m { state\u001b[33m:\u001b[39m \u001b[32m'visible'\u001b[39m\u001b[33m,\u001b[39m timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 22 |\u001b[39m   \n \u001b[90m 23 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[33mTEST_CREDENTIALS\u001b[39m\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[33mTEST_CREDENTIALS\u001b[39m\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
-                            "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\report\\PERF-REPORT-03.spec.ts",
-                            "column": 62,
-                            "line": 107
+                            "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\order\\helpers.ts",
+                            "column": 14,
+                            "line": 21
                           },
-                          "message": "Error: Cache should reduce latency by ≥40%\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m40\u001b[39m\nReceived:    \u001b[31m28.782894736842096\u001b[39m\n\n\u001b[0m \u001b[90m 105 |\u001b[39m     expect(avgCold\u001b[33m,\u001b[39m \u001b[32m`Average cold load should be ≤ 2500ms`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2500\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 106 |\u001b[39m     expect(avgWarm\u001b[33m,\u001b[39m \u001b[32m`Average warm load should be ≤ 900ms`\u001b[39m)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m900\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 107 |\u001b[39m     expect(reduction\u001b[33m,\u001b[39m \u001b[32m`Cache should reduce latency by ≥40%`\u001b[39m)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m40\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 108 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 109 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 110 |\u001b[39m\u001b[0m\n\u001b[2m    at D:\\Github\\se104-auto-repair-shop\\e2e\\report\\PERF-REPORT-03.spec.ts:107:62\u001b[22m"
+                          "message": "TimeoutError: page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]') to be visible\u001b[22m\n\n\n\u001b[90m   at \u001b[39morder\\helpers.ts:21\n\n\u001b[0m \u001b[90m 19 |\u001b[39m\n \u001b[90m 20 |\u001b[39m   \u001b[90m// Wait for email input to be visible\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForSelector(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m { state\u001b[33m:\u001b[39m \u001b[32m'visible'\u001b[39m\u001b[33m,\u001b[39m timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 22 |\u001b[39m   \n \u001b[90m 23 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[33mTEST_CREDENTIALS\u001b[39m\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[33mTEST_CREDENTIALS\u001b[39m\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at loginUser (D:\\Github\\se104-auto-repair-shop\\e2e\\order\\helpers.ts:21:14)\u001b[22m\n\u001b[2m    at D:\\Github\\se104-auto-repair-shop\\e2e\\order\\PERF-ORDER-01.spec.ts:29:5\u001b[22m"
                         }
                       ],
                       "stdout": [
                         {
-                          "text": "Run 3: COLD=806ms, WARM=604ms\n"
-                        },
-                        {
-                          "text": "\n=== PERF-REPORT-03 Results ===\n"
-                        },
-                        {
-                          "text": "Avg Cold: 811ms\n"
-                        },
-                        {
-                          "text": "Avg Warm: 577ms\n"
-                        },
-                        {
-                          "text": "Reduction: 28.8%\n"
+                          "text": "No test results collected - all tests may have failed\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-14T10:41:46.479Z",
+                      "startTime": "2025-12-09T06:08:54.361Z",
                       "annotations": [],
-                      "attachments": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\Github\\se104-auto-repair-shop\\test-results\\order-PERF-ORDER-01-PERF-O-ca7b7-3-Measure-page-load-and-LCP-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\Github\\se104-auto-repair-shop\\test-results\\order-PERF-ORDER-01-PERF-O-ca7b7-3-Measure-page-load-and-LCP-chromium\\error-context.md"
+                        }
+                      ],
                       "errorLocation": {
-                        "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\report\\PERF-REPORT-03.spec.ts",
-                        "column": 62,
-                        "line": 107
+                        "file": "D:\\Github\\se104-auto-repair-shop\\e2e\\order\\helpers.ts",
+                        "column": 14,
+                        "line": 21
                       }
                     }
                   ],
                   "status": "unexpected"
                 }
               ],
-              "id": "8c09d5c52aaef87a85db-040929bb4d5fb85093cc",
-              "file": "report/PERF-REPORT-03.spec.ts",
-              "line": 37,
-              "column": 9
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "report\\PERF-REPORT-04.spec.ts",
-      "file": "report/PERF-REPORT-04.spec.ts",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "PERF-REPORT-04: Export report to PDF",
-          "file": "report/PERF-REPORT-04.spec.ts",
-          "line": 24,
-          "column": 15,
-          "specs": [
-            {
-              "title": "Run 1/3: Export report",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 7757,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Run 1: No export button found\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-14T10:42:02.428Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "d740018a89ef1f8e8ef1-76f38b080201299ae382",
-              "file": "report/PERF-REPORT-04.spec.ts",
-              "line": 37,
-              "column": 9
-            },
-            {
-              "title": "Run 2/3: Export report",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 6856,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Run 2: No export button found\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-14T10:42:11.129Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "d740018a89ef1f8e8ef1-e004e6c31c9149908571",
-              "file": "report/PERF-REPORT-04.spec.ts",
-              "line": 37,
-              "column": 9
-            },
-            {
-              "title": "Run 3/3: Export report",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 6909,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Run 3: No export button found\n"
-                        },
-                        {
-                          "text": "\n=== PERF-REPORT-04 Results ===\n"
-                        },
-                        {
-                          "text": "Avg Duration: 0ms\n"
-                        },
-                        {
-                          "text": "Export Rate: 0%\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-14T10:42:18.039Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "d740018a89ef1f8e8ef1-a4649a6a75f3105a46a2",
-              "file": "report/PERF-REPORT-04.spec.ts",
-              "line": 37,
-              "column": 9
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "report\\PERF-REPORT-05.spec.ts",
-      "file": "report/PERF-REPORT-05.spec.ts",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "PERF-REPORT-05: Reports dashboard page load",
-          "file": "report/PERF-REPORT-05.spec.ts",
-          "line": 24,
-          "column": 15,
-          "specs": [
-            {
-              "title": "Run 1/3: Measure page load",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 8467,
-                      "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Run 1: LCP=1144ms, LoadTime=4665ms, Tabs=true\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-11-14T10:42:25.822Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "fd744b84d9eab34368db-fca9dabc3a0050ab6827",
-              "file": "report/PERF-REPORT-05.spec.ts",
+              "id": "258f12899b10fe7f34c2-caaaaa4cf2de08ea0a75",
+              "file": "order/PERF-ORDER-01.spec.ts",
               "line": 33,
               "column": 9
             },
             {
-              "title": "Run 2/3: Measure page load",
+              "title": "Run 2/3: Measure page load and LCP",
               "ok": true,
               "tags": [],
               "tests": [
@@ -863,33 +165,29 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 8191,
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
                       "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Run 2: LCP=1244ms, LoadTime=5087ms, Tabs=true\n"
-                        }
-                      ],
+                      "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-14T10:42:34.332Z",
+                      "startTime": "2025-12-09T06:09:06.912Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "expected"
+                  "status": "skipped"
                 }
               ],
-              "id": "fd744b84d9eab34368db-224a760dcea9973b313a",
-              "file": "report/PERF-REPORT-05.spec.ts",
+              "id": "258f12899b10fe7f34c2-afe5617df3765ee8c751",
+              "file": "order/PERF-ORDER-01.spec.ts",
               "line": 33,
               "column": 9
             },
             {
-              "title": "Run 3/3: Measure page load",
+              "title": "Run 3/3: Measure page load and LCP",
               "ok": true,
               "tags": [],
               "tests": [
@@ -901,37 +199,24 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 7924,
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
                       "errors": [],
-                      "stdout": [
-                        {
-                          "text": "Run 3: LCP=920ms, LoadTime=4821ms, Tabs=true\n"
-                        },
-                        {
-                          "text": "\n=== PERF-REPORT-05 Results ===\n"
-                        },
-                        {
-                          "text": "Median LCP: 1144ms\n"
-                        },
-                        {
-                          "text": "Avg Load Time: 4858ms\n"
-                        }
-                      ],
+                      "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-11-14T10:42:42.559Z",
+                      "startTime": "2025-12-09T06:09:06.914Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "expected"
+                  "status": "skipped"
                 }
               ],
-              "id": "fd744b84d9eab34368db-51d8041766235715cf40",
-              "file": "report/PERF-REPORT-05.spec.ts",
+              "id": "258f12899b10fe7f34c2-abe6ffb8c722b4444fef",
+              "file": "order/PERF-ORDER-01.spec.ts",
               "line": 33,
               "column": 9
             }
@@ -942,10 +227,10 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-11-14T10:40:02.812Z",
-    "duration": 167865.60400000002,
-    "expected": 18,
-    "skipped": 0,
+    "startTime": "2025-12-09T06:08:45.350Z",
+    "duration": 21928.668,
+    "expected": 0,
+    "skipped": 2,
     "unexpected": 1,
     "flaky": 0
   }

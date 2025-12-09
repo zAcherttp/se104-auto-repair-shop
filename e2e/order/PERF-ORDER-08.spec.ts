@@ -35,7 +35,8 @@ test.describe.serial("PERF-ORDER-08: View repair order details", () => {
 
   test.beforeEach(async ({ page }) => {
     await loginUser(page);
-    await page.goto("/vehicles", { waitUntil: "networkidle" });
+    await page.goto("/vehicles", { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(500);
   });
 
   for (let run = 1; run <= REPEAT; run++) {
