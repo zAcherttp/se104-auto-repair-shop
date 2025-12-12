@@ -4,9 +4,6 @@
  * Configures the test environment before running integration tests
  */
 
-// Set test environment variables
-process.env.NODE_ENV = "test";
-
 // Increase test timeout for database operations
 jest.setTimeout(30000);
 
