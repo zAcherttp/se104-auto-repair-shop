@@ -1,71 +1,74 @@
 import { useQuery } from "@tanstack/react-query";
 import {
-    getInventoryAnalytics,
-    getInventoryReport,
-    getSalesAnalytics,
-    getSalesReport,
+  getInventoryAnalytics,
+  getInventoryReport,
+  getSalesAnalytics,
+  getSalesReport,
 } from "@/app/actions/reports";
-import { ReportPeriod } from "@/types/reports";
+import type { ReportPeriod } from "@/types/reports";
 
 export const useReportsQuery = (period: ReportPeriod) => {
-    const salesQuery = useQuery({
-        queryKey: [
-            "sales-analytics",
-            period.from?.toISOString(),
-            period.to?.toISOString(),
-        ],
-        queryFn: () => getSalesAnalytics(period),
-        enabled: Boolean(period.from && period.to),
-    });
+  const salesQuery = useQuery({
+    queryKey: [
+      "sales-analytics",
+      period.from?.toISOString(),
+      period.to?.toISOString(),
+    ],
+    queryFn: () => getSalesAnalytics(period),
+    enabled: Boolean(period.from && period.to),
+  });
 
-    const inventoryQuery = useQuery({
-        queryKey: [
-            "inventory-analytics",
-            period.from?.toISOString(),
-            period.to?.toISOString(),
-        ],
-        queryFn: () => getInventoryAnalytics(),
-        enabled: Boolean(period.from && period.to),
-    });
+  const inventoryQuery = useQuery({
+    queryKey: [
+      "inventory-analytics",
+      period.from?.toISOString(),
+      period.to?.toISOString(),
+    ],
+    queryFn: () => getInventoryAnalytics(),
+    enabled: Boolean(period.from && period.to),
+  });
 
-    const b51Query = useQuery({
-        queryKey: [
-            "b51-sales-report",
-            period.from?.toISOString(),
-            period.to?.toISOString(),
-        ],
-        queryFn: () => getSalesReport(period),
-        enabled: Boolean(period.from && period.to),
-    });
+  const b51Query = useQuery({
+    queryKey: [
+      "b51-sales-report",
+      period.from?.toISOString(),
+      period.to?.toISOString(),
+    ],
+    queryFn: () => getSalesReport(period),
+    enabled: Boolean(period.from && period.to),
+  });
 
-    const b52Query = useQuery({
-        queryKey: [
-            "b52-inventory-report",
-            period.from?.toISOString(),
-            period.to?.toISOString(),
-        ],
-        queryFn: () => getInventoryReport(period),
-        enabled: Boolean(period.from && period.to),
-    });
+  const b52Query = useQuery({
+    queryKey: [
+      "b52-inventory-report",
+      period.from?.toISOString(),
+      period.to?.toISOString(),
+    ],
+    queryFn: () => getInventoryReport(period),
+    enabled: Boolean(period.from && period.to),
+  });
 
-    return {
-        salesAnalytics: salesQuery.data?.data,
-        inventoryAnalytics: inventoryQuery.data?.data,
-        b51Report: b51Query.data?.data,
-        b52Report: b52Query.data?.data,
-        isLoading: salesQuery.isLoading || inventoryQuery.isLoading ||
-            b51Query.isLoading || b52Query.isLoading,
-        errors: {
-            sales: salesQuery.data?.error,
-            inventory: inventoryQuery.data?.error,
-            b51: b51Query.data?.error,
-            b52: b52Query.data?.error,
-        },
-        refetch: () => {
-            salesQuery.refetch();
-            inventoryQuery.refetch();
-            b51Query.refetch();
-            b52Query.refetch();
-        },
-    };
+  return {
+    salesAnalytics: salesQuery.data?.data,
+    inventoryAnalytics: inventoryQuery.data?.data,
+    b51Report: b51Query.data?.data,
+    b52Report: b52Query.data?.data,
+    isLoading:
+      salesQuery.isLoading ||
+      inventoryQuery.isLoading ||
+      b51Query.isLoading ||
+      b52Query.isLoading,
+    errors: {
+      sales: salesQuery.data?.error,
+      inventory: inventoryQuery.data?.error,
+      b51: b51Query.data?.error,
+      b52: b52Query.data?.error,
+    },
+    refetch: () => {
+      salesQuery.refetch();
+      inventoryQuery.refetch();
+      b51Query.refetch();
+      b52Query.refetch();
+    },
+  };
 };

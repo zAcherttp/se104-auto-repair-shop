@@ -1,32 +1,32 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
+import { Car, User } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
+import { toast } from "sonner";
+import { updateRepairOrderSmart } from "@/app/actions/vehicles";
+import SubmitButton from "@/components/submit-button";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Car, User } from "lucide-react";
-import { useLineItems } from "@/hooks/use-line-items";
-import { useEmployees } from "@/hooks/use-employees";
-import { ScrollArea } from "../../ui/scroll-area";
-import { LineItemDataTable } from "./data-table";
-import { createLineItemColumns, LineItem } from "./columns";
-import { Textarea } from "@/components/ui/textarea";
-import { UpdateDialogProps, UpdateData } from "@/types/dialog";
-import SubmitButton from "@/components/submit-button";
-import { toast } from "sonner";
-import { updateRepairOrderSmart } from "@/app/actions/vehicles";
-import { useQueryClient } from "@tanstack/react-query";
-import { VEHICLE_REGISTRATION_QUERY_KEY } from "@/hooks/use-vehicle-registration";
-import { Separator } from "@/components/ui/separator";
-import { useTranslations } from "next-intl";
 import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
+import { useEmployees } from "@/hooks/use-employees";
+import { useLineItems } from "@/hooks/use-line-items";
+import { VEHICLE_REGISTRATION_QUERY_KEY } from "@/hooks/use-vehicle-registration";
+import type { UpdateData, UpdateDialogProps } from "@/types/dialog";
+import { ScrollArea } from "../../ui/scroll-area";
+import { createLineItemColumns, type LineItem } from "./columns";
+import { LineItemDataTable } from "./data-table";
 
 export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
   const t = useTranslations("updateRepairOrder");
@@ -91,7 +91,7 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
       const result = await updateRepairOrderSmart(
         data.repair_order.id,
         getTotalAmount(),
-        changes
+        changes,
       );
 
       if (result?.error) {
@@ -123,7 +123,7 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="p-0 max-h-[85vh] max-w-[90vw] md:max-h-[85vh] md:max-w-[70vw] lg:max-w-[70vw]">
+      <DialogContent className="max-h-[85vh] max-w-[90vw] p-0 md:max-h-[85vh] md:max-w-[70vw] lg:max-w-[70vw]">
         <ScrollArea className="max-h-[80vh]">
           <div className="p-4">
             <DialogHeader className="pb-4">
@@ -131,14 +131,14 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
             </DialogHeader>
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-6">
-                <Card className="p-4 gap-0">
+                <Card className="gap-0 p-4">
                   <CardHeader className="p-0 pb-2">
                     <CardTitle className="flex items-center gap-1.5 font-medium">
                       <Car className="h-4 w-4" />
                       {t("vehicle")}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="p-0 space-y-1">
+                  <CardContent className="space-y-1 p-0">
                     <div className="flex justify-between">
                       <Label className="text-muted-foreground">
                         {t("license")}
@@ -158,14 +158,14 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
                   </CardContent>
                 </Card>
 
-                <Card className="p-4 gap-0">
+                <Card className="gap-0 p-4">
                   <CardHeader className="p-0 pb-2">
                     <CardTitle className="flex items-center gap-1.5 font-medium">
                       <User className="h-4 w-4" />
                       {t("customer")}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="p-0 space-y-1 ">
+                  <CardContent className="space-y-1 p-0">
                     <div className="flex justify-between">
                       <Label className="text-muted-foreground">
                         {t("name")}
@@ -191,7 +191,7 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
                   {isLoadingItems ? (
                     <div className="flex items-center justify-center py-8">
                       <div className="text-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                        <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-blue-600 border-b-2" />
                         <p className="text-gray-500">
                           {t("loadingRepairItems")}
                         </p>
@@ -221,13 +221,13 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     placeholder={t("notesPlaceholder")}
-                    className="w-full h-24 border rounded-md resize-none "
+                    className="h-24 w-full resize-none rounded-md border"
                   />
                   <Separator />
                   {/* Total Summary */}
-                  <div className="flex justify-between items-center">
+                  <div className="flex items-center justify-between">
                     <p className="font-medium">{t("totalAmount")}</p>
-                    <p className="text-xl font-bold">
+                    <p className="font-bold text-xl">
                       {new Intl.NumberFormat("en-US", {
                         style: "currency",
                         currency: "USD",
@@ -246,7 +246,7 @@ export function UpdateDialog({ trigger, data, onSuccess }: UpdateDialogProps) {
                 disabled={isLoading}
                 onClick={handleUpdate}
                 type="button"
-                className="bg-blue-600 hover:bg-blue-700 w-45"
+                className="w-45 bg-blue-600 hover:bg-blue-700"
               >
                 {t("updateButton")}
               </SubmitButton>

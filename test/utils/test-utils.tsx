@@ -1,6 +1,7 @@
-import React, { ReactElement } from "react";
-import { render, RenderOptions } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { type RenderOptions, render } from "@testing-library/react";
+import type React from "react";
+import type { ReactElement } from "react";
 
 // Custom render function that includes providers
 const createTestQueryClient = () => {

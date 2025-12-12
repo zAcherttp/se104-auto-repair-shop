@@ -54,7 +54,7 @@ console.error = (...args) => {
   if (
     args[0]?.includes?.("Warning: ReactDOM.render is no longer supported") ||
     args[0]?.includes?.(
-      'Warning: Each child in a list should have a unique "key" prop'
+      'Warning: Each child in a list should have a unique "key" prop',
     )
   ) {
     return;

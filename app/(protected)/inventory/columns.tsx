@@ -1,11 +1,11 @@
 "use client";
 
+import type { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
-import { SparePart } from "@/types/types";
-import { ColumnDef } from "@tanstack/react-table";
-import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
+import type { SparePart } from "@/types/types";
 
 // Extended type to include calculated ending stock
 export interface SparePartWithEndingStock extends SparePart {
@@ -13,7 +13,7 @@ export interface SparePartWithEndingStock extends SparePart {
 }
 
 export const createColumns = (
-  t: (key: string) => string
+  t: (key: string) => string,
 ): ColumnDef<SparePartWithEndingStock>[] => [
   {
     accessorKey: "name",
@@ -35,7 +35,7 @@ export const createColumns = (
     },
     accessorKey: "price",
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("price"));
+      const amount = Number.parseFloat(row.getValue("price"));
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -80,7 +80,7 @@ export const createColumns = (
           >
             {getStockText(quantity)}
           </Badge>
-          <div className="text-sm font-medium">
+          <div className="font-medium text-sm">
             {quantity} {t("stockStatus.units")}
           </div>
         </div>
@@ -103,7 +103,7 @@ export const createColumns = (
       return (
         <div className="flex flex-col">
           <Label>{date.toLocaleDateString()}</Label>
-          <Label className="text-xs text-muted-foreground">
+          <Label className="text-muted-foreground text-xs">
             {date.toLocaleTimeString()}
           </Label>
         </div>

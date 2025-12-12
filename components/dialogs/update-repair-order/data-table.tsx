@@ -1,14 +1,24 @@
 "use client";
 
-import * as React from "react";
 import {
-  ColumnDef,
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronsLeftIcon,
+  ChevronsRightIcon,
+  Plus,
+} from "lucide-react";
+import { useTranslations } from "next-intl";
+import * as React from "react";
+import { useCallback, useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import {
   Table,
   TableBody,
@@ -17,17 +27,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ChevronsLeftIcon,
-  ChevronsRightIcon,
-  Plus,
-} from "lucide-react";
-import { useState, useMemo, useCallback } from "react";
-import { useTranslations } from "next-intl";
-import { Label } from "@/components/ui/label";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -44,7 +43,7 @@ interface DataTableProps<TData, TValue> {
 // Memoized data table component to prevent unnecessary re-renders
 export const LineItemDataTable = React.memo(function LineItemDataTable<
   TData,
-  TValue
+  TValue,
 >({
   columns,
   data,
@@ -93,7 +92,7 @@ export const LineItemDataTable = React.memo(function LineItemDataTable<
       onRevertData,
       onRemoveRow,
       onAddRow,
-    ]
+    ],
   );
 
   const table = useReactTable({
@@ -106,14 +105,14 @@ export const LineItemDataTable = React.memo(function LineItemDataTable<
 
   return (
     <>
-      <div className="font-medium pb-4 flex justify-between items-center w-full">
+      <div className="flex w-full items-center justify-between pb-4 font-medium">
         <Label>{t("repairLineItems")}</Label>
         <Button size="sm" onClick={handleAddRow}>
-          <Plus className="h-4 w-4 mr-2" />
+          <Plus className="mr-2 h-4 w-4" />
           {t("addItem")}
         </Button>
       </div>
-      <div className="rounded-md border w-full">
+      <div className="w-full rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -125,7 +124,7 @@ export const LineItemDataTable = React.memo(function LineItemDataTable<
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -144,7 +143,7 @@ export const LineItemDataTable = React.memo(function LineItemDataTable<
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -165,13 +164,13 @@ export const LineItemDataTable = React.memo(function LineItemDataTable<
       </div>
 
       <div className="flex items-center justify-between space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        <div className="flex-1 text-muted-foreground text-sm">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div className="flex items-center space-x-6 lg:space-x-8">
           <div className="flex items-center space-x-2">
-            <p className="text-sm font-medium">{t("rowsPerPage")}</p>
+            <p className="font-medium text-sm">{t("rowsPerPage")}</p>
             <select
               value={table.getState().pagination.pageSize}
               onChange={(e) => {
@@ -185,7 +184,7 @@ export const LineItemDataTable = React.memo(function LineItemDataTable<
               ))}
             </select>
           </div>
-          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+          <div className="flex w-[100px] items-center justify-center font-medium text-sm">
             {t("page")} {table.getState().pagination.pageIndex + 1} {t("of")}{" "}
             {table.getPageCount()}
           </div>
@@ -232,5 +231,5 @@ export const LineItemDataTable = React.memo(function LineItemDataTable<
     </>
   );
 }) as <TData, TValue>(
-  props: DataTableProps<TData, TValue>
+  props: DataTableProps<TData, TValue>,
 ) => React.JSX.Element;

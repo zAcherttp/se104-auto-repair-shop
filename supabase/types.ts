@@ -372,29 +372,26 @@ export type Tables<
     | { schema: keyof Database },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof Database;
-  } ? keyof (
-      & Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-      & Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"]
-    )
+  }
+    ? keyof (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database } ? (
-    & Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    & Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"]
-  )[TableName] extends {
-    Row: infer R;
-  } ? R
-  : never
-  : DefaultSchemaTableNameOrOptions extends keyof (
-    & DefaultSchema["Tables"]
-    & DefaultSchema["Views"]
-  ) ? (
-      & DefaultSchema["Tables"]
-      & DefaultSchema["Views"]
-    )[DefaultSchemaTableNameOrOptions] extends {
+> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
+  ? (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R;
-    } ? R
+    }
+    ? R
     : never
-  : never;
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R;
+      }
+      ? R
+      : never
+    : never;
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
@@ -402,18 +399,19 @@ export type TablesInsert<
     | { schema: keyof Database },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof Database;
-  } ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+  }
+    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][
-    TableName
-  ] extends {
-    Insert: infer I;
-  } ? I
-  : never
+  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I;
+    }
+    ? I
+    : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
     ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-      Insert: infer I;
-    } ? I
-    : never
-  : never;
+        Insert: infer I;
+      }
+      ? I
+      : never
+    : never;

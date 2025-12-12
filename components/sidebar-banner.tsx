@@ -1,15 +1,15 @@
 "use client";
 
+import type { LucideIcon } from "lucide-react";
+import { Poppins } from "next/font/google";
+import { useRouter } from "next/navigation";
 import * as React from "react";
+import { memo } from "react";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "../components/ui/sidebar";
-import { LucideIcon } from "lucide-react";
-import { Poppins } from "next/font/google";
-import { memo } from "react";
-import { useRouter } from "next/navigation";
 import { Label } from "./ui/label";
 
 const poppins = Poppins({
@@ -34,12 +34,12 @@ export const AppBanner = memo(function AppBanner({
           onClick={() => router.push("/reception")}
           className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
         >
-          <div className="flex gap-2 aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+          <div className="flex aspect-square size-8 items-center justify-center gap-2 rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
             <garage.logo className="h-6 w-6" />
           </div>
           <div className="grid flex-1 text-left text-sm leading-tight">
             <Label
-              className={`${poppins.variable} truncate font-semibold text-xl text-foreground`}
+              className={`${poppins.variable} truncate font-semibold text-foreground text-xl`}
             >
               {garage.name}
             </Label>

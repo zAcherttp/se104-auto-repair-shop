@@ -1,5 +1,9 @@
 "use client";
 
+import { Calendar, Package, Wrench } from "lucide-react";
+import { type ReactNode, useState } from "react";
+import LoadingSpinner from "@/components/loading-spinner";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -9,10 +13,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { PaymentWithDetails } from "@/types";
-import { ReactNode, useState } from "react";
-import { usePaymentReceipt } from "@/hooks/use-payment-receipt";
-import LoadingSpinner from "@/components/loading-spinner";
 import {
   Table,
   TableBody,
@@ -21,8 +21,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, Package, Wrench } from "lucide-react";
+import { usePaymentReceipt } from "@/hooks/use-payment-receipt";
+import type { PaymentWithDetails } from "@/types";
 
 interface InvoiceDialogProps {
   trigger: ReactNode;
@@ -57,7 +57,7 @@ export function InvoiceDialog({ trigger, payment }: InvoiceDialogProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
 
-      <DialogContent className="p-6 max-h-[85vh] max-w-[60vw] md:max-h-[85vh] md:max-w-[50vw] lg:max-w-[50vw] overflow-y-scroll overflow-x-auto">
+      <DialogContent className="max-h-[85vh] max-w-[60vw] overflow-x-auto overflow-y-scroll p-6 md:max-h-[85vh] md:max-w-[50vw] lg:max-w-[50vw]">
         <DialogHeader>
           <DialogTitle>Payment Receipt</DialogTitle>
           <DialogDescription>
@@ -72,7 +72,7 @@ export function InvoiceDialog({ trigger, payment }: InvoiceDialogProps) {
         ) : null}
 
         {error ? (
-          <div className="text-red-500 text-center py-4">
+          <div className="py-4 text-center text-red-500">
             Error loading receipt details: {error.message}
           </div>
         ) : null}
@@ -80,9 +80,9 @@ export function InvoiceDialog({ trigger, payment }: InvoiceDialogProps) {
         {receiptData ? (
           <div className="space-y-6 p-0">
             {/* Payment Details */}
-            <div className="grid grid-cols-2 gap-10 p-4 bg-muted rounded-lg">
+            <div className="grid grid-cols-2 gap-10 rounded-lg bg-muted p-4">
               <div>
-                <h3 className="font-semibold mb-2">Payment Information</h3>
+                <h3 className="mb-2 font-semibold">Payment Information</h3>
                 <div className="space-y-1 text-sm">
                   <div className="flex justify-between">
                     <Label>Amount:</Label>
@@ -108,7 +108,7 @@ export function InvoiceDialog({ trigger, payment }: InvoiceDialogProps) {
               </div>
 
               <div>
-                <h3 className="font-semibold mb-2">Vehicle Information</h3>
+                <h3 className="mb-2 font-semibold">Vehicle Information</h3>
                 <div className="space-y-1 text-sm">
                   <div className="flex justify-between">
                     <Label>License Plate:</Label>
@@ -140,16 +140,16 @@ export function InvoiceDialog({ trigger, payment }: InvoiceDialogProps) {
             {receiptData.repair_orders &&
               receiptData.repair_orders.length > 0 && (
                 <div>
-                  <h3 className="font-semibold mb-4">
+                  <h3 className="mb-4 font-semibold">
                     Services & Parts Covered by This Payment
                   </h3>
                   {receiptData.repair_orders.map((order) => (
                     <Card key={order.id} className="mb-4">
                       <CardHeader className="pb-3">
                         <CardTitle className="flex items-center gap-2 text-base">
-                          <Calendar className="w-4 h-4" />
+                          <Calendar className="h-4 w-4" />
                           Order #{order.id.slice(0, 8)}
-                          <span className="text-sm font-normal text-muted-foreground">
+                          <span className="font-normal text-muted-foreground text-sm">
                             - {formatDate(order.reception_date)}
                           </span>
                         </CardTitle>
@@ -182,15 +182,15 @@ export function InvoiceDialog({ trigger, payment }: InvoiceDialogProps) {
                                     <TableCell>
                                       {item.spare_part_id ? (
                                         <div className="flex items-center gap-1">
-                                          <Package className="w-3 h-3 text-blue-600" />
-                                          <span className="text-xs text-blue-600 font-medium">
+                                          <Package className="h-3 w-3 text-blue-600" />
+                                          <span className="font-medium text-blue-600 text-xs">
                                             Part
                                           </span>
                                         </div>
                                       ) : (
                                         <div className="flex items-center gap-1">
-                                          <Wrench className="w-3 h-3 text-orange-600" />
-                                          <span className="text-xs text-orange-600 font-medium">
+                                          <Wrench className="h-3 w-3 text-orange-600" />
+                                          <span className="font-medium text-orange-600 text-xs">
                                             Labor
                                           </span>
                                         </div>
@@ -202,12 +202,12 @@ export function InvoiceDialog({ trigger, payment }: InvoiceDialogProps) {
                                           {item.description}
                                         </div>
                                         {item.spare_part && (
-                                          <div className="text-xs text-muted-foreground">
+                                          <div className="text-muted-foreground text-xs">
                                             Part: {item.spare_part.name}
                                           </div>
                                         )}
                                         {item.labor_type && (
-                                          <div className="text-xs text-muted-foreground">
+                                          <div className="text-muted-foreground text-xs">
                                             Service: {item.labor_type.name} ($
                                             {item.labor_type.cost}/hr)
                                           </div>
@@ -229,13 +229,13 @@ export function InvoiceDialog({ trigger, payment }: InvoiceDialogProps) {
                             </Table>
                           </div>
                         ) : (
-                          <div className="text-center py-4 text-muted-foreground">
+                          <div className="py-4 text-center text-muted-foreground">
                             No items found for this order
                           </div>
                         )}
 
                         {/* Order Total */}
-                        <div className="mt-4 pt-3 border-t flex justify-between items-center">
+                        <div className="mt-4 flex items-center justify-between border-t pt-3">
                           <Label className="font-medium">Order Total:</Label>
                           <Label className="font-bold text-lg">
                             {formatCurrency(order.total_amount || 0)}
@@ -243,7 +243,7 @@ export function InvoiceDialog({ trigger, payment }: InvoiceDialogProps) {
                         </div>
 
                         {order.completion_date && (
-                          <div className="mt-2 text-xs text-muted-foreground">
+                          <div className="mt-2 text-muted-foreground text-xs">
                             Completed on: {formatDate(order.completion_date)}
                           </div>
                         )}
@@ -255,8 +255,8 @@ export function InvoiceDialog({ trigger, payment }: InvoiceDialogProps) {
 
             {/* Created By */}
             {receiptData.created_by_profile && (
-              <div className="p-4 bg-muted rounded-lg">
-                <h3 className="font-semibold mb-2">Processed By</h3>
+              <div className="rounded-lg bg-muted p-4">
+                <h3 className="mb-2 font-semibold">Processed By</h3>
                 <div className="text-sm">
                   <div className="flex justify-between">
                     <Label>Employee:</Label>

@@ -1,6 +1,6 @@
 /**
  * Payments Hook Tests
- * 
+ *
  * This test suite focuses on testing the usePayments hook functionality,
  * including TanStack Query integration, date range handling, and state management.
  */
@@ -16,14 +16,19 @@ jest.mock("@/supabase/client", () => ({
 }));
 
 import { useQuery } from "@tanstack/react-query";
-import { createClient } from "@/supabase/client";
+import { act, renderHook } from "@testing-library/react";
+import type { DateRange } from "react-day-picker";
 import { usePayments } from "@/hooks/use-payments";
-import { mockPaymentsArray, mockPaymentsEmptyArray } from "@/test/mocks/payments-data";
-import { renderHook, act } from "@testing-library/react";
-import { DateRange } from "react-day-picker";
+import { createClient } from "@/supabase/client";
+import {
+  mockPaymentsArray,
+  mockPaymentsEmptyArray,
+} from "@/test/mocks/payments-data";
 
 const mockUseQuery = useQuery as jest.MockedFunction<typeof useQuery>;
-const mockCreateClient = createClient as jest.MockedFunction<typeof createClient>;
+const mockCreateClient = createClient as jest.MockedFunction<
+  typeof createClient
+>;
 
 // Mock Supabase query builder
 const mockSupabaseQuery = {
@@ -37,9 +42,9 @@ const mockSupabaseQuery = {
 describe("usePayments Hook", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    
+
     mockCreateClient.mockReturnValue(mockSupabaseQuery as any);
-    
+
     // Default successful query mock
     mockUseQuery.mockReturnValue({
       data: mockPaymentsArray,
@@ -113,7 +118,7 @@ describe("usePayments Hook", () => {
       expect(mockUseQuery).toHaveBeenCalledWith(
         expect.objectContaining({
           queryKey: ["payments", newDateRange],
-        })
+        }),
       );
     });
 
@@ -123,7 +128,9 @@ describe("usePayments Hook", () => {
         to: undefined,
       };
 
-      const { result } = renderHook(() => usePayments({ initialDateRange: partialDateRange }));
+      const { result } = renderHook(() =>
+        usePayments({ initialDateRange: partialDateRange }),
+      );
 
       expect(result.current.dateRange).toEqual(partialDateRange);
     });
@@ -141,7 +148,7 @@ describe("usePayments Hook", () => {
       expect(mockUseQuery).toHaveBeenCalledWith(
         expect.objectContaining({
           enabled: true,
-        })
+        }),
       );
     });
 
@@ -156,7 +163,7 @@ describe("usePayments Hook", () => {
       expect(mockUseQuery).toHaveBeenCalledWith(
         expect.objectContaining({
           enabled: false,
-        })
+        }),
       );
     });
 
@@ -171,7 +178,7 @@ describe("usePayments Hook", () => {
       expect(mockUseQuery).toHaveBeenCalledWith(
         expect.objectContaining({
           queryKey: ["payments", dateRange],
-        })
+        }),
       );
     });
   });
@@ -189,7 +196,7 @@ describe("usePayments Hook", () => {
         expect.objectContaining({
           queryKey: ["payments", dateRange],
           enabled: true,
-        })
+        }),
       );
     });
 
@@ -202,10 +209,11 @@ describe("usePayments Hook", () => {
       renderHook(() => usePayments({ initialDateRange: dateRange }));
 
       // Verify useQuery was called with proper configuration
-      const lastCall = mockUseQuery.mock.calls[mockUseQuery.mock.calls.length - 1][0];
+      const lastCall =
+        mockUseQuery.mock.calls[mockUseQuery.mock.calls.length - 1][0];
       expect(lastCall.queryKey).toEqual(["payments", dateRange]);
       expect(lastCall.enabled).toBe(true);
-      expect(typeof lastCall.queryFn).toBe('function');
+      expect(typeof lastCall.queryFn).toBe("function");
     });
 
     it("disables query when date range is incomplete", () => {
@@ -216,7 +224,8 @@ describe("usePayments Hook", () => {
 
       renderHook(() => usePayments({ initialDateRange: incompleteRange }));
 
-      const lastCall = mockUseQuery.mock.calls[mockUseQuery.mock.calls.length - 1][0];
+      const lastCall =
+        mockUseQuery.mock.calls[mockUseQuery.mock.calls.length - 1][0];
       expect(lastCall.enabled).toBe(false);
     });
   });
@@ -356,8 +365,12 @@ describe("usePayments Hook", () => {
         to: new Date("2024-11-30"),
       };
 
-      const { result: result1 } = renderHook(() => usePayments({ initialDateRange: range1 }));
-      const { result: result2 } = renderHook(() => usePayments({ initialDateRange: range2 }));
+      const { result: result1 } = renderHook(() =>
+        usePayments({ initialDateRange: range1 }),
+      );
+      const { result: result2 } = renderHook(() =>
+        usePayments({ initialDateRange: range2 }),
+      );
 
       // Verify different query keys were used
       const calls = mockUseQuery.mock.calls;
@@ -373,7 +386,8 @@ describe("usePayments Hook", () => {
 
       renderHook(() => usePayments({ initialDateRange: dateRange }));
 
-      const lastCall = mockUseQuery.mock.calls[mockUseQuery.mock.calls.length - 1][0];
+      const lastCall =
+        mockUseQuery.mock.calls[mockUseQuery.mock.calls.length - 1][0];
       expect(lastCall.queryKey).toHaveLength(2);
       expect(lastCall.queryKey[0]).toBe("payments");
       expect(lastCall.queryKey[1]).toEqual(dateRange);

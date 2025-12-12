@@ -4,22 +4,22 @@ jest.mock("recharts", () => ({
     <div data-testid="pie-chart">{children}</div>
   ),
   Pie: ({ data }: { data: any[] }) => (
-    <div data-testid="pie" data-length={data?.length || 0}></div>
+    <div data-testid="pie" data-length={data?.length || 0} />
   ),
-  Cell: () => <div data-testid="cell"></div>,
-  Tooltip: () => <div data-testid="tooltip"></div>,
+  Cell: () => <div data-testid="cell" />,
+  Tooltip: () => <div data-testid="tooltip" />,
   ResponsiveContainer: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="responsive-container">{children}</div>
   ),
-  Legend: () => <div data-testid="legend"></div>,
+  Legend: () => <div data-testid="legend" />,
 }));
 
-import React from "react";
 import { render, screen } from "@testing-library/react";
+import type React from "react";
 import { SalesAnalyticsChart } from "@/components/reports/sales-analytics-chart";
 import {
-  mockSalesAnalytics,
   mockEmptySalesAnalytics,
+  mockSalesAnalytics,
 } from "@/test/mocks/reports-data";
 
 describe("SalesAnalyticsChart Data Layer", () => {
@@ -32,7 +32,7 @@ describe("SalesAnalyticsChart Data Layer", () => {
     expect(chart).toBeTruthy();
     expect(pie).toBeTruthy();
     expect(pie.getAttribute("data-length")).toBe(
-      mockSalesAnalytics.topServices.length.toString()
+      mockSalesAnalytics.topServices.length.toString(),
     ); // Use actual length from mock data
   });
 
@@ -43,7 +43,7 @@ describe("SalesAnalyticsChart Data Layer", () => {
 
     // Verify that data was transformed (length should match topServices)
     expect(pie.getAttribute("data-length")).toBe(
-      mockSalesAnalytics.topServices.length.toString()
+      mockSalesAnalytics.topServices.length.toString(),
     );
   });
 

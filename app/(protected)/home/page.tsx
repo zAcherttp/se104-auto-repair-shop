@@ -1,10 +1,10 @@
 "use client";
 
-import * as React from "react";
-import { Button } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
-import DateRangePicker from "@/components/date-range-picker";
+import * as React from "react";
 import { Label } from "recharts";
+import DateRangePicker from "@/components/date-range-picker";
+import { Button } from "@/components/ui/button";
 
 export default function Page() {
   const [isDark, setIsDark] = React.useState(false);
@@ -14,27 +14,27 @@ export default function Page() {
   }, [isDark]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex min-h-screen items-center justify-center">
       <Button
         variant="ghost"
         size="icon"
-        className="group/toggle size-16 extend-touch-target"
+        className="group/toggle extend-touch-target size-16"
         onClick={toggleTheme}
         title="Toggle theme"
       >
         <Moon
           className={`absolute size-16 transition-all duration-300 ease-out ${
             isDark
-              ? "opacity-0 scale-90 rotate-180"
-              : "opacity-100 scale-100 rotate-0"
+              ? "rotate-180 scale-90 opacity-0"
+              : "rotate-0 scale-100 opacity-100"
           }`}
         />
 
         <Sun
           className={`absolute size-16 transition-all duration-300 ease-out ${
             isDark
-              ? "opacity-100 scale-100 rotate-0"
-              : "opacity-0 scale-95 -rotate-180"
+              ? "rotate-0 scale-100 opacity-100"
+              : "-rotate-180 scale-95 opacity-0"
           }`}
         />
 

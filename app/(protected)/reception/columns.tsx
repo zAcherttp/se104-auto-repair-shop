@@ -1,10 +1,10 @@
 "use client";
 
+import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
-import { Customer, RepairOrder, Vehicle } from "@/types";
-import { ColumnDef } from "@tanstack/react-table";
-import { Actions } from "./actions";
 import { Label } from "@/components/ui/label";
+import type { Customer, RepairOrder, Vehicle } from "@/types";
+import { Actions } from "./actions";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -16,7 +16,7 @@ export type VehicleRegistration = {
 };
 
 export const createColumns = (
-  t: (key: string) => string
+  t: (key: string) => string,
 ): ColumnDef<VehicleRegistration>[] => [
   {
     accessorKey: "vehicle.license_plate",
@@ -61,7 +61,7 @@ export const createColumns = (
       }).format(amount);
 
       return (
-        <div className="text-right text-green-600  font-medium px-2 py-1 rounded">
+        <div className="rounded px-2 py-1 text-right font-medium text-green-600">
           {formatted}
         </div>
       );
@@ -127,7 +127,7 @@ export const createColumns = (
       return (
         <div className="flex flex-col">
           <Label>{date.toLocaleDateString()}</Label>
-          <Label className="text-xs text-muted-foreground">
+          <Label className="text-muted-foreground text-xs">
             {date.toLocaleTimeString()}
           </Label>
         </div>

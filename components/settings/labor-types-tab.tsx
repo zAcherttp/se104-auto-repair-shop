@@ -1,8 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { EditIcon, TrashIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
+import { deleteLaborType, getLaborTypes } from "@/app/actions/settings";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import {
   Table,
@@ -12,13 +16,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { EditIcon, TrashIcon } from "lucide-react";
-import { toast } from "sonner";
-import { useTranslations } from "next-intl";
-import { getLaborTypes, deleteLaborType } from "@/app/actions/settings";
+import type { LaborType } from "@/types/settings";
 import { AddLaborTypeDialog } from "./add-labor-type-dialog";
 import { EditLaborTypeDialog } from "./edit-labor-type-dialog";
-import type { LaborType } from "@/types/settings";
 
 export default function LaborTypesTab() {
   const t = useTranslations("settings.labor");
@@ -27,7 +27,7 @@ export default function LaborTypesTab() {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedLaborType, setSelectedLaborType] = useState<LaborType | null>(
-    null
+    null,
   );
 
   const fetchLaborTypes = useCallback(async () => {
@@ -84,7 +84,7 @@ export default function LaborTypesTab() {
       <Card>
         <CardContent className="p-4">
           <div className="flex items-center justify-center">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+            <div className="h-6 w-6 animate-spin rounded-full border-primary border-b-2" />
           </div>
         </CardContent>
       </Card>
@@ -95,7 +95,7 @@ export default function LaborTypesTab() {
     <>
       <Card>
         <CardContent>
-          <div className="flex justify-between mb-2">
+          <div className="mb-2 flex justify-between">
             <Label className="self-start pl-2">{t("title")}</Label>
             <Button className="h-8" onClick={() => setAddDialogOpen(true)}>
               {t("addButton")}

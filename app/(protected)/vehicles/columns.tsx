@@ -1,13 +1,13 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
-import { VehicleWithDebt } from "@/types/types";
+import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
-import { Actions } from "./actions";
 import { Label } from "@/components/ui/label";
+import type { VehicleWithDebt } from "@/types/types";
+import { Actions } from "./actions";
 
 export function createColumns(
-  t: (key: string) => string
+  t: (key: string) => string,
 ): ColumnDef<VehicleWithDebt>[] {
   return [
     {
@@ -81,7 +81,7 @@ export function createColumns(
         }).format(amount);
 
         return (
-          <div className="text-right text-green-600  font-medium px-2 py-1 rounded">
+          <div className="rounded px-2 py-1 text-right font-medium text-green-600">
             {formatted}
           </div>
         );
@@ -104,7 +104,7 @@ export function createColumns(
         }).format(amount);
 
         return (
-          <div className="text-right text-green-600  font-medium px-2 py-1 rounded">
+          <div className="rounded px-2 py-1 text-right font-medium text-green-600">
             {formatted}
           </div>
         );
@@ -127,7 +127,7 @@ export function createColumns(
         }).format(debt);
 
         return (
-          <div className="text-right text-green-600  font-medium px-2 py-1 rounded">
+          <div className="rounded px-2 py-1 text-right font-medium text-green-600">
             {formatted}
           </div>
         );
@@ -151,7 +151,7 @@ export function createColumns(
         return (
           <div className="flex flex-col">
             <Label>{date.toLocaleDateString()}</Label>
-            <Label className="text-xs text-muted-foreground">
+            <Label className="text-muted-foreground text-xs">
               {date.toLocaleTimeString()}
             </Label>
           </div>

@@ -1,5 +1,5 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Image from "next/image";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export function UserAvatar() {
   return (

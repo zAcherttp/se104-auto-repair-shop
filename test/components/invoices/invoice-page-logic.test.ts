@@ -1,18 +1,18 @@
 /**
  * Invoice Page Business Logic Tests
- * 
+ *
  * This test suite focuses on testing the specific business logic used in the invoice page,
  * including default date range generation, data loading states, and page-specific functionality.
  */
 
-import type { PaymentWithDetails } from "@/types";
-import { DateRange } from "react-day-picker";
+import type { DateRange } from "react-day-picker";
 import {
   mockPaymentData,
   mockPaymentDataCard,
   mockPaymentsArray,
   mockPaymentsEmptyArray,
 } from "@/test/mocks/payments-data";
+import type { PaymentWithDetails } from "@/types";
 
 describe("Invoice Page Business Logic", () => {
   describe("Default Date Range Generation", () => {
@@ -27,7 +27,7 @@ describe("Invoice Page Business Logic", () => {
 
     it("generates correct default date range for last week", () => {
       const range = getDefaultDateRange();
-      
+
       expect(range.from).toBeDefined();
       expect(range.to).toBeDefined();
 
@@ -45,7 +45,7 @@ describe("Invoice Page Business Logic", () => {
 
     it("sets correct time boundaries for date range", () => {
       const range = getDefaultDateRange();
-      
+
       // From date should be at start of day
       expect(range.from!.getHours()).toBe(0);
       expect(range.from!.getMinutes()).toBe(0);
@@ -62,7 +62,7 @@ describe("Invoice Page Business Logic", () => {
     it("ensures from date is exactly 7 days before to date", () => {
       const range = getDefaultDateRange();
       const daysDifference = Math.floor(
-        (range.to!.getTime() - range.from!.getTime()) / (1000 * 60 * 60 * 24)
+        (range.to!.getTime() - range.from!.getTime()) / (1000 * 60 * 60 * 24),
       );
       expect(daysDifference).toBe(7);
     });
@@ -71,13 +71,13 @@ describe("Invoice Page Business Logic", () => {
   describe("Date Range Filtering Business Logic", () => {
     const filterPaymentsByDateRange = (
       payments: PaymentWithDetails[],
-      dateRange: DateRange
+      dateRange: DateRange,
     ): PaymentWithDetails[] => {
       if (!dateRange?.from || !dateRange?.to) {
         return payments;
       }
 
-      return payments.filter(payment => {
+      return payments.filter((payment) => {
         if (!payment.payment_date) return false;
 
         const paymentDate = new Date(payment.payment_date);
@@ -92,17 +92,20 @@ describe("Invoice Page Business Logic", () => {
       });
     };
 
-    const createTestDateRange = (fromDaysAgo: number, toDaysAgo: number = 0): DateRange => {
+    const createTestDateRange = (
+      fromDaysAgo: number,
+      toDaysAgo = 0,
+    ): DateRange => {
       const today = new Date();
       const from = new Date(today);
       const to = new Date(today);
-      
+
       from.setDate(today.getDate() - fromDaysAgo);
       to.setDate(today.getDate() - toDaysAgo);
-      
+
       from.setHours(0, 0, 0, 0);
       to.setHours(23, 59, 59, 999);
-      
+
       return { from, to };
     };
 
@@ -122,7 +125,7 @@ describe("Invoice Page Business Logic", () => {
 
       const filtered = filterPaymentsByDateRange(paymentsWithDates, range);
       expect(filtered).toHaveLength(2);
-      expect(filtered.map(p => p.id)).toEqual(["p1", "p2"]);
+      expect(filtered.map((p) => p.id)).toEqual(["p1", "p2"]);
     });
 
     it("includes payments on boundary dates", () => {
@@ -140,7 +143,7 @@ describe("Invoice Page Business Logic", () => {
 
       const filtered = filterPaymentsByDateRange(paymentsWithDates, range);
       expect(filtered).toHaveLength(2);
-      expect(filtered.map(p => p.id)).toEqual(["boundary1", "boundary2"]);
+      expect(filtered.map((p) => p.id)).toEqual(["boundary1", "boundary2"]);
     });
 
     it("excludes payments with null payment_date", () => {
@@ -160,11 +163,23 @@ describe("Invoice Page Business Logic", () => {
     });
 
     it("returns all payments when date range is incomplete", () => {
-      const incompleteRange1: DateRange = { from: new Date("2024-12-15"), to: undefined };
-      const incompleteRange2: DateRange = { from: undefined, to: new Date("2024-12-15") };
+      const incompleteRange1: DateRange = {
+        from: new Date("2024-12-15"),
+        to: undefined,
+      };
+      const incompleteRange2: DateRange = {
+        from: undefined,
+        to: new Date("2024-12-15"),
+      };
 
-      const filtered1 = filterPaymentsByDateRange(mockPaymentsArray, incompleteRange1);
-      const filtered2 = filterPaymentsByDateRange(mockPaymentsArray, incompleteRange2);
+      const filtered1 = filterPaymentsByDateRange(
+        mockPaymentsArray,
+        incompleteRange1,
+      );
+      const filtered2 = filterPaymentsByDateRange(
+        mockPaymentsArray,
+        incompleteRange2,
+      );
 
       expect(filtered1).toHaveLength(mockPaymentsArray.length);
       expect(filtered2).toHaveLength(mockPaymentsArray.length);
@@ -175,7 +190,7 @@ describe("Invoice Page Business Logic", () => {
     const getPageDisplayState = (
       isLoading: boolean,
       error: Error | null,
-      payments: PaymentWithDetails[] | undefined
+      payments: PaymentWithDetails[] | undefined,
     ) => {
       if (error) {
         return {
@@ -203,8 +218,12 @@ describe("Invoice Page Business Logic", () => {
     };
 
     it("returns error state when error is present", () => {
-      const state = getPageDisplayState(false, new Error("API Error"), undefined);
-      
+      const state = getPageDisplayState(
+        false,
+        new Error("API Error"),
+        undefined,
+      );
+
       expect(state.state).toBe("error");
       expect(state.message).toBe("An error has occurred");
       expect(state.showData).toBe(false);
@@ -212,7 +231,7 @@ describe("Invoice Page Business Logic", () => {
 
     it("returns loading state when loading", () => {
       const state = getPageDisplayState(true, null, undefined);
-      
+
       expect(state.state).toBe("loading");
       expect(state.message).toBe("Loading payments...");
       expect(state.showData).toBe(false);
@@ -220,7 +239,7 @@ describe("Invoice Page Business Logic", () => {
 
     it("returns success state with data", () => {
       const state = getPageDisplayState(false, null, mockPaymentsArray);
-      
+
       expect(state.state).toBe("success");
       expect(state.showData).toBe(true);
       expect(state.hasData).toBe(true);
@@ -229,7 +248,7 @@ describe("Invoice Page Business Logic", () => {
 
     it("returns success state with empty data", () => {
       const state = getPageDisplayState(false, null, mockPaymentsEmptyArray);
-      
+
       expect(state.state).toBe("success");
       expect(state.showData).toBe(true);
       expect(state.hasData).toBe(false);
@@ -237,8 +256,12 @@ describe("Invoice Page Business Logic", () => {
     });
 
     it("prioritizes error over loading state", () => {
-      const state = getPageDisplayState(true, new Error("Error"), mockPaymentsArray);
-      
+      const state = getPageDisplayState(
+        true,
+        new Error("Error"),
+        mockPaymentsArray,
+      );
+
       expect(state.state).toBe("error");
       expect(state.showData).toBe(false);
     });
@@ -249,7 +272,7 @@ describe("Invoice Page Business Logic", () => {
       payments: PaymentWithDetails[] | undefined,
       isLoading: boolean,
       dateRange: DateRange,
-      onDateRangeChange: (range: DateRange) => void
+      onDateRangeChange: (range: DateRange) => void,
     ) => {
       return {
         data: payments || [],
@@ -272,7 +295,7 @@ describe("Invoice Page Business Logic", () => {
         mockPaymentsArray,
         false,
         mockDateRange,
-        mockOnChange
+        mockOnChange,
       );
 
       expect(props.data).toEqual(mockPaymentsArray);
@@ -294,7 +317,7 @@ describe("Invoice Page Business Logic", () => {
         mockPaymentsEmptyArray,
         false,
         mockDateRange,
-        mockOnChange
+        mockOnChange,
       );
 
       expect(props.data).toEqual([]);
@@ -314,7 +337,7 @@ describe("Invoice Page Business Logic", () => {
         undefined,
         true,
         mockDateRange,
-        mockOnChange
+        mockOnChange,
       );
 
       expect(props.data).toEqual([]);
@@ -327,7 +350,7 @@ describe("Invoice Page Business Logic", () => {
   describe("Date Range Update Logic", () => {
     const validateDateRangeUpdate = (
       currentRange: DateRange,
-      newRange: DateRange
+      newRange: DateRange,
     ): { isValid: boolean; errors: string[] } => {
       const errors: string[] = [];
 
@@ -346,7 +369,8 @@ describe("Invoice Page Business Logic", () => {
       // Check if range is too large (e.g., more than 1 year)
       if (newRange.from && newRange.to) {
         const daysDifference = Math.floor(
-          (newRange.to.getTime() - newRange.from.getTime()) / (1000 * 60 * 60 * 24)
+          (newRange.to.getTime() - newRange.from.getTime()) /
+            (1000 * 60 * 60 * 24),
         );
         if (daysDifference > 365) {
           errors.push("Date range cannot exceed 1 year");
@@ -359,7 +383,10 @@ describe("Invoice Page Business Logic", () => {
       };
     };
 
-    const shouldRefetchData = (currentRange: DateRange, newRange: DateRange): boolean => {
+    const shouldRefetchData = (
+      currentRange: DateRange,
+      newRange: DateRange,
+    ): boolean => {
       return (
         currentRange.from?.getTime() !== newRange.from?.getTime() ||
         currentRange.to?.getTime() !== newRange.to?.getTime()

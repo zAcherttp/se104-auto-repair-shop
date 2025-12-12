@@ -1,5 +1,6 @@
 "use client";
 
+import { MoreHorizontal, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -7,9 +8,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Trash2 } from "lucide-react";
-import { LineItem } from "./columns";
 import { Label } from "@/components/ui/label";
+import type { LineItem } from "./columns";
 
 interface ActionsProps {
   lineItem: LineItem;

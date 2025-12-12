@@ -1,14 +1,14 @@
 "use client";
 
-import { SalesAnalytics } from "@/types/reports";
 import {
-  PieChart,
-  Pie,
   Cell,
-  Tooltip,
-  ResponsiveContainer,
   Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
 } from "recharts";
+import type { SalesAnalytics } from "@/types/reports";
 import { Label } from "../ui/label";
 
 interface SalesAnalyticsChartProps {
@@ -32,7 +32,7 @@ const COLORS = [
 export function SalesAnalyticsChart({ data }: SalesAnalyticsChartProps) {
   if (!data?.topServices?.length) {
     return (
-      <div className="flex items-center justify-center h-[200px] text-muted-foreground">
+      <div className="flex h-[200px] items-center justify-center text-muted-foreground">
         No sales data available
       </div>
     );
@@ -41,7 +41,7 @@ export function SalesAnalyticsChart({ data }: SalesAnalyticsChartProps) {
   // Prepare data for pie chart with percentages
   const totalRevenue = data.topServices.reduce(
     (sum, item) => sum + item.revenue,
-    0
+    0,
   );
 
   const chartData = data.topServices.map((item, index) => ({
@@ -68,7 +68,7 @@ export function SalesAnalyticsChart({ data }: SalesAnalyticsChartProps) {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="bg-white p-3 border rounded-lg shadow-lg">
+        <div className="rounded-lg border bg-white p-3 shadow-lg">
           <p className="font-medium">{data.name}</p>
           <p className="text-blue-600">
             Revenue:{" "}
@@ -100,7 +100,7 @@ export function SalesAnalyticsChart({ data }: SalesAnalyticsChartProps) {
     percentage: string;
   }) => {
     // Only show label if percentage is significant enough
-    if (parseFloat(percentage) < 5) return null;
+    if (Number.parseFloat(percentage) < 5) return null;
 
     const RADIAN = Math.PI / 180;
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;

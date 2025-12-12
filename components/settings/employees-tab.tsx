@@ -1,10 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { EditIcon, TrashIcon, UserIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
+import { deleteEmployee, getEmployees } from "@/app/actions/settings";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -13,14 +16,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { EditIcon, TrashIcon, UserIcon } from "lucide-react";
-import { toast } from "sonner";
-import { getEmployees, deleteEmployee } from "@/app/actions/settings";
-import { AddEmployeeDialog } from "./add-employee-dialog";
-import { EditEmployeeDialog } from "./edit-employee-dialog";
-import { DeleteEmployeeDialog } from "./delete-employee-dialog";
 import type { Employee } from "@/types/settings";
 import { Label } from "../ui/label";
+import { AddEmployeeDialog } from "./add-employee-dialog";
+import { DeleteEmployeeDialog } from "./delete-employee-dialog";
+import { EditEmployeeDialog } from "./edit-employee-dialog";
 
 export default function EmployeesTab() {
   const t = useTranslations("settings.employees");
@@ -30,10 +30,10 @@ export default function EmployeesTab() {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
-    null
+    null,
   );
   const [employeeToDelete, setEmployeeToDelete] = useState<Employee | null>(
-    null
+    null,
   );
   const [deleteLoading, setDeleteLoading] = useState(false);
 
@@ -99,7 +99,7 @@ export default function EmployeesTab() {
       <Card>
         <CardContent className="p-4">
           <div className="flex items-center justify-center">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+            <div className="h-6 w-6 animate-spin rounded-full border-primary border-b-2" />
           </div>
         </CardContent>
       </Card>
@@ -110,7 +110,7 @@ export default function EmployeesTab() {
     <>
       <Card>
         <CardContent>
-          <div className="flex justify-between mb-2">
+          <div className="mb-2 flex justify-between">
             <Label className="self-start pl-2">{t("title")}</Label>
             <Button className="h-8" onClick={() => setAddDialogOpen(true)}>
               {t("addButton")}
@@ -130,7 +130,7 @@ export default function EmployeesTab() {
                 <TableRow key={employee.id}>
                   <TableCell>
                     <div className="flex items-center gap-3">
-                      <div className="flex items-center justify-center w-8 h-8 bg-primary/10 rounded-full">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
                         <UserIcon className="h-4 w-4 text-primary" />
                       </div>
                       <Label className="font-medium">

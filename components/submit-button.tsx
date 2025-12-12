@@ -1,7 +1,7 @@
-import React from "react";
-import { Button, buttonVariants } from "@/components/ui/button";
+import type { VariantProps } from "class-variance-authority";
 import { Loader2 } from "lucide-react";
-import { VariantProps } from "class-variance-authority";
+import type React from "react";
+import { Button, type buttonVariants } from "@/components/ui/button";
 
 interface SubmitButtonProps {
   children: React.ReactNode;
@@ -30,7 +30,7 @@ export default function SubmitButton({
     >
       <span
         className={`transition-all duration-300 ${
-          disabled ? "opacity-0 blur-md scale-95" : "opacity-100 blur-0"
+          disabled ? "scale-95 opacity-0 blur-md" : "opacity-100 blur-0"
         }`}
       >
         {children}
@@ -38,7 +38,7 @@ export default function SubmitButton({
 
       <span
         className={`absolute transition-all duration-200 ${
-          disabled ? "opacity-100 blur-0" : "opacity-0 blur-md scale-105"
+          disabled ? "opacity-100 blur-0" : "scale-105 opacity-0 blur-md"
         }`}
       >
         <Loader2 className="animate-spin" />

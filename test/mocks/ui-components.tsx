@@ -129,7 +129,7 @@ export const Input = React.forwardRef<HTMLInputElement, any>(
         {...props}
       />
     );
-  }
+  },
 );
 
 // Mock Textarea Component
@@ -154,7 +154,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, any>(
         {...props}
       />
     );
-  }
+  },
 );
 
 // Mock Label Component

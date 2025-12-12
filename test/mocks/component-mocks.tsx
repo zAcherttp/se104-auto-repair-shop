@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 // Mock for MonthYearPicker component
 export const MockMonthYearPicker = jest
@@ -28,7 +28,7 @@ export const MockMonthYearPicker = jest
           </button>
         </div>
       );
-    }
+    },
   );
 
 // Mock for Chart components
@@ -111,7 +111,7 @@ export const MockAlert = jest
       <div data-testid="alert" data-variant={variant}>
         {children}
       </div>
-    )
+    ),
   );
 
 export const MockAlertDescription = jest

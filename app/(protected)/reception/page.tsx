@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { DateRange } from "react-day-picker";
-import { createColumns } from "./columns";
-import { VehicleDataTable } from "@/app/(protected)/reception/data-table";
-import { useVehicleRegistration } from "@/hooks/use-vehicle-registration";
-import { ReceptionForm } from "@/components/reception/reception-form";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+import type { DateRange } from "react-day-picker";
+import { VehicleDataTable } from "@/app/(protected)/reception/data-table";
+import { ReceptionForm } from "@/components/reception/reception-form";
+import { useVehicleRegistration } from "@/hooks/use-vehicle-registration";
+import { createColumns } from "./columns";
 
 export default function Page() {
   const t = useTranslations("reception");

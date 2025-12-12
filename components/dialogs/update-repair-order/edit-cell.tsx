@@ -1,12 +1,10 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
-import { LineItem } from "./columns";
-import { validateMonthlyUsage } from "@/app/actions/settings";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { validateMonthlyUsage } from "@/app/actions/settings";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -15,12 +13,14 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Label } from "@/components/ui/label";
+import type { LineItem } from "./columns";
 
 // Stable constants to prevent recreation
 const READONLY_CELL_STYLE =
@@ -62,7 +62,7 @@ interface EditCellProps {
         updateData?: (
           rowIndex: number,
           columnId: string,
-          value: unknown
+          value: unknown,
         ) => void;
       };
     };
@@ -114,13 +114,13 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
       if (fieldId === "quantity") {
         const num =
           typeof fieldValue === "string"
-            ? parseInt(fieldValue)
+            ? Number.parseInt(fieldValue)
             : Number(fieldValue);
         return isNaN(num) || num < 1 ? VALIDATION_MESSAGES.QUANTITY_MIN : "";
       }
       return "";
     },
-    []
+    [],
   );
 
   // Memoized handlers for stable references
@@ -136,7 +136,7 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
         table.options.meta.updateData(row.index, column.id, newValue);
       }
     },
-    [validateField, column.id, table.options.meta, row.index]
+    [validateField, column.id, table.options.meta, row.index],
   );
 
   const handleSparePartSelect = useCallback(
@@ -154,7 +154,7 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
 
       if (!validation.data?.canAddPart) {
         toast.error(
-          validation.data?.messages?.[0] || "Part usage limit exceeded"
+          validation.data?.messages?.[0] || "Part usage limit exceeded",
         );
         return;
       }
@@ -170,7 +170,7 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
       }
       setOpen(false);
     },
-    [spareParts, table.options.meta, row.index, column.id]
+    [spareParts, table.options.meta, row.index, column.id],
   );
 
   const handleLaborTypeSelect = useCallback(
@@ -188,7 +188,7 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
 
       if (!validation.data?.canAddLabor) {
         toast.error(
-          validation.data?.messages?.[0] || "Labor type usage limit exceeded"
+          validation.data?.messages?.[0] || "Labor type usage limit exceeded",
         );
         return;
       }
@@ -204,7 +204,7 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
       }
       setOpen(false);
     },
-    [laborTypes, table.options.meta, row.index, column.id]
+    [laborTypes, table.options.meta, row.index, column.id],
   );
 
   const handleEmployeeSelect = useCallback(
@@ -217,25 +217,25 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
       }
       setOpen(false);
     },
-    [table.options.meta, row.index, column.id]
+    [table.options.meta, row.index, column.id],
   );
 
   // Memoized check for readonly fields
   const isReadonly = useMemo(
     () =>
       READONLY_FIELDS.includes(column.id as (typeof READONLY_FIELDS)[number]),
-    [column.id]
+    [column.id],
   );
 
   // Memoized classes
   const buttonClassName = useMemo(
     () => `${BUTTON_CLASSES} ${error ? ERROR_BORDER_CLASS : ""}`,
-    [error]
+    [error],
   );
 
   const inputClassName = useMemo(
     () => `${INPUT_CLASSES} ${error ? ERROR_BORDER_CLASS : ""}`,
-    [error]
+    [error],
   );
 
   // Render readonly fields early return - but keep hooks above
@@ -272,9 +272,9 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
                       value={part.name}
                       onSelect={handleSparePartSelect}
                     >
-                      <div className="flex justify-between w-full">
+                      <div className="flex w-full justify-between">
                         <Label className="truncate">{part.name}</Label>
-                        <Label className="text-muted-foreground ml-2 flex-shrink-0">
+                        <Label className="ml-2 flex-shrink-0 text-muted-foreground">
                           ${part.price.toFixed(2)}
                         </Label>
                       </div>
@@ -312,9 +312,9 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
                       value={labor.name}
                       onSelect={handleLaborTypeSelect}
                     >
-                      <div className="flex justify-between w-full">
+                      <div className="flex w-full justify-between">
                         <Label className="truncate">{labor.name}</Label>
-                        <Label className="text-muted-foreground ml-2 flex-shrink-0">
+                        <Label className="ml-2 flex-shrink-0 text-muted-foreground">
                           ${labor.cost.toFixed(2)}
                         </Label>
                       </div>
@@ -352,9 +352,9 @@ export const EditCell = React.memo<EditCellProps>(function EditCell({
                       value={employee.full_name}
                       onSelect={handleEmployeeSelect}
                     >
-                      <div className="flex justify-between w-full">
+                      <div className="flex w-full justify-between">
                         <Label className="truncate">{employee.full_name}</Label>
-                        <Label className="text-muted-foreground ml-2 flex-shrink-0">
+                        <Label className="ml-2 flex-shrink-0 text-muted-foreground">
                           {employee.role}
                         </Label>
                       </div>

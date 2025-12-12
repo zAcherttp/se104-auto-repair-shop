@@ -1,6 +1,14 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { Login } from "@/app/actions/login";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,7 +17,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { type LoginFormData, LoginFormSchema } from "@/lib/form/definitions";
+import { cn } from "@/lib/utils";
+import SubmitButton from "./submit-button";
 import {
   Form,
   FormControl,
@@ -18,16 +28,6 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
-import { useForm } from "react-hook-form";
-import { LoginFormSchema, LoginFormData } from "@/lib/form/definitions";
-import { zodResolver } from "@hookform/resolvers/zod";
-import SubmitButton from "./submit-button";
-import { toast } from "sonner";
-import { Login } from "@/app/actions/login";
-import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
-import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
 
 export function LoginForm() {
   const router = useRouter();
@@ -92,7 +92,7 @@ export function LoginForm() {
                           type="button"
                           variant="ghost"
                           size="sm"
-                          className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-primary/5"
+                          className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-primary/5"
                           onClick={() => setShowPassword(!showPassword)}
                         >
                           <span

@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
-import { createClient } from "@/supabase/server";
-import React, { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { ProtectedLayoutClient } from "@/components/protected-layout-client";
+import { createClient } from "@/supabase/server";
 
 export default async function Layout({ children }: { children: ReactNode }) {
   const supabase = await createClient();

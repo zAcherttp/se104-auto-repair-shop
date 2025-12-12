@@ -1,11 +1,10 @@
 "use client";
 
-import * as React from "react";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-
+import * as React from "react";
 import { useMetaColor } from "@/hooks/use-meta-colors";
 import { Button } from "./ui/button";
-import { Moon, Sun } from "lucide-react";
 import { Label } from "./ui/label";
 
 export function ThemeSwitcher() {
@@ -24,7 +23,7 @@ export function ThemeSwitcher() {
     <Button
       variant="ghost"
       size="icon"
-      className="group/toggle extend-touch-target size-8 relative overflow-hidden"
+      className="group/toggle extend-touch-target relative size-8 overflow-hidden"
       onClick={toggleTheme}
       title="Toggle theme"
       suppressHydrationWarning
@@ -32,16 +31,16 @@ export function ThemeSwitcher() {
       <Moon
         className={`absolute h-4 w-4 transition-all duration-300 ease-out ${
           resolvedTheme === "light"
-            ? "opacity-0 scale-90 rotate-180"
-            : "opacity-100 scale-100 rotate-0"
+            ? "rotate-180 scale-90 opacity-0"
+            : "rotate-0 scale-100 opacity-100"
         }`}
       />
 
       <Sun
         className={`absolute h-4 w-4 transition-all duration-300 ease-out ${
           resolvedTheme === "light"
-            ? "opacity-100 scale-105 rotate-0"
-            : "opacity-0 scale-95 -rotate-180"
+            ? "rotate-0 scale-105 opacity-100"
+            : "-rotate-180 scale-95 opacity-0"
         }`}
       />
       <Label className="sr-only">Toggle theme</Label>

@@ -1,15 +1,20 @@
 /**
  * Track Order Form Validation Tests
- * 
+ *
  * This test suite focuses on validating the form logic and data validation
  * for the track-order search functionality.
  */
 
-import { RepairTrackingFormSchema, RepairTrackingFormData } from "@/lib/form/definitions";
+import {
+  type RepairTrackingFormData,
+  RepairTrackingFormSchema,
+} from "@/lib/form/definitions";
 
 describe("Track Order Form Validation", () => {
   describe("License Plate Validation", () => {
-    const validateLicensePlate = (query: string): { success: boolean; error?: string } => {
+    const validateLicensePlate = (
+      query: string,
+    ): { success: boolean; error?: string } => {
       try {
         // Trim whitespace before validation to match real-world behavior
         const trimmedQuery = query.trim();
@@ -19,9 +24,12 @@ describe("Track Order Form Validation", () => {
         const result = RepairTrackingFormSchema.parse({ query: trimmedQuery });
         return { success: true };
       } catch (error: any) {
-        return { 
-          success: false, 
-          error: error.issues?.[0]?.message || error.errors?.[0]?.message || "Validation failed" 
+        return {
+          success: false,
+          error:
+            error.issues?.[0]?.message ||
+            error.errors?.[0]?.message ||
+            "Validation failed",
         };
       }
     };
@@ -29,13 +37,13 @@ describe("Track Order Form Validation", () => {
     it("accepts valid license plate formats", () => {
       const validPlates = [
         "ABC-123",
-        "XYZ-789", 
+        "XYZ-789",
         "DEF-456",
         "AB-1234",
-        "ABCD-12"
+        "ABCD-12",
       ];
 
-      validPlates.forEach(plate => {
+      validPlates.forEach((plate) => {
         const result = validateLicensePlate(plate);
         expect(result.success).toBe(true);
       });
@@ -54,14 +62,9 @@ describe("Track Order Form Validation", () => {
     });
 
     it("handles case sensitivity correctly", () => {
-      const testCases = [
-        "abc-123",
-        "ABC-123",
-        "Abc-123",
-        "aBc-123"
-      ];
+      const testCases = ["abc-123", "ABC-123", "Abc-123", "aBc-123"];
 
-      testCases.forEach(plate => {
+      testCases.forEach((plate) => {
         const result = validateLicensePlate(plate);
         expect(result.success).toBe(true);
       });
@@ -72,10 +75,10 @@ describe("Track Order Form Validation", () => {
         " ABC-123 ",
         "  ABC-123",
         "ABC-123  ",
-        "\tABC-123\n"
+        "\tABC-123\n",
       ];
 
-      platesWithWhitespace.forEach(plate => {
+      platesWithWhitespace.forEach((plate) => {
         const result = validateLicensePlate(plate);
         expect(result.success).toBe(true);
       });
@@ -83,14 +86,14 @@ describe("Track Order Form Validation", () => {
 
     it("accepts various license plate lengths", () => {
       const differentLengths = [
-        "A-1",      // Minimum valid
-        "AB-12",    // Short format
-        "ABC-123",  // Standard format
+        "A-1", // Minimum valid
+        "AB-12", // Short format
+        "ABC-123", // Standard format
         "ABCD-1234", // Longer format
-        "ABCDEF-123456" // Very long format
+        "ABCDEF-123456", // Very long format
       ];
 
-      differentLengths.forEach(plate => {
+      differentLengths.forEach((plate) => {
         const result = validateLicensePlate(plate);
         expect(result.success).toBe(true);
       });
@@ -98,10 +101,12 @@ describe("Track Order Form Validation", () => {
   });
 
   describe("Form Data Processing", () => {
-    const processFormData = (rawData: { query: string }): RepairTrackingFormData => {
+    const processFormData = (rawData: {
+      query: string;
+    }): RepairTrackingFormData => {
       // Simulate the form processing logic
       return {
-        query: rawData.query.trim().toUpperCase()
+        query: rawData.query.trim().toUpperCase(),
       };
     };
 
@@ -117,7 +122,7 @@ describe("Track Order Form Validation", () => {
         { input: "abc-123", expected: "ABC-123" },
         { input: " XYZ-789 ", expected: "XYZ-789" },
         { input: "def-456", expected: "DEF-456" },
-        { input: "\tghi-789\n", expected: "GHI-789" }
+        { input: "\tghi-789\n", expected: "GHI-789" },
       ];
 
       testCases.forEach(({ input, expected }) => {
@@ -130,7 +135,7 @@ describe("Track Order Form Validation", () => {
       const specialCases = [
         { input: "ABC-123", expected: "ABC-123" },
         { input: "AB_123", expected: "AB_123" },
-        { input: "A.B.123", expected: "A.B.123" }
+        { input: "A.B.123", expected: "A.B.123" },
       ];
 
       specialCases.forEach(({ input, expected }) => {
@@ -150,7 +155,7 @@ describe("Track Order Form Validation", () => {
         { input: "abc-123", expected: "ABC-123" },
         { input: "Abc-123", expected: "ABC-123" },
         { input: "ABC-123", expected: "ABC-123" },
-        { input: " abc-123 ", expected: "ABC-123" }
+        { input: " abc-123 ", expected: "ABC-123" },
       ];
 
       testCases.forEach(({ input, expected }) => {
@@ -165,14 +170,9 @@ describe("Track Order Form Validation", () => {
     });
 
     it("preserves numbers and special characters", () => {
-      const testCases = [
-        "123-ABC",
-        "A1B2C3",
-        "ABC_123",
-        "AB-CD-123"
-      ];
+      const testCases = ["123-ABC", "A1B2C3", "ABC_123", "AB-CD-123"];
 
-      testCases.forEach(input => {
+      testCases.forEach((input) => {
         const result = formatSearchQuery(input);
         expect(result).toBe(input.toUpperCase());
       });
@@ -183,7 +183,7 @@ describe("Track Order Form Validation", () => {
     it("provides meaningful error messages", () => {
       const invalidInputs = ["", "   "];
 
-      invalidInputs.forEach(input => {
+      invalidInputs.forEach((input) => {
         try {
           RepairTrackingFormSchema.parse({ query: input });
           fail("Should have thrown validation error");
@@ -207,13 +207,15 @@ describe("Track Order Form Validation", () => {
 
     it("validates schema structure", () => {
       const validData: RepairTrackingFormData = { query: "ABC-123" };
-      
+
       expect(() => RepairTrackingFormSchema.parse(validData)).not.toThrow();
     });
   });
 
   describe("Real-world Scenarios", () => {
-    const simulateUserInput = (userInput: string): { query: string; isValid: boolean } => {
+    const simulateUserInput = (
+      userInput: string,
+    ): { query: string; isValid: boolean } => {
       try {
         const formatted = userInput.trim().toUpperCase();
         const validated = RepairTrackingFormSchema.parse({ query: formatted });
@@ -229,7 +231,7 @@ describe("Track Order Form Validation", () => {
         { input: "ABC-123", description: "Standard format" },
         { input: " abc-123 ", description: "With whitespace" },
         { input: "abc_123", description: "Underscore separator" },
-        { input: "VEHICLE001", description: "Long format" }
+        { input: "VEHICLE001", description: "Long format" },
       ];
 
       scenarios.forEach(({ input, description }) => {
@@ -247,14 +249,16 @@ describe("Track Order Form Validation", () => {
         "ABC-123 (Active)",
         "[ABC-123]",
         "ABC-123\t",
-        "ABC-123\r\n"
+        "ABC-123\r\n",
       ];
 
-      copyPastedInputs.forEach(input => {
+      copyPastedInputs.forEach((input) => {
         // Extract just the license plate part
-        const extracted = input.replace(/[^\w\-]/g, "").replace(/License|Plate|Active/gi, "");
+        const extracted = input
+          .replace(/[^\w-]/g, "")
+          .replace(/License|Plate|Active/gi, "");
         const result = simulateUserInput(extracted);
-        
+
         if (extracted.length > 0) {
           expect(result.query).toBeDefined();
         }
@@ -263,13 +267,13 @@ describe("Track Order Form Validation", () => {
 
     it("handles international license plate formats", () => {
       const internationalFormats = [
-        "AB-123-CD",  // European style
-        "123-ABC",    // Number first
-        "A123BCD",    // No separators
-        "AB12CD34"    // Mixed format
+        "AB-123-CD", // European style
+        "123-ABC", // Number first
+        "A123BCD", // No separators
+        "AB12CD34", // Mixed format
       ];
 
-      internationalFormats.forEach(format => {
+      internationalFormats.forEach((format) => {
         const result = simulateUserInput(format);
         expect(result.query).toBe(format.toUpperCase());
         // These should be valid as the schema is flexible
@@ -283,10 +287,10 @@ describe("Track Order Form Validation", () => {
       const validInputs = [
         { query: "ABC-123" },
         { query: "XYZ-789" },
-        { query: "" }
+        { query: "" },
       ];
 
-      validInputs.forEach(input => {
+      validInputs.forEach((input) => {
         const result = RepairTrackingFormSchema.safeParse(input);
         if (result.success) {
           expect(typeof result.data.query).toBe("string");
@@ -300,10 +304,10 @@ describe("Track Order Form Validation", () => {
         { query: null },
         { query: undefined },
         { query: [] },
-        { query: {} }
+        { query: {} },
       ];
 
-      invalidInputs.forEach(input => {
+      invalidInputs.forEach((input) => {
         const result = RepairTrackingFormSchema.safeParse(input);
         expect(result.success).toBe(false);
       });
@@ -313,10 +317,10 @@ describe("Track Order Form Validation", () => {
       const incompleteInputs = [
         {},
         { otherField: "value" },
-        { query: undefined }
+        { query: undefined },
       ];
 
-      incompleteInputs.forEach(input => {
+      incompleteInputs.forEach((input) => {
         const result = RepairTrackingFormSchema.safeParse(input);
         expect(result.success).toBe(false);
       });

@@ -8,9 +8,9 @@ interface UseRepairOrderItemsOptions {
   enabled?: boolean;
 }
 
-export function useRepairOrderItems({ 
-  repairOrderId, 
-  enabled = true 
+export function useRepairOrderItems({
+  repairOrderId,
+  enabled = true,
 }: UseRepairOrderItemsOptions) {
   return useQuery({
     queryKey: ["repair-order-items", repairOrderId],
@@ -18,15 +18,15 @@ export function useRepairOrderItems({
       if (!repairOrderId) {
         throw new Error("Repair order ID is required");
       }
-      
+
       const result = await fetchExistingRepairOrderItems(repairOrderId);
-      
+
       if (result.error) {
         throw new Error(result.error);
       }
-      
+
       return result.items || [];
     },
-    enabled: enabled && !!repairOrderId
+    enabled: enabled && !!repairOrderId,
   });
 }

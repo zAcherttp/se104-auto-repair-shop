@@ -1,5 +1,10 @@
-import { SalesReport, InventoryReport, SalesAnalytics, InventoryAnalytics } from '@/types/reports';
-import { SparePart } from '@/types/types';
+import type {
+  InventoryAnalytics,
+  InventoryReport,
+  SalesAnalytics,
+  SalesReport,
+} from "@/types/reports";
+import { SparePart } from "@/types/types";
 
 // Mock data for Sales Report (B51)
 export const mockSalesReport: SalesReport = {
@@ -46,35 +51,35 @@ export const mockInventoryReport: InventoryReport = {
       partName: "Engine Oil (5W-30)",
       beginStock: 50,
       purchased: 25, // Parts used during the month
-      endStock: 25,   // 50 - 25 = 25
+      endStock: 25, // 50 - 25 = 25
     },
     {
       stt: 2,
       partName: "Brake Pads (Front)",
       beginStock: 20,
       purchased: 15, // Parts used during the month
-      endStock: 5,   // 20 - 15 = 5
+      endStock: 5, // 20 - 15 = 5
     },
     {
       stt: 3,
       partName: "Air Filter",
       beginStock: 30,
       purchased: 20, // Parts used during the month
-      endStock: 10,  // 30 - 20 = 10
+      endStock: 10, // 30 - 20 = 10
     },
     {
       stt: 4,
       partName: "Spark Plugs",
       beginStock: 40,
       purchased: 30, // Parts used during the month
-      endStock: 10,  // 40 - 30 = 10
+      endStock: 10, // 40 - 30 = 10
     },
     {
       stt: 5,
       partName: "Transmission Fluid",
       beginStock: 15,
       purchased: 10, // Parts used during the month
-      endStock: 5,   // 15 - 10 = 5
+      endStock: 5, // 15 - 10 = 5
     },
   ],
 };
@@ -157,7 +162,7 @@ export const mockInventoryAnalytics: InventoryAnalytics = {
   outOfStockItems: 3,
   averagePartValue: 500,
   topValueParts: [
-    { 
+    {
       part: {
         id: "part-1",
         name: "Engine Block",
@@ -165,9 +170,9 @@ export const mockInventoryAnalytics: InventoryAnalytics = {
         stock_quantity: 6,
         created_at: "2024-01-01T00:00:00.000Z",
       },
-      totalValue: 15000 
+      totalValue: 15000,
     },
-    { 
+    {
       part: {
         id: "part-2",
         name: "Transmission Kit",
@@ -175,7 +180,7 @@ export const mockInventoryAnalytics: InventoryAnalytics = {
         stock_quantity: 7,
         created_at: "2024-01-01T00:00:00.000Z",
       },
-      totalValue: 12600 
+      totalValue: 12600,
     },
   ],
   stockMovement: [

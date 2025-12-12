@@ -1,27 +1,27 @@
 "use client";
 
-import { useState, useMemo, useCallback, useRef, memo, useEffect } from "react";
 import {
-  DndContext,
-  DragOverlay,
   closestCorners,
-  DragEndEvent,
-  useSensor,
+  DndContext,
+  type DragEndEvent,
+  DragOverlay,
+  type DragStartEvent,
+  KeyboardSensor,
   MouseSensor,
   TouchSensor,
-  UniqueIdentifier,
-  KeyboardSensor,
-  DragStartEvent,
+  type UniqueIdentifier,
+  useSensor,
 } from "@dnd-kit/core";
-import {
+import { Loader2 } from "lucide-react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
+import type {
   RepairOrderStatus,
   RepairOrderWithVehicleDetails,
 } from "@/types/types";
+import { RepairOrderDetailsDialog } from "../dialogs";
 import { KanbanColumn } from "./kanban-column";
 import { RepairOrderCard } from "./repair-order-card";
-import { RepairOrderDetailsDialog } from "../dialogs";
-import { Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 interface KanbanBoardProps {
   repairOrders: RepairOrderWithVehicleDetails[];
@@ -76,7 +76,7 @@ export const KanbanBoard = memo(function KanbanBoard({
         color: "bg-green-500",
       },
     ],
-    []
+    [],
   );
 
   const repairOrderStatuses = useMemo<RepairOrderStatus[]>(() => {
@@ -87,12 +87,15 @@ export const KanbanBoard = memo(function KanbanBoard({
   const columnOrders = useMemo(() => {
     return kanbanColumnConfig.reduce<
       Record<string, RepairOrderWithVehicleDetails[]>
-    >((acc, column) => {
-      acc[column.id] = clientOrders.filter(
-        (order) => order.status === column.id
-      );
-      return acc;
-    }, {} as Record<string, RepairOrderWithVehicleDetails[]>);
+    >(
+      (acc, column) => {
+        acc[column.id] = clientOrders.filter(
+          (order) => order.status === column.id,
+        );
+        return acc;
+      },
+      {} as Record<string, RepairOrderWithVehicleDetails[]>,
+    );
   }, [clientOrders, kanbanColumnConfig]);
 
   // Handle drag start
@@ -103,14 +106,14 @@ export const KanbanBoard = memo(function KanbanBoard({
       if (draggedOrder) {
         setActiveOrder(draggedOrder);
         const currentColumnIndex = kanbanColumnConfig.findIndex(
-          (column) => column.id === draggedOrder.status
+          (column) => column.id === draggedOrder.status,
         );
         if (currentColumnIndex !== -1) {
           targetColumnIndexRef.current = currentColumnIndex;
         }
       }
     },
-    [clientOrders, kanbanColumnConfig]
+    [clientOrders, kanbanColumnConfig],
   );
 
   // Handle drag end
@@ -128,8 +131,8 @@ export const KanbanBoard = memo(function KanbanBoard({
           //optimistically update the clientOrders state
           setClientOrders((prevOrders) =>
             prevOrders.map((order) =>
-              order.id === taskId ? { ...order, status: newStatus } : order
-            )
+              order.id === taskId ? { ...order, status: newStatus } : order,
+            ),
           );
         }
       }
@@ -138,7 +141,7 @@ export const KanbanBoard = memo(function KanbanBoard({
 
       targetColumnIndexRef.current = null;
     },
-    [onStatusChange, repairOrderStatuses]
+    [onStatusChange, repairOrderStatuses],
   );
 
   const handleOrderClick = useCallback(
@@ -147,7 +150,7 @@ export const KanbanBoard = memo(function KanbanBoard({
       setSelectedOrder(order);
       setDetailDialogOpen(true);
     },
-    [activeOrder]
+    [activeOrder],
   );
 
   const mouseSensor = useSensor(MouseSensor, {
@@ -173,7 +176,7 @@ export const KanbanBoard = memo(function KanbanBoard({
       }: {
         currentCoordinates: { x: number; y: number };
         active: UniqueIdentifier;
-      }
+      },
     ) => {
       // Only handle arrow keys, return current coordinates for other keys
       if (event.code !== "ArrowRight" && event.code !== "ArrowLeft") {
@@ -188,7 +191,7 @@ export const KanbanBoard = memo(function KanbanBoard({
       const columnRects = kanbanColumnConfig
         .map((column) => {
           const columnEl = document.querySelector(
-            `[data-column-id="${column.id}"]`
+            `[data-column-id="${column.id}"]`,
           );
           return columnEl ? columnEl.getBoundingClientRect() : null;
         })
@@ -199,7 +202,7 @@ export const KanbanBoard = memo(function KanbanBoard({
       // Find the current column index by matching the active order's status
       const currentStatus = currentOrder.status.toLowerCase().replace(" ", "-");
       const currentColumnIndex = kanbanColumnConfig.findIndex(
-        (column) => column.id === currentStatus
+        (column) => column.id === currentStatus,
       );
 
       // Calculate target index based on current position and key pressed
@@ -223,7 +226,7 @@ export const KanbanBoard = memo(function KanbanBoard({
 
       // Get the order element to calculate its dimensions
       const orderElement = document.querySelector(
-        `[data-order-id="${active}"]`
+        `[data-order-id="${active}"]`,
       );
       const orderRect = orderElement?.getBoundingClientRect();
 
@@ -240,7 +243,7 @@ export const KanbanBoard = memo(function KanbanBoard({
         y: currentCoordinates.y,
       };
     },
-    [kanbanColumnConfig, repairOrders]
+    [kanbanColumnConfig, repairOrders],
   );
 
   const keyboardSensor = useSensor(KeyboardSensor, {
@@ -249,7 +252,7 @@ export const KanbanBoard = memo(function KanbanBoard({
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-96">
+      <div className="flex h-96 items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin" />
       </div>
     );

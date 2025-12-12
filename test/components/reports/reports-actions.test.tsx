@@ -7,17 +7,17 @@ jest.mock("@/app/actions/reports", () => ({
 }));
 
 import {
-  getSalesAnalytics,
   getInventoryAnalytics,
-  getSalesReport,
   getInventoryReport,
+  getSalesAnalytics,
+  getSalesReport,
 } from "@/app/actions/reports";
 import {
-  mockSalesAnalytics,
   mockInventoryAnalytics,
-  mockSalesReport,
   mockInventoryReport,
   mockReportPeriod,
+  mockSalesAnalytics,
+  mockSalesReport,
 } from "@/test/mocks/reports-data";
 
 const mockGetSalesAnalytics = getSalesAnalytics as jest.MockedFunction<
@@ -98,7 +98,7 @@ describe("Reports Server Actions", () => {
       expect(result.data?.totalRevenue).toBe(mockSalesAnalytics.totalRevenue);
       expect(result.data?.totalOrders).toBe(mockSalesAnalytics.totalOrders);
       expect(result.data?.averageOrderValue).toBe(
-        mockSalesAnalytics.averageOrderValue
+        mockSalesAnalytics.averageOrderValue,
       );
       expect(result.data?.completedOrders).toBeGreaterThan(0);
     });
@@ -225,7 +225,7 @@ describe("Reports Server Actions", () => {
 
       expect(result.data?.month).toBe(mockInventoryReport.month);
       expect(result.data?.inventory).toHaveLength(
-        mockInventoryReport.inventory.length
+        mockInventoryReport.inventory.length,
       );
       expect(result.data?.inventory[0]).toHaveProperty("partName");
       expect(result.data?.inventory[0]).toHaveProperty("beginStock");

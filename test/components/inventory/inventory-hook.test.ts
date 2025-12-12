@@ -1,6 +1,6 @@
 /**
  * Inventory Hook Tests
- * 
+ *
  * This test suite focuses on testing the inventory-related hooks functionality,
  * including TanStack Query integration, data fetching, and state management.
  */
@@ -21,21 +21,25 @@ jest.mock("@/lib/inventory-calculations", () => ({
 }));
 
 import { useQuery } from "@tanstack/react-query";
-import { createClient } from "@/supabase/client";
-import { getCurrentEndingStock } from "@/lib/inventory-calculations";
+import { renderHook } from "@testing-library/react";
 import { useInventory } from "@/hooks/use-inventory";
 import { useInventoryWithEndingStock } from "@/hooks/use-inventory-with-ending-stock";
+import { getCurrentEndingStock } from "@/lib/inventory-calculations";
+import { createClient } from "@/supabase/client";
 import {
   mockSparePartsArray,
   mockSparePartsEmptyArray,
   mockSparePartsWithEndingStockArray,
   mockStockCalculationsArray,
 } from "@/test/mocks/inventory-data";
-import { renderHook } from "@testing-library/react";
 
 const mockUseQuery = useQuery as jest.MockedFunction<typeof useQuery>;
-const mockCreateClient = createClient as jest.MockedFunction<typeof createClient>;
-const mockGetCurrentEndingStock = getCurrentEndingStock as jest.MockedFunction<typeof getCurrentEndingStock>;
+const mockCreateClient = createClient as jest.MockedFunction<
+  typeof createClient
+>;
+const mockGetCurrentEndingStock = getCurrentEndingStock as jest.MockedFunction<
+  typeof getCurrentEndingStock
+>;
 
 // Mock Supabase query builder
 const mockSupabaseQuery = {
@@ -47,9 +51,9 @@ const mockSupabaseQuery = {
 describe("Inventory Hooks", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    
+
     mockCreateClient.mockReturnValue(mockSupabaseQuery as any);
-    
+
     // Default successful query mock
     mockUseQuery.mockReturnValue({
       data: mockSparePartsArray,
@@ -143,7 +147,7 @@ describe("Inventory Hooks", () => {
       const { result } = renderHook(() => useInventory());
 
       expect(result.current.refetch).toBe(mockRefetch);
-      expect(typeof result.current.refetch).toBe('function');
+      expect(typeof result.current.refetch).toBe("function");
     });
   });
 
@@ -195,7 +199,9 @@ describe("Inventory Hooks", () => {
     });
 
     it("handles error state correctly", () => {
-      const mockError = new Error("Failed to fetch inventory with ending stock");
+      const mockError = new Error(
+        "Failed to fetch inventory with ending stock",
+      );
       mockUseQuery.mockReturnValueOnce({
         data: undefined,
         isLoading: false,
@@ -241,7 +247,7 @@ describe("Inventory Hooks", () => {
       const { result } = renderHook(() => useInventoryWithEndingStock());
 
       expect(result.current.refetch).toBe(mockRefetch);
-      expect(typeof result.current.refetch).toBe('function');
+      expect(typeof result.current.refetch).toBe("function");
     });
   });
 
@@ -264,7 +270,7 @@ describe("Inventory Hooks", () => {
     it("handles Supabase errors correctly", async () => {
       const mockError = { message: "Database connection failed" };
       const mockQueryResult = { data: null, error: mockError };
-      
+
       mockSupabaseQuery.from.mockReturnValueOnce({
         select: jest.fn().mockReturnValueOnce({
           order: jest.fn().mockResolvedValueOnce(mockQueryResult),
@@ -287,11 +293,16 @@ describe("Inventory Hooks", () => {
     });
 
     it("handles stock calculation errors gracefully", () => {
-      mockGetCurrentEndingStock.mockRejectedValueOnce(new Error("Stock calculation failed"));
+      mockGetCurrentEndingStock.mockRejectedValueOnce(
+        new Error("Stock calculation failed"),
+      );
 
       // Should still return data but with fallback stock values
       mockUseQuery.mockReturnValueOnce({
-        data: mockSparePartsArray.map(part => ({ ...part, endingStock: part.stock_quantity ?? 0 })),
+        data: mockSparePartsArray.map((part) => ({
+          ...part,
+          endingStock: part.stock_quantity ?? 0,
+        })),
         isLoading: false,
         error: null,
         isError: false,
@@ -309,7 +320,10 @@ describe("Inventory Hooks", () => {
       mockGetCurrentEndingStock.mockResolvedValueOnce([]); // No calculations available
 
       mockUseQuery.mockReturnValueOnce({
-        data: mockSparePartsArray.map(part => ({ ...part, endingStock: part.stock_quantity ?? 0 })),
+        data: mockSparePartsArray.map((part) => ({
+          ...part,
+          endingStock: part.stock_quantity ?? 0,
+        })),
         isLoading: false,
         error: null,
         isError: false,
@@ -320,7 +334,9 @@ describe("Inventory Hooks", () => {
       const { result } = renderHook(() => useInventoryWithEndingStock());
 
       expect(result.current.data).toBeDefined();
-      expect(result.current.data?.every(part => part.endingStock !== undefined)).toBe(true);
+      expect(
+        result.current.data?.every((part) => part.endingStock !== undefined),
+      ).toBe(true);
     });
   });
 
@@ -330,7 +346,7 @@ describe("Inventory Hooks", () => {
 
       // Verify the query function behavior
       const queryFn = mockUseQuery.mock.calls[0][0].queryFn;
-      expect(typeof queryFn).toBe('function');
+      expect(typeof queryFn).toBe("function");
     });
 
     it("calls Supabase client correctly for inventory with ending stock", () => {
@@ -338,12 +354,14 @@ describe("Inventory Hooks", () => {
 
       // Verify the query function behavior
       const queryFn = mockUseQuery.mock.calls[0][0].queryFn;
-      expect(typeof queryFn).toBe('function');
+      expect(typeof queryFn).toBe("function");
     });
 
     it("uses different query keys for different hooks", () => {
       const { unmount: unmount1 } = renderHook(() => useInventory());
-      const { unmount: unmount2 } = renderHook(() => useInventoryWithEndingStock());
+      const { unmount: unmount2 } = renderHook(() =>
+        useInventoryWithEndingStock(),
+      );
 
       const calls = mockUseQuery.mock.calls;
       expect(calls[0][0].queryKey).toEqual(["spare_parts"]);
@@ -355,12 +373,12 @@ describe("Inventory Hooks", () => {
 
     it("maintains query key consistency across multiple renders", () => {
       const { rerender } = renderHook(() => useInventory());
-      
+
       rerender();
       rerender();
 
       const calls = mockUseQuery.mock.calls;
-      calls.forEach(call => {
+      calls.forEach((call) => {
         expect(call[0].queryKey).toEqual(["spare_parts"]);
       });
     });

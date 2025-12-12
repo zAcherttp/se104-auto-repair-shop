@@ -1,7 +1,8 @@
 "use client";
 
+import { CalendarIcon } from "lucide-react";
 import * as React from "react";
-import { type DateRange } from "react-day-picker";
+import type { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -10,7 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CalendarIcon } from "lucide-react";
 
 interface MonthYearPickerProps {
   onUpdate: (values: { range: DateRange }) => void;
@@ -71,11 +71,11 @@ export default function MonthYearPicker({
         to: endDate,
       };
     },
-    []
+    [],
   );
 
   const handleMonthChange = (month: string) => {
-    const monthValue = parseInt(month);
+    const monthValue = Number.parseInt(month);
     setSelectedMonth(monthValue);
 
     const range = getDateRange(monthValue, selectedYear);
@@ -83,7 +83,7 @@ export default function MonthYearPicker({
   };
 
   const handleYearChange = (year: string) => {
-    const yearValue = parseInt(year);
+    const yearValue = Number.parseInt(year);
     setSelectedYear(yearValue);
 
     const range = getDateRange(selectedMonth, yearValue);
@@ -99,14 +99,13 @@ export default function MonthYearPicker({
   React.useEffect(() => {
     const range = getDateRange(selectedMonth, selectedYear);
     onUpdateRef.current({ range });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Intentionally empty - only run once on mount
+  }, [getDateRange, selectedMonth, selectedYear]); // Intentionally empty - only run once on mount
 
   return (
-    <div className="flex items-center justify-end gap-2 ml-auto">
+    <div className="ml-auto flex items-center justify-end gap-2">
       <Button
         variant="outline"
-        className="justify-start text-left font-normal w-48"
+        className="w-48 justify-start text-left font-normal"
       >
         <CalendarIcon className="mr-2 h-4 w-4" />
         {formatDisplayText()}

@@ -14,12 +14,12 @@ jest.mock("@/app/actions/reports", () => ({
 import { useQuery } from "@tanstack/react-query";
 import { useReportsQuery } from "@/hooks/use-reports";
 import {
-  mockSalesAnalytics,
+  mockEmptySalesAnalytics,
   mockInventoryAnalytics,
-  mockSalesReport,
   mockInventoryReport,
   mockReportPeriod,
-  mockEmptySalesAnalytics,
+  mockSalesAnalytics,
+  mockSalesReport,
 } from "@/test/mocks/reports-data";
 
 const mockUseQuery = useQuery as jest.MockedFunction<typeof useQuery>;
@@ -172,7 +172,7 @@ describe("useReportsQuery Hook", () => {
           mockReportPeriod.from.toISOString(),
           mockReportPeriod.to.toISOString(),
         ],
-      })
+      }),
     );
   });
 

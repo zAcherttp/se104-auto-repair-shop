@@ -1,36 +1,38 @@
 /**
  * Payments Data Processing Tests
- * 
+ *
  * This test suite focuses on validating the data processing and transformation logic
  * used in the payments functionality. Tests core business logic without UI dependencies.
  */
 
+import type { DateRange } from "react-day-picker";
 import {
   mockPaymentData,
   mockPaymentDataCard,
-  mockPaymentDataTransfer,
-  mockPaymentDataNoProfile,
-  mockPaymentDataMissingInfo,
-  mockPaymentsArray,
-  mockPaymentsArraySortedByDate,
-  mockPaymentsArrayFilteredWeek,
-  mockPaymentsEmptyArray,
   mockPaymentDataLargeAmount,
+  mockPaymentDataMissingInfo,
+  mockPaymentDataNoProfile,
   mockPaymentDataSmallAmount,
+  mockPaymentDataTransfer,
   mockPaymentDataZeroAmount,
+  mockPaymentsArray,
+  mockPaymentsArrayFilteredWeek,
+  mockPaymentsArraySortedByDate,
+  mockPaymentsEmptyArray,
 } from "@/test/mocks/payments-data";
 import type { PaymentWithDetails } from "@/types";
-import { DateRange } from "react-day-picker";
 
 // Helper function for payment data validation
-const validatePaymentData = (payment: PaymentWithDetails): { isValid: boolean; errors: string[] } => {
+const validatePaymentData = (
+  payment: PaymentWithDetails,
+): { isValid: boolean; errors: string[] } => {
   const errors: string[] = [];
 
   // Validate payment basic info
   if (!payment.id) {
     errors.push("Payment ID is required");
   }
-  if (typeof payment.amount !== 'number' || payment.amount < 0) {
+  if (typeof payment.amount !== "number" || payment.amount < 0) {
     errors.push("Payment amount must be a non-negative number");
   }
   if (!payment.payment_method) {
@@ -69,7 +71,7 @@ describe("Payments Data Processing", () => {
     };
 
     it("formats standard amounts correctly", () => {
-      expect(formatCurrency(545.00)).toBe("$545.00");
+      expect(formatCurrency(545.0)).toBe("$545.00");
       expect(formatCurrency(1234.56)).toBe("$1,234.56");
       expect(formatCurrency(0.99)).toBe("$0.99");
     });
@@ -90,7 +92,7 @@ describe("Payments Data Processing", () => {
     });
 
     it("handles negative amounts correctly", () => {
-      expect(formatCurrency(-100.50)).toBe("-$100.50");
+      expect(formatCurrency(-100.5)).toBe("-$100.50");
       expect(formatCurrency(-0.01)).toBe("-$0.01");
     });
   });
@@ -140,7 +142,7 @@ describe("Payments Data Processing", () => {
   describe("Date Processing and Formatting", () => {
     const formatPaymentDate = (dateString: string | null): string => {
       if (!dateString) return "N/A";
-      
+
       try {
         const date = new Date(dateString);
         return date.toLocaleDateString("en-US", {
@@ -153,16 +155,19 @@ describe("Payments Data Processing", () => {
       }
     };
 
-    const isDateInRange = (dateString: string | null, range: DateRange): boolean => {
+    const isDateInRange = (
+      dateString: string | null,
+      range: DateRange,
+    ): boolean => {
       if (!dateString || !range.from || !range.to) return false;
-      
+
       const paymentDate = new Date(dateString);
       const fromDate = new Date(range.from);
       const toDate = new Date(range.to);
-      
+
       fromDate.setHours(0, 0, 0, 0);
       toDate.setHours(23, 59, 59, 999);
-      
+
       return paymentDate >= fromDate && paymentDate <= toDate;
     };
 
@@ -192,8 +197,11 @@ describe("Payments Data Processing", () => {
     });
 
     it("handles incomplete date ranges", () => {
-      const incompleteRange: DateRange = { from: new Date("2024-12-15"), to: undefined };
-      
+      const incompleteRange: DateRange = {
+        from: new Date("2024-12-15"),
+        to: undefined,
+      };
+
       expect(isDateInRange("2024-12-15", incompleteRange)).toBe(false);
       expect(isDateInRange("2024-12-16", incompleteRange)).toBe(false);
     });
@@ -217,7 +225,9 @@ describe("Payments Data Processing", () => {
       const validation = validatePaymentData(incompletePayment);
       expect(validation.isValid).toBe(false);
       expect(validation.errors).toContain("Payment ID is required");
-      expect(validation.errors).toContain("Payment amount must be a non-negative number");
+      expect(validation.errors).toContain(
+        "Payment amount must be a non-negative number",
+      );
       expect(validation.errors).toContain("Payment method is required");
     });
 
@@ -267,17 +277,22 @@ describe("Payments Data Processing", () => {
       return payments.reduce((sum, payment) => sum + payment.amount, 0);
     };
 
-    const calculateAveragePayment = (payments: PaymentWithDetails[]): number => {
+    const calculateAveragePayment = (
+      payments: PaymentWithDetails[],
+    ): number => {
       if (payments.length === 0) return 0;
       return calculateTotalPayments(payments) / payments.length;
     };
 
     const getPaymentMethodDistribution = (payments: PaymentWithDetails[]) => {
-      const distribution = payments.reduce((acc, payment) => {
-        const method = payment.payment_method;
-        acc[method] = (acc[method] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>);
+      const distribution = payments.reduce(
+        (acc, payment) => {
+          const method = payment.payment_method;
+          acc[method] = (acc[method] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>,
+      );
 
       return distribution;
     };
@@ -288,12 +303,10 @@ describe("Payments Data Processing", () => {
       const paymentCount = payments.length;
       const methodDistribution = getPaymentMethodDistribution(payments);
 
-      const maxPayment = payments.length > 0 
-        ? Math.max(...payments.map(p => p.amount))
-        : 0;
-      const minPayment = payments.length > 0 
-        ? Math.min(...payments.map(p => p.amount))
-        : 0;
+      const maxPayment =
+        payments.length > 0 ? Math.max(...payments.map((p) => p.amount)) : 0;
+      const minPayment =
+        payments.length > 0 ? Math.min(...payments.map((p) => p.amount)) : 0;
 
       return {
         totalAmount,
@@ -306,15 +319,15 @@ describe("Payments Data Processing", () => {
     };
 
     it("calculates total payments correctly", () => {
-      expect(calculateTotalPayments(mockPaymentsArray)).toBe(3071.50);
+      expect(calculateTotalPayments(mockPaymentsArray)).toBe(3071.5);
       expect(calculateTotalPayments(mockPaymentsEmptyArray)).toBe(0);
-      expect(calculateTotalPayments([mockPaymentData])).toBe(545.00);
+      expect(calculateTotalPayments([mockPaymentData])).toBe(545.0);
     });
 
     it("calculates average payment correctly", () => {
-      expect(calculateAveragePayment(mockPaymentsArray)).toBeCloseTo(614.30, 2);
+      expect(calculateAveragePayment(mockPaymentsArray)).toBeCloseTo(614.3, 2);
       expect(calculateAveragePayment(mockPaymentsEmptyArray)).toBe(0);
-      expect(calculateAveragePayment([mockPaymentData])).toBe(545.00);
+      expect(calculateAveragePayment([mockPaymentData])).toBe(545.0);
     });
 
     it("calculates payment method distribution correctly", () => {
@@ -326,10 +339,10 @@ describe("Payments Data Processing", () => {
 
     it("generates comprehensive payment statistics", () => {
       const stats = getPaymentStatistics(mockPaymentsArray);
-      
-      expect(stats.totalAmount).toBe(3071.50);
+
+      expect(stats.totalAmount).toBe(3071.5);
       expect(stats.paymentCount).toBe(5);
-      expect(stats.averageAmount).toBeCloseTo(614.30, 2);
+      expect(stats.averageAmount).toBeCloseTo(614.3, 2);
       expect(stats.maxPayment).toBe(1200.75);
       expect(stats.minPayment).toBe(150.25);
       expect(stats.methodDistribution["cash"]).toBe(2);
@@ -339,7 +352,7 @@ describe("Payments Data Processing", () => {
 
     it("handles empty payments array", () => {
       const stats = getPaymentStatistics(mockPaymentsEmptyArray);
-      
+
       expect(stats.totalAmount).toBe(0);
       expect(stats.paymentCount).toBe(0);
       expect(stats.averageAmount).toBe(0);
@@ -350,47 +363,61 @@ describe("Payments Data Processing", () => {
 
     it("handles single payment correctly", () => {
       const stats = getPaymentStatistics([mockPaymentData]);
-      
-      expect(stats.totalAmount).toBe(545.00);
+
+      expect(stats.totalAmount).toBe(545.0);
       expect(stats.paymentCount).toBe(1);
-      expect(stats.averageAmount).toBe(545.00);
-      expect(stats.maxPayment).toBe(545.00);
-      expect(stats.minPayment).toBe(545.00);
+      expect(stats.averageAmount).toBe(545.0);
+      expect(stats.maxPayment).toBe(545.0);
+      expect(stats.minPayment).toBe(545.0);
       expect(stats.methodDistribution["cash"]).toBe(1);
     });
   });
 
   describe("Payment Filtering and Sorting", () => {
-    const filterPaymentsByDateRange = (payments: PaymentWithDetails[], range: DateRange): PaymentWithDetails[] => {
+    const filterPaymentsByDateRange = (
+      payments: PaymentWithDetails[],
+      range: DateRange,
+    ): PaymentWithDetails[] => {
       if (!range.from || !range.to) return payments;
 
-      return payments.filter(payment => {
+      return payments.filter((payment) => {
         if (!payment.payment_date) return false;
-        
+
         const paymentDate = new Date(payment.payment_date);
         const from = new Date(range.from!);
         const to = new Date(range.to!);
-        
+
         from.setHours(0, 0, 0, 0);
         to.setHours(23, 59, 59, 999);
-        
+
         return paymentDate >= from && paymentDate <= to;
       });
     };
 
-    const filterPaymentsByMethod = (payments: PaymentWithDetails[], method: string): PaymentWithDetails[] => {
-      return payments.filter(payment => payment.payment_method === method);
+    const filterPaymentsByMethod = (
+      payments: PaymentWithDetails[],
+      method: string,
+    ): PaymentWithDetails[] => {
+      return payments.filter((payment) => payment.payment_method === method);
     };
 
-    const sortPaymentsByDate = (payments: PaymentWithDetails[], ascending: boolean = false): PaymentWithDetails[] => {
+    const sortPaymentsByDate = (
+      payments: PaymentWithDetails[],
+      ascending = false,
+    ): PaymentWithDetails[] => {
       return [...payments].sort((a, b) => {
         const dateA = new Date(a.payment_date || 0);
         const dateB = new Date(b.payment_date || 0);
-        return ascending ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime();
+        return ascending
+          ? dateA.getTime() - dateB.getTime()
+          : dateB.getTime() - dateA.getTime();
       });
     };
 
-    const sortPaymentsByAmount = (payments: PaymentWithDetails[], ascending: boolean = true): PaymentWithDetails[] => {
+    const sortPaymentsByAmount = (
+      payments: PaymentWithDetails[],
+      ascending = true,
+    ): PaymentWithDetails[] => {
       return [...payments].sort((a, b) => {
         return ascending ? a.amount - b.amount : b.amount - a.amount;
       });
@@ -404,27 +431,36 @@ describe("Payments Data Processing", () => {
 
       const filtered = filterPaymentsByDateRange(mockPaymentsArray, range);
       expect(filtered).toHaveLength(3);
-      expect(filtered.map(p => p.id)).toEqual(
-        expect.arrayContaining(["payment-001", "payment-002", "payment-003"])
+      expect(filtered.map((p) => p.id)).toEqual(
+        expect.arrayContaining(["payment-001", "payment-002", "payment-003"]),
       );
     });
 
     it("returns all payments when date range is incomplete", () => {
-      const incompleteRange: DateRange = { from: new Date("2024-12-15"), to: undefined };
-      const filtered = filterPaymentsByDateRange(mockPaymentsArray, incompleteRange);
+      const incompleteRange: DateRange = {
+        from: new Date("2024-12-15"),
+        to: undefined,
+      };
+      const filtered = filterPaymentsByDateRange(
+        mockPaymentsArray,
+        incompleteRange,
+      );
       expect(filtered).toHaveLength(mockPaymentsArray.length);
     });
 
     it("filters payments by payment method correctly", () => {
       const cashPayments = filterPaymentsByMethod(mockPaymentsArray, "cash");
       expect(cashPayments).toHaveLength(2);
-      expect(cashPayments.every(p => p.payment_method === "cash")).toBe(true);
+      expect(cashPayments.every((p) => p.payment_method === "cash")).toBe(true);
 
       const cardPayments = filterPaymentsByMethod(mockPaymentsArray, "card");
       expect(cardPayments).toHaveLength(2);
-      expect(cardPayments.every(p => p.payment_method === "card")).toBe(true);
+      expect(cardPayments.every((p) => p.payment_method === "card")).toBe(true);
 
-      const transferPayments = filterPaymentsByMethod(mockPaymentsArray, "transfer");
+      const transferPayments = filterPaymentsByMethod(
+        mockPaymentsArray,
+        "transfer",
+      );
       expect(transferPayments).toHaveLength(1);
       expect(transferPayments[0].payment_method).toBe("transfer");
     });
@@ -468,15 +504,15 @@ describe("Payments Data Processing", () => {
       if (payment.created_by_profile?.full_name) {
         return payment.created_by_profile.full_name;
       }
-      
+
       if (payment.created_by_profile?.email) {
         return payment.created_by_profile.email;
       }
-      
+
       if (payment.created_by === null) {
         return "Public Payment";
       }
-      
+
       return "Unknown";
     };
 
@@ -486,11 +522,15 @@ describe("Payments Data Processing", () => {
 
     it("displays full name when available", () => {
       expect(getCreatedByDisplayName(mockPaymentData)).toBe("Admin User");
-      expect(getCreatedByDisplayName(mockPaymentDataCard)).toBe("Employee User");
+      expect(getCreatedByDisplayName(mockPaymentDataCard)).toBe(
+        "Employee User",
+      );
     });
 
     it("falls back to email when full name is not available", () => {
-      expect(getCreatedByDisplayName(mockPaymentDataMissingInfo)).toBe("noname@garage.com");
+      expect(getCreatedByDisplayName(mockPaymentDataMissingInfo)).toBe(
+        "noname@garage.com",
+      );
     });
 
     it("handles public payments correctly", () => {
@@ -499,7 +539,7 @@ describe("Payments Data Processing", () => {
         created_by: null,
         created_by_profile: undefined,
       };
-      
+
       expect(getCreatedByDisplayName(publicPayment)).toBe("Public Payment");
     });
 
@@ -509,7 +549,9 @@ describe("Payments Data Processing", () => {
 
     it("extracts email information correctly", () => {
       expect(getCreatedByEmail(mockPaymentData)).toBe("admin@garage.com");
-      expect(getCreatedByEmail(mockPaymentDataCard)).toBe("employee@garage.com");
+      expect(getCreatedByEmail(mockPaymentDataCard)).toBe(
+        "employee@garage.com",
+      );
       expect(getCreatedByEmail(mockPaymentDataNoProfile)).toBeNull();
     });
   });
@@ -518,7 +560,7 @@ describe("Payments Data Processing", () => {
     it("handles extremely large payment amounts", () => {
       const validation = validatePaymentData(mockPaymentDataLargeAmount);
       expect(validation.isValid).toBe(true);
-      
+
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -529,7 +571,7 @@ describe("Payments Data Processing", () => {
     it("handles very small payment amounts", () => {
       const validation = validatePaymentData(mockPaymentDataSmallAmount);
       expect(validation.isValid).toBe(true);
-      
+
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -581,14 +623,17 @@ describe("Payments Data Processing", () => {
       ];
 
       const total = duplicatePayments.reduce((sum, p) => sum + p.amount, 0);
-      expect(total).toBe(1940.50); // 545 + 545 + 850.50
-      
-      const methodDistribution = duplicatePayments.reduce((acc, payment) => {
-        const method = payment.payment_method;
-        acc[method] = (acc[method] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>);
-      
+      expect(total).toBe(1940.5); // 545 + 545 + 850.50
+
+      const methodDistribution = duplicatePayments.reduce(
+        (acc, payment) => {
+          const method = payment.payment_method;
+          acc[method] = (acc[method] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>,
+      );
+
       expect(methodDistribution["cash"]).toBe(2);
       expect(methodDistribution["card"]).toBe(1);
     });

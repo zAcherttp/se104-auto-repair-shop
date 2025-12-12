@@ -1,16 +1,16 @@
 /**
  * Test Data Factories
- * 
+ *
  * Provides factory functions to create test data with realistic defaults
  */
 
-import { createTestClient } from '../setup/supabase-test';
-import type { Database } from '@/supabase/types';
+import type { Database } from "@/supabase/types";
+import { createTestClient } from "../setup/supabase-test";
 
-type Customer = Database['public']['Tables']['customers']['Insert'];
-type Vehicle = Database['public']['Tables']['vehicles']['Insert'];
-type RepairOrder = Database['public']['Tables']['repair_orders']['Insert'];
-type SparePart = Database['public']['Tables']['spare_parts']['Insert'];
+type Customer = Database["public"]["Tables"]["customers"]["Insert"];
+type Vehicle = Database["public"]["Tables"]["vehicles"]["Insert"];
+type RepairOrder = Database["public"]["Tables"]["repair_orders"]["Insert"];
+type SparePart = Database["public"]["Tables"]["spare_parts"]["Insert"];
 
 /**
  * Creates a test user via Supabase Auth
@@ -22,10 +22,10 @@ export async function createTestUser(options?: {
   garageId?: string;
 }) {
   const client = createTestClient();
-  
+
   const email = options?.email || `test-user-${Date.now()}@test.com`;
-  const password = options?.password || 'TestPassword123!';
-  
+  const password = options?.password || "TestPassword123!";
+
   const { data, error } = await client.auth.admin.createUser({
     email,
     password,
@@ -41,11 +41,11 @@ export async function createTestUser(options?: {
 
   // Create profile entry
   if (data.user) {
-    const { error: profileError } = await client.from('profiles').insert({
+    const { error: profileError } = await client.from("profiles").insert({
       id: data.user.id,
       email: email,
-      full_name: email.split('@')[0],
-      role: options?.isGarageAdmin ? 'admin' : 'employee',
+      full_name: email.split("@")[0],
+      role: options?.isGarageAdmin ? "admin" : "employee",
     });
 
     if (profileError) {
@@ -87,17 +87,21 @@ export async function createTestGarage(options?: {
  */
 export async function createTestCustomer(options?: Partial<Customer>) {
   const client = createTestClient();
-  
+
   const customerData: Customer = {
     name: options?.name || `Test Customer ${Date.now()}`,
-    phone: options?.phone || `090${Math.floor(Math.random() * 10000000).toString().padStart(7, '0')}`,
-    address: options?.address || '123 Test Street',
+    phone:
+      options?.phone ||
+      `090${Math.floor(Math.random() * 10000000)
+        .toString()
+        .padStart(7, "0")}`,
+    address: options?.address || "123 Test Street",
     email: options?.email || null,
     ...options,
   };
 
   const { data, error } = await client
-    .from('customers')
+    .from("customers")
     .insert(customerData)
     .select()
     .single();
@@ -112,9 +116,11 @@ export async function createTestCustomer(options?: Partial<Customer>) {
 /**
  * Creates a test vehicle
  */
-export async function createTestVehicle(options?: Partial<Vehicle> & { customerId?: string }) {
+export async function createTestVehicle(
+  options?: Partial<Vehicle> & { customerId?: string },
+) {
   const client = createTestClient();
-  
+
   // Create customer if not provided
   let customerId = options?.customerId;
   if (!customerId) {
@@ -123,15 +129,16 @@ export async function createTestVehicle(options?: Partial<Vehicle> & { customerI
   }
 
   const vehicleData: Vehicle = {
-    license_plate: options?.license_plate || `TEST-${Math.floor(Math.random() * 1000)}`,
-    brand: options?.brand || 'Toyota',
+    license_plate:
+      options?.license_plate || `TEST-${Math.floor(Math.random() * 1000)}`,
+    brand: options?.brand || "Toyota",
     customer_id: customerId,
     total_paid: options?.total_paid || 0,
     ...options,
   };
 
   const { data, error } = await client
-    .from('vehicles')
+    .from("vehicles")
     .insert(vehicleData)
     .select()
     .single();
@@ -146,10 +153,12 @@ export async function createTestVehicle(options?: Partial<Vehicle> & { customerI
 /**
  * Creates a test repair order
  */
-export async function createTestRepairOrder(options?: Partial<RepairOrder> & {
-  vehicleId?: string;
-  createdBy?: string;
-}) {
+export async function createTestRepairOrder(
+  options?: Partial<RepairOrder> & {
+    vehicleId?: string;
+    createdBy?: string;
+  },
+) {
   const client = createTestClient();
 
   // Create vehicle if not provided
@@ -169,15 +178,16 @@ export async function createTestRepairOrder(options?: Partial<RepairOrder> & {
   const repairOrderData: RepairOrder = {
     vehicle_id: vehicleId,
     created_by: createdBy,
-    status: options?.status || 'pending',
-    reception_date: options?.reception_date || new Date().toISOString().split('T')[0],
+    status: options?.status || "pending",
+    reception_date:
+      options?.reception_date || new Date().toISOString().split("T")[0],
     total_amount: options?.total_amount || 0,
     notes: options?.notes || null,
     ...options,
   };
 
   const { data, error } = await client
-    .from('repair_orders')
+    .from("repair_orders")
     .insert(repairOrderData)
     .select()
     .single();
@@ -203,7 +213,7 @@ export async function createTestSparePart(options?: Partial<SparePart>) {
   };
 
   const { data, error } = await client
-    .from('spare_parts')
+    .from("spare_parts")
     .insert(partData)
     .select()
     .single();
@@ -224,7 +234,7 @@ export async function createCompleteTestScenario(options?: {
   garageId?: string;
 }) {
   const customer = await createTestCustomer({ name: options?.customerName });
-  const vehicle = await createTestVehicle({ 
+  const vehicle = await createTestVehicle({
     customerId: customer.id,
     license_plate: options?.licensePlate,
   });

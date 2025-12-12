@@ -1,9 +1,9 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { DateRange } from "react-day-picker";
 import { createClient } from "@/supabase/client";
-import { RepairOrderWithVehicleDetails } from "@/types/types";
-import { DateRange } from "react-day-picker";
+import type { RepairOrderWithVehicleDetails } from "@/types/types";
 
 export function useRepairOrders(dateRange?: DateRange) {
   const supabase = createClient();
@@ -92,17 +92,17 @@ export function useUpdateRepairOrderStatus() {
         (oldData: RepairOrderWithVehicleDetails[] | undefined) => {
           return oldData
             ? oldData.map((order) =>
-              order.id === orderId
-                ? { ...order, status, updated_at: new Date().toISOString() }
-                : order
-            )
+                order.id === orderId
+                  ? { ...order, status, updated_at: new Date().toISOString() }
+                  : order,
+              )
             : [];
         },
       );
 
       return { previousOrders };
     },
-    onError: (error, variables, context) => {
+    onError: (_error, _variables, context) => {
       // Rollback to previous state on error
       if (context?.previousOrders) {
         context.previousOrders.forEach(([queryKey, data]) => {

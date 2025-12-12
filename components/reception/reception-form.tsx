@@ -1,28 +1,22 @@
 "use client";
 
-import React, { useCallback, useMemo } from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
 import { format } from "date-fns";
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import { useTranslations } from "next-intl";
-
+import React, { useCallback, useMemo } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { createReception } from "@/app/actions/vehicles";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import {
   Form,
   FormControl,
@@ -31,14 +25,23 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
+import { useCarBrands } from "@/hooks/use-car-brands";
+import { useDailyVehicleLimit } from "@/hooks/use-daily-vehicle-limit";
+import {
+  type VehicleReceptionFormData,
   VehicleReceptionFormSchema,
-  VehicleReceptionFormData,
 } from "@/lib/form/definitions";
-import { createReception } from "@/app/actions/vehicles";
+import { cn } from "@/lib/utils";
+import type { FormDialogProps } from "@/types/dialog";
 import SubmitButton from "../submit-button";
-import { FormDialogProps } from "@/types/dialog";
 import {
   Command,
   CommandEmpty,
@@ -47,10 +50,6 @@ import {
   CommandItem,
   CommandList,
 } from "../ui/command";
-import { useCarBrands } from "@/hooks/use-car-brands";
-import { useDailyVehicleLimit } from "@/hooks/use-daily-vehicle-limit";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Label } from "../ui/label";
 
 // Stable references - moved outside component to prevent recreation
@@ -104,29 +103,29 @@ const ReceptionForm = React.memo<FormDialogProps>(
           onClose();
         }
       },
-      [form, onSuccess, onClose, t]
+      [form, onSuccess, onClose, t],
     );
 
     // Memoize license plate change handler
     const handleLicensePlateChange = useCallback(
       (
         e: React.ChangeEvent<HTMLInputElement>,
-        field: { onChange: (value: string) => void }
+        field: { onChange: (value: string) => void },
       ) => {
         field.onChange(e.target.value.toUpperCase());
       },
-      []
+      [],
     );
 
     // Memoize car brand select handler
     const handleCarBrandSelect = useCallback(
       (
         currentValue: string,
-        field: { onChange: (value: string) => void; value: string }
+        field: { onChange: (value: string) => void; value: string },
       ) => {
         field.onChange(currentValue === field.value ? "" : currentValue);
       },
-      []
+      [],
     );
 
     // Memoize calendar date disabled check
@@ -259,16 +258,16 @@ const ReceptionForm = React.memo<FormDialogProps>(
                               disabled={isBrandsLoading}
                               className={cn(
                                 "w-full justify-between",
-                                !field.value && "text-muted-foreground"
+                                !field.value && "text-muted-foreground",
                               )}
                             >
                               {isBrandsLoading
                                 ? "Loading brands..."
                                 : field.value
-                                ? carBrandOptions.find(
-                                    (option) => option.value === field.value
-                                  )?.label
-                                : t("carBrandPlaceholder")}
+                                  ? carBrandOptions.find(
+                                      (option) => option.value === field.value,
+                                    )?.label
+                                  : t("carBrandPlaceholder")}
                               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                           </FormControl>
@@ -302,7 +301,7 @@ const ReceptionForm = React.memo<FormDialogProps>(
                                       onSelect={(currentValue) =>
                                         handleCarBrandSelect(
                                           currentValue,
-                                          field
+                                          field,
                                         )
                                       }
                                     >
@@ -312,7 +311,7 @@ const ReceptionForm = React.memo<FormDialogProps>(
                                           "ml-auto h-4 w-4",
                                           field.value === option.value
                                             ? "opacity-100"
-                                            : "opacity-0"
+                                            : "opacity-0",
                                         )}
                                       />
                                     </CommandItem>
@@ -360,7 +359,7 @@ const ReceptionForm = React.memo<FormDialogProps>(
                             variant="outline"
                             className={cn(
                               "w-full justify-start text-left font-normal",
-                              !field.value && "text-muted-foreground"
+                              !field.value && "text-muted-foreground",
                             )}
                           >
                             <CalendarIcon className="mr-2 h-4 w-4" />
@@ -421,7 +420,7 @@ const ReceptionForm = React.memo<FormDialogProps>(
         </DialogContent>
       </Dialog>
     );
-  }
+  },
 );
 
 ReceptionForm.displayName = "ReceptionForm";

@@ -1,6 +1,6 @@
 /**
  * Inventory Actions Tests
- * 
+ *
  * This test suite focuses on testing the inventory server actions behavior,
  * mocking the implementation to test integration patterns and response handling.
  */
@@ -14,7 +14,9 @@ import {
 import type { ApiResponse, SparePart } from "@/types/types";
 
 // The addSparePart function is already mocked by jest.setup.js
-const mockAddSparePart = addSparePart as jest.MockedFunction<typeof addSparePart>;
+const mockAddSparePart = addSparePart as jest.MockedFunction<
+  typeof addSparePart
+>;
 
 describe("Inventory Actions", () => {
   const mockFormData = {
@@ -33,7 +35,7 @@ describe("Inventory Actions", () => {
         error: null,
         data: mockSparePart,
       };
-      
+
       mockAddSparePart.mockResolvedValueOnce(expectedResult);
 
       const result = await addSparePart(mockFormData);
@@ -48,7 +50,7 @@ describe("Inventory Actions", () => {
         error: new Error("Database constraint violation"),
         data: undefined,
       };
-      
+
       mockAddSparePart.mockResolvedValueOnce(expectedError);
 
       const result = await addSparePart(mockFormData);
@@ -63,7 +65,7 @@ describe("Inventory Actions", () => {
         error: new Error("Name is required"),
         data: undefined,
       };
-      
+
       mockAddSparePart.mockResolvedValueOnce(validationError);
 
       const invalidData = { ...mockSparePartMissingName };
@@ -79,7 +81,7 @@ describe("Inventory Actions", () => {
         error: new Error("Network connection failed"),
         data: undefined,
       };
-      
+
       mockAddSparePart.mockResolvedValueOnce(unexpectedError);
 
       const result = await addSparePart(mockFormData);
@@ -93,13 +95,15 @@ describe("Inventory Actions", () => {
       const rejectionError = new Error("Promise rejection");
       mockAddSparePart.mockRejectedValueOnce(rejectionError);
 
-      await expect(addSparePart(mockFormData)).rejects.toThrow("Promise rejection");
+      await expect(addSparePart(mockFormData)).rejects.toThrow(
+        "Promise rejection",
+      );
     });
 
     it("processes different form data types correctly", async () => {
       const formDataVariations = [
         { name: "Brake Pads", price: 45.99, stock_quantity: 25 },
-        { name: "Oil Filter", price: 12.50, stock_quantity: 100 },
+        { name: "Oil Filter", price: 12.5, stock_quantity: 100 },
         { name: "Air Filter", price: 18.75, stock_quantity: 0 },
       ];
 
@@ -108,7 +112,7 @@ describe("Inventory Actions", () => {
           error: null,
           data: { ...mockSparePart, ...formData },
         };
-        
+
         mockAddSparePart.mockResolvedValueOnce(expectedResult);
 
         const result = await addSparePart(formData);
@@ -125,15 +129,15 @@ describe("Inventory Actions", () => {
         error: null,
         data: mockSparePart,
       };
-      
+
       mockAddSparePart.mockResolvedValueOnce(expectedResult);
 
       const result = await addSparePart(mockFormData);
 
       // Verify ApiResponse structure
-      expect(result).toHaveProperty('error');
-      expect(result).toHaveProperty('data');
-      expect(typeof result.error).toBe('object'); // null is of type object
+      expect(result).toHaveProperty("error");
+      expect(result).toHaveProperty("data");
+      expect(typeof result.error).toBe("object"); // null is of type object
       expect(result.data).toBeDefined();
     });
 
@@ -142,7 +146,7 @@ describe("Inventory Actions", () => {
         error: new Error("Invalid input data"),
         data: undefined,
       };
-      
+
       mockAddSparePart.mockResolvedValueOnce(parseError);
 
       const result = await addSparePart(null as any);
@@ -156,7 +160,7 @@ describe("Inventory Actions", () => {
         error: new Error("Price must be a positive number"),
         data: undefined,
       };
-      
+
       mockAddSparePart.mockResolvedValueOnce(invalidPriceError);
 
       const invalidPriceData = { ...mockSparePartInvalidPrice };
@@ -177,7 +181,7 @@ describe("Inventory Actions", () => {
         error: new Error("Name cannot be empty"),
         data: undefined,
       };
-      
+
       mockAddSparePart.mockResolvedValueOnce(validationError);
 
       const result = await addSparePart(emptyStringData);
@@ -203,7 +207,7 @@ describe("Inventory Actions", () => {
         error: null,
         data: dbResponse,
       };
-      
+
       mockAddSparePart.mockResolvedValueOnce(expectedResult);
 
       const result = await addSparePart(inputData);
@@ -218,7 +222,7 @@ describe("Inventory Actions", () => {
   describe("Mock Function Behavior", () => {
     it("tracks function calls correctly", async () => {
       const mockData = { name: "Test", price: 10, stock_quantity: 5 };
-      
+
       mockAddSparePart.mockResolvedValueOnce({
         error: null,
         data: mockSparePart,
@@ -299,7 +303,7 @@ describe("Inventory Actions", () => {
         });
 
         const result = await addSparePart(mockFormData);
-        
+
         expect(result.error).toBeInstanceOf(Error);
         expect(result.error?.message).toBe(message);
         expect(result.data).toBeUndefined();
@@ -309,7 +313,7 @@ describe("Inventory Actions", () => {
     it("follows consistent success response patterns", async () => {
       const successResponses = [
         { ...mockSparePart, name: "Part A" },
-        { ...mockSparePart, name: "Part B", price: 50.00 },
+        { ...mockSparePart, name: "Part B", price: 50.0 },
         { ...mockSparePart, name: "Part C", stock_quantity: 100 },
       ];
 
@@ -320,7 +324,7 @@ describe("Inventory Actions", () => {
         });
 
         const result = await addSparePart(mockFormData);
-        
+
         expect(result.error).toBeNull();
         expect(result.data).toEqual(responseData);
       }

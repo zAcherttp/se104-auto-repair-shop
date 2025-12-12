@@ -1,5 +1,7 @@
 "use client";
 
+import { FileText, MoreHorizontal } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -7,11 +9,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, FileText } from "lucide-react";
-import { PaymentWithDetails } from "@/types";
-import { InvoiceDialog } from "./invoice-dialog";
-import { useTranslations } from "next-intl";
 import { Label } from "@/components/ui/label";
+import type { PaymentWithDetails } from "@/types";
+import { InvoiceDialog } from "./invoice-dialog";
 
 interface ActionsProps {
   payment: PaymentWithDetails;

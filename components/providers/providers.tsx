@@ -1,7 +1,7 @@
-import { ThemeProvider } from "next-themes";
-import { QueryProvider } from "./query-provider";
 import { NextIntlClientProvider } from "next-intl";
-import { ReactNode } from "react";
+import { ThemeProvider } from "next-themes";
+import type { ReactNode } from "react";
+import { QueryProvider } from "./query-provider";
 
 interface ProvidersProps {
   children: ReactNode;

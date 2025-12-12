@@ -1,16 +1,15 @@
 "use client";
 
-import React from "react";
+import { Car, Mail, MapPin, Phone, Search, Users } from "lucide-react";
 import Image from "next/image";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Car, Users, Search, Phone, Mail, MapPin } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useGarageInfo } from "@/hooks/use-garage-info";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { useGarageInfo } from "@/hooks/use-garage-info";
 
 export default function Page() {
   const router = useRouter();
@@ -21,17 +20,17 @@ export default function Page() {
     <div className="min-h-screen bg-gradient-to-br">
       <div className="container mx-auto px-4 py-16">
         {/* Language Switcher */}
-        <div className="flex justify-end mb-8 gap-1">
+        <div className="mb-8 flex justify-end gap-1">
           <ThemeSwitcher />
           <LanguageSwitcher />
         </div>
 
         {/* Show loading state while fetching garage info */}
         {isGarageInfoLoading ? (
-          <div className="text-center mb-16">
+          <div className="mb-16 text-center">
             <div className="animate-pulse">
-              <div className="h-12 bg-gray-200 rounded mb-4 mx-auto w-96"></div>
-              <div className="h-6 bg-gray-200 rounded mx-auto w-80"></div>
+              <div className="mx-auto mb-4 h-12 w-96 rounded bg-gray-200" />
+              <div className="mx-auto h-6 w-80 rounded bg-gray-200" />
             </div>
           </div>
         ) : (
@@ -39,7 +38,7 @@ export default function Page() {
             {/* Banner Image with Logo */}
             {garageInfo?.bannerImageUrl || garageInfo?.logoImageUrl ? (
               <div className="mb-8 flex justify-center">
-                <div className="relative w-full bg-gray-100 rounded-2xl border overflow-hidden aspect-[4/1] max-w-7xl">
+                <div className="relative aspect-[4/1] w-full max-w-7xl overflow-hidden rounded-2xl border bg-gray-100">
                   {/* Banner Image */}
                   {garageInfo.bannerImageUrl && (
                     <div className="absolute inset-0">
@@ -48,12 +47,12 @@ export default function Page() {
                         alt="Garage Banner"
                         width={2048}
                         height={512}
-                        className={`w-full h-full object-cover ${
+                        className={`h-full w-full object-cover ${
                           garageInfo.logoPosition === "left"
                             ? "object-[75%_center]"
                             : garageInfo.logoPosition === "right"
-                            ? "object-[25%_center]"
-                            : "object-center"
+                              ? "object-[25%_center]"
+                              : "object-center"
                         }`}
                         priority
                       />
@@ -70,7 +69,7 @@ export default function Page() {
                           : "justify-end pr-16"
                       }`}
                     >
-                      <div className="w-64 h-64 bg-white rounded-lg flex items-center justify-center">
+                      <div className="flex h-64 w-64 items-center justify-center rounded-lg bg-white">
                         <Image
                           src={garageInfo.logoImageUrl}
                           alt="Garage Logo"
@@ -84,7 +83,7 @@ export default function Page() {
 
                   {/* Fallback when no banner */}
                   {!garageInfo.bannerImageUrl && garageInfo.logoImageUrl && (
-                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <div className="flex h-full w-full items-center justify-center bg-gray-200">
                       <span className="text-gray-500 text-sm">
                         No banner image
                       </span>
@@ -95,11 +94,11 @@ export default function Page() {
             ) : null}
 
             {/* Header */}
-            <div className="text-center mb-16">
-              <h1 className="text-5xl font-bold mb-4">
+            <div className="mb-16 text-center">
+              <h1 className="mb-4 font-bold text-5xl">
                 {garageInfo?.garageName || t("title")}
               </h1>
-              <p className="text-xl text-slate-600">{t("subtitle")}</p>
+              <p className="text-slate-600 text-xl">{t("subtitle")}</p>
 
               {/* Contact Information */}
               {garageInfo && (
@@ -107,19 +106,19 @@ export default function Page() {
                   <div className="flex flex-wrap justify-center gap-6 text-slate-600">
                     {garageInfo.phoneNumber && (
                       <div className="flex items-center gap-2">
-                        <Phone className="w-4 h-4" />
+                        <Phone className="h-4 w-4" />
                         <Label>{garageInfo.phoneNumber}</Label>
                       </div>
                     )}
                     {garageInfo.emailAddress && (
                       <div className="flex items-center gap-2">
-                        <Mail className="w-4 h-4" />
+                        <Mail className="h-4 w-4" />
                         <Label>{garageInfo.emailAddress}</Label>
                       </div>
                     )}
                     {garageInfo.address && (
                       <div className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4" />
+                        <MapPin className="h-4 w-4" />
                         <Label>{garageInfo.address}</Label>
                       </div>
                     )}
@@ -140,24 +139,24 @@ export default function Page() {
         )}
 
         {/* Main Options */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-2">
           {/* Staff Login */}
-          <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:-translate-y-1">
-            <CardHeader className="text-center pb-4">
-              <div className="mx-auto mb-4 w-16 h-16 rounded-full flex items-center justify-center">
-                <Users className="w-8 h-8 text-blue-600" />
+          <Card className="hover:-translate-y-1 transform cursor-pointer transition-all duration-300 hover:shadow-lg">
+            <CardHeader className="pb-4 text-center">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
+                <Users className="h-8 w-8 text-blue-600" />
               </div>
               <CardTitle className="text-2xl">
                 {t("staffLogin.title")}
               </CardTitle>
             </CardHeader>
             <CardContent className="text-center">
-              <p className="text-slate-600 mb-6">
+              <p className="mb-6 text-slate-600">
                 {t("staffLogin.description")}
               </p>
               <Button
                 onClick={() => router.push("/login")}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-lg py-3"
+                className="w-full bg-blue-600 py-3 text-lg hover:bg-blue-700"
               >
                 {t("staffLogin.button")}
               </Button>
@@ -165,22 +164,22 @@ export default function Page() {
           </Card>
 
           {/* Customer Tracking */}
-          <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:-translate-y-1">
-            <CardHeader className="text-center pb-4">
-              <div className="mx-auto mb-4 w-16 h-16 rounded-full flex items-center justify-center">
-                <Search className="w-8 h-8 text-green-600" />
+          <Card className="hover:-translate-y-1 transform cursor-pointer transition-all duration-300 hover:shadow-lg">
+            <CardHeader className="pb-4 text-center">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
+                <Search className="h-8 w-8 text-green-600" />
               </div>
               <CardTitle className="text-2xl">
                 {t("trackOrder.title")}
               </CardTitle>
             </CardHeader>
             <CardContent className="text-center">
-              <p className="text-slate-600 mb-6">
+              <p className="mb-6 text-slate-600">
                 {t("trackOrder.description")}
               </p>
               <Button
                 onClick={() => router.push("/track-order")}
-                className="w-full bg-green-600 hover:bg-green-700 text-lg py-3"
+                className="w-full bg-green-600 py-3 text-lg hover:bg-green-700"
               >
                 {t("trackOrder.button")}
               </Button>
@@ -190,12 +189,12 @@ export default function Page() {
 
         {/* Features */}
         <div className="mt-20 text-center">
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-3">
             <div className="text-center">
-              <div className="mx-auto mb-4 w-12 h-12 rounded-full flex items-center justify-center">
-                <Car className="w-6 h-6 text-blue-600" />
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
+                <Car className="h-6 w-6 text-blue-600" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">
+              <h3 className="mb-2 font-semibold text-lg">
                 {t("features.vehicleManagement.title")}
               </h3>
               <p className="text-slate-600">
@@ -203,10 +202,10 @@ export default function Page() {
               </p>
             </div>
             <div className="text-center">
-              <div className="mx-auto mb-4 w-12 h-12  rounded-full flex items-center justify-center">
-                <Users className="w-6 h-6 text-green-600" />
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
+                <Users className="h-6 w-6 text-green-600" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">
+              <h3 className="mb-2 font-semibold text-lg">
                 {t("features.staffManagement.title")}
               </h3>
               <p className="text-slate-600">
@@ -214,10 +213,10 @@ export default function Page() {
               </p>
             </div>
             <div className="text-center">
-              <div className="mx-auto mb-4 w-12 h-12  rounded-full flex items-center justify-center">
-                <Search className="w-6 h-6 text-purple-600" />
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full">
+                <Search className="h-6 w-6 text-purple-600" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">
+              <h3 className="mb-2 font-semibold text-lg">
                 {t("features.customerTracking.title")}
               </h3>
               <p className="text-slate-600">

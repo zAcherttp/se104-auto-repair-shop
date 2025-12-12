@@ -1,13 +1,13 @@
 "use client";
 
-import { ThemeSwitcher } from "./theme-switcher";
-import { SidebarTrigger } from "./ui/sidebar";
-import { Separator } from "./ui/separator";
-import React, { memo } from "react";
 import { usePathname } from "next/navigation";
-import { SignOutButton } from "./signout-button";
-import { LanguageSwitcher } from "./language-switcher";
 import { useTranslations } from "next-intl";
+import React, { memo } from "react";
+import { LanguageSwitcher } from "./language-switcher";
+import { SignOutButton } from "./signout-button";
+import { ThemeSwitcher } from "./theme-switcher";
+import { Separator } from "./ui/separator";
+import { SidebarTrigger } from "./ui/sidebar";
 
 const PageTitle = memo(function PageTitle() {
   const pathname = usePathname();
@@ -45,7 +45,7 @@ const PageTitle = memo(function PageTitle() {
       .join(" ");
   }
 
-  return <h1 className="text-base font-medium">{getPageTitle(pathname)}</h1>;
+  return <h1 className="font-medium text-base">{getPageTitle(pathname)}</h1>;
 });
 
 const HeaderActions = memo(function HeaderActions() {
@@ -60,7 +60,7 @@ const HeaderActions = memo(function HeaderActions() {
 
 export function Header() {
   return (
-    <header className="backdrop-blur-sm sticky shrink-0 gap-2 top-0 z-10 flex transition-[width] ease-linear h-14 items-center justify-between border-b bg-background/60 px-4">
+    <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center justify-between gap-2 border-b bg-background/60 px-4 backdrop-blur-sm transition-[width] ease-linear">
       <div className="z-10 flex items-center gap-1">
         <SidebarTrigger />
         <Separator

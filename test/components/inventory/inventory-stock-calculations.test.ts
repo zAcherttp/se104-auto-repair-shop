@@ -1,15 +1,15 @@
 /**
  * Inventory Stock Calculations Tests
- * 
+ *
  * This test suite focuses on testing the inventory stock calculation logic,
  * business logic patterns, and calculation functions without complex async operations.
  */
 
+import type { StockCalculationResult } from "@/lib/inventory-calculations";
 import {
   mockStockCalculationResult,
   mockStockCalculationsArray,
 } from "@/test/mocks/inventory-data";
-import type { StockCalculationResult } from "@/lib/inventory-calculations";
 
 describe("Inventory Stock Calculations", () => {
   describe("Stock Calculation Business Logic", () => {
@@ -77,19 +77,22 @@ describe("Inventory Stock Calculations", () => {
         return calc.usedDuringPeriod / avgStock;
       };
 
-      mockStockCalculationsArray.forEach(calc => {
+      mockStockCalculationsArray.forEach((calc) => {
         const utilization = calculateUtilization(calc);
         const turnover = calculateTurnover(calc);
-        
-        expect(typeof utilization).toBe('number');
-        expect(typeof turnover).toBe('number');
+
+        expect(typeof utilization).toBe("number");
+        expect(typeof turnover).toBe("number");
         expect(utilization).toBeGreaterThanOrEqual(0);
         expect(turnover).toBeGreaterThanOrEqual(0);
       });
     });
 
     it("identifies low stock situations", () => {
-      const isLowStock = (calc: StockCalculationResult, threshold: number = 10): boolean => {
+      const isLowStock = (
+        calc: StockCalculationResult,
+        threshold = 10,
+      ): boolean => {
         return calc.endStock <= threshold;
       };
 
@@ -107,7 +110,9 @@ describe("Inventory Stock Calculations", () => {
     });
 
     it("validates calculation consistency", () => {
-      const isConsistentCalculation = (calc: StockCalculationResult): boolean => {
+      const isConsistentCalculation = (
+        calc: StockCalculationResult,
+      ): boolean => {
         // beginStock - usedDuringPeriod should equal endStock for current period calculations
         return calc.beginStock - calc.usedDuringPeriod === calc.endStock;
       };
@@ -158,11 +163,13 @@ describe("Inventory Stock Calculations", () => {
         },
       ];
 
-      const isConsistentCalculation = (calc: StockCalculationResult): boolean => {
+      const isConsistentCalculation = (
+        calc: StockCalculationResult,
+      ): boolean => {
         return calc.beginStock - calc.usedDuringPeriod === calc.endStock;
       };
 
-      variations.forEach(calc => {
+      variations.forEach((calc) => {
         expect(isConsistentCalculation(calc)).toBe(true);
         expect(calc.currentStock).toBeGreaterThanOrEqual(0);
         expect(calc.beginStock).toBeGreaterThanOrEqual(0);
@@ -193,9 +200,9 @@ describe("Inventory Stock Calculations", () => {
       const calculateReorderPoint = (
         averageUsage: number,
         leadTimeDays: number,
-        safetyStock: number = 0
+        safetyStock = 0,
       ): number => {
-        return (averageUsage * leadTimeDays) + safetyStock;
+        return averageUsage * leadTimeDays + safetyStock;
       };
 
       expect(calculateReorderPoint(5, 7, 10)).toBe(45); // 5*7 + 10
@@ -204,15 +211,24 @@ describe("Inventory Stock Calculations", () => {
     });
 
     it("determines stock velocity", () => {
-      const calculateStockVelocity = (calc: StockCalculationResult, periodDays: number): number => {
+      const calculateStockVelocity = (
+        calc: StockCalculationResult,
+        periodDays: number,
+      ): number => {
         if (periodDays === 0) return 0;
         return calc.usedDuringPeriod / periodDays;
       };
 
-      const velocity30Days = calculateStockVelocity(mockStockCalculationResult, 30);
+      const velocity30Days = calculateStockVelocity(
+        mockStockCalculationResult,
+        30,
+      );
       expect(velocity30Days).toBeCloseTo(30 / 30, 2); // 1.0 per day
 
-      const velocity7Days = calculateStockVelocity(mockStockCalculationResult, 7);
+      const velocity7Days = calculateStockVelocity(
+        mockStockCalculationResult,
+        7,
+      );
       expect(velocity7Days).toBeCloseTo(30 / 7, 2); // ~4.29 per day
     });
 
@@ -220,9 +236,9 @@ describe("Inventory Stock Calculations", () => {
       const projectFutureStock = (
         currentStock: number,
         dailyUsage: number,
-        days: number
+        days: number,
       ): number => {
-        return Math.max(0, currentStock - (dailyUsage * days));
+        return Math.max(0, currentStock - dailyUsage * days);
       };
 
       expect(projectFutureStock(100, 5, 10)).toBe(50); // 100 - (5*10)
@@ -231,14 +247,17 @@ describe("Inventory Stock Calculations", () => {
     });
 
     it("calculates days of supply remaining", () => {
-      const calculateDaysOfSupply = (currentStock: number, dailyUsage: number): number => {
-        if (dailyUsage === 0) return Infinity;
+      const calculateDaysOfSupply = (
+        currentStock: number,
+        dailyUsage: number,
+      ): number => {
+        if (dailyUsage === 0) return Number.POSITIVE_INFINITY;
         return currentStock / dailyUsage;
       };
 
       expect(calculateDaysOfSupply(30, 2)).toBe(15); // 15 days
       expect(calculateDaysOfSupply(100, 5)).toBe(20); // 20 days
-      expect(calculateDaysOfSupply(50, 0)).toBe(Infinity); // No usage
+      expect(calculateDaysOfSupply(50, 0)).toBe(Number.POSITIVE_INFINITY); // No usage
       expect(calculateDaysOfSupply(0, 5)).toBe(0); // Out of stock
     });
   });
@@ -246,21 +265,31 @@ describe("Inventory Stock Calculations", () => {
   describe("Stock Data Aggregation", () => {
     it("aggregates multiple calculations correctly", () => {
       const aggregateStockData = (calculations: StockCalculationResult[]) => {
-        const totalBeginStock = calculations.reduce((sum, calc) => sum + calc.beginStock, 0);
-        const totalUsage = calculations.reduce((sum, calc) => sum + calc.usedDuringPeriod, 0);
-        const totalEndStock = calculations.reduce((sum, calc) => sum + calc.endStock, 0);
-        
+        const totalBeginStock = calculations.reduce(
+          (sum, calc) => sum + calc.beginStock,
+          0,
+        );
+        const totalUsage = calculations.reduce(
+          (sum, calc) => sum + calc.usedDuringPeriod,
+          0,
+        );
+        const totalEndStock = calculations.reduce(
+          (sum, calc) => sum + calc.endStock,
+          0,
+        );
+
         return {
           totalBeginStock,
           totalUsage,
           totalEndStock,
-          averageUtilization: totalBeginStock > 0 ? (totalUsage / totalBeginStock) * 100 : 0,
+          averageUtilization:
+            totalBeginStock > 0 ? (totalUsage / totalBeginStock) * 100 : 0,
           partsCount: calculations.length,
         };
       };
 
       const aggregated = aggregateStockData(mockStockCalculationsArray);
-      
+
       expect(aggregated.partsCount).toBe(mockStockCalculationsArray.length);
       expect(aggregated.totalBeginStock).toBeGreaterThan(0);
       expect(aggregated.totalUsage).toBeGreaterThanOrEqual(0);
@@ -271,21 +300,31 @@ describe("Inventory Stock Calculations", () => {
 
     it("handles empty calculations array", () => {
       const aggregateStockData = (calculations: StockCalculationResult[]) => {
-        const totalBeginStock = calculations.reduce((sum, calc) => sum + calc.beginStock, 0);
-        const totalUsage = calculations.reduce((sum, calc) => sum + calc.usedDuringPeriod, 0);
-        const totalEndStock = calculations.reduce((sum, calc) => sum + calc.endStock, 0);
-        
+        const totalBeginStock = calculations.reduce(
+          (sum, calc) => sum + calc.beginStock,
+          0,
+        );
+        const totalUsage = calculations.reduce(
+          (sum, calc) => sum + calc.usedDuringPeriod,
+          0,
+        );
+        const totalEndStock = calculations.reduce(
+          (sum, calc) => sum + calc.endStock,
+          0,
+        );
+
         return {
           totalBeginStock,
           totalUsage,
           totalEndStock,
-          averageUtilization: totalBeginStock > 0 ? (totalUsage / totalBeginStock) * 100 : 0,
+          averageUtilization:
+            totalBeginStock > 0 ? (totalUsage / totalBeginStock) * 100 : 0,
           partsCount: calculations.length,
         };
       };
 
       const aggregated = aggregateStockData([]);
-      
+
       expect(aggregated.partsCount).toBe(0);
       expect(aggregated.totalBeginStock).toBe(0);
       expect(aggregated.totalUsage).toBe(0);
@@ -296,29 +335,32 @@ describe("Inventory Stock Calculations", () => {
     it("filters calculations by criteria", () => {
       const filterLowStockParts = (
         calculations: StockCalculationResult[],
-        threshold: number
+        threshold: number,
       ): StockCalculationResult[] => {
-        return calculations.filter(calc => calc.endStock <= threshold);
+        return calculations.filter((calc) => calc.endStock <= threshold);
       };
 
       const filterHighUsageParts = (
         calculations: StockCalculationResult[],
-        minUsage: number
+        minUsage: number,
       ): StockCalculationResult[] => {
-        return calculations.filter(calc => calc.usedDuringPeriod >= minUsage);
+        return calculations.filter((calc) => calc.usedDuringPeriod >= minUsage);
       };
 
       const lowStockParts = filterLowStockParts(mockStockCalculationsArray, 10);
-      const highUsageParts = filterHighUsageParts(mockStockCalculationsArray, 20);
+      const highUsageParts = filterHighUsageParts(
+        mockStockCalculationsArray,
+        20,
+      );
 
       expect(Array.isArray(lowStockParts)).toBe(true);
       expect(Array.isArray(highUsageParts)).toBe(true);
-      
-      lowStockParts.forEach(part => {
+
+      lowStockParts.forEach((part) => {
         expect(part.endStock).toBeLessThanOrEqual(10);
       });
-      
-      highUsageParts.forEach(part => {
+
+      highUsageParts.forEach((part) => {
         expect(part.usedDuringPeriod).toBeGreaterThanOrEqual(20);
       });
     });
@@ -341,17 +383,19 @@ describe("Inventory Stock Calculations", () => {
 
       expect(calculateUtilization(zeroCalc)).toBe(0);
       expect(zeroCalc.currentStock).toBe(0);
-      expect(zeroCalc.beginStock - zeroCalc.usedDuringPeriod).toBe(zeroCalc.endStock);
+      expect(zeroCalc.beginStock - zeroCalc.usedDuringPeriod).toBe(
+        zeroCalc.endStock,
+      );
     });
 
     it("validates calculation result structure", () => {
       const validateCalculation = (calc: any): boolean => {
         return (
-          typeof calc.partId === 'string' &&
-          typeof calc.currentStock === 'number' &&
-          typeof calc.beginStock === 'number' &&
-          typeof calc.usedDuringPeriod === 'number' &&
-          typeof calc.endStock === 'number' &&
+          typeof calc.partId === "string" &&
+          typeof calc.currentStock === "number" &&
+          typeof calc.beginStock === "number" &&
+          typeof calc.usedDuringPeriod === "number" &&
+          typeof calc.endStock === "number" &&
           calc.currentStock >= 0 &&
           calc.beginStock >= 0 &&
           calc.usedDuringPeriod >= 0 &&
@@ -359,7 +403,7 @@ describe("Inventory Stock Calculations", () => {
         );
       };
 
-      mockStockCalculationsArray.forEach(calc => {
+      mockStockCalculationsArray.forEach((calc) => {
         expect(validateCalculation(calc)).toBe(true);
       });
 
@@ -388,7 +432,9 @@ describe("Inventory Stock Calculations", () => {
       };
 
       expect(calculateUtilization(largeCalc)).toBe(50);
-      expect(largeCalc.beginStock - largeCalc.usedDuringPeriod).toBe(largeCalc.endStock);
+      expect(largeCalc.beginStock - largeCalc.usedDuringPeriod).toBe(
+        largeCalc.endStock,
+      );
     });
   });
 });

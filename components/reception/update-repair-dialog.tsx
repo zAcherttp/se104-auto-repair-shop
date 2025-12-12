@@ -1,13 +1,18 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { PlusCircle, Trash2 } from "lucide-react";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import SubmitButton from "@/components/submit-button";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -16,7 +21,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Table,
   TableBody,
@@ -25,23 +29,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PlusCircle, Trash2 } from "lucide-react";
-import { toast } from "sonner";
-import {
-  VehicleWithDetails,
-  SparePart,
+import { Textarea } from "@/components/ui/textarea";
+import { useSparePartsAndLaborTypes } from "@/hooks/use-spare-parts-labor-types";
+import { LineItemFormSchema } from "@/lib/form/definitions";
+import type {
   LaborType,
   RepairOrderItem,
+  SparePart,
+  VehicleWithDetails,
 } from "@/types/types";
-import { LineItemFormSchema } from "@/lib/form/definitions";
-import SubmitButton from "@/components/submit-button";
-import { useSparePartsAndLaborTypes } from "@/hooks/use-spare-parts-labor-types";
 
 interface RepairOrderItemWithDetails extends RepairOrderItem {
   spare_part?: SparePart;
   labor_type?: LaborType;
 }
+
 import {
   fetchExistingRepairOrderItems,
   updateRepairOrder,
@@ -105,7 +107,7 @@ export function UpdateRepairDialog({
                 laborType: item.labor_type?.name || "",
                 laborCost: item.labor_cost || 0,
                 total: item.total_amount || 0,
-              })
+              }),
             );
             setLineItems(formattedItems);
           }
@@ -128,7 +130,7 @@ export function UpdateRepairDialog({
         <DialogContent className="max-w-md">
           <div className="flex items-center justify-center py-8">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-blue-600 border-b-2" />
               <p className="text-gray-500">Loading vehicle data...</p>
             </div>
           </div>
@@ -177,7 +179,7 @@ export function UpdateRepairDialog({
   const updateLineItem = (
     id: string,
     field: string,
-    value: string | number
+    value: string | number,
   ) => {
     setLineItems((items) =>
       items.map((item) => {
@@ -205,7 +207,7 @@ export function UpdateRepairDialog({
           return updatedItem;
         }
         return item;
-      })
+      }),
     );
   };
 
@@ -260,7 +262,7 @@ export function UpdateRepairDialog({
       const { error } = await updateRepairOrder(
         latestRepairOrder.id,
         grandTotal,
-        orderItems
+        orderItems,
       );
 
       if (error) {
@@ -282,9 +284,9 @@ export function UpdateRepairDialog({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-[95vw] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-h-[90vh] max-w-[95vw] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-blue-800">
+          <DialogTitle className="font-bold text-2xl text-blue-800">
             Modify Repair Order - {vehicle.license_plate}
           </DialogTitle>
         </DialogHeader>
@@ -296,7 +298,7 @@ export function UpdateRepairDialog({
                 <CardTitle className="text-lg">Vehicle Information</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div className="grid grid-cols-2 gap-4 text-sm md:grid-cols-4">
                   <div>
                     <Label className="font-semibold">License Plate:</Label>
                     <div>{vehicle.license_plate}</div>
@@ -327,18 +329,18 @@ export function UpdateRepairDialog({
                     className="bg-green-600 hover:bg-green-700"
                     disabled={isLoadingData}
                   >
-                    <PlusCircle className="w-4 h-4 mr-2" />
+                    <PlusCircle className="mr-2 h-4 w-4" />
                     Add Item
                   </Button>
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 {isLoadingData ? (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="py-8 text-center text-gray-500">
                     Loading repair order data...
                   </div>
                 ) : lineItems.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="py-8 text-center text-gray-500">
                     No repair items added yet. Click &quot;Add Item&quot; to get
                     started.
                   </div>
@@ -354,7 +356,7 @@ export function UpdateRepairDialog({
                           <TableHead>Labor Type</TableHead>
                           <TableHead>Labor Cost</TableHead>
                           <TableHead>Total</TableHead>
-                          <TableHead></TableHead>
+                          <TableHead />
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -367,7 +369,7 @@ export function UpdateRepairDialog({
                                   updateLineItem(
                                     item.id,
                                     "description",
-                                    e.target.value
+                                    e.target.value,
                                   )
                                 }
                                 placeholder="Describe the work"
@@ -402,7 +404,7 @@ export function UpdateRepairDialog({
                                   updateLineItem(
                                     item.id,
                                     "quantity",
-                                    parseInt(e.target.value) || 0
+                                    Number.parseInt(e.target.value) || 0,
                                   )
                                 }
                                 min="0"
@@ -417,7 +419,7 @@ export function UpdateRepairDialog({
                                   updateLineItem(
                                     item.id,
                                     "unitPrice",
-                                    parseFloat(e.target.value) || 0
+                                    Number.parseFloat(e.target.value) || 0,
                                   )
                                 }
                                 step="0.01"
@@ -455,7 +457,7 @@ export function UpdateRepairDialog({
                                   updateLineItem(
                                     item.id,
                                     "laborCost",
-                                    parseFloat(e.target.value) || 0
+                                    Number.parseFloat(e.target.value) || 0,
                                   )
                                 }
                                 step="0.01"
@@ -479,7 +481,7 @@ export function UpdateRepairDialog({
                                 }}
                                 className="text-red-600 hover:text-red-700"
                               >
-                                <Trash2 className="w-4 h-4" />
+                                <Trash2 className="h-4 w-4" />
                               </Button>
                             </TableCell>
                           </TableRow>
@@ -494,11 +496,11 @@ export function UpdateRepairDialog({
             {lineItems.length > 0 && (
               <Card className="bg-green-50">
                 <CardContent className="p-4">
-                  <div className="flex justify-between items-center">
-                    <Label className="text-lg font-semibold">
+                  <div className="flex items-center justify-between">
+                    <Label className="font-semibold text-lg">
                       Grand Total:
                     </Label>
-                    <Label className="text-2xl font-bold text-green-700">
+                    <Label className="font-bold text-2xl text-green-700">
                       ${grandTotal.toFixed(2)}
                     </Label>
                   </div>
