@@ -179,6 +179,17 @@ describe("Core Functions - Comprehensive Test Suite", () => {
       // Verify that Supabase was called (validation passed)
       expect(mockLogin).toHaveBeenCalledWith(wrongPasswordCredentials);
     });
+
+    it("UTCID 08: should block login when password is missing and avoid Supabase call (Pending Logic)", async () => {
+      const missingPassword: LoginFormData = {
+        email: "user@test.com",
+        password: "",
+      };
+
+      await Login(missingPassword);
+
+      expect(mockLogin).not.toHaveBeenCalled();
+    });
   });
 
 
@@ -327,6 +338,17 @@ describe("Core Functions - Comprehensive Test Suite", () => {
       expect(result.data).toEqual({ success: true });
     });
 
+    it("UTCID 02B: should include repair order identifier in success response (Pending Logic)", async () => {
+      mockCreateReception.mockResolvedValue({
+        error: null,
+        data: { success: true },
+      });
+
+      const result = await createReception(validReceptionData);
+
+      expect(result.data).toHaveProperty("orderId");
+    });
+
     it("UTCID 03: should block reception when daily limit is reached (Business Rule Failure)", async () => {
       mockCreateReception.mockResolvedValue({
         error: new Error("Cannot handle any more vehicles today. Daily capacity limit reached."),
@@ -399,6 +421,16 @@ describe("Core Functions - Comprehensive Test Suite", () => {
       expect(mockRemoveVehicle).toHaveBeenCalledWith(vehicleId);
       expect(result.error).toBe("Vehicle has active repair orders");
       expect(result).not.toHaveProperty("success");
+    });
+
+    it("UTCID 02B: should return structured Error object for constraint failures (Pending Logic)", async () => {
+      mockRemoveVehicle.mockResolvedValue({
+        error: "Vehicle has active repair orders",
+      });
+
+      const result = await removeVehicle(vehicleId);
+
+      expect(result.error).toBeInstanceOf(Error);
     });
 
     it("UTCID 03: should propagate unexpected exceptions (System Crash)", async () => {
