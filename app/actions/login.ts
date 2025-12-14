@@ -8,7 +8,7 @@ import type { ApiResponse } from "@/types/types";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email format"),
-  password: z.string().min(7, "Password must be more than 6 characters"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 export async function Login(
