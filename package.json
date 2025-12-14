@@ -90,6 +90,7 @@
     "supabase": "^2.66.0",
     "tailwindcss": "^4.1.18",
     "tailwindcss-animate": "^1.0.7",
+    "testcafe": "^3.7.2",
     "typescript": "^5.9.3"
   }
 }
