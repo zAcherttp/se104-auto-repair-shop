@@ -2,9 +2,7 @@ import { Selector, fixture, test } from 'testcafe';
 
 const baseUrl = 'https://se104-auto-repair-shop.vercel.app/login';
 
-// ===============================
 // 1) Đăng nhập thành công trên Chrome (Windows 11)
-// ===============================
 
 fixture('Login Page - Đăng nhập thành công trên Chrome (Windows 11)')
     .page(baseUrl);
@@ -36,9 +34,7 @@ test('Đăng nhập thành công và redirect trên Chrome Windows 11', async t 
     await t.expect(currentUrl).eql('/reception', 'Should redirect to /reception after successful login');
 });
 
-// ===============================
 // 2) Đăng nhập thành công trên Firefox (Windows 11)
-// ===============================
 
 fixture('Login Page - Đăng nhập thành công trên Firefox (Windows 11)')
     .page(baseUrl);
@@ -70,9 +66,7 @@ test('Đăng nhập thành công và redirect trên Firefox Windows 11', async t
     await t.expect(currentUrl).eql('/reception', 'Should redirect to /reception after successful login');
 });
 
-// ===============================
 // 3) UI Login responsive (mobile viewport)
-// ===============================
 
 fixture('Login Page - UI Login responsive (mobile viewport)')
     .page(baseUrl);
@@ -118,9 +112,7 @@ test('Form inputs hoạt động tốt trên mobile', async t => {
         .expect(Selector('input[name="password"]').value).eql('password123');
 });
 
-// ===============================
 // 4) Hiển thị tiếng Việt trên Login
-// ===============================
 
 fixture('Login Page - Hiển thị tiếng Việt trên Login')
     .page(baseUrl);
@@ -130,7 +122,6 @@ test('Login page hiển thị nội dung tiếng Việt', async t => {
     
     const bodyText = await Selector('body').innerText;
     
-    // Kiểm tra có các từ tiếng Việt phổ biến trong login page
     const hasVietnamese = bodyText.includes('Đăng nhập') || 
                          bodyText.includes('Email') || 
                          bodyText.includes('Mật khẩu') ||
@@ -156,7 +147,6 @@ test('Submit button hiển thị text tiếng Việt', async t => {
     await t.expect(submitButton.exists).ok('Submit button should exist');
     
     const buttonText = await submitButton.innerText;
-    // Button có thể có text "Đăng nhập" hoặc "Login"
     const hasText = buttonText.length > 0;
     
     await t.expect(hasText).ok('Submit button should have text');

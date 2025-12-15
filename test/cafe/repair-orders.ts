@@ -21,9 +21,7 @@ fixture('Repair Orders Page (Reception)')
         await t.wait(3000); // Wait for data to load
     });
 
-// ===============================
 // 1) Danh sách tạo đơn mới hiển thị trên Chrome (desktop)
-// ===============================
 test('Danh sách hiển thị đầy đủ trên Desktop (Chrome 1920x1080)', async t => {
     await t.resizeWindow(1920, 1080);
 
@@ -35,26 +33,18 @@ test('Danh sách hiển thị đầy đủ trên Desktop (Chrome 1920x1080)', as
     const headers = Selector('th');
     await t.expect(headers.count).gt(0, 'Should have table headers');
 
-    // Check pagination controls
     const tableBody = Selector('tbody');
     await t.expect(tableBody.exists).ok('Table body should exist');
 
-    // NEW CHECK: Button text overflow (UI Bug Check)
-    // Lấy button có text dài (ví dụ: "Create Reception" hoặc tương tự)
     const actionButton = Selector('button').withText(/Create|Tạo|Reception|Tiếp nhận/i).nth(0);
 
     if (await actionButton.exists) {
-        // Lấy kích thước button
         const buttonWidth = await actionButton.offsetWidth;
 
-        // Lấy span/text bên trong button
-        // Shadcn buttons often wrap text in a span or just have text node. 
-        // We try to find a span first, if not use the button itself.
         const buttonText = actionButton.find('span');
         
         if (await buttonText.exists) {
             const textWidth = await buttonText.scrollWidth;
-            // ASSERT: Text KHÔNG được tràn
             await t
                 .expect(textWidth)
                 .lte(buttonWidth, 'Button text is overflowing its container (UI bug)');
@@ -62,9 +52,8 @@ test('Danh sách hiển thị đầy đủ trên Desktop (Chrome 1920x1080)', as
     }
 });
 
-// ===============================
+
 // 2) Danh sách tạo đơn trên điện thoại (Iphone 14pro max)
-// ===============================
 test('Giao diện tạo đơn trên iPhone 14 Pro Max (430x932)', async t => {
     await t.resizeWindow(430, 932);
 
@@ -76,42 +65,34 @@ test('Giao diện tạo đơn trên iPhone 14 Pro Max (430x932)', async t => {
     const btnWidth = await createButton.offsetWidth;
     const windowWidth = await t.eval(() => window.innerWidth);
 
-    // ASSERT: Button phải nằm hoàn toàn trong viewport
     await t
         .expect(btnLeft + btnWidth)
         .lte(windowWidth, 'Create button is outside viewport, user must scroll horizontally (UI bug)');
 });
 
-// ===============================
+
 // 3) Nhập danh sách cho tạo đơn mới trên Edge (desktop)
-// ===============================
 test('Nhập thông tin tạo đơn mới trên Desktop', async t => {
     await t.resizeWindow(1920, 1080);
 
-    // Open dialog
     const createButton = Selector('button').find('svg.lucide-plus').parent();
     await t.click(createButton);
     
-    // Wait for animation
     await t.wait(1000);
 
-    // Fill fields
     const licensePlateInput = Selector('input[name="licensePlate"]');
     const nameInput = Selector('input[name="customerName"]');
     const phoneInput = Selector('input[name="phoneNumber"]');
     
-    // Check visibility
     await t
         .expect(licensePlateInput.visible).ok('License plate input visible')
         .expect(nameInput.visible).ok('Name input visible');
 
-    // Type data
     await t
         .typeText(licensePlateInput, '30A-12345')
         .typeText(nameInput, 'Nguyen Van A')
         .typeText(phoneInput, '0987654321');
 
-    // Verify data retention (no jumping/missing chars)
     await t
         .expect(licensePlateInput.value).eql('30A-12345')
         .expect(nameInput.value).eql('Nguyen Van A')

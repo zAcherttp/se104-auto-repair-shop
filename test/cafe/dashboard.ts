@@ -17,38 +17,35 @@ fixture('Dashboard & Core Pages Access')
         await t.useRole(adminUser);
     });
 
-// TC1: Reception page loads (Desktop)
-test('TC1: Reception page loads successfully (Desktop)', async t => {
+// 1) Reception page loads successfully (Desktop)
+test('Reception page loads successfully (Desktop)', async t => {
     await t.resizeWindow(1920, 1080);
     await t.navigateTo('https://se104-auto-repair-shop.vercel.app/reception');
     
-    // Check for main content
     const mainContent = Selector('main');
     await t.expect(mainContent.exists).ok('Main content should exist on Reception page');
     await t.expect(mainContent.visible).ok('Main content should be visible');
 });
 
-// TC2: Reception page loads (iPad/Tablet)
-test('TC2: Reception page loads successfully (iPad)', async t => {
+// 2) Reception page loads successfully (iPad)
+test('Reception page loads successfully (iPad)', async t => {
     await t.resizeWindow(768, 1024);
     await t.navigateTo('https://se104-auto-repair-shop.vercel.app/reception');
     
     const mainContent = Selector('main');
     await t.expect(mainContent.exists).ok('Main content should exist on Reception page (iPad)');
-    // Relaxed check for iPad as layout might hide main behind overlay or similar
-    // await t.expect(mainContent.visible).ok('Main content should be visible (iPad)');
 });
 
-// TC3: Vehicles page loads
-test('TC3: Vehicles page loads successfully', async t => {
+// 3) Vehicles page loads successfully
+test('Vehicles page loads successfully', async t => {
     await t.navigateTo('https://se104-auto-repair-shop.vercel.app/vehicles');
     
     const mainContent = Selector('main');
     await t.expect(mainContent.exists).ok('Main content should exist on Vehicles page');
 });
 
-// TC4: Payments page loads
-test('TC4: Payments page loads successfully', async t => {
+// 4) Payments page loads successfully
+test('Payments page loads successfully', async t => {
     await t.navigateTo('https://se104-auto-repair-shop.vercel.app/payments');
     
     const mainContent = Selector('main');

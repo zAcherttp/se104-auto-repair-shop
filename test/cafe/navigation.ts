@@ -20,9 +20,7 @@ fixture('Navigation Bar & Sidebar')
         await t.wait(2000);
     });
 
-// ===============================
 // 1) Menu responsive trên 1280×720
-// ===============================
 test('Menu responsive và hoạt động trên 1280x720', async t => {
     await t.resizeWindow(1280, 720);
 
@@ -63,9 +61,8 @@ test('Menu responsive và hoạt động trên 1280x720', async t => {
     await t.expect(currentUrl).eql('/vehicles', 'Should navigate to Vehicles page');
 });
 
-// ===============================
+
 // 2) Thay đổi ngôn ngữ (EN ↔ VN)
-// ===============================
 test('Thay đổi ngôn ngữ (EN <-> VN)', async t => {
     await t.resizeWindow(1920, 1080);
 
@@ -111,9 +108,8 @@ test('Thay đổi ngôn ngữ (EN <-> VN)', async t => {
     await t.expect(receptionLink.innerText).contains('Reception', 'Should be back to English');
 });
 
-// ===============================
+
 // 3) Icon/Logo hiển thị trên iPhone
-// ===============================
 test('Logo hiển thị đầy đủ trên iPhone (430x932)', async t => {
     await t.resizeWindow(430, 932);
     // Navigate to landing page (public) where logo is also present
