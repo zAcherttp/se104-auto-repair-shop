@@ -1,5 +1,0 @@
-ID,Test Case Description,Test Case Procedure,Expected Output,Inter-test case Dependence,Result,Test date,Note
-VEH-1,Delete vehicle with related data,"Create vehicle, order, payment → Delete ROI → Delete RO → Delete payments → Delete vehicle",All related rows gone; vehicle missing,None,Pass,2025-12-16,From modules/vehicles.test.ts
-VEH-2,Aggregate vehicle debt,"Create two orders (500k, 400k) + payments (200k,150k) → Join and sum","Repairs=900k, Paid=350k, Debt=550k",None,Pass,2025-12-16,From modules/vehicles.test.ts
-VEH-3,Unique license plate enforced,Insert vehicle → Try insert with same license_plate,Rejected (unique_violation 23505),None,Expected Fail,2025-12-16,Spec for unique index
-VEH-4,Auto-sync total_paid from payments,"Insert two payments (100k,150k) → Fetch vehicle.total_paid",total_paid=250k by trigger/computed,None,Expected Fail,2025-12-16,Spec for trigger/computed column

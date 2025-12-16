@@ -1,3 +1,0 @@
-ID,Test Case Description,Test Case Procedure,Expected Output,Inter-test case Dependence,Result,Test date,Note
-ROI-1,Join spare and labor fields,Create order → Insert one spare item and one labor item → Select with joins,Both items present with nested fields,None,Pass,2025-12-16,From modules/repair-order-items.test.ts
-ROI-2,Mutually exclusive item type,Try insert item with both `spare_part_id` and `labor_type_id`,Rejected (check_violation 23514),None,Expected Fail,2025-12-16,Spec for DB CHECK constraint

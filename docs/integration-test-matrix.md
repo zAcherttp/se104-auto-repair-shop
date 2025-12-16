@@ -13,8 +13,8 @@ INV-4|Prevent negative stock (logic)|Create part (stock=5) → Create order → 
 INV-5|Labor items don't affect stock|Create labor type → Create order → Add labor item|Item inserted; no stock change|None|Pass|2025-12-16|From modules/inventory.test.ts
 INV-6|Mixed parts and labor in order|Create part and labor → Create order → Insert 2 items (part+labor)|Two items present; shapes correct|None|Pass|2025-12-16|From modules/inventory.test.ts
 INV-7|Cumulative stock math|Create part (100) → Use 20 → Use 15 → Update stock each step|Final stock=65|None|Pass|2025-12-16|From modules/inventory.test.ts
-INV-8|DB enforces non-negative stock|Update `spare_parts.stock_quantity` to -5 directly|Insert/update rejected (check_violation 23514)|None|Expected Fail|2025-12-16|Spec for DB CHECK constraint
-INV-9|Low stock alert threshold|Query parts with `stock_quantity` ≤ 5|Part flagged in result set/view|None|Expected Fail|2025-12-16|Spec for low-stock feature/column
+INV-8|DB enforces non-negative stock|Update `spare_parts.stock_quantity` to -5 directly|Insert/update rejected (check_violation 23514)|None|Fail|2025-12-16|Missing DB CHECK constraint
+INV-9|Low stock alert threshold|Query parts with `stock_quantity` ≤ 5|Part flagged in result set/view|None|Pass|2025-12-16|From modules/inventory.test.ts
 
 ## Payments Integration
 
@@ -29,15 +29,15 @@ PAY-6|Excess payment detection (calc)|Create order (500k) → Compute remaining 
 PAY-7|Chronological payment history|Create 3 payments on ascending dates → Query ordered asc|Amounts 100k,200k,300k in order|None|Pass|2025-12-16|From modules/payments.test.ts
 PAY-8|Link payments to creator|Create payment with `created_by` → Query|created_by matches user|None|Pass|2025-12-16|From modules/payments.test.ts
 PAY-9|Track debt across many orders|Create 3 orders (300k+400k+500k) → Pay 600k → Compute|Total=1.2M; Paid=600k; Debt=600k|None|Pass|2025-12-16|From modules/payments.test.ts
-PAY-10|Disallow negative payment amount|Insert payment with amount -100k|Rejected (check_violation 23514)|None|Expected Fail|2025-12-16|Spec for DB CHECK constraint
-PAY-11|Disallow overpayment at DB level|Pay 200k on 300k debt then try another 200k|Second insert rejected by trigger|None|Expected Fail|2025-12-16|Spec for DB trigger
+PAY-10|Disallow negative payment amount|Insert payment with amount -100k|Rejected (check_violation 23514)|None|Fail|2025-12-16|Missing DB CHECK constraint
+PAY-11|Disallow overpayment at DB level|Pay 200k on 300k debt then try another 200k|Second insert rejected by trigger|None|Fail|2025-12-16|Missing DB trigger
 
 ## Payment History Integration
 
 ID|Test Case Description|Test Case Procedure|Expected Output|Inter-test case Dependence|Result|Test date|Note
 -|-|-|-|-|-|-|-
 PH-1|Join payment with creator profile|Create payment by user → Select with `created_by_profile:profiles(full_name)`|Row has `created_by_profile.full_name`|None|Pass|2025-12-16|From modules/payment-history.test.ts
-PH-2|Default sort by date desc|Insert 3 payments with different dates → Select without order|Rows returned payment_date in desc order|None|Expected Fail|2025-12-16|Spec for default sort/view
+PH-2|Default sort by date desc|Insert 3 payments with different dates → Select without order|Rows returned payment_date in desc order|None|Fail|2025-12-16|Missing default sort/view
 
 ## Vehicles Integration
 
@@ -45,23 +45,23 @@ ID|Test Case Description|Test Case Procedure|Expected Output|Inter-test case Dep
 -|-|-|-|-|-|-|-
 VEH-1|Delete vehicle with related data|Create vehicle, order, payment → Delete ROI → Delete RO → Delete payments → Delete vehicle|All related rows gone; vehicle missing|None|Pass|2025-12-16|From modules/vehicles.test.ts
 VEH-2|Aggregate vehicle debt|Create two orders (500k, 400k) + payments (200k,150k) → Join and sum|Repairs=900k, Paid=350k, Debt=550k|None|Pass|2025-12-16|From modules/vehicles.test.ts
-VEH-3|Unique license plate enforced|Insert vehicle → Try insert with same license_plate|Rejected (unique_violation 23505)|None|Expected Fail|2025-12-16|Spec for unique index
-VEH-4|Auto-sync total_paid from payments|Insert two payments (100k,150k) → Fetch vehicle.total_paid|total_paid=250k by trigger/computed|None|Expected Fail|2025-12-16|Spec for trigger/computed column
+VEH-3|Unique license plate enforced|Insert vehicle → Try insert with same license_plate|Rejected (unique_violation 23505)|None|Pass|2025-12-16|From modules/vehicles.test.ts
+VEH-4|Auto-sync total_paid from payments|Insert two payments (100k,150k) → Fetch vehicle.total_paid|total_paid=250k by trigger/computed|None|Pass|2025-12-16|From modules/vehicles.test.ts
 
 ## Repair Orders Integration
 
 ID|Test Case Description|Test Case Procedure|Expected Output|Inter-test case Dependence|Result|Test date|Note
 -|-|-|-|-|-|-|-
 RO-1|Replace items and update total|Create order → Add 2×Part A → Update total → Replace with 1×Part B → Update total|Items reflect Part B; total=Part B price|None|Pass|2025-12-16|From modules/repair-orders.test.ts
-RO-2|Validate status transitions|Create order with status completed → Try set back to pending|Update rejected by validation|None|Expected Fail|2025-12-16|Spec for status FSM
-RO-3|Auto-set completion_date|Create pending order → Update status to completed → Fetch|completion_date set automatically|None|Expected Fail|2025-12-16|Spec for trigger
+RO-2|Validate status transitions|Create order with status completed → Try set back to pending|Update rejected by validation|None|Fail|2025-12-16|Missing status FSM validation
+RO-3|Auto-set completion_date|Create pending order → Update status to completed → Fetch|completion_date set automatically|None|Fail|2025-12-16|Missing trigger
 
 ## Repair Order Items Integration
 
 ID|Test Case Description|Test Case Procedure|Expected Output|Inter-test case Dependence|Result|Test date|Note
 -|-|-|-|-|-|-|-
 ROI-1|Join spare and labor fields|Create order → Insert one spare item and one labor item → Select with joins|Both items present with nested fields|None|Pass|2025-12-16|From modules/repair-order-items.test.ts
-ROI-2|Mutually exclusive item type|Try insert item with both `spare_part_id` and `labor_type_id`|Rejected (check_violation 23514)|None|Expected Fail|2025-12-16|Spec for DB CHECK constraint
+ROI-2|Mutually exclusive item type|Try insert item with both `spare_part_id` and `labor_type_id`|Rejected (check_violation 23514)|None|Fail|2025-12-16|Missing DB CHECK constraint
 
 ## Reception Workflow Integration
 
@@ -74,8 +74,8 @@ REC-4|Customer with multiple vehicles|Create customer → Insert two vehicles �
 REC-5|License plate uniqueness|Insert vehicle → Attempt duplicate plate for same customer|Duplicate rejected|None|Pass|2025-12-16|From workflows/reception.test.ts
 REC-6|Repair order requires valid vehicle|Insert repair order with fake `vehicle_id`|Insert rejected (FK violation)|None|Pass|2025-12-16|From workflows/reception.test.ts
 REC-7|Multiple orders per vehicle|Create vehicle → Insert 2 orders → Query count|Count ≥ 2|None|Pass|2025-12-16|From workflows/reception.test.ts
-REC-8|Daily reception limit enforced|Create up to limit vehicles then one extra|Extra insert rejected with limit message|None|Expected Fail|2025-12-16|Spec for daily limit policy
-REC-9|Validate phone format|Insert customer with invalid phone string|Insert rejected (check_violation 23514)|None|Expected Fail|2025-12-16|Spec for phone format CHECK
+REC-8|Daily reception limit enforced|Create up to limit vehicles then one extra|Extra insert rejected with limit message|None|Fail|2025-12-16|Missing daily limit policy
+REC-9|Validate phone format|Insert customer with invalid phone string|Insert rejected (check_violation 23514)|None|Fail|2025-12-16|Missing phone format CHECK
 
 ## RLS Security Integration
 
@@ -91,5 +91,5 @@ RLS-7|Users access own created records|Create user → Create order as user → 
 RLS-8|Referential integrity across tables|Create user, vehicle, order, payment → Query with joins|All relationships maintained correctly|None|Pass|2025-12-16|From security/rls.test.ts
 RLS-9|Profile created with user|Create new user → Query profiles table|Profile exists with same user.id|None|Pass|2025-12-16|From security/rls.test.ts
 RLS-10|Admin status in user metadata|Create admin and employee → Check metadata|isGarageAdmin stored correctly|None|Pass|2025-12-16|From security/rls.test.ts
-RLS-11|Prevent cross-employee profile edits|Create 2 employees → Try update other's profile|Update rejected (insufficient_privilege 42501)|None|Expected Fail|2025-12-16|Spec for RLS profile policy
-RLS-12|Cascade delete user data|Create user with profile, orders, payments → Delete user|Related data cascaded or set NULL|None|Expected Fail|2025-12-16|Spec for cascade delete trigger
+RLS-11|Prevent cross-employee profile edits|Create 2 employees → Try update other's profile|Update rejected (insufficient_privilege 42501)|None|Fail|2025-12-16|Missing RLS profile policy
+RLS-12|Cascade delete user data|Create user with profile, orders, payments → Delete user|Related data cascaded or set NULL|None|Fail|2025-12-16|Missing cascade delete trigger
