@@ -38,7 +38,8 @@ export default function () {
 
   sleep(1);
 
-  // Test login action
+  // TEST-AUTH-001: User Login (happy path)
+  // POST /api/auth/login với thông tin đăng nhập hợp lệ
   response = http.post(
     `${baseUrl}/login`,
     {
@@ -58,6 +59,20 @@ export default function () {
   loginSuccessRate.add(loginSuccess);
 
   sleep(2);
+
+  // TEST-AUTH-003: Access Protected Page Without Auth
+  // GET một trang được bảo vệ mà không có cookie
+  if (!loginSuccess) {
+    response = http.get(`${baseUrl}/home`, { redirects: 0 });
+    check(response, {
+      "redirected to login or 401/403": (r) =>
+        r.status === 302 ||
+        r.status === 303 ||
+        r.status === 401 ||
+        r.status === 403,
+    });
+    sleep(1);
+  }
 
   // If login successful, test authenticated pages
   if (loginSuccess) {
@@ -84,7 +99,59 @@ export default function () {
     });
 
     sleep(1);
+
+    // TEST-AUTH-004: Logout
+    // Kích hoạt đăng xuất và xác minh trang được bảo vệ không thể truy cập sau đó
+    response = http.post(
+      `${baseUrl}/api/auth/signout`,
+      {},
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    const logoutSuccess = check(response, {
+      "logout successful": (r) =>
+        r.status === 200 || r.status === 302 || r.status === 303,
+    });
+
+    logoutSuccessRate.add(logoutSuccess);
+
+    if (logoutSuccess) {
+      sleep(1);
+      // Verify protected page is now inaccessible
+      response = http.get(`${baseUrl}/home`, { redirects: 0 });
+      check(response, {
+        "protected page inaccessible after logout": (r) =>
+          r.status === 302 ||
+          r.status === 303 ||
+          r.status === 401 ||
+          r.status === 403,
+      });
+    }
+
+    sleep(1);
   }
+
+  // TEST-AUTH-002: Login Failure (bad creds)
+  // POST /api/auth/login với thông tin đăng nhập không hợp lệ
+  response = http.post(
+    `${baseUrl}/login`,
+    {
+      email: "invalid@example.com",
+      password: "wrongpassword",
+    },
+    {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    }
+  );
+
+  check(response, {
+    "login failed with bad credentials": (r) =>
+      r.status === 401 ||
+      r.status === 400 ||
+      (r.body && r.body.includes("error")),
+  });
 
   sleep(2);
 }

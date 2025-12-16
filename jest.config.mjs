@@ -22,7 +22,13 @@ const customJestConfig = {
     "!**/*.d.ts",
     "!**/node_modules/**",
   ],
-  testPathIgnorePatterns: ["<rootDir>/.next/", "<rootDir>/node_modules/"],
+  testPathIgnorePatterns: [
+    "<rootDir>/.next/",
+    "<rootDir>/node_modules/",
+    "<rootDir>/e2e/",
+    "<rootDir>/testcafe/",
+  ],
+
   transformIgnorePatterns: [
     "/node_modules/(?!(next-intl|use-intl)/)",
     "^.+\\.module\\.(css|sass|scss)$",

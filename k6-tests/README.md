@@ -1,6 +1,6 @@
 # k6 Load Testing for Auto Repair Shop
 
-This directory contains k6 load tests for the automobile repair shop management system. **All tests are limited to a maximum of 10 concurrent users** as per project requirements.
+This directory contains k6 load tests for the automobile repair shop management system. Tests use higher-intensity configurations — per-test maxima vary (for example, up to 200 virtual users for the vehicle search test).
 
 ## Prerequisites
 
@@ -37,8 +37,8 @@ k6 version
 
 ### 1. `smoke-test.js` - Minimal Load Test
 
-- **VUs:** 1 user
-- **Duration:** 1 minute
+- **VUs:** 2 users
+- **Duration:** 2 minutes
 - **Purpose:** Verify system works under minimal load
 
 ```powershell
@@ -47,10 +47,10 @@ k6 run k6-tests/smoke-test.js
 
 ### 2. `auth-test.js` - Authentication Flow Test
 
-- **VUs:** Ramps from 2 → 5 → 10 users
-- **Duration:** ~4 minutes
-- **Purpose:** Test login/logout and authenticated pages
-- **Max concurrent users:** 10
+- **VUs:** Ramps to a peak of 50 users (10 → 25 → 50)
+- **Duration:** ~5 minutes
+- **Purpose:** Test login/logout and authenticated pages under heavier load
+- **Max concurrent users:** 50
 
 ```powershell
 k6 run k6-tests/auth-test.js
@@ -58,10 +58,10 @@ k6 run k6-tests/auth-test.js
 
 ### 3. `api-test.js` - API Endpoint Test
 
-- **VUs:** 10 constant users
-- **Duration:** 3 minutes
-- **Purpose:** Test API performance with consistent load
-- **Max concurrent users:** 10
+- **VUs:** 50 constant users
+- **Duration:** 5 minutes
+- **Purpose:** Test API performance with sustained medium-high load
+- **Max concurrent users:** 50
 
 ```powershell
 k6 run k6-tests/api-test.js
@@ -69,10 +69,10 @@ k6 run k6-tests/api-test.js
 
 ### 4. `stress-test.js` - Stress Test
 
-- **VUs:** Ramps up to 10 users max
-- **Duration:** ~10 minutes
-- **Purpose:** Test system stability under stress
-- **Max concurrent users:** 10
+- **VUs:** Ramps up to 40 users max (10 → 25 → 40)
+- **Duration:** ~11 minutes
+- **Purpose:** Test system stability under higher stress
+- **Max concurrent users:** 40
 
 ```powershell
 k6 run k6-tests/stress-test.js
@@ -82,10 +82,10 @@ pnpm load-test:stress
 
 ### 5. `user-journey-test.js` - End-to-End User Journey
 
-- **VUs:** Ramps from 3 → 5 users
-- **Duration:** ~6 minutes
-- **Purpose:** Test complete user workflow (login → navigate → search)
-- **Max concurrent users:** 5
+- **VUs:** Ramps to a peak of 20 users (5 → 10 → 20)
+- **Duration:** ~7 minutes
+- **Purpose:** Test complete user workflow (login → navigate → search) under higher concurrency
+- **Max concurrent users:** 20
 
 ```powershell
 pnpm load-test:journey
@@ -93,10 +93,10 @@ pnpm load-test:journey
 
 ### 6. `spike-test.js` - Spike Test
 
-- **VUs:** Sudden spike from 2 → 10 users
+- **VUs:** Sudden spike from 5 → 50 users
 - **Duration:** ~3.5 minutes
 - **Purpose:** Test system resilience to sudden traffic spikes
-- **Max concurrent users:** 10
+- **Max concurrent users:** 50
 
 ```powershell
 pnpm load-test:spike
@@ -104,10 +104,10 @@ pnpm load-test:spike
 
 ### 7. `vehicles-api-test.js` - Vehicle Search API Load Test 🚗
 
-- **VUs:** Ramps from 10 → 50 → 100 users
-- **Duration:** ~8.5 minutes
-- **Purpose:** Load test vehicle search, filter, pagination, and debt calculations
-- **Max concurrent users:** 100
+- **VUs:** Ramps from 20 → 100 → 200 users
+- **Duration:** ~10 minutes
+- **Purpose:** Load test vehicle search, filter, pagination, and debt calculations at high scale
+- **Max concurrent users:** 200
 - **Tests:**
   - Vehicle page loading
   - License plate search
@@ -129,8 +129,8 @@ Edit `config.js` to customize:
 ```javascript
 {
   baseUrl: 'http://localhost:3000',  // Your app URL
-  testUsers: [/* 10 test user credentials */],
-  scenarios: {/* Test scenarios with max 10 VUs */}
+  testUsers: [/* test user credentials */],
+  scenarios: {/* Test scenarios - per-test VU limits vary (see each test file) */}
 }
 ```
 
@@ -164,23 +164,26 @@ pnpm dev --turbopack
 ### Run Individual Tests
 
 ```powershell
-# Smoke test (1 user)
+# Smoke test (2 users)
 pnpm load-test:smoke
 
-# Auth test (max 10 users)
+# Auth test (peak 50 users)
 pnpm load-test:auth
 
-# API test (10 constant users)
+# API test (50 constant users)
 pnpm load-test:api
 
-# Stress test (ramp to 10 users)
+# Stress test (ramp to 40 users)
 pnpm load-test:stress
 
-# User journey test (5 users)
+# User journey test (peak 20 users)
 pnpm load-test:journey
 
-# Spike test (sudden spike to 10 users)
+# Spike test (sudden spike to 50 users)
 pnpm load-test:spike
+
+# Vehicles API test (peak 200 users)
+pnpm load-test:vehicles
 
 # Run all tests
 pnpm load-test:all
@@ -189,8 +192,8 @@ pnpm load-test:all
 ### Run with Custom Options
 
 ```powershell
-# Override VUs and duration (respecting 10 user limit)
-k6 run --vus 10 --duration 30s k6-tests/smoke-test.js
+# Override VUs and duration (use with caution; ensure your environment can handle the load)
+k6 run --vus 50 --duration 30s k6-tests/smoke-test.js
 
 # Run with specific base URL
 k6 run --env BASE_URL=http://localhost:3000 k6-tests/api-test.js
@@ -234,7 +237,7 @@ Or use the test credentials in `config.js` and create users through your applica
   - Rate = requests per second
 
 - **VUs**: Virtual Users (concurrent users)
-  - **Max allowed: 10 users**
+  - **Per-test limits:** VU limits vary by test file (see each test's header for the peak VU).
 
 ### Thresholds
 
@@ -254,14 +257,14 @@ After tests complete, check:
 
 ## Performance Benchmarks
 
-### Expected Results (10 users max)
+### Example Expected Results (varies by test and load)
 
-| Metric              | Target | Warning | Critical |
-| ------------------- | ------ | ------- | -------- |
-| Response Time (p95) | < 1s   | 1-2s    | > 2s     |
-| Response Time (p99) | < 2s   | 2-3s    | > 3s     |
-| Error Rate          | < 1%   | 1-5%    | > 5%     |
-| Requests/sec        | > 50   | 20-50   | < 20     |
+| Metric              | Target (low) | Target (high)      | Warning | Critical |
+| ------------------- | ------------ | ------------------ | ------- | -------- |
+| Response Time (p95) | < 1s         | < 3s (at high VUs) | 1-3s    | > 3s     |
+| Response Time (p99) | < 2s         | < 5s (at high VUs) | 2-5s    | > 5s     |
+| Error Rate          | < 1%         | < 5% (at high VUs) | 1-5%    | > 5%     |
+| Requests/sec        | > 50         | > 100 (high VUs)   | 20-100  | < 20     |
 
 ## Troubleshooting
 
@@ -299,7 +302,7 @@ pnpm dev --turbopack
 1. **Always start with smoke test** before running larger tests
 2. **Monitor your application** during tests (CPU, memory, database)
 3. **Run tests in isolation** (no other heavy processes)
-4. **Respect the 10 user limit** - it's intentional for testing purposes
+4. **Respect per-test limits and your environment capacity** - adjust VUs responsibly
 5. **Create dedicated test data** - don't test with production data
 6. **Clean up after tests** - remove test data if needed
 

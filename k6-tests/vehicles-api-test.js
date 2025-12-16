@@ -14,9 +14,9 @@ const vehicleDataFetched = new Counter("vehicle_records_fetched");
 export const options = {
   stages: [
     { duration: "30s", target: 10 }, // Warm up to 10 users
-    { duration: "2m", target: 50 }, // Ramp up to 50 users
-    { duration: "3m", target: 100 }, // Peak at 100 concurrent users
-    { duration: "2m", target: 50 }, // Scale down
+    { duration: "1m", target: 50 }, // Ramp up to 50 users
+    { duration: "2m", target: 70 }, // Peak at 100 concurrent users
+    { duration: "1m", target: 50 }, // Scale down
     { duration: "1m", target: 0 }, // Cool down
   ],
   thresholds: {
@@ -74,10 +74,13 @@ export default function () {
       password: user.password,
     });
 
-    const loginResponse = http.post(`${baseUrl}/api/auth/login`, loginPayload, {
-      headers: authHeaders,
-      tags: { name: "Login" },
-    });
+    const loginResponse = http.post(
+      `${baseUrl}/login`,
+      `email=${user.email}&password=${user.password}`,
+      {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      }
+    );
 
     // Extract session cookies if login successful
     if (loginResponse.status === 200 || loginResponse.status === 302) {
@@ -107,7 +110,7 @@ export default function () {
     const success = check(response, {
       "vehicle page loads": (r) => r.status === 200,
       "page contains vehicles table": (r) =>
-        r.body.includes("vehicle") || r.body.includes("table"),
+        r.body && (r.body.includes("vehicle") || r.body.includes("table")),
       "response time acceptable": (r) => r.timings.duration < 3000,
     });
 

@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>k6 Load Test Results - Auto Repair Shop</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+    .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+    h1 { color: #333; }
+    .metric { margin: 20px 0; padding: 15px; background: #f9f9f9; border-left: 4px solid #4CAF50; }
+    .metric-name { font-weight: bold; color: #555; }
+    .metric-value { font-size: 24px; color: #4CAF50; margin: 10px 0; }
+    .failed { border-left-color: #f44336; }
+    .failed .metric-value { color: #f44336; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚗 Auto Repair Shop - Load Test Results</h1>
+    <p><strong>Test Date:</strong> 2025-12-12T16:11:44.490Z</p>
+    <p><strong>Max Concurrent Users:</strong> 10</p>
+    
+    <h2>Key Metrics</h2>
+    
+      <div class="metric ">
+        <div class="metric-name">data_received</div>
+        <div class="metric-value">{
+  "count": 88990086,
+  "rate": 473171.0840275572
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">iteration_duration</div>
+        <div class="metric-value">{
+  "avg": 7889.601511158796,
+  "min": 7292.3917,
+  "med": 7590.0339,
+  "max": 11078.6271,
+  "p(90)": 8696.99506,
+  "p(95)": 9038.3036
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">api_success</div>
+        <div class="metric-value">{
+  "rate": 1,
+  "passes": 1631,
+  "fails": 0
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">http_req_sending</div>
+        <div class="metric-value">{
+  "min": 0,
+  "med": 0,
+  "max": 0.7449,
+  "p(90)": 0,
+  "p(95)": 0,
+  "avg": 0.007369206008583691
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">vus_max</div>
+        <div class="metric-value">{
+  "value": 10,
+  "min": 10,
+  "max": 10
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">http_req_duration{expected_response:true}</div>
+        <div class="metric-value">{
+  "avg": 150.85346638054367,
+  "min": 46.9052,
+  "med": 91.1096,
+  "max": 1707.4868,
+  "p(90)": 234.65275,
+  "p(95)": 459.4798999999999
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">iterations</div>
+        <div class="metric-value">{
+  "count": 233,
+  "rate": 1.2388892688385629
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">http_reqs</div>
+        <div class="metric-value">{
+  "count": 1864,
+  "rate": 9.911114150708503
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">data_sent</div>
+        <div class="metric-value">{
+  "count": 210865,
+  "rate": 1121.1947882988995
+}</div>
+      </div>
+    
+      <div class="metric failed">
+        <div class="metric-name">http_req_failed</div>
+        <div class="metric-value">{
+  "rate": 0.25,
+  "passes": 466,
+  "fails": 1398
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">http_req_receiving</div>
+        <div class="metric-value">{
+  "avg": 10.755551770386274,
+  "min": 0,
+  "med": 4.4563500000000005,
+  "max": 526.838,
+  "p(90)": 25.94075,
+  "p(95)": 38.142669999999974
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">inventory_fetch_duration</div>
+        <div class="metric-value">{
+  "med": 0,
+  "max": 0,
+  "p(90)": 0,
+  "p(95)": 0,
+  "avg": 0,
+  "min": 0
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">http_req_waiting</div>
+        <div class="metric-value">{
+  "med": 67.85385,
+  "max": 1645.5606,
+  "p(90)": 189.07770000000002,
+  "p(95)": 334.008155,
+  "avg": 112.05075547210282,
+  "min": 0.3224
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">http_req_connecting</div>
+        <div class="metric-value">{
+  "avg": 0.0019358905579399143,
+  "min": 0,
+  "med": 0,
+  "max": 0.7217,
+  "p(90)": 0,
+  "p(95)": 0
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">http_req_tls_handshaking</div>
+        <div class="metric-value">{
+  "max": 0,
+  "p(90)": 0,
+  "p(95)": 0,
+  "avg": 0,
+  "min": 0,
+  "med": 0
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">group_duration</div>
+        <div class="metric-value">{
+  "med": 1094.4753,
+  "max": 2749.3281,
+  "p(90)": 1365.1841600000002,
+  "p(95)": 1748.7689799999998,
+  "avg": 1177.7834899570819,
+  "min": 1004.1804
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">http_req_blocked</div>
+        <div class="metric-value">{
+  "avg": 0.03499238197424893,
+  "min": 0,
+  "med": 0,
+  "max": 6.5176,
+  "p(90)": 0,
+  "p(95)": 0
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">vus</div>
+        <div class="metric-value">{
+  "value": 2,
+  "min": 2,
+  "max": 10
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">http_req_duration</div>
+        <div class="metric-value">{
+  "max": 1707.4868,
+  "p(90)": 204.05697000000006,
+  "p(95)": 360.0218899999998,
+  "avg": 122.81367644849782,
+  "min": 0.3224,
+  "med": 76.76115
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">checks</div>
+        <div class="metric-value">{
+  "rate": 1,
+  "passes": 3262,
+  "fails": 0
+}</div>
+      </div>
+    
+      <div class="metric ">
+        <div class="metric-name">vehicles_fetch_duration</div>
+        <div class="metric-value">{
+  "min": 0,
+  "med": 0,
+  "max": 0,
+  "p(90)": 0,
+  "p(95)": 0,
+  "avg": 0
+}</div>
+      </div>
+    
+  </div>
+</body>
+</html>
+  

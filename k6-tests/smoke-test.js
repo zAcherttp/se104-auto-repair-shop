@@ -15,7 +15,7 @@ export const options = {
 export default function () {
   const baseUrl = config.baseUrl;
 
-  // Test home page
+  // Test home page TEST-SMK-001
   let response = http.get(baseUrl);
   check(response, {
     "homepage status is 200": (r) => r.status === 200,
@@ -23,7 +23,7 @@ export default function () {
 
   sleep(1);
 
-  // Test login page
+  // Test login page TEST-SMK-002
   response = http.get(`${baseUrl}/login`);
   check(response, {
     "login page status is 200": (r) => r.status === 200,
@@ -31,7 +31,7 @@ export default function () {
 
   sleep(1);
 
-  // Test track order page
+  // Test track order page TEST-SMK-003
   response = http.get(`${baseUrl}/track-order`);
   check(response, {
     "track order page status is 200": (r) => r.status === 200,

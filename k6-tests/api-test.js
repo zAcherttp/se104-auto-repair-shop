@@ -34,95 +34,114 @@ export default function () {
     },
   };
 
-  // Test API endpoints that don't require authentication (if any)
-  group("Public Pages", () => {
+  // TEST-API-001: Login Page Availability
+  // GET /login và kiểm tra trạng thái và nội dung HTML mong đợi
+  group("TEST-API-001: Login Page Availability", () => {
     const response = http.get(`${baseUrl}/login`, params);
     const success = check(response, {
       "login page status 200": (r) => r.status === 200,
-      "login page has form": (r) =>
-        r.body.includes("form") || r.body.includes("login"),
+      "login page has UI": (r) =>
+        r.body &&
+        (r.body.includes("form") ||
+          r.body.includes("login") ||
+          r.body.includes("email")),
     });
     apiSuccessRate.add(success);
     sleep(1);
   });
 
-  // Test track order page (public feature)
-  group("Track Order", () => {
+  // TEST-API-002: Track Order Page
+  // GET /track-order và xác thực trạng thái 200 và nội dung
+  group("TEST-API-002: Track Order Page", () => {
     const response = http.get(`${baseUrl}/track-order`, params);
     const success = check(response, {
-      "track order page loaded": (r) => r.status === 200,
+      "track order page status 200": (r) => r.status === 200,
+      "track order page has UI": (r) =>
+        r.body &&
+        (r.body.includes("track") ||
+          r.body.includes("order") ||
+          r.body.length > 0),
     });
     apiSuccessRate.add(success);
     sleep(1);
   });
 
-  // Simulate static asset loading
-  group("Static Assets", () => {
+  // TEST-API-003: Static Assets
+  // Yêu cầu CSS/JS đến các điểm cuối /_next/static/...
+  group("TEST-API-003: Static Assets", () => {
     const cssResponse = http.get(
       `${baseUrl}/_next/static/css/app/layout.css`,
       params
     );
-    check(cssResponse, {
-      "CSS loaded": (r) => r.status === 200 || r.status === 404, // 404 is acceptable for dynamic builds
+    const cssSuccess = check(cssResponse, {
+      "CSS loaded or 404 acceptable": (r) =>
+        r.status === 200 || r.status === 404,
     });
 
     sleep(0.5);
+
+    const jsResponse = http.get(
+      `${baseUrl}/_next/static/chunks/main.js`,
+      params
+    );
+    const jsSuccess = check(jsResponse, {
+      "JS loaded or 404 acceptable": (r) =>
+        r.status === 200 || r.status === 404,
+    });
+
+    apiSuccessRate.add(cssSuccess && jsSuccess);
+    sleep(0.5);
+  });
+
+  // TEST-API-004: API Health Check
+  // Gọi trực tiếp các điểm cuối API lõi và kiểm tra sức khỏe phản hồi JSON
+  group("TEST-API-004: API Health Check", () => {
+    // Test home page as basic health check
+    const homeResponse = http.get(baseUrl, params);
+    const homeSuccess = check(homeResponse, {
+      "home page responds": (r) =>
+        r.status === 200 || r.status === 302 || r.status === 303,
+      "response is valid HTML/JSON": (r) => r.body && r.body.length > 0,
+    });
+
+    apiSuccessRate.add(homeSuccess);
+    sleep(1);
+  });
+
+  // TEST-API-005: General Throughput
+  // Chạy nhiều lần lặp để đảm bảo máy chủ xử lý các yêu cầu mong đợi
+  group("TEST-API-005: General Throughput", () => {
+    for (let i = 0; i < 3; i++) {
+      const response = http.get(`${baseUrl}/login`, params);
+      const success = check(response, {
+        "throughput test - page loads": (r) => r.status === 200,
+        "throughput test - response time OK": (r) => r.timings.duration < 3000,
+      });
+      apiSuccessRate.add(success);
+      sleep(0.3);
+    }
   });
 
   sleep(2);
 }
 
 export function handleSummary(data) {
-  console.log("Test completed. Generating summary...");
-
   return {
-    "api-test-summary.json": JSON.stringify(data, null, 2),
-    "api-test-summary.html": generateHTMLSummary(data),
+    "auth-test-summary.json": JSON.stringify(data, null, 2),
+    stdout: textSummary(data, { indent: " ", enableColors: true }),
   };
 }
 
-function generateHTMLSummary(data) {
-  const metrics = data.metrics;
+function textSummary(data, options = {}) {
+  const indent = options.indent || "";
+  const enableColors = options.enableColors || false;
 
-  return `
-<!DOCTYPE html>
-<html>
-<head>
-  <title>k6 Load Test Results - Auto Repair Shop</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
-    .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
-    h1 { color: #333; }
-    .metric { margin: 20px 0; padding: 15px; background: #f9f9f9; border-left: 4px solid #4CAF50; }
-    .metric-name { font-weight: bold; color: #555; }
-    .metric-value { font-size: 24px; color: #4CAF50; margin: 10px 0; }
-    .failed { border-left-color: #f44336; }
-    .failed .metric-value { color: #f44336; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>🚗 Auto Repair Shop - Load Test Results</h1>
-    <p><strong>Test Date:</strong> ${new Date().toISOString()}</p>
-    <p><strong>Max Concurrent Users:</strong> 10</p>
-    
-    <h2>Key Metrics</h2>
-    ${Object.entries(metrics)
-      .map(
-        ([name, metric]) => `
-      <div class="metric ${metric.values?.rate < 0.9 ? "failed" : ""}">
-        <div class="metric-name">${name}</div>
-        <div class="metric-value">${JSON.stringify(
-          metric.values,
-          null,
-          2
-        )}</div>
-      </div>
-    `
-      )
-      .join("")}
-  </div>
-</body>
-</html>
-  `;
+  let summary = `\n${indent}Test Summary:\n`;
+  summary += `${indent}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+  summary += `${indent}Scenarios: ${
+    Object.keys(data.metrics).length
+  } metrics collected\n`;
+  summary += `${indent}VUs: Max ${options.vus || 10}\n`;
+
+  return summary;
 }

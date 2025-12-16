@@ -6,14 +6,14 @@ import { config } from "./config.js";
 // Custom metrics
 const errorRate = new Rate("errors");
 
-// Stress test - Ramp up to 10 users (max allowed)
+// Stress test - Ramp up TEST-STR-001
 export const options = {
   stages: [
-    { duration: "2m", target: 5 }, // Ramp up to 5 users
-    { duration: "3m", target: 10 }, // Ramp up to 10 users (MAX)
-    { duration: "2m", target: 10 }, // Stay at 10 users
-    { duration: "2m", target: 5 }, // Ramp down to 5 users
-    { duration: "1m", target: 0 }, // Ramp down to 0 users
+    { duration: "1m", target: 50 }, // Ramp up to 10 users
+    { duration: "1m", target: 100 }, // Ramp up to 20 users
+    { duration: "1m", target: 150 }, // Stay at 30 users
+    { duration: "1m", target: 100 }, // Ramp down to 10 users
+    { duration: "1m", target: 50 }, // Ramp down to 0 users
   ],
   thresholds: {
     http_req_duration: ["p(95)<3000"], // 95% requests under 3s
@@ -24,37 +24,70 @@ export const options = {
 
 export default function () {
   const baseUrl = config.baseUrl;
+  const stage = __ITER < 30 ? "ramp-up" : __ITER < 80 ? "peak" : "recovery";
 
-  // Test multiple pages under stress
-  group("Page Navigation Under Stress", () => {
-    // Home page
-    let response = http.get(baseUrl);
-    let success = check(response, {
-      "home page loaded": (r) => r.status === 200,
-      "home page response time OK": (r) => r.timings.duration < 5000,
+  // TEST-STR-001: Sustained Ramp Up
+  // Tăng VUs từ từ lên mức cao nhất và quan sát hành vi máy chủ
+  if (stage === "ramp-up") {
+    group("TEST-STR-001: Sustained Ramp Up", () => {
+      let response = http.get(baseUrl);
+      let success = check(response, {
+        "ramp-up: home page loaded": (r) => r.status === 200,
+        "ramp-up: p95 under threshold": (r) => r.timings.duration < 3000,
+      });
+      errorRate.add(!success);
+      sleep(1);
+
+      response = http.get(`${baseUrl}/login`);
+      success = check(response, {
+        "ramp-up: login page loaded": (r) => r.status === 200,
+      });
+      errorRate.add(!success);
+      sleep(1);
     });
-    errorRate.add(!success);
+  }
 
-    sleep(1);
+  // TEST-STR-002: Sustained Peak
+  // Duy trì tải cao nhất trong thời gian đã cấu hình
+  if (stage === "peak") {
+    group("TEST-STR-002: Sustained Peak", () => {
+      let response = http.get(baseUrl);
+      let success = check(response, {
+        "peak: server continues serving": (r) => r.status === 200,
+        "peak: no resource exhaustion": (r) => r.timings.duration < 5000,
+      });
+      errorRate.add(!success);
+      sleep(1);
 
-    // Login page
-    response = http.get(`${baseUrl}/login`);
-    success = check(response, {
-      "login page loaded": (r) => r.status === 200,
+      response = http.get(`${baseUrl}/track-order`);
+      success = check(response, {
+        "peak: track order loaded": (r) => r.status === 200,
+      });
+      errorRate.add(!success);
+      sleep(1);
     });
-    errorRate.add(!success);
+  }
 
-    sleep(1);
+  // TEST-STR-003: Recovery
+  // Giảm tải lưu lượng và đảm bảo máy chủ phục hồi
+  if (stage === "recovery") {
+    group("TEST-STR-003: Recovery", () => {
+      let response = http.get(baseUrl);
+      let success = check(response, {
+        "recovery: server responsive": (r) => r.status === 200,
+        "recovery: response time normalized": (r) => r.timings.duration < 2000,
+      });
+      errorRate.add(!success);
+      sleep(1);
 
-    // Track order page
-    response = http.get(`${baseUrl}/track-order`);
-    success = check(response, {
-      "track order loaded": (r) => r.status === 200,
+      response = http.get(`${baseUrl}/login`);
+      success = check(response, {
+        "recovery: no stuck processes": (r) => r.status === 200,
+      });
+      errorRate.add(!success);
+      sleep(1);
     });
-    errorRate.add(!success);
-
-    sleep(1);
-  });
+  }
 
   // Simulate user think time
   sleep(2);
@@ -67,7 +100,7 @@ export function handleSummary(data) {
     "stress-test-summary.json": JSON.stringify(data, null, 2),
     stdout: `
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🔥 STRESS TEST RESULTS (Max 10 Users)
+🔥 STRESS TEST RESULTS 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Status: ${passed ? "✅ PASSED" : "❌ FAILED"}
 Total Requests: ${data.metrics.http_reqs?.values?.count || 0}
