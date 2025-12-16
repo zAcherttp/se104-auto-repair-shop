@@ -14,43 +14,8 @@ export async function cleanupDatabase() {
   const client = createTestClient();
 
   try {
-    // Delete in reverse order to respect foreign keys
-    // Use explicit queries for each table to maintain type safety
-    await client
-      .from("payments")
-      .delete()
-      .neq("id", "00000000-0000-0000-0000-000000000000");
-    await client
-      .from("repair_order_items")
-      .delete()
-      .neq("id", "00000000-0000-0000-0000-000000000000");
-    await client
-      .from("repair_orders")
-      .delete()
-      .neq("id", "00000000-0000-0000-0000-000000000000");
-    await client
-      .from("vehicles")
-      .delete()
-      .neq("id", "00000000-0000-0000-0000-000000000000");
-    await client
-      .from("customers")
-      .delete()
-      .neq("id", "00000000-0000-0000-0000-000000000000");
-    await client
-      .from("spare_parts")
-      .delete()
-      .neq("id", "00000000-0000-0000-0000-000000000000");
-    await client
-      .from("labor_types")
-      .delete()
-      .neq("id", "00000000-0000-0000-0000-000000000000");
-    await client
-      .from("profiles")
-      .delete()
-      .neq("id", "00000000-0000-0000-0000-000000000000");
-
-    // Delete test users from auth.users
-    // Note: This requires service role permissions
+    // First, delete test users from auth.users (this will cascade delete profiles)
+    // This must be done FIRST to avoid foreign key constraints
     const { data: users } = await client.auth.admin.listUsers();
 
     if (users?.users) {
@@ -60,10 +25,45 @@ export async function cleanupDatabase() {
           user.email?.includes("test-") ||
           user.email?.includes("@test.com")
         ) {
-          await client.auth.admin.deleteUser(user.id);
+          try {
+            await client.auth.admin.deleteUser(user.id);
+          } catch (error) {
+            // Ignore errors if user already deleted
+            console.debug(`Error deleting user ${user.id}: ${error}`);
+          }
         }
       }
     }
+
+    // Small delay to allow deletions to propagate
+    await new Promise((resolve) => setTimeout(resolve, 200));
+
+    // Then delete data tables in reverse order to respect foreign keys
+    const tables = [
+      "payments",
+      "repair_order_items",
+      "repair_orders",
+      "vehicles",
+      "customers",
+      "spare_parts",
+      "labor_types",
+      "profiles",
+    ];
+
+    for (const table of tables) {
+      try {
+        await client
+          .from(table)
+          .delete()
+          .neq("id", "00000000-0000-0000-0000-000000000000");
+      } catch (error) {
+        // Log but don't fail - table might be empty or have constraints
+        console.debug(`Error deleting from ${table}: ${error}`);
+      }
+    }
+
+    // Final delay to ensure all deletions are complete
+    await new Promise((resolve) => setTimeout(resolve, 100));
   } catch (error) {
     console.error("Error during database cleanup:", error);
     throw error;

@@ -326,5 +326,69 @@ describe("Reception Workflow Integration", () => {
 
       expect(orders?.length).toBeGreaterThanOrEqual(2);
     });
+
+    // EXPECTED FAILURE: Missing daily vehicle limit enforcement at database level
+    it("enforces daily vehicle reception limit", async () => {
+      const client = createTestClient();
+      const today = new Date().toISOString().split("T")[0];
+
+      // Get the garage's daily limit (assuming default is 10)
+      const { data: settings } = await client
+        .from("system_settings")
+        .select("daily_vehicle_limit")
+        .single();
+
+      const limit = settings?.daily_vehicle_limit ?? 10;
+
+      // Create vehicles up to the limit
+      for (let i = 0; i < limit; i++) {
+        const { data: customer } = await client
+          .from("customers")
+          .insert({ name: `Customer ${i}`, phone: `090${i}000000` })
+          .select()
+          .single();
+
+        if (!customer) continue;
+
+        await client.from("vehicles").insert({
+          license_plate: `TEST-${i}`,
+          brand: "Toyota",
+          customer_id: customer.id,
+        });
+      }
+
+      // Try to create one more vehicle beyond the limit
+      const { data: extraCustomer } = await client
+        .from("customers")
+        .insert({ name: "Extra Customer", phone: "0909999999" })
+        .select()
+        .single();
+
+      if (!extraCustomer) return;
+
+      const { error } = await client.from("vehicles").insert({
+        license_plate: "EXTRA-001",
+        brand: "Honda",
+        customer_id: extraCustomer.id,
+      });
+
+      // Should fail with a check constraint or trigger
+      expect(error).not.toBeNull();
+      expect(error?.message).toMatch(/daily.*limit|exceeded/i);
+    });
+
+    // EXPECTED FAILURE: Missing validation for phone number format
+    it("validates customer phone number format", async () => {
+      const client = createTestClient();
+
+      const { error } = await client.from("customers").insert({
+        name: "Invalid Phone Customer",
+        phone: "invalid-phone", // Should only allow Vietnamese phone format
+      });
+
+      // Should fail with check constraint for phone format (09xx or 03xx, 10 digits)
+      expect(error).not.toBeNull();
+      expect(error?.code).toBe("23514"); // check_violation
+    });
   });
 });

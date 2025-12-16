@@ -63,12 +63,14 @@ describe("Inventory Integration", () => {
         spare_part_id: sparePart.id,
         quantity: quantity,
         description: "Oil change",
+        unit_price: sparePart.price,
+        total_amount: sparePart.price * quantity,
       });
 
       // Manually update stock (in real app, this is done by updateSparePartsStock)
       await client
         .from("spare_parts")
-        .update({ stock_quantity: sparePart.stock_quantity - quantity })
+        .update({ stock_quantity: (sparePart.stock_quantity ?? 0) - quantity })
         .eq("id", sparePart.id);
 
       // Verify stock decreased
@@ -111,6 +113,8 @@ describe("Inventory Integration", () => {
           spare_part_id: sparePart.id,
           quantity: quantity,
           description: "Test item",
+          unit_price: sparePart.price,
+          total_amount: sparePart.price * quantity,
         })
         .select()
         .single();
@@ -175,12 +179,16 @@ describe("Inventory Integration", () => {
           spare_part_id: part1.id,
           quantity: 2,
           description: "Brake replacement",
+          unit_price: part1.price,
+          total_amount: part1.price * 2,
         },
         {
           repair_order_id: repairOrder.id,
           spare_part_id: part2.id,
           quantity: 1,
           description: "Air filter replacement",
+          unit_price: part2.price,
+          total_amount: part2.price * 1,
         },
       ]);
 
@@ -237,12 +245,14 @@ describe("Inventory Integration", () => {
         spare_part_id: sparePart.id,
         quantity: requestedQuantity,
         description: "Over-requested item",
+        unit_price: sparePart.price,
+        total_amount: sparePart.price * requestedQuantity,
       });
 
       // Calculate new stock (should not go negative)
       const newStock = Math.max(
         0,
-        sparePart.stock_quantity - requestedQuantity,
+        (sparePart.stock_quantity ?? 0) - requestedQuantity,
       );
 
       await client
@@ -292,17 +302,19 @@ describe("Inventory Integration", () => {
       if (!repairOrder) return;
 
       // Add labor type item (no spare_part_id)
-      const { data: item } = await client
+      const { data: item, error: itemError } = await client
         .from("repair_order_items")
         .insert({
           repair_order_id: repairOrder.id,
           labor_type_id: laborType.id,
           labor_cost: laborType.cost,
           description: "Oil change labor",
+          total_amount: laborType.cost,
         })
         .select()
         .single();
 
+      expect(itemError).toBeNull();
       expect(item).toBeDefined();
       expect(item?.spare_part_id).toBeNull();
       expect(item?.labor_type_id).toBe(laborType.id);
@@ -342,26 +354,31 @@ describe("Inventory Integration", () => {
       if (!repairOrder) return;
 
       // Add both types of items
-      await client.from("repair_order_items").insert([
+      const { error: itemError } = await client.from("repair_order_items").insert([
         {
           repair_order_id: repairOrder.id,
           spare_part_id: sparePart.id,
           quantity: 5,
           description: "Engine oil",
+          total_amount: 250000, // 5 * 50000
+          unit_price: 50000,
         },
         {
           repair_order_id: repairOrder.id,
           labor_type_id: laborType.id,
           labor_cost: laborType.cost,
           description: "Labor",
+          total_amount: laborType.cost,
         },
       ]);
+      expect(itemError).toBeNull();
 
-      const { data: items } = await client
+      const { data: items, error: queryError } = await client
         .from("repair_order_items")
         .select()
         .eq("repair_order_id", repairOrder.id);
 
+      expect(queryError).toBeNull();
       expect(items?.length).toBe(2);
 
       const sparePartItem = items?.find((i) => i.spare_part_id !== null);
@@ -402,6 +419,8 @@ describe("Inventory Integration", () => {
         spare_part_id: sparePart.id,
         quantity: 20,
         description: "First usage",
+        unit_price: sparePart.price,
+        total_amount: sparePart.price * 20,
       });
 
       await client
@@ -415,6 +434,8 @@ describe("Inventory Integration", () => {
         spare_part_id: sparePart.id,
         quantity: 15,
         description: "Second usage",
+        unit_price: sparePart.price,
+        total_amount: sparePart.price * 15,
       });
 
       await client
@@ -430,6 +451,45 @@ describe("Inventory Integration", () => {
         .single();
 
       expect(finalPart?.stock_quantity).toBe(65); // 100 - 20 - 15
+    });
+
+    // EXPECTED FAILURE: Database should enforce check constraint preventing negative stock
+    it("enforces non-negative stock at database level", async () => {
+      const client = createTestClient();
+
+      const sparePart = await createTestSparePart({
+        stock_quantity: 10,
+      });
+
+      // Try to set stock to negative value directly
+      const { error } = await client
+        .from("spare_parts")
+        .update({ stock_quantity: -5 })
+        .eq("id", sparePart.id);
+
+      // Should fail with check constraint
+      expect(error).not.toBeNull();
+      expect(error?.code).toBe("23514"); // check_violation
+    });
+
+    // EXPECTED FAILURE: Should have low stock alert threshold
+    it("flags parts with stock below minimum threshold", async () => {
+      const client = createTestClient();
+
+      const lowStockPart = await createTestSparePart({
+        name: "Critical Part",
+        stock_quantity: 2,
+      });
+
+      // Query for low stock items (min_stock_threshold column needs to be added to schema)
+      const { data: lowStockItems } = await client
+        .from("spare_parts")
+        .select("id, name, stock_quantity")
+        .lte("stock_quantity", 5);
+
+      expect(lowStockItems?.length || 0).toBeGreaterThan(0);
+      const criticalPart = lowStockItems?.find(p => p.id === lowStockPart.id);
+      expect(criticalPart).toBeDefined();
     });
   });
 });

@@ -1,0 +1,3 @@
+ID,Test Case Description,Test Case Procedure,Expected Output,Inter-test case Dependence,Result,Test date,Note
+PH-1,Join payment with creator profile,Create payment by user → Select with `created_by_profile:profiles(full_name)`,Row has `created_by_profile.full_name`,None,Pass,2025-12-16,From modules/payment-history.test.ts
+PH-2,Default sort by date desc,Insert 3 payments with different dates → Select without order,Rows returned payment_date in desc order,None,Expected Fail,2025-12-16,Spec for default sort/view

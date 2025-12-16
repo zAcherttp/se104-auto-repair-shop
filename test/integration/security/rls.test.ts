@@ -41,11 +41,11 @@ describe("RLS Security Integration", () => {
 
       // Create vehicles for each garage
       const vehicle1 = await createTestVehicle({
-        licensePlate: "GARAGE-A-001",
+        license_plate: "GARAGE-A-001",
       });
 
       const vehicle2 = await createTestVehicle({
-        licensePlate: "GARAGE-B-001",
+        license_plate: "GARAGE-B-001",
       });
 
       // Create repair orders for each
@@ -325,6 +325,98 @@ describe("RLS Security Integration", () => {
       // Admin status is tracked in the factory
       expect(admin.isGarageAdmin).toBe(true);
       expect(employee.isGarageAdmin).toBe(false);
+    });
+
+    // EXPECTED FAILURE: Missing RLS policy to prevent employees from modifying other profiles
+    it("prevents employees from updating other employees' profiles", async () => {
+      const client = createTestClient();
+
+      const employee1 = await createTestUser({
+        email: "employee1@test.com",
+        isGarageAdmin: false,
+      });
+
+      const employee2 = await createTestUser({
+        email: "employee2@test.com",
+        isGarageAdmin: false,
+      });
+
+      // Create profiles for both
+      await client.from("profiles").insert([
+        { id: employee1.id, full_name: "Employee One" },
+        { id: employee2.id, full_name: "Employee Two" },
+      ]);
+
+      // Try to update another employee's profile (should be blocked by RLS)
+      const { error } = await client
+        .from("profiles")
+        .update({ full_name: "Hacked Name" })
+        .eq("id", employee2.id);
+
+      // Should fail with RLS policy violation
+      expect(error).not.toBeNull();
+      expect(error?.code).toBe("42501"); // insufficient_privilege
+    });
+
+    // EXPECTED FAILURE: Missing cascade delete policy for user-related data
+    it("cascades deletion of user data when user is deleted", async () => {
+      const client = createTestClient();
+
+      const user = await createTestUser({
+        email: "tobedeleted@test.com",
+        isGarageAdmin: false,
+      });
+
+      const vehicle = await createTestVehicle();
+
+      // Create profile, repair order, and payment
+      await client
+        .from("profiles")
+        .insert({ id: user.id, full_name: "To Be Deleted" });
+
+      await client.from("repair_orders").insert({
+        vehicle_id: vehicle.id,
+        created_by: user.id,
+        status: "pending",
+        reception_date: "2024-01-15",
+        total_amount: 500000,
+      });
+
+      await client.from("payments").insert({
+        vehicle_id: vehicle.id,
+        amount: 200000,
+        payment_method: "cash",
+        created_by: user.id,
+        payment_date: "2024-01-20",
+      });
+
+      // Delete the user (should cascade or set created_by to null)
+      const { error: deleteError } = await client.auth.admin.deleteUser(
+        user.id
+      );
+
+      // Should either cascade delete or set created_by to NULL via trigger
+      expect(deleteError).toBeNull();
+
+      // Verify orphaned records are handled
+      const { data: orphanedOrders } = await client
+        .from("repair_orders")
+        .select()
+        .eq("created_by", user.id);
+
+      const { data: orphanedPayments } = await client
+        .from("payments")
+        .select()
+        .eq("created_by", user.id);
+
+      // Should be empty or created_by should be NULL (not the deleted user ID)
+      expect(
+        orphanedOrders?.length === 0 || orphanedOrders?.[0].created_by === null
+      ).toBe(true);
+      expect(
+        orphanedPayments?.length === 0 ||
+          orphanedPayments?.[0].created_by === null
+      ).toBe(true);
     });
   });
 });

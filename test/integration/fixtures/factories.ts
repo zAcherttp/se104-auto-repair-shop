@@ -11,7 +11,6 @@ type Customer = Database["public"]["Tables"]["customers"]["Insert"];
 type Vehicle = Database["public"]["Tables"]["vehicles"]["Insert"];
 type RepairOrder = Database["public"]["Tables"]["repair_orders"]["Insert"];
 type SparePart = Database["public"]["Tables"]["spare_parts"]["Insert"];
-
 /**
  * Creates a test user via Supabase Auth
  */
@@ -23,8 +22,33 @@ export async function createTestUser(options?: {
 }) {
   const client = createTestClient();
 
-  const email = options?.email || `test-user-${Date.now()}@test.com`;
+  // Generate truly unique email with timestamp + random
+  const email =
+    options?.email ||
+    `test-${Date.now()}-${Math.random().toString(36).slice(2, 11)}@test.com`;
   const password = options?.password || "TestPassword123!";
+
+  // If trying to use a specific email, check if user exists first
+  if (options?.email) {
+    try {
+      // Try to delete existing user with this email if it exists
+      const { data: users } = await client.auth.admin.listUsers();
+      if (users?.users) {
+        const existingUser = users.users.find((u) => u.email === options.email);
+        if (existingUser) {
+          try {
+            await client.auth.admin.deleteUser(existingUser.id);
+            // Give it a moment to delete
+            await new Promise((resolve) => setTimeout(resolve, 100));
+          } catch (e) {
+            console.debug(`Failed to delete existing user: ${e}`);
+          }
+        }
+      }
+    } catch (e) {
+      console.debug(`Error checking for existing user: ${e}`);
+    }
+  }
 
   const { data, error } = await client.auth.admin.createUser({
     email,
@@ -41,6 +65,13 @@ export async function createTestUser(options?: {
 
   // Create profile entry
   if (data.user) {
+    // First try to delete any existing profile (in case of cleanup failure)
+    try {
+      await client.from("profiles").delete().eq("id", data.user.id);
+    } catch (e) {
+      // Ignore - profile might not exist
+    }
+
     const { error: profileError } = await client.from("profiles").insert({
       id: data.user.id,
       email: email,

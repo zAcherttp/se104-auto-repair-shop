@@ -1,0 +1,4 @@
+ID,Test Case Description,Test Case Procedure,Expected Output,Inter-test case Dependence,Result,Test date,Note
+RO-1,Replace items and update total,Create order → Add 2×Part A → Update total → Replace with 1×Part B → Update total,Items reflect Part B; total=Part B price,None,Pass,2025-12-16,From modules/repair-orders.test.ts
+RO-2,Validate status transitions,Create order with status completed → Try set back to pending,Update rejected by validation,None,Expected Fail,2025-12-16,Spec for status FSM
+RO-3,Auto-set completion_date,Create pending order → Update status to completed → Fetch,completion_date set automatically,None,Expected Fail,2025-12-16,Spec for trigger

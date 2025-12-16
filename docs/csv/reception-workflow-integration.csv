@@ -1,0 +1,10 @@
+ID,Test Case Description,Test Case Procedure,Expected Output,Inter-test case Dependence,Result,Test date,Note
+REC-1,"Create customer, vehicle, order",Insert customer → Insert vehicle → Insert repair order → Verify joins,Entities created; relations correct,None,Pass,2025-12-16,From workflows/reception.test.ts
+REC-2,Minimal data flow,Create customer (name+phone) → Create vehicle → Create order,Order exists; optional fields null,None,Pass,2025-12-16,From workflows/reception.test.ts
+REC-3,Reuse customer by phone,Create customer (phone) → Check by phone → Create vehicle using existing id,Single customer; new vehicle linked,None,Pass,2025-12-16,From workflows/reception.test.ts
+REC-4,Customer with multiple vehicles,Create customer → Insert two vehicles → Query by customer,≥2 vehicles found,None,Pass,2025-12-16,From workflows/reception.test.ts
+REC-5,License plate uniqueness,Insert vehicle → Attempt duplicate plate for same customer,Duplicate rejected,None,Pass,2025-12-16,From workflows/reception.test.ts
+REC-6,Repair order requires valid vehicle,Insert repair order with fake `vehicle_id`,Insert rejected (FK violation),None,Pass,2025-12-16,From workflows/reception.test.ts
+REC-7,Multiple orders per vehicle,Create vehicle → Insert 2 orders → Query count,Count ≥ 2,None,Pass,2025-12-16,From workflows/reception.test.ts
+REC-8,Daily reception limit enforced,Create up to limit vehicles then one extra,Extra insert rejected with limit message,None,Expected Fail,2025-12-16,Spec for daily limit policy
+REC-9,Validate phone format,Insert customer with invalid phone string,Insert rejected (check_violation 23514),None,Expected Fail,2025-12-16,Spec for phone format CHECK

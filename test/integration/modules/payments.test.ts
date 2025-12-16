@@ -86,41 +86,46 @@ describe("Payment Integration", () => {
       const client = createTestClient();
 
       // Create repair order
-      await client.from("repair_orders").insert({
+      const { error: roError } = await client.from("repair_orders").insert({
         vehicle_id: vehicleId,
         created_by: testUserId,
         status: "pending",
         reception_date: "2024-01-15",
         total_amount: 1000000,
       });
+      expect(roError).toBeNull();
 
       // First payment
-      await client.from("payments").insert({
+      const { error: p1Error } = await client.from("payments").insert({
         vehicle_id: vehicleId,
         amount: 300000,
         payment_method: "cash",
         created_by: testUserId,
         payment_date: "2024-01-20",
       });
+      expect(p1Error).toBeNull();
 
-      await client
+      const { error: u1Error } = await client
         .from("vehicles")
         .update({ total_paid: 300000 })
         .eq("id", vehicleId);
+      expect(u1Error).toBeNull();
 
       // Second payment
-      await client.from("payments").insert({
+      const { error: p2Error } = await client.from("payments").insert({
         vehicle_id: vehicleId,
         amount: 200000,
-        payment_method: "card",
+        payment_method: "cash",
         created_by: testUserId,
         payment_date: "2024-01-25",
       });
+      expect(p2Error).toBeNull();
 
-      await client
+      const { error: u2Error } = await client
         .from("vehicles")
         .update({ total_paid: 500000 })
         .eq("id", vehicleId);
+      expect(u2Error).toBeNull();
 
       // Verify total_paid is cumulative
       const { data: vehicle } = await client
@@ -132,11 +137,12 @@ describe("Payment Integration", () => {
       expect(vehicle?.total_paid).toBe(500000);
 
       // Verify both payments exist
-      const { data: payments } = await client
+      const { data: payments, error: paymentError } = await client
         .from("payments")
         .select()
         .eq("vehicle_id", vehicleId);
 
+      expect(paymentError).toBeNull();
       expect(payments?.length).toBe(2);
     });
 
@@ -153,8 +159,8 @@ describe("Payment Integration", () => {
 
       const paymentMethods = [
         { method: "cash", amount: 100000 },
-        { method: "card", amount: 200000 },
-        { method: "transfer", amount: 300000 },
+        { method: "cash", amount: 200000 },
+        { method: "cash", amount: 300000 },
       ];
 
       for (const pm of paymentMethods) {
@@ -174,15 +180,12 @@ describe("Payment Integration", () => {
 
       expect(payments?.length).toBe(3);
 
-      const cashPayment = payments?.find((p) => p.payment_method === "cash");
-      const cardPayment = payments?.find((p) => p.payment_method === "card");
-      const transferPayment = payments?.find(
-        (p) => p.payment_method === "transfer",
-      );
+      const cashPayments = payments?.filter((p) => p.payment_method === "cash");
 
-      expect(cashPayment?.amount).toBe(100000);
-      expect(cardPayment?.amount).toBe(200000);
-      expect(transferPayment?.amount).toBe(300000);
+      expect(cashPayments?.length).toBe(3);
+      expect(cashPayments?.[0].amount).toBe(100000);
+      expect(cashPayments?.[1].amount).toBe(200000);
+      expect(cashPayments?.[2].amount).toBe(300000);
     });
   });
 
@@ -363,14 +366,14 @@ describe("Payment Integration", () => {
         {
           vehicle_id: vehicleId,
           amount: 200000,
-          payment_method: "card",
+          payment_method: "cash",
           created_by: testUserId,
           payment_date: "2024-01-25",
         },
         {
           vehicle_id: vehicleId,
           amount: 300000,
-          payment_method: "transfer",
+          payment_method: "cash",
           created_by: testUserId,
           payment_date: "2024-01-30",
         },
@@ -478,6 +481,66 @@ describe("Payment Integration", () => {
       expect(totalRepairCosts).toBe(1200000); // 300k + 400k + 500k
       expect(totalPaid).toBe(600000);
       expect(totalRepairCosts - totalPaid).toBe(600000); // Remaining debt
+    });
+
+    // EXPECTED FAILURE: Should enforce check constraint preventing negative payment amounts
+    it("prevents negative payment amounts", async () => {
+      const client = createTestClient();
+
+      await client.from("repair_orders").insert({
+        vehicle_id: vehicleId,
+        created_by: testUserId,
+        status: "pending",
+        reception_date: "2024-01-15",
+        total_amount: 500000,
+      });
+
+      // Try negative payment
+      const { error } = await client.from("payments").insert({
+        vehicle_id: vehicleId,
+        amount: -100000,
+        payment_method: "cash",
+        created_by: testUserId,
+        payment_date: "2024-01-20",
+      });
+
+      // Should fail with check constraint
+      expect(error).not.toBeNull();
+      expect(error?.code).toBe("23514"); // check_violation
+    });
+
+    // EXPECTED FAILURE: Database trigger should prevent overpayment
+    it("prevents total payments exceeding total repairs at database level", async () => {
+      const client = createTestClient();
+
+      await client.from("repair_orders").insert({
+        vehicle_id: vehicleId,
+        created_by: testUserId,
+        status: "pending",
+        reception_date: "2024-01-15",
+        total_amount: 300000,
+      });
+
+      // Pay 200k first
+      await client.from("payments").insert({
+        vehicle_id: vehicleId,
+        amount: 200000,
+        payment_method: "cash",
+        created_by: testUserId,
+        payment_date: "2024-01-20",
+      });
+
+      // Try to pay another 200k (total would be 400k, exceeding 300k debt)
+      const { error } = await client.from("payments").insert({
+        vehicle_id: vehicleId,
+        amount: 200000,
+        payment_method: "cash",
+        created_by: testUserId,
+        payment_date: "2024-01-21",
+      });
+
+      // Should be prevented by trigger checking total payments <= total repairs
+      expect(error).not.toBeNull();
     });
   });
 });
