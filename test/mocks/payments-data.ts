@@ -7,7 +7,7 @@ import type { PaymentWithDetails } from "@/types";
 
 export const mockPaymentData: PaymentWithDetails = {
   id: "payment-001",
-  amount: 545.00,
+  amount: 545.0,
   payment_method: "cash",
   payment_date: "2024-12-15",
   created_at: "2024-12-15T10:30:00.000Z",
@@ -18,7 +18,7 @@ export const mockPaymentData: PaymentWithDetails = {
     license_plate: "ABC-123",
     brand: "Toyota",
     customer_id: "customer-001",
-    total_paid: 545.00,
+    total_paid: 545.0,
     created_at: "2024-12-01T08:00:00.000Z",
     customer: {
       id: "customer-001",
@@ -37,7 +37,7 @@ export const mockPaymentData: PaymentWithDetails = {
 
 export const mockPaymentDataCard: PaymentWithDetails = {
   id: "payment-002",
-  amount: 850.50,
+  amount: 850.5,
   payment_method: "card",
   payment_date: "2024-12-16",
   created_at: "2024-12-16T14:15:00.000Z",
@@ -48,7 +48,7 @@ export const mockPaymentDataCard: PaymentWithDetails = {
     license_plate: "XYZ-789",
     brand: "Honda",
     customer_id: "customer-002",
-    total_paid: 850.50,
+    total_paid: 850.5,
     created_at: "2024-12-02T09:00:00.000Z",
     customer: {
       id: "customer-002",
@@ -97,7 +97,7 @@ export const mockPaymentDataTransfer: PaymentWithDetails = {
 
 export const mockPaymentDataNoProfile: PaymentWithDetails = {
   id: "payment-004",
-  amount: 325.00,
+  amount: 325.0,
   payment_method: "cash",
   payment_date: "2024-12-14",
   created_at: "2024-12-14T11:20:00.000Z",
@@ -108,7 +108,7 @@ export const mockPaymentDataNoProfile: PaymentWithDetails = {
     license_plate: "GHI-789",
     brand: "Nissan",
     customer_id: "customer-004",
-    total_paid: 325.00,
+    total_paid: 325.0,
     created_at: "2024-12-04T11:00:00.000Z",
     customer: {
       id: "customer-004",
@@ -161,9 +161,9 @@ export const mockPaymentsArray: PaymentWithDetails[] = [
 ];
 
 export const mockPaymentsArraySortedByDate: PaymentWithDetails[] = [
-  mockPaymentDataTransfer,  // 2024-12-17
-  mockPaymentDataCard,      // 2024-12-16
-  mockPaymentData,          // 2024-12-15
+  mockPaymentDataTransfer, // 2024-12-17
+  mockPaymentDataCard, // 2024-12-16
+  mockPaymentData, // 2024-12-15
   mockPaymentDataNoProfile, // 2024-12-14
   mockPaymentDataMissingInfo, // null date
 ];

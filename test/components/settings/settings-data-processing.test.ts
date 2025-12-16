@@ -1,21 +1,26 @@
 /**
  * Settings Data Processing Tests
- * 
+ *
  * This test suite focuses on testing data processing logic for settings functionality,
  * including employee data validation, system settings processing, and business logic.
  */
 
-import { 
-  mockEmployee, 
-  mockEmployeesArray, 
+import {
+  mockEmployee,
+  mockEmployeesArray,
   mockEmployeesEmptyArray,
-  mockSystemSettingsArray,
-  mockSparePartsArray,
-  mockLaborTypesArray,
+  mockEmptyLaborTypesArray,
   mockEmptySparePartsArray,
-  mockEmptyLaborTypesArray
+  mockLaborTypesArray,
+  mockSparePartsArray,
+  mockSystemSettingsArray,
 } from "@/test/mocks/settings-data";
-import type { Employee, SystemSetting, SparePart, LaborType } from "@/types/settings";
+import type {
+  Employee,
+  LaborType,
+  SparePart,
+  SystemSetting,
+} from "@/types/settings";
 
 describe("Settings Data Processing", () => {
   describe("Employee Data Validation", () => {
@@ -41,7 +46,7 @@ describe("Settings Data Processing", () => {
     it("should handle employees array processing", () => {
       expect(Array.isArray(mockEmployeesArray)).toBeTruthy();
       expect(mockEmployeesArray.length).toBeGreaterThan(0);
-      
+
       mockEmployeesArray.forEach((employee) => {
         expect(employee).toHaveProperty("id");
         expect(employee).toHaveProperty("email");
@@ -56,7 +61,9 @@ describe("Settings Data Processing", () => {
     });
 
     it("should validate employee full name handling", () => {
-      const employeeWithName = mockEmployeesArray.find(emp => emp.full_name !== null);
+      const employeeWithName = mockEmployeesArray.find(
+        (emp) => emp.full_name !== null,
+      );
       expect(employeeWithName).toBeDefined();
       expect(typeof employeeWithName?.full_name).toBe("string");
     });
@@ -69,7 +76,7 @@ describe("Settings Data Processing", () => {
           acc[setting.setting_key] = setting.setting_value;
           return acc;
         },
-        {}
+        {},
       );
 
       expect(settingsMap).toHaveProperty("garage_name");
@@ -80,23 +87,31 @@ describe("Settings Data Processing", () => {
     });
 
     it("should validate numeric settings", () => {
-      const numericSettings = mockSystemSettingsArray.filter(setting => 
-        ["maximum_car_capacity", "max_parts_per_month", "max_labor_types_per_month"].includes(setting.setting_key)
+      const numericSettings = mockSystemSettingsArray.filter((setting) =>
+        [
+          "maximum_car_capacity",
+          "max_parts_per_month",
+          "max_labor_types_per_month",
+        ].includes(setting.setting_key),
       );
 
-      numericSettings.forEach(setting => {
-        const numValue = parseInt(setting.setting_value);
+      numericSettings.forEach((setting) => {
+        const numValue = Number.parseInt(setting.setting_value);
         expect(isNaN(numValue)).toBeFalsy();
         expect(numValue).toBeGreaterThan(0);
       });
     });
 
     it("should validate contact information settings", () => {
-      const phoneRegex = /^\+?\d[\d\s\-\(\)]*$/;
+      const phoneRegex = /^\+?\d[\d\s\-()]*$/;
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      const phoneNumber = mockSystemSettingsArray.find(s => s.setting_key === "phone_number")?.setting_value;
-      const emailAddress = mockSystemSettingsArray.find(s => s.setting_key === "email_address")?.setting_value;
+      const phoneNumber = mockSystemSettingsArray.find(
+        (s) => s.setting_key === "phone_number",
+      )?.setting_value;
+      const emailAddress = mockSystemSettingsArray.find(
+        (s) => s.setting_key === "email_address",
+      )?.setting_value;
 
       if (phoneNumber) {
         expect(phoneRegex.test(phoneNumber)).toBeTruthy();
@@ -107,7 +122,9 @@ describe("Settings Data Processing", () => {
     });
 
     it("should handle garage name processing", () => {
-      const garageName = mockSystemSettingsArray.find(s => s.setting_key === "garage_name")?.setting_value;
+      const garageName = mockSystemSettingsArray.find(
+        (s) => s.setting_key === "garage_name",
+      )?.setting_value;
       expect(garageName).toBeDefined();
       expect(typeof garageName).toBe("string");
       if (garageName) {
@@ -118,7 +135,7 @@ describe("Settings Data Processing", () => {
 
   describe("Spare Parts Data Processing", () => {
     it("should validate spare part data structure", () => {
-      mockSparePartsArray.forEach(part => {
+      mockSparePartsArray.forEach((part) => {
         expect(part).toHaveProperty("id");
         expect(part).toHaveProperty("name");
         expect(part).toHaveProperty("price");
@@ -130,14 +147,14 @@ describe("Settings Data Processing", () => {
     });
 
     it("should validate part pricing", () => {
-      mockSparePartsArray.forEach(part => {
+      mockSparePartsArray.forEach((part) => {
         expect(part.price).toBeGreaterThan(0);
         expect(Number.isFinite(part.price)).toBeTruthy();
       });
     });
 
     it("should handle stock quantity validation", () => {
-      mockSparePartsArray.forEach(part => {
+      mockSparePartsArray.forEach((part) => {
         if (part.stock_quantity !== null) {
           expect(part.stock_quantity).toBeGreaterThanOrEqual(0);
           expect(Number.isInteger(part.stock_quantity)).toBeTruthy();
@@ -151,7 +168,7 @@ describe("Settings Data Processing", () => {
     });
 
     it("should format part names properly", () => {
-      mockSparePartsArray.forEach(part => {
+      mockSparePartsArray.forEach((part) => {
         expect(part.name.trim()).toBe(part.name);
         expect(part.name.length).toBeGreaterThan(0);
       });
@@ -160,7 +177,7 @@ describe("Settings Data Processing", () => {
 
   describe("Labor Types Data Processing", () => {
     it("should validate labor type data structure", () => {
-      mockLaborTypesArray.forEach(laborType => {
+      mockLaborTypesArray.forEach((laborType) => {
         expect(laborType).toHaveProperty("id");
         expect(laborType).toHaveProperty("name");
         expect(laborType).toHaveProperty("cost");
@@ -171,7 +188,7 @@ describe("Settings Data Processing", () => {
     });
 
     it("should validate labor cost pricing", () => {
-      mockLaborTypesArray.forEach(laborType => {
+      mockLaborTypesArray.forEach((laborType) => {
         expect(laborType.cost).toBeGreaterThan(0);
         expect(Number.isFinite(laborType.cost)).toBeTruthy();
       });
@@ -183,30 +200,38 @@ describe("Settings Data Processing", () => {
     });
 
     it("should format labor type names properly", () => {
-      mockLaborTypesArray.forEach(laborType => {
+      mockLaborTypesArray.forEach((laborType) => {
         expect(laborType.name.trim()).toBe(laborType.name);
         expect(laborType.name.length).toBeGreaterThan(0);
       });
     });
 
     it("should sort labor types by cost", () => {
-      const sortedByPrice = [...mockLaborTypesArray].sort((a, b) => a.cost - b.cost);
-      const sortedByCostDesc = [...mockLaborTypesArray].sort((a, b) => b.cost - a.cost);
-      
-      expect(sortedByPrice[0].cost).toBeLessThanOrEqual(sortedByPrice[sortedByPrice.length - 1].cost);
-      expect(sortedByCostDesc[0].cost).toBeGreaterThanOrEqual(sortedByCostDesc[sortedByCostDesc.length - 1].cost);
+      const sortedByPrice = [...mockLaborTypesArray].sort(
+        (a, b) => a.cost - b.cost,
+      );
+      const sortedByCostDesc = [...mockLaborTypesArray].sort(
+        (a, b) => b.cost - a.cost,
+      );
+
+      expect(sortedByPrice[0].cost).toBeLessThanOrEqual(
+        sortedByPrice[sortedByPrice.length - 1].cost,
+      );
+      expect(sortedByCostDesc[0].cost).toBeGreaterThanOrEqual(
+        sortedByCostDesc[sortedByCostDesc.length - 1].cost,
+      );
     });
   });
 
   describe("Data Transformation and Utilities", () => {
     it("should transform employees for display", () => {
-      const transformedEmployees = mockEmployeesArray.map(emp => ({
+      const transformedEmployees = mockEmployeesArray.map((emp) => ({
         ...emp,
         displayName: emp.full_name || emp.email,
         roleDisplay: emp.role.replace("_", " ").toLowerCase(),
       }));
 
-      transformedEmployees.forEach(emp => {
+      transformedEmployees.forEach((emp) => {
         expect(emp.displayName).toBeDefined();
         expect(emp.displayName.length).toBeGreaterThan(0);
         expect(emp.roleDisplay).toBeDefined();
@@ -225,19 +250,21 @@ describe("Settings Data Processing", () => {
 
     it("should filter low stock items", () => {
       const lowStockThreshold = 20;
-      const lowStockItems = mockSparePartsArray.filter(part => 
-        part.stock_quantity !== null && part.stock_quantity < lowStockThreshold
+      const lowStockItems = mockSparePartsArray.filter(
+        (part) =>
+          part.stock_quantity !== null &&
+          part.stock_quantity < lowStockThreshold,
       );
 
-      lowStockItems.forEach(item => {
+      lowStockItems.forEach((item) => {
         expect(item.stock_quantity).toBeLessThan(lowStockThreshold);
       });
     });
 
     it("should validate setting key formats", () => {
       const settingKeyRegex = /^[a-z][a-z0-9_]*[a-z0-9]$/;
-      
-      mockSystemSettingsArray.forEach(setting => {
+
+      mockSystemSettingsArray.forEach((setting) => {
         expect(settingKeyRegex.test(setting.setting_key)).toBeTruthy();
       });
     });

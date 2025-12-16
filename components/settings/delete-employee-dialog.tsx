@@ -1,15 +1,15 @@
 "use client";
 
+import { AlertTriangle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogDescription,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { AlertTriangle } from "lucide-react";
 
 interface DeleteEmployeeDialogProps {
   open: boolean;
@@ -31,7 +31,7 @@ export function DeleteEmployeeDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 bg-destructive/10 rounded-full">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-destructive/10">
               <AlertTriangle className="h-5 w-5 text-destructive" />
             </div>
             <div>
@@ -44,8 +44,8 @@ export function DeleteEmployeeDialog({
           </div>
         </DialogHeader>
 
-        <div className="text-sm text-muted-foreground bg-muted/50 p-4 rounded-lg border">
-          <p className="font-medium text-foreground mb-2">This action will:</p>
+        <div className="rounded-lg border bg-muted/50 p-4 text-muted-foreground text-sm">
+          <p className="mb-2 font-medium text-foreground">This action will:</p>
           <ul className="space-y-1">
             <li>• Permanently delete the employee account</li>
             <li>• Remove all associated data and permissions</li>

@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { createClient } from "@/supabase/client";
-import { RepairOrderWithItemsDetails } from "@/types/types";
+import type { RepairOrderWithItemsDetails } from "@/types/types";
 
 export function useRepairOrderDetails(orderId: string | null) {
   const supabase = createClient();

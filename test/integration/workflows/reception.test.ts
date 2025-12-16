@@ -1,22 +1,22 @@
 /**
  * Reception Workflow Integration Tests
- * 
+ *
  * Tests the complete flow of vehicle reception including:
  * - Customer creation/reuse
  * - Vehicle registration
  * - Repair order creation
  */
 
-import { createTestClient } from '../setup/supabase-test';
-import { cleanupDatabase } from '../fixtures/seed';
-import { createTestUser } from '../fixtures/factories';
+import { createTestUser } from "../fixtures/factories";
+import { cleanupDatabase } from "../fixtures/seed";
+import { createTestClient } from "../setup/supabase-test";
 
-describe('Reception Workflow Integration', () => {
+describe("Reception Workflow Integration", () => {
   let testUserId: string;
 
   beforeEach(async () => {
     await cleanupDatabase();
-    
+
     const user = await createTestUser({
       email: `test-${Date.now()}@test.com`,
       isGarageAdmin: false,
@@ -28,32 +28,32 @@ describe('Reception Workflow Integration', () => {
     await cleanupDatabase();
   });
 
-  describe('Basic Reception Flow', () => {
-    it('creates new customer, vehicle, and repair order', async () => {
+  describe("Basic Reception Flow", () => {
+    it("creates new customer, vehicle, and repair order", async () => {
       const client = createTestClient();
 
       // Create customer
       const { data: customer, error: customerError } = await client
-        .from('customers')
+        .from("customers")
         .insert({
-          name: 'John Doe',
-          phone: '0901234567',
-          address: '123 Test Street',
+          name: "John Doe",
+          phone: "0901234567",
+          address: "123 Test Street",
         })
         .select()
         .single();
 
       expect(customerError).toBeNull();
       expect(customer).toBeDefined();
-      
+
       if (!customer) return;
 
       // Create vehicle
       const { data: vehicle, error: vehicleError } = await client
-        .from('vehicles')
+        .from("vehicles")
         .insert({
-          license_plate: 'ABC-123',
-          brand: 'Toyota',
+          license_plate: "ABC-123",
+          brand: "Toyota",
           customer_id: customer.id,
         })
         .select()
@@ -61,18 +61,18 @@ describe('Reception Workflow Integration', () => {
 
       expect(vehicleError).toBeNull();
       expect(vehicle).toBeDefined();
-      
+
       if (!vehicle) return;
 
       // Create repair order
       const { data: repairOrder, error: repairOrderError } = await client
-        .from('repair_orders')
+        .from("repair_orders")
         .insert({
           vehicle_id: vehicle.id,
           created_by: testUserId,
-          status: 'pending',
-          reception_date: '2024-01-15',
-          notes: 'Oil change needed',
+          status: "pending",
+          reception_date: "2024-01-15",
+          notes: "Oil change needed",
           total_amount: 0,
         })
         .select()
@@ -80,21 +80,21 @@ describe('Reception Workflow Integration', () => {
 
       expect(repairOrderError).toBeNull();
       expect(repairOrder).toBeDefined();
-      
+
       if (!repairOrder) return;
 
       expect(repairOrder.vehicle_id).toBe(vehicle.id);
-      expect(repairOrder.status).toBe('pending');
+      expect(repairOrder.status).toBe("pending");
 
       // Verify relationships
       const { data: vehicleWithRelations } = await client
-        .from('vehicles')
+        .from("vehicles")
         .select(`
           *,
           customer:customers(*),
           repair_orders(*)
         `)
-        .eq('id', vehicle.id)
+        .eq("id", vehicle.id)
         .single();
 
       expect(vehicleWithRelations).toBeDefined();
@@ -102,22 +102,22 @@ describe('Reception Workflow Integration', () => {
       expect(vehicleWithRelations?.repair_orders).toHaveLength(1);
     });
 
-    it('handles minimal required data', async () => {
+    it("handles minimal required data", async () => {
       const client = createTestClient();
 
       const { data: customer } = await client
-        .from('customers')
-        .insert({ name: 'Jane Smith', phone: '0909876543' })
+        .from("customers")
+        .insert({ name: "Jane Smith", phone: "0909876543" })
         .select()
         .single();
 
       if (!customer) return;
 
       const { data: vehicle } = await client
-        .from('vehicles')
+        .from("vehicles")
         .insert({
-          license_plate: 'XYZ-789',
-          brand: 'Honda',
+          license_plate: "XYZ-789",
+          brand: "Honda",
           customer_id: customer.id,
         })
         .select()
@@ -126,12 +126,12 @@ describe('Reception Workflow Integration', () => {
       if (!vehicle) return;
 
       const { data: repairOrder } = await client
-        .from('repair_orders')
+        .from("repair_orders")
         .insert({
           vehicle_id: vehicle.id,
           created_by: testUserId,
-          status: 'pending',
-          reception_date: '2024-01-20',
+          status: "pending",
+          reception_date: "2024-01-20",
           total_amount: 0,
         })
         .select()
@@ -142,15 +142,15 @@ describe('Reception Workflow Integration', () => {
     });
   });
 
-  describe('Customer Reuse Logic', () => {
-    it('reuses existing customer when phone matches', async () => {
+  describe("Customer Reuse Logic", () => {
+    it("reuses existing customer when phone matches", async () => {
       const client = createTestClient();
-      const phone = '0901234567';
+      const phone = "0901234567";
 
       // Create first customer
       const { data: customer1 } = await client
-        .from('customers')
-        .insert({ name: 'Original Customer', phone, address: 'Original' })
+        .from("customers")
+        .insert({ name: "Original Customer", phone, address: "Original" })
         .select()
         .single();
 
@@ -158,9 +158,9 @@ describe('Reception Workflow Integration', () => {
 
       // Check existing customer
       const { data: existing } = await client
-        .from('customers')
-        .select('id')
-        .eq('phone', phone)
+        .from("customers")
+        .select("id")
+        .eq("phone", phone)
         .single();
 
       expect(existing).toBeDefined();
@@ -168,11 +168,11 @@ describe('Reception Workflow Integration', () => {
 
       // Create vehicle for existing customer
       const { data: vehicle } = await client
-        .from('vehicles')
+        .from("vehicles")
         .insert({
-          license_plate: 'NEW-456',
-          brand: 'Honda',
-          customer_id: existing?.id || '',
+          license_plate: "NEW-456",
+          brand: "Honda",
+          customer_id: existing?.id || "",
         })
         .select()
         .single();
@@ -182,19 +182,19 @@ describe('Reception Workflow Integration', () => {
 
       // Verify only one customer
       const { data: allCustomers } = await client
-        .from('customers')
+        .from("customers")
         .select()
-        .eq('phone', phone);
+        .eq("phone", phone);
 
       expect(allCustomers).toHaveLength(1);
     });
 
-    it('allows same customer to have multiple vehicles', async () => {
+    it("allows same customer to have multiple vehicles", async () => {
       const client = createTestClient();
 
       const { data: customer } = await client
-        .from('customers')
-        .insert({ name: 'Multi-Vehicle Owner', phone: '0903333333' })
+        .from("customers")
+        .insert({ name: "Multi-Vehicle Owner", phone: "0903333333" })
         .select()
         .single();
 
@@ -202,10 +202,10 @@ describe('Reception Workflow Integration', () => {
 
       // Create first vehicle
       await client
-        .from('vehicles')
+        .from("vehicles")
         .insert({
-          license_plate: 'CAR-001',
-          brand: 'Toyota',
+          license_plate: "CAR-001",
+          brand: "Toyota",
           customer_id: customer.id,
         })
         .select()
@@ -213,10 +213,10 @@ describe('Reception Workflow Integration', () => {
 
       // Create second vehicle
       await client
-        .from('vehicles')
+        .from("vehicles")
         .insert({
-          license_plate: 'CAR-002',
-          brand: 'Honda',
+          license_plate: "CAR-002",
+          brand: "Honda",
           customer_id: customer.id,
         })
         .select()
@@ -224,81 +224,75 @@ describe('Reception Workflow Integration', () => {
 
       // Verify customer has multiple vehicles
       const { data: vehicles } = await client
-        .from('vehicles')
+        .from("vehicles")
         .select()
-        .eq('customer_id', customer.id);
+        .eq("customer_id", customer.id);
 
       expect(vehicles?.length).toBeGreaterThanOrEqual(2);
     });
   });
 
-  describe('Data Validation', () => {
-    it('validates license plate uniqueness', async () => {
+  describe("Data Validation", () => {
+    it("validates license plate uniqueness", async () => {
       const client = createTestClient();
 
       const { data: customer } = await client
-        .from('customers')
-        .insert({ name: 'Test Customer', phone: '0904444444' })
+        .from("customers")
+        .insert({ name: "Test Customer", phone: "0904444444" })
         .select()
         .single();
 
       if (!customer) return;
 
       // Create first vehicle
-      await client
-        .from('vehicles')
-        .insert({
-          license_plate: 'UNIQUE-123',
-          brand: 'Toyota',
-          customer_id: customer.id,
-        });
+      await client.from("vehicles").insert({
+        license_plate: "UNIQUE-123",
+        brand: "Toyota",
+        customer_id: customer.id,
+      });
 
       // Try duplicate license plate
-      const { error } = await client
-        .from('vehicles')
-        .insert({
-          license_plate: 'UNIQUE-123',
-          brand: 'Honda',
-          customer_id: customer.id,
-        });
+      const { error } = await client.from("vehicles").insert({
+        license_plate: "UNIQUE-123",
+        brand: "Honda",
+        customer_id: customer.id,
+      });
 
       expect(error).toBeDefined();
     });
 
-    it('validates repair order requires valid vehicle', async () => {
+    it("validates repair order requires valid vehicle", async () => {
       const client = createTestClient();
 
-      const { error } = await client
-        .from('repair_orders')
-        .insert({
-          vehicle_id: 'non-existent-id',
-          created_by: testUserId,
-          status: 'pending',
-          reception_date: '2024-01-15',
-          total_amount: 0,
-        });
+      const { error } = await client.from("repair_orders").insert({
+        vehicle_id: "non-existent-id",
+        created_by: testUserId,
+        status: "pending",
+        reception_date: "2024-01-15",
+        total_amount: 0,
+      });
 
       expect(error).toBeDefined();
     });
   });
 
-  describe('Multiple Repair Orders', () => {
-    it('allows multiple repair orders for same vehicle', async () => {
+  describe("Multiple Repair Orders", () => {
+    it("allows multiple repair orders for same vehicle", async () => {
       const client = createTestClient();
 
       const { data: customer } = await client
-        .from('customers')
-        .insert({ name: 'Repeat Customer', phone: '0906666666' })
+        .from("customers")
+        .insert({ name: "Repeat Customer", phone: "0906666666" })
         .select()
         .single();
 
       if (!customer) return;
 
       const { data: vehicle } = await client
-        .from('vehicles')
+        .from("vehicles")
         .insert({
-          license_plate: 'REPEAT-001',
-          brand: 'Toyota',
+          license_plate: "REPEAT-001",
+          brand: "Toyota",
           customer_id: customer.id,
         })
         .select()
@@ -307,34 +301,94 @@ describe('Reception Workflow Integration', () => {
       if (!vehicle) return;
 
       // Create first order
-      await client
-        .from('repair_orders')
-        .insert({
-          vehicle_id: vehicle.id,
-          created_by: testUserId,
-          status: 'completed',
-          reception_date: '2024-01-01',
-          total_amount: 100000,
-        });
+      await client.from("repair_orders").insert({
+        vehicle_id: vehicle.id,
+        created_by: testUserId,
+        status: "completed",
+        reception_date: "2024-01-01",
+        total_amount: 100000,
+      });
 
       // Create second order
-      await client
-        .from('repair_orders')
-        .insert({
-          vehicle_id: vehicle.id,
-          created_by: testUserId,
-          status: 'pending',
-          reception_date: '2024-01-15',
-          total_amount: 0,
-        });
+      await client.from("repair_orders").insert({
+        vehicle_id: vehicle.id,
+        created_by: testUserId,
+        status: "pending",
+        reception_date: "2024-01-15",
+        total_amount: 0,
+      });
 
       // Verify multiple orders
       const { data: orders } = await client
-        .from('repair_orders')
+        .from("repair_orders")
         .select()
-        .eq('vehicle_id', vehicle.id);
+        .eq("vehicle_id", vehicle.id);
 
       expect(orders?.length).toBeGreaterThanOrEqual(2);
+    });
+
+    // EXPECTED FAILURE: Missing daily vehicle limit enforcement at database level
+    it("enforces daily vehicle reception limit", async () => {
+      const client = createTestClient();
+      const today = new Date().toISOString().split("T")[0];
+
+      // Get the garage's daily limit (assuming default is 10)
+      const { data: settings } = await client
+        .from("system_settings")
+        .select("daily_vehicle_limit")
+        .single();
+
+      const limit = settings?.daily_vehicle_limit ?? 10;
+
+      // Create vehicles up to the limit
+      for (let i = 0; i < limit; i++) {
+        const { data: customer } = await client
+          .from("customers")
+          .insert({ name: `Customer ${i}`, phone: `090${i}000000` })
+          .select()
+          .single();
+
+        if (!customer) continue;
+
+        await client.from("vehicles").insert({
+          license_plate: `TEST-${i}`,
+          brand: "Toyota",
+          customer_id: customer.id,
+        });
+      }
+
+      // Try to create one more vehicle beyond the limit
+      const { data: extraCustomer } = await client
+        .from("customers")
+        .insert({ name: "Extra Customer", phone: "0909999999" })
+        .select()
+        .single();
+
+      if (!extraCustomer) return;
+
+      const { error } = await client.from("vehicles").insert({
+        license_plate: "EXTRA-001",
+        brand: "Honda",
+        customer_id: extraCustomer.id,
+      });
+
+      // Should fail with a check constraint or trigger
+      expect(error).not.toBeNull();
+      expect(error?.message).toMatch(/daily.*limit|exceeded/i);
+    });
+
+    // EXPECTED FAILURE: Missing validation for phone number format
+    it("validates customer phone number format", async () => {
+      const client = createTestClient();
+
+      const { error } = await client.from("customers").insert({
+        name: "Invalid Phone Customer",
+        phone: "invalid-phone", // Should only allow Vietnamese phone format
+      });
+
+      // Should fail with check constraint for phone format (09xx or 03xx, 10 digits)
+      expect(error).not.toBeNull();
+      expect(error?.code).toBe("23514"); // check_violation
     });
   });
 });

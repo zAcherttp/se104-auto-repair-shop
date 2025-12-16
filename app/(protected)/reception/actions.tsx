@@ -1,5 +1,8 @@
 "use client";
 
+import { Edit, MoreHorizontal } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { UpdateDialog } from "@/components/dialogs/update-repair-order";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -7,11 +10,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Edit } from "lucide-react";
-import { VehicleRegistration } from "./columns";
-import { UpdateDialog } from "@/components/dialogs/update-repair-order";
-import { useTranslations } from "next-intl";
 import { Label } from "@/components/ui/label";
+import type { VehicleRegistration } from "./columns";
 
 interface ActionsProps {
   vehicleRegistration: VehicleRegistration;

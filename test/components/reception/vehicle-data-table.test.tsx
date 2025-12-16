@@ -12,7 +12,9 @@ jest.mock("@/app/actions/vehicles", () => ({
 import { createReception } from "@/app/actions/vehicles";
 import { VehicleReceptionFormSchema } from "@/lib/form/definitions";
 
-const mockCreateReception = createReception as jest.MockedFunction<typeof createReception>;
+const mockCreateReception = createReception as jest.MockedFunction<
+  typeof createReception
+>;
 const mockVehicleReceptionFormSchema = VehicleReceptionFormSchema as any;
 
 describe("Reception Form Data Processing", () => {
@@ -28,7 +30,7 @@ describe("Reception Form Data Processing", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    
+
     // Mock successful validation by default
     mockVehicleReceptionFormSchema.safeParse.mockReturnValue({
       success: true,
@@ -45,10 +47,12 @@ describe("Reception Form Data Processing", () => {
   describe("Form Data Validation", () => {
     it("validates complete form data successfully", () => {
       const result = mockVehicleReceptionFormSchema.safeParse(validFormData);
-      
+
       expect(result.success).toBe(true);
       expect(result.data).toEqual(validFormData);
-      expect(mockVehicleReceptionFormSchema.safeParse).toHaveBeenCalledWith(validFormData);
+      expect(mockVehicleReceptionFormSchema.safeParse).toHaveBeenCalledWith(
+        validFormData,
+      );
     });
 
     it("rejects empty customer name", () => {
@@ -56,18 +60,22 @@ describe("Reception Form Data Processing", () => {
 
       mockVehicleReceptionFormSchema.safeParse.mockReturnValue({
         success: false,
-        error: { 
-          issues: [{ 
-            path: ["customerName"], 
-            message: "Customer name must be at least 2 characters" 
-          }] 
+        error: {
+          issues: [
+            {
+              path: ["customerName"],
+              message: "Customer name must be at least 2 characters",
+            },
+          ],
         },
       });
 
       const result = mockVehicleReceptionFormSchema.safeParse(invalidData);
-      
+
       expect(result.success).toBe(false);
-      expect(result.error.issues[0].message).toBe("Customer name must be at least 2 characters");
+      expect(result.error.issues[0].message).toBe(
+        "Customer name must be at least 2 characters",
+      );
     });
 
     it("rejects invalid phone number", () => {
@@ -75,18 +83,22 @@ describe("Reception Form Data Processing", () => {
 
       mockVehicleReceptionFormSchema.safeParse.mockReturnValue({
         success: false,
-        error: { 
-          issues: [{ 
-            path: ["phoneNumber"], 
-            message: "Phone number must be at least 10 digits" 
-          }] 
+        error: {
+          issues: [
+            {
+              path: ["phoneNumber"],
+              message: "Phone number must be at least 10 digits",
+            },
+          ],
         },
       });
 
       const result = mockVehicleReceptionFormSchema.safeParse(invalidData);
-      
+
       expect(result.success).toBe(false);
-      expect(result.error.issues[0].message).toBe("Phone number must be at least 10 digits");
+      expect(result.error.issues[0].message).toBe(
+        "Phone number must be at least 10 digits",
+      );
     });
 
     it("rejects empty license plate", () => {
@@ -94,16 +106,18 @@ describe("Reception Form Data Processing", () => {
 
       mockVehicleReceptionFormSchema.safeParse.mockReturnValue({
         success: false,
-        error: { 
-          issues: [{ 
-            path: ["licensePlate"], 
-            message: "License plate is required" 
-          }] 
+        error: {
+          issues: [
+            {
+              path: ["licensePlate"],
+              message: "License plate is required",
+            },
+          ],
         },
       });
 
       const result = mockVehicleReceptionFormSchema.safeParse(invalidData);
-      
+
       expect(result.success).toBe(false);
       expect(result.error.issues[0].message).toBe("License plate is required");
     });
@@ -113,16 +127,18 @@ describe("Reception Form Data Processing", () => {
 
       mockVehicleReceptionFormSchema.safeParse.mockReturnValue({
         success: false,
-        error: { 
-          issues: [{ 
-            path: ["carBrand"], 
-            message: "Please select a car brand" 
-          }] 
+        error: {
+          issues: [
+            {
+              path: ["carBrand"],
+              message: "Please select a car brand",
+            },
+          ],
         },
       });
 
       const result = mockVehicleReceptionFormSchema.safeParse(invalidData);
-      
+
       expect(result.success).toBe(false);
       expect(result.error.issues[0].message).toBe("Please select a car brand");
     });
@@ -142,7 +158,7 @@ describe("Reception Form Data Processing", () => {
       });
 
       const result = mockVehicleReceptionFormSchema.safeParse(minimalData);
-      
+
       expect(result.success).toBe(true);
       expect(result.data).toEqual(minimalData);
     });
@@ -159,8 +175,9 @@ describe("Reception Form Data Processing", () => {
         data: dataWithOptionals,
       });
 
-      const result = mockVehicleReceptionFormSchema.safeParse(dataWithOptionals);
-      
+      const result =
+        mockVehicleReceptionFormSchema.safeParse(dataWithOptionals);
+
       expect(result.success).toBe(true);
       expect(result.data).toEqual(dataWithOptionals);
     });
@@ -225,7 +242,9 @@ describe("Reception Form Data Processing", () => {
       const result = await mockCreateReception(validFormData);
 
       expect(result.error).toBeTruthy();
-      expect(result.error?.message).toBe("Daily vehicle reception limit exceeded");
+      expect(result.error?.message).toBe(
+        "Daily vehicle reception limit exceeded",
+      );
     });
   });
 
@@ -240,7 +259,7 @@ describe("Reception Form Data Processing", () => {
       });
 
       const result = mockVehicleReceptionFormSchema.safeParse(inputData);
-      
+
       expect(result.success).toBe(true);
       expect(result.data?.licensePlate).toBe("ABC123");
     });
@@ -259,17 +278,17 @@ describe("Reception Form Data Processing", () => {
       });
 
       const result = mockVehicleReceptionFormSchema.safeParse(specialCharData);
-      
+
       expect(result.success).toBe(true);
       expect(result.data).toEqual(specialCharData);
     });
 
     it("validates phone number format", () => {
       const validPhoneNumbers = ["1234567890", "12345678901", "123456789012"];
-      
-      validPhoneNumbers.forEach(phone => {
+
+      validPhoneNumbers.forEach((phone) => {
         const data = { ...validFormData, phoneNumber: phone };
-        
+
         mockVehicleReceptionFormSchema.safeParse.mockReturnValue({
           success: true,
           data: data,
@@ -282,17 +301,19 @@ describe("Reception Form Data Processing", () => {
 
     it("rejects invalid phone number formats", () => {
       const invalidPhoneNumbers = ["123", "abcd123456", "123-456-7890"];
-      
-      invalidPhoneNumbers.forEach(phone => {
+
+      invalidPhoneNumbers.forEach((phone) => {
         const data = { ...validFormData, phoneNumber: phone };
-        
+
         mockVehicleReceptionFormSchema.safeParse.mockReturnValue({
           success: false,
-          error: { 
-            issues: [{ 
-              path: ["phoneNumber"], 
-              message: "Phone number must contain only numbers" 
-            }] 
+          error: {
+            issues: [
+              {
+                path: ["phoneNumber"],
+                message: "Phone number must contain only numbers",
+              },
+            ],
           },
         });
 
@@ -304,7 +325,7 @@ describe("Reception Form Data Processing", () => {
     it("handles date validation", () => {
       const futureDate = new Date();
       futureDate.setDate(futureDate.getDate() + 7);
-      
+
       const dataWithFutureDate = {
         ...validFormData,
         receptionDate: futureDate,
@@ -315,8 +336,9 @@ describe("Reception Form Data Processing", () => {
         data: dataWithFutureDate,
       });
 
-      const result = mockVehicleReceptionFormSchema.safeParse(dataWithFutureDate);
-      
+      const result =
+        mockVehicleReceptionFormSchema.safeParse(dataWithFutureDate);
+
       expect(result.success).toBe(true);
       expect(result.data?.receptionDate).toEqual(futureDate);
     });
@@ -345,7 +367,7 @@ describe("Reception Form Data Processing", () => {
       });
 
       const result = mockVehicleReceptionFormSchema.safeParse(invalidData);
-      
+
       expect(result.success).toBe(false);
       expect(result.error.issues).toHaveLength(4);
     });
@@ -356,8 +378,9 @@ describe("Reception Form Data Processing", () => {
         error: { issues: [{ message: "Validation failed" }] },
       });
 
-      const validationResult = mockVehicleReceptionFormSchema.safeParse(validFormData);
-      
+      const validationResult =
+        mockVehicleReceptionFormSchema.safeParse(validFormData);
+
       // If validation fails, form should not submit
       if (!validationResult.success) {
         expect(mockCreateReception).not.toHaveBeenCalled();

@@ -1,18 +1,17 @@
 "use client";
 
+import { Search } from "lucide-react";
+import { useState } from "react";
+import type { DateRange } from "react-day-picker";
 import DateRangePicker from "@/components/date-range-picker";
 import { KanbanBoard } from "@/components/tasks/kanban-board";
 import { CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import {
   useRepairOrders,
   useUpdateRepairOrderStatus,
 } from "@/hooks/use-repair-orders";
-import { useState } from "react";
-import { DateRange } from "react-day-picker";
-
-import { RepairOrderStatus } from "@/types/types";
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import type { RepairOrderStatus } from "@/types/types";
 
 export default function Page() {
   // Default to current day
@@ -47,7 +46,7 @@ export default function Page() {
 
   const handleStatusChange = async (
     orderId: string,
-    newStatus: RepairOrderStatus
+    newStatus: RepairOrderStatus,
   ) => {
     // Find the current order to get its original status
     const orderToUpdate = orders.find((order) => order.id === orderId);
@@ -69,7 +68,7 @@ export default function Page() {
       <div className="flex items-center justify-between pb-4">
         <div className="flex items-center space-x-2">
           <div className="relative w-80">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute top-2.5 left-2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search tasks..."
               value={searchFilter}

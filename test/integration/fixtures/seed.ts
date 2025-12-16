@@ -1,10 +1,10 @@
 /**
  * Test Database Seeding and Cleanup Utilities
- * 
+ *
  * Provides functions to seed deterministic test data and cleanup between tests
  */
 
-import { createTestClient } from '../setup/supabase-test';
+import { createTestClient } from "../setup/supabase-test";
 
 /**
  * Cleans all test data from the database
@@ -14,31 +14,58 @@ export async function cleanupDatabase() {
   const client = createTestClient();
 
   try {
-    // Delete in reverse order to respect foreign keys
-    // Use explicit queries for each table to maintain type safety
-    await client.from('payments').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-    await client.from('repair_order_items').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-    await client.from('repair_orders').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-    await client.from('vehicles').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-    await client.from('customers').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-    await client.from('spare_parts').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-    await client.from('labor_types').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-    await client.from('profiles').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-
-    // Delete test users from auth.users
-    // Note: This requires service role permissions
+    // First, delete test users from auth.users (this will cascade delete profiles)
+    // This must be done FIRST to avoid foreign key constraints
     const { data: users } = await client.auth.admin.listUsers();
-    
+
     if (users?.users) {
       for (const user of users.users) {
         // Only delete users with test email pattern
-        if (user.email?.includes('test-') || user.email?.includes('@test.com')) {
-          await client.auth.admin.deleteUser(user.id);
+        if (
+          user.email?.includes("test-") ||
+          user.email?.includes("@test.com")
+        ) {
+          try {
+            await client.auth.admin.deleteUser(user.id);
+          } catch (error) {
+            // Ignore errors if user already deleted
+            console.debug(`Error deleting user ${user.id}: ${error}`);
+          }
         }
       }
     }
+
+    // Small delay to allow deletions to propagate
+    await new Promise((resolve) => setTimeout(resolve, 200));
+
+    // Then delete data tables in reverse order to respect foreign keys
+    const tables = [
+      "payments",
+      "repair_order_items",
+      "repair_orders",
+      "vehicles",
+      "customers",
+      "spare_parts",
+      "labor_types",
+      "profiles",
+    ];
+
+    for (const table of tables) {
+      try {
+        await client
+          .from(table)
+          .delete()
+          .neq("id", "00000000-0000-0000-0000-000000000000");
+      } catch (error) {
+        // Log but don't fail - table might be empty or have constraints
+        console.debug(`Error deleting from ${table}: ${error}`);
+      }
+    }
+
+    // Final delay to ensure all deletions are complete
+    await new Promise((resolve) => setTimeout(resolve, 100));
   } catch (error) {
-    console.error('Error during database cleanup:', error);
+    console.error("Error during database cleanup:", error);
     throw error;
   }
 }
@@ -52,38 +79,38 @@ export async function seedTestDatabase() {
 
   try {
     // Seed base spare parts for inventory tests
-    await client.from('spare_parts').insert([
+    await client.from("spare_parts").insert([
       {
-        id: 'test-part-1',
-        name: 'Test Engine Oil',
+        id: "test-part-1",
+        name: "Test Engine Oil",
         price: 100000,
         stock_quantity: 50,
       },
       {
-        id: 'test-part-2',
-        name: 'Test Brake Pad',
+        id: "test-part-2",
+        name: "Test Brake Pad",
         price: 200000,
         stock_quantity: 30,
       },
     ]);
 
     // Seed base labor types
-    await client.from('labor_types').insert([
+    await client.from("labor_types").insert([
       {
-        id: 'test-labor-1',
-        name: 'Test Oil Change',
+        id: "test-labor-1",
+        name: "Test Oil Change",
         cost: 50000,
       },
       {
-        id: 'test-labor-2',
-        name: 'Test Brake Service',
+        id: "test-labor-2",
+        name: "Test Brake Service",
         cost: 100000,
       },
     ]);
 
-    console.log('Database seeded successfully');
+    console.log("Database seeded successfully");
   } catch (error) {
-    console.error('Error seeding database:', error);
+    console.error("Error seeding database:", error);
     throw error;
   }
 }
@@ -95,7 +122,7 @@ export async function seedTestDatabase() {
 export async function setupTestDatabase() {
   await cleanupDatabase();
   await seedTestDatabase();
-  
+
   return async () => {
     await cleanupDatabase();
   };

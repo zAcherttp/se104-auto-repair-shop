@@ -1,10 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { LineItem } from "../components/dialogs/update-repair-order/columns";
-import { useSparePartsAndLaborTypes } from "./use-spare-parts-labor-types";
-import { fetchExistingRepairOrderItems } from "@/app/actions/vehicles";
 import { toast } from "sonner";
+import { fetchExistingRepairOrderItems } from "@/app/actions/vehicles";
+import type { LineItem } from "../components/dialogs/update-repair-order/columns";
+import { useSparePartsAndLaborTypes } from "./use-spare-parts-labor-types";
 
 interface UseLineItemsOptions {
   repairOrderId?: string;
@@ -29,9 +29,8 @@ export function useLineItems(options: UseLineItemsOptions = {}) {
 
     setIsLoadingItems(true);
     try {
-      const { items, error } = await fetchExistingRepairOrderItems(
-        repairOrderId,
-      );
+      const { items, error } =
+        await fetchExistingRepairOrderItems(repairOrderId);
 
       if (error) {
         toast.error(error);
@@ -114,14 +113,15 @@ export function useLineItems(options: UseLineItemsOptions = {}) {
               columnId === "unitPrice" ||
               columnId === "laborCost"
             ) {
-              updatedRow.total = updatedRow.quantity * updatedRow.unitPrice +
+              updatedRow.total =
+                updatedRow.quantity * updatedRow.unitPrice +
                 updatedRow.laborCost;
             }
 
             return updatedRow;
           }
           return row;
-        })
+        }),
       );
     },
     [],
@@ -135,7 +135,7 @@ export function useLineItems(options: UseLineItemsOptions = {}) {
             return originalItems[index] || row;
           }
           return row;
-        })
+        }),
       );
     },
     [originalItems],
@@ -146,8 +146,9 @@ export function useLineItems(options: UseLineItemsOptions = {}) {
       const rowToRemove = lineItems[rowIndex];
 
       // If it's an existing item (not a temp item), track it for deletion
-      if (rowToRemove.id && !rowToRemove.id.startsWith("temp-")) {
-        setDeletedItemIds((prev) => [...prev, rowToRemove.id!]);
+      if (rowToRemove?.id && !rowToRemove.id.startsWith("temp-")) {
+        const itemId = rowToRemove.id;
+        setDeletedItemIds((prev) => [...prev, itemId]);
       }
 
       // Remove from current items

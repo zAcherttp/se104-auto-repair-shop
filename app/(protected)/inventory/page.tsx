@@ -1,9 +1,9 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+import { useInventoryWithEndingStock } from "@/hooks/use-inventory-with-ending-stock";
 import { createColumns } from "./columns";
 import { InventoryDataTable } from "./data-table";
-import { useInventoryWithEndingStock } from "@/hooks/use-inventory-with-ending-stock";
-import { useTranslations } from "next-intl";
 
 export default function Page() {
   const t = useTranslations("inventory");

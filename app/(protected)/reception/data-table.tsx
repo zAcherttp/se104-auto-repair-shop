@@ -1,34 +1,15 @@
 "use client";
 
-import * as React from "react";
 import {
-  ColumnDef,
+  type ColumnDef,
   flexRender,
-  SortingState,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  type SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -37,12 +18,30 @@ import {
   Plus,
   Search,
 } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import DateRangePicker from "@/components/date-range-picker";
-import { DateRange } from "react-day-picker";
-import { Badge } from "@/components/ui/badge";
-import { useDailyVehicleLimit } from "@/hooks/use-daily-vehicle-limit";
 import { useTranslations } from "next-intl";
+import * as React from "react";
+import type { DateRange } from "react-day-picker";
+import DateRangePicker from "@/components/date-range-picker";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { useDailyVehicleLimit } from "@/hooks/use-daily-vehicle-limit";
 
 interface TasksDataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -92,12 +91,12 @@ export function VehicleDataTable<TData, TValue>({
       <div className="flex items-center justify-between pb-4">
         <div className="flex items-center gap-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Search className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transform text-gray-400" />
             <Input
               placeholder={t("searchPlaceholder")}
               value={table.getState().globalFilter ?? ""}
               onChange={(e) => table.setGlobalFilter(String(e.target.value))}
-              className="pl-10 w-80"
+              className="w-80 pl-10"
             />
           </div>
 
@@ -108,10 +107,10 @@ export function VehicleDataTable<TData, TValue>({
                 vehicleLimit.isAtLimit
                   ? "destructive"
                   : vehicleLimit.isNearLimit
-                  ? "secondary"
-                  : "outline"
+                    ? "secondary"
+                    : "outline"
               }
-              className="px-3 py-1 text-sm font-medium h-9 flex items-center"
+              className="flex h-9 items-center px-3 py-1 font-medium text-sm"
             >
               {t("daily")}: {vehicleLimit.currentCount}/
               {vehicleLimit.maxCapacity || "∞"}
@@ -133,7 +132,7 @@ export function VehicleDataTable<TData, TValue>({
             className="bg-blue-600 hover:bg-blue-700"
             onClick={onNewReception}
           >
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="mr-2 h-4 w-4" />
             {t("newReception")}
           </Button>
         </div>
@@ -151,7 +150,7 @@ export function VehicleDataTable<TData, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -161,15 +160,13 @@ export function VehicleDataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <>
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <TableRow key={index}>
-                    <TableCell colSpan={columns.length} className="h-12">
-                      <div className="animate-pulse bg-gray-200/30 h-full rounded"></div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </>
+              Array.from({ length: 5 }).map((_, index) => (
+                <TableRow key={index.toString()}>
+                  <TableCell colSpan={columns.length} className="h-12">
+                    <div className="h-full animate-pulse rounded bg-gray-200/30" />
+                  </TableCell>
+                </TableRow>
+              ))
             ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
@@ -180,7 +177,7 @@ export function VehicleDataTable<TData, TValue>({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -201,7 +198,7 @@ export function VehicleDataTable<TData, TValue>({
       </div>
 
       <div className="flex items-center justify-between px-4 pt-4">
-        <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
+        <div className="hidden flex-1 text-muted-foreground text-sm lg:flex">
           {table.getFilteredRowModel().rows.length} {t("ordersInDateRange")}
           {dateRange?.from && dateRange?.to && (
             <Label className="ml-1">{t("inSelectedDateRange")}</Label>
@@ -210,7 +207,7 @@ export function VehicleDataTable<TData, TValue>({
         </div>
         <div className="flex w-full items-center gap-8 lg:w-fit">
           <div className="hidden items-center gap-2 lg:flex">
-            <Label htmlFor="rows-per-page" className="text-sm font-medium">
+            <Label htmlFor="rows-per-page" className="font-medium text-sm">
               {t("rowsPerPage")}
             </Label>
             <Select
@@ -233,7 +230,7 @@ export function VehicleDataTable<TData, TValue>({
               </SelectContent>
             </Select>
           </div>
-          <div className="flex w-fit items-center justify-center text-sm font-medium">
+          <div className="flex w-fit items-center justify-center font-medium text-sm">
             {t("page")} {table.getState().pagination.pageIndex + 1} {t("of")}{" "}
             {table.getPageCount()}
           </div>

@@ -1,10 +1,10 @@
 "use client";
 
-import { DateRange } from "react-day-picker";
+import { useTranslations } from "next-intl";
+import type { DateRange } from "react-day-picker";
+import { usePayments } from "@/hooks/use-payments";
 import { createColumns } from "./columns";
 import { PaymentsDataTable } from "./data-table";
-import { usePayments } from "@/hooks/use-payments";
-import { useTranslations } from "next-intl";
 
 export default function Page() {
   const t = useTranslations("payments");

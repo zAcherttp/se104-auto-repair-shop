@@ -1,15 +1,14 @@
 "use client";
 
+import type { ColumnDef } from "@tanstack/react-table";
 import React from "react";
-import { ColumnDef } from "@tanstack/react-table";
 import { Actions } from "./actions";
-import { TableCell } from "./table-cell";
 import { EditCell } from "./edit-cell";
 import { RowActions } from "./row-actions";
+import { TableCell } from "./table-cell";
 
 // Extend the TableMeta interface for our specific needs
 declare module "@tanstack/react-table" {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface TableMeta<TData> {
     editedRows?: Record<number, boolean>;
     setEditedRows?: React.Dispatch<
@@ -65,7 +64,7 @@ const MemoizedActions = React.memo(Actions);
 const MemoizedRowActions = React.memo(RowActions);
 
 export const createLineItemColumns = (
-  t: (key: string) => string
+  t: (key: string) => string,
 ): ColumnDef<LineItem>[] => {
   const { UnitPriceHeader, LaborCostHeader, TotalHeader } =
     createStableHeaders(t);

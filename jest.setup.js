@@ -1,74 +1,75 @@
 import "@testing-library/jest-dom";
-import React from "react";
 
 // Polyfills for Node.js environment
-import { TextEncoder, TextDecoder } from "util";
+import { TextDecoder, TextEncoder } from "node:util";
+import React from "react";
+
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
 // Mock server actions to prevent Next.js server imports in test environment
 jest.mock("@/app/actions/vehicles", () =>
-  require("./test/mocks/server-actions")
+  require("./test/mocks/server-actions"),
 );
 jest.mock("@/app/actions/settings", () =>
-  require("./test/mocks/server-actions")
+  require("./test/mocks/server-actions"),
 );
 jest.mock("@/app/actions/reports", () =>
-  require("./test/mocks/server-actions")
+  require("./test/mocks/server-actions"),
 );
 jest.mock("@/app/actions/inventory", () =>
-  require("./test/mocks/server-actions")
+  require("./test/mocks/server-actions"),
 );
 jest.mock("@/app/actions/tasks", () => require("./test/mocks/server-actions"));
 jest.mock("@/app/actions/login", () => require("./test/mocks/server-actions"));
 
 // Mock UI components to use our test mocks
 jest.mock("@/components/ui/dialog", () =>
-  require("./test/mocks/ui-components.tsx")
+  require("./test/mocks/ui-components.tsx"),
 );
 jest.mock("@/components/ui/button", () =>
-  require("./test/mocks/ui-components.tsx")
+  require("./test/mocks/ui-components.tsx"),
 );
 jest.mock("@/components/ui/input", () =>
-  require("./test/mocks/ui-components.tsx")
+  require("./test/mocks/ui-components.tsx"),
 );
 jest.mock("@/components/ui/textarea", () =>
-  require("./test/mocks/ui-components.tsx")
+  require("./test/mocks/ui-components.tsx"),
 );
 jest.mock("@/components/ui/label", () =>
-  require("./test/mocks/ui-components.tsx")
+  require("./test/mocks/ui-components.tsx"),
 );
 jest.mock("@/components/ui/calendar", () =>
-  require("./test/mocks/ui-components.tsx")
+  require("./test/mocks/ui-components.tsx"),
 );
 jest.mock("@/components/ui/command", () =>
-  require("./test/mocks/ui-components.tsx")
+  require("./test/mocks/ui-components.tsx"),
 );
 jest.mock("@/components/ui/popover", () =>
-  require("./test/mocks/ui-components.tsx")
+  require("./test/mocks/ui-components.tsx"),
 );
 jest.mock("@/components/ui/form", () =>
-  require("./test/mocks/ui-components.tsx")
+  require("./test/mocks/ui-components.tsx"),
 );
 jest.mock("@/components/ui/alert", () =>
-  require("./test/mocks/ui-components.tsx")
+  require("./test/mocks/ui-components.tsx"),
 );
 jest.mock("@/components/ui/dropdown-menu", () =>
-  require("./test/mocks/ui-components")
+  require("./test/mocks/ui-components"),
 );
 jest.mock("@/components/ui/data-table-column-header", () =>
-  require("./test/mocks/ui-components")
+  require("./test/mocks/ui-components"),
 );
 jest.mock("@/components/ui/badge", () => require("./test/mocks/ui-components"));
 jest.mock("@/components/ui/table", () => require("./test/mocks/ui-components"));
 jest.mock("@/components/ui/select", () =>
-  require("./test/mocks/ui-components")
+  require("./test/mocks/ui-components"),
 );
 jest.mock("@/components/ui/scroll-area", () =>
-  require("./test/mocks/ui-components")
+  require("./test/mocks/ui-components"),
 );
 jest.mock("@/components/ui/card", () =>
-  require("./test/mocks/ui-components.tsx")
+  require("./test/mocks/ui-components.tsx"),
 );
 
 // Mock Lucide React icons
@@ -77,7 +78,7 @@ jest.mock("lucide-react", () => require("./test/mocks/ui-components"));
 // Mock Radix UI primitives
 jest.mock("@radix-ui/react-slot", () => require("./test/mocks/ui-components"));
 jest.mock("@radix-ui/react-scroll-area", () =>
-  require("./test/mocks/ui-components")
+  require("./test/mocks/ui-components"),
 );
 
 // Mock complex components that might have deep dependencies

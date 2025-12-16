@@ -1,6 +1,7 @@
 "use client";
 
-import { InventoryReport } from "@/types/reports";
+import { useTranslations } from "next-intl";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -9,8 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useTranslations } from "next-intl";
+import type { InventoryReport } from "@/types/reports";
 import { Label } from "../ui/label";
 
 interface InventoryTableProps {
@@ -22,7 +22,7 @@ export function InventoryTable({ data }: InventoryTableProps) {
 
   if (!data?.inventory?.length) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
+      <div className="py-8 text-center text-muted-foreground">
         {t("noData")}
       </div>
     );
@@ -32,7 +32,7 @@ export function InventoryTable({ data }: InventoryTableProps) {
     <Card>
       <CardHeader>
         <CardTitle className="text-center">
-          <Label className="text-lg font-bold">
+          <Label className="font-bold text-lg">
             Inventory Status Report: {data.month}
           </Label>
         </CardTitle>
@@ -41,19 +41,19 @@ export function InventoryTable({ data }: InventoryTableProps) {
         <Table>
           <TableHeader>
             <TableRow className="bg-muted">
-              <TableHead className="text-center font-bold border">
+              <TableHead className="border text-center font-bold">
                 {t("columns.no")}
               </TableHead>
-              <TableHead className="text-center font-bold border">
+              <TableHead className="border text-center font-bold">
                 {t("columns.partName")}
               </TableHead>
-              <TableHead className="text-center font-bold border">
+              <TableHead className="border text-center font-bold">
                 {t("columns.beginningStock")}
               </TableHead>
-              <TableHead className="text-center font-bold border">
+              <TableHead className="border text-center font-bold">
                 {t("columns.usedQuantity")}
               </TableHead>
-              <TableHead className="text-center font-bold border">
+              <TableHead className="border text-center font-bold">
                 {t("columns.endingStock")}
               </TableHead>
             </TableRow>
@@ -61,19 +61,19 @@ export function InventoryTable({ data }: InventoryTableProps) {
           <TableBody>
             {data.inventory.map((item) => (
               <TableRow key={item.stt} className="border-b hover:bg-muted/50">
-                <TableCell className="text-center border font-medium">
+                <TableCell className="border text-center font-medium">
                   {item.stt}
                 </TableCell>
                 <TableCell className="border font-medium">
                   {item.partName}
                 </TableCell>
-                <TableCell className="text-center border">
+                <TableCell className="border text-center">
                   {item.beginStock.toLocaleString()}
                 </TableCell>
-                <TableCell className="text-center border">
+                <TableCell className="border text-center">
                   {item.purchased.toLocaleString()}
                 </TableCell>
-                <TableCell className="text-center border">
+                <TableCell className="border text-center">
                   {item.endStock.toLocaleString()}
                 </TableCell>
               </TableRow>

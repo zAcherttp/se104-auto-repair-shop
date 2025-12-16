@@ -1,26 +1,26 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
+import React, { useEffect, useState } from "react";
+import CurrencyInput from "react-currency-input-field";
+import { toast } from "sonner";
+import { handleVehiclePayment } from "@/app/actions/vehicles";
+import SubmitButton from "@/components/submit-button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { getPaymentImageURL } from "@/lib/utils";
-import ZoomableImage from "../zoomable-image";
-import { VehicleDialogProps } from "@/types/dialog";
-import SubmitButton from "@/components/submit-button";
-import { toast } from "sonner";
-import { handleVehiclePayment } from "@/app/actions/vehicles";
-import { useQueryClient } from "@tanstack/react-query";
 import { VEHICLES_QUERY_KEY } from "@/hooks/use-vehicles";
-import CurrencyInput from "react-currency-input-field";
-import { useTranslations } from "next-intl";
+import { getPaymentImageURL } from "@/lib/utils";
+import type { VehicleDialogProps } from "@/types/dialog";
 import { Label } from "../ui/label";
+import ZoomableImage from "../zoomable-image";
 
 export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
@@ -95,33 +95,33 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="w-80 sm:w-full  sm:max-w-lg">
+      <DialogContent className="w-80 sm:w-full sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{t("title")}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
           {/* Vehicle Info */}
-          <div className="bg-slate-50 dark:bg-slate-900 p-3 rounded-lg">
-            <div className="flex justify-between items-center text-sm">
+          <div className="rounded-lg bg-slate-50 p-3 dark:bg-slate-900">
+            <div className="flex items-center justify-between text-sm">
               <Label className="text-muted-foreground">{t("vehicle")}:</Label>
               <Label className="font-medium">
                 {data.vehicle.license_plate}
               </Label>
             </div>
-            <div className="flex justify-between items-center text-sm">
+            <div className="flex items-center justify-between text-sm">
               <Label className="text-muted-foreground">{t("customer")}:</Label>
               <Label className="font-medium">{data.customer.name}</Label>
             </div>
-            <div className="flex justify-between items-center text-sm">
+            <div className="flex items-center justify-between text-sm">
               <Label className="text-muted-foreground">{t("brand")}:</Label>
               <Label className="font-medium">{data.vehicle.brand}</Label>
             </div>
           </div>
 
           {/* Payment Amount */}
-          <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 rounded-lg border">
-            <p className="text-muted-foreground mb-4">{t("paymentAmount")}:</p>
+          <div className="rounded-lg border bg-gradient-to-br from-green-50 to-emerald-50 p-4 text-center dark:from-green-950 dark:to-emerald-950">
+            <p className="mb-4 text-muted-foreground">{t("paymentAmount")}:</p>
             <div className="space-y-2">
               <CurrencyInput
                 id="payment-amount"
@@ -135,14 +135,14 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
                 allowDecimals={true}
                 allowNegativeValue={false}
                 disabled={showQRCode}
-                className="w-full text-center text-2xl font-bold bg-transparent border-0 outline-none focus:ring-2 focus:ring-green-500 rounded px-2 py-1 disabled:opacity-50"
+                className="w-full rounded border-0 bg-transparent px-2 py-1 text-center font-bold text-2xl outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50"
                 style={{
                   color: paymentAmount > debtAmount ? "#ef4444" : "#16a34a",
                 }}
                 placeholder={t("enterAmount")}
                 step={0.01}
               />
-              <div className="text-sm text-muted-foreground">
+              <div className="text-muted-foreground text-sm">
                 {t("max")}:{" "}
                 {new Intl.NumberFormat("en-US", {
                   style: "currency",
@@ -150,12 +150,12 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
                 }).format(debtAmount)}
               </div>
               {paymentAmount > debtAmount && (
-                <p className="text-sm text-red-500">
+                <p className="text-red-500 text-sm">
                   {t("paymentCannotExceedDebt")}
                 </p>
               )}
               {paymentAmount <= 0 && (
-                <p className="text-sm text-red-500">
+                <p className="text-red-500 text-sm">
                   {t("paymentMustBeGreaterThanZero")}
                 </p>
               )}
@@ -173,7 +173,7 @@ export function PaymentDialog({ trigger, data }: VehicleDialogProps) {
 
           {/* QR Code */}
           {showQRCode && (
-            <div className="flex justify-center p-4 bg-white rounded-lg border">
+            <div className="flex justify-center rounded-lg border bg-white p-4">
               <ZoomableImage
                 src={getPaymentImageURL({
                   bankCode: process.env.NEXT_PUBLIC_VIETQR_BANKCODE || "N/A",

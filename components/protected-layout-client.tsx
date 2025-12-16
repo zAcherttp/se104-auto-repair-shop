@@ -1,11 +1,11 @@
 "use client";
 
-import React, { ReactNode } from "react";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
+import React, { type ReactNode } from "react";
 import { Header } from "@/components/app-header";
-import { useAdmin } from "@/hooks/use-admin";
+import { AppSidebar } from "@/components/app-sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAdmin } from "@/hooks/use-admin";
 
 interface ProtectedLayoutClientProps {
   children: ReactNode;

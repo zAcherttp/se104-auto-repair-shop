@@ -1,9 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { EditIcon, TrashIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Card, CardContent } from "@/components/ui/card";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
+import { deleteSparePart, getSpareParts } from "@/app/actions/settings";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import {
   Table,
@@ -13,12 +16,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { EditIcon, TrashIcon } from "lucide-react";
-import { toast } from "sonner";
-import { getSpareParts, deleteSparePart } from "@/app/actions/settings";
+import type { SparePart } from "@/types/settings";
 import { AddPartDialog } from "./add-part-dialog";
 import { EditPartDialog } from "./edit-part-dialog";
-import type { SparePart } from "@/types/settings";
 
 export default function PartsTab() {
   const t = useTranslations("settings.parts");
@@ -82,7 +82,7 @@ export default function PartsTab() {
       <Card>
         <CardContent className="p-4">
           <div className="flex items-center justify-center">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+            <div className="h-6 w-6 animate-spin rounded-full border-primary border-b-2" />
           </div>
         </CardContent>
       </Card>
@@ -93,7 +93,7 @@ export default function PartsTab() {
     <>
       <Card>
         <CardContent>
-          <div className="flex justify-between mb-2">
+          <div className="mb-2 flex justify-between">
             <Label className="self-start pl-2">{t("title")}</Label>
             <Button className="h-8" onClick={() => setAddDialogOpen(true)}>
               {t("addButton")}

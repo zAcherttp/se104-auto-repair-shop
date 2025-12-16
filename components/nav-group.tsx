@@ -1,7 +1,8 @@
 "use client";
 
-import { type LucideIcon } from "lucide-react";
-
+import type { LucideIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { memo, useMemo } from "react";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -9,8 +10,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "../components/ui/sidebar";
-import { memo, useMemo } from "react";
-import { usePathname } from "next/navigation";
 import { Label } from "./ui/label";
 
 type NavGroupProps = {
@@ -35,7 +34,7 @@ export const NavGroup = memo(function NavGroup({
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel className="uppercase font-semibold text-muted-foreground">
+      <SidebarGroupLabel className="font-semibold text-muted-foreground uppercase">
         {label}
       </SidebarGroupLabel>
       <SidebarMenu>

@@ -1,34 +1,36 @@
 /**
  * Inventory Data Processing Tests
- * 
+ *
  * This test suite focuses on validating the data processing and transformation logic
  * used in the inventory functionality. Tests core business logic without UI dependencies.
  */
 
+import type { SparePartWithEndingStock } from "@/app/(protected)/inventory/columns";
+import type { StockCalculationResult } from "@/lib/inventory-calculations";
 import {
   mockSparePart,
-  mockSparePartOilFilter,
   mockSparePartAirFilter,
-  mockSparePartTires,
   mockSparePartBattery,
-  mockSparePartNoStock,
-  mockSparePartZeroStock,
+  mockSparePartInvalidPrice,
   mockSparePartLargeStock,
+  mockSparePartMinimalData,
+  mockSparePartMissingName,
+  mockSparePartNoStock,
+  mockSparePartOilFilter,
   mockSparePartsArray,
   mockSparePartsArrayExtended,
   mockSparePartsEmptyArray,
-  mockSparePartMinimalData,
-  mockSparePartInvalidPrice,
-  mockSparePartMissingName,
+  mockSparePartTires,
+  mockSparePartZeroStock,
   mockStockCalculationResult,
   mockStockCalculationsArray,
 } from "@/test/mocks/inventory-data";
 import type { SparePart } from "@/types/types";
-import type { SparePartWithEndingStock } from "@/app/(protected)/inventory/columns";
-import type { StockCalculationResult } from "@/lib/inventory-calculations";
 
 // Helper function for spare part data validation
-const validateSparePartData = (part: SparePart | Partial<SparePart>): { isValid: boolean; errors: string[] } => {
+const validateSparePartData = (
+  part: SparePart | Partial<SparePart>,
+): { isValid: boolean; errors: string[] } => {
   const errors: string[] = [];
 
   // Validate required fields
@@ -38,12 +40,16 @@ const validateSparePartData = (part: SparePart | Partial<SparePart>): { isValid:
   if (!part.name || part.name.trim() === "") {
     errors.push("Part name is required and cannot be empty");
   }
-  if (typeof part.price !== 'number' || part.price < 0) {
+  if (typeof part.price !== "number" || part.price < 0) {
     errors.push("Part price must be a non-negative number");
   }
 
   // Validate optional fields
-  if (part.stock_quantity !== null && part.stock_quantity !== undefined && part.stock_quantity < 0) {
+  if (
+    part.stock_quantity !== null &&
+    part.stock_quantity !== undefined &&
+    part.stock_quantity < 0
+  ) {
     errors.push("Stock quantity cannot be negative");
   }
 
@@ -64,7 +70,7 @@ describe("Inventory Data Processing", () => {
 
     it("formats standard prices correctly", () => {
       expect(formatCurrency(45.99)).toBe("$45.99");
-      expect(formatCurrency(125.00)).toBe("$125.00");
+      expect(formatCurrency(125.0)).toBe("$125.00");
       expect(formatCurrency(8.99)).toBe("$8.99");
     });
 
@@ -74,7 +80,7 @@ describe("Inventory Data Processing", () => {
 
     it("formats large amounts correctly", () => {
       expect(formatCurrency(1234.56)).toBe("$1,234.56");
-      expect(formatCurrency(10000.00)).toBe("$10,000.00");
+      expect(formatCurrency(10000.0)).toBe("$10,000.00");
     });
 
     it("formats small amounts correctly", () => {
@@ -91,7 +97,7 @@ describe("Inventory Data Processing", () => {
     });
 
     it("validates multiple spare parts correctly", () => {
-      mockSparePartsArray.forEach(part => {
+      mockSparePartsArray.forEach((part) => {
         const validation = validateSparePartData(part);
         expect(validation.isValid).toBe(true);
         expect(validation.errors).toHaveLength(0);
@@ -101,13 +107,17 @@ describe("Inventory Data Processing", () => {
     it("detects missing required fields", () => {
       const validation = validateSparePartData(mockSparePartMissingName);
       expect(validation.isValid).toBe(false);
-      expect(validation.errors).toContain("Part name is required and cannot be empty");
+      expect(validation.errors).toContain(
+        "Part name is required and cannot be empty",
+      );
     });
 
     it("detects invalid price values", () => {
       const validation = validateSparePartData(mockSparePartInvalidPrice);
       expect(validation.isValid).toBe(false);
-      expect(validation.errors).toContain("Part price must be a non-negative number");
+      expect(validation.errors).toContain(
+        "Part price must be a non-negative number",
+      );
     });
 
     it("handles null stock quantity correctly", () => {
@@ -138,10 +148,18 @@ describe("Inventory Data Processing", () => {
     };
 
     it("determines stock status correctly for various levels", () => {
-      expect(determineStockStatus(mockSparePart.stock_quantity)).toBe("in-stock");
-      expect(determineStockStatus(mockSparePartOilFilter.stock_quantity)).toBe("in-stock");
-      expect(determineStockStatus(mockSparePartAirFilter.stock_quantity)).toBe("out-of-stock");
-      expect(determineStockStatus(mockSparePartNoStock.stock_quantity)).toBe("unknown");
+      expect(determineStockStatus(mockSparePart.stock_quantity)).toBe(
+        "in-stock",
+      );
+      expect(determineStockStatus(mockSparePartOilFilter.stock_quantity)).toBe(
+        "in-stock",
+      );
+      expect(determineStockStatus(mockSparePartAirFilter.stock_quantity)).toBe(
+        "out-of-stock",
+      );
+      expect(determineStockStatus(mockSparePartNoStock.stock_quantity)).toBe(
+        "unknown",
+      );
     });
 
     it("identifies low stock items correctly", () => {
@@ -149,7 +167,9 @@ describe("Inventory Data Processing", () => {
         ...mockSparePart,
         stock_quantity: 3,
       };
-      expect(determineStockStatus(lowStockPart.stock_quantity)).toBe("low-stock");
+      expect(determineStockStatus(lowStockPart.stock_quantity)).toBe(
+        "low-stock",
+      );
     });
 
     it("handles edge case stock levels", () => {
@@ -168,11 +188,14 @@ describe("Inventory Data Processing", () => {
       return [...parts].sort((a, b) => a.price - b.price);
     };
 
-    const filterPartsByStock = (parts: SparePart[], hasStock: boolean): SparePart[] => {
-      return parts.filter(part => 
-        hasStock 
-          ? (part.stock_quantity !== null && part.stock_quantity > 0)
-          : (part.stock_quantity === null || part.stock_quantity === 0)
+    const filterPartsByStock = (
+      parts: SparePart[],
+      hasStock: boolean,
+    ): SparePart[] => {
+      return parts.filter((part) =>
+        hasStock
+          ? part.stock_quantity !== null && part.stock_quantity > 0
+          : part.stock_quantity === null || part.stock_quantity === 0,
       );
     };
 
@@ -185,30 +208,45 @@ describe("Inventory Data Processing", () => {
 
     it("sorts parts by price ascending", () => {
       const sorted = sortPartsByPrice(mockSparePartsArray);
-      expect(sorted[0].price).toBe(12.50); // Oil Filter
-      expect(sorted[4].price).toBe(125.00); // All-Season Tire
+      expect(sorted[0].price).toBe(12.5); // Oil Filter
+      expect(sorted[4].price).toBe(125.0); // All-Season Tire
     });
 
     it("filters parts with stock correctly", () => {
       const withStock = filterPartsByStock(mockSparePartsArrayExtended, true);
       expect(withStock).toHaveLength(5); // Excludes zero stock and null stock parts
-      expect(withStock.every(part => part.stock_quantity && part.stock_quantity > 0)).toBe(true);
+      expect(
+        withStock.every(
+          (part) => part.stock_quantity && part.stock_quantity > 0,
+        ),
+      ).toBe(true);
     });
 
     it("filters parts without stock correctly", () => {
-      const withoutStock = filterPartsByStock(mockSparePartsArrayExtended, false);
+      const withoutStock = filterPartsByStock(
+        mockSparePartsArrayExtended,
+        false,
+      );
       expect(withoutStock).toHaveLength(3); // Zero stock and null stock parts
-      expect(withoutStock.every(part => !part.stock_quantity || part.stock_quantity === 0)).toBe(true);
+      expect(
+        withoutStock.every(
+          (part) => !part.stock_quantity || part.stock_quantity === 0,
+        ),
+      ).toBe(true);
     });
 
     it("handles empty array correctly", () => {
       expect(sortPartsByName(mockSparePartsEmptyArray)).toHaveLength(0);
-      expect(filterPartsByStock(mockSparePartsEmptyArray, true)).toHaveLength(0);
+      expect(filterPartsByStock(mockSparePartsEmptyArray, true)).toHaveLength(
+        0,
+      );
     });
   });
 
   describe("Stock Calculation Processing", () => {
-    const calculateStockUtilization = (calc: StockCalculationResult): number => {
+    const calculateStockUtilization = (
+      calc: StockCalculationResult,
+    ): number => {
       if (calc.beginStock === 0) return 0;
       return (calc.usedDuringPeriod / calc.beginStock) * 100;
     };
@@ -248,12 +286,12 @@ describe("Inventory Data Processing", () => {
     });
 
     it("processes multiple stock calculations", () => {
-      mockStockCalculationsArray.forEach(calc => {
+      mockStockCalculationsArray.forEach((calc) => {
         const utilization = calculateStockUtilization(calc);
         const turnover = calculateStockTurnover(calc);
-        
-        expect(typeof utilization).toBe('number');
-        expect(typeof turnover).toBe('number');
+
+        expect(typeof utilization).toBe("number");
+        expect(typeof turnover).toBe("number");
         expect(utilization).toBeGreaterThanOrEqual(0);
         expect(turnover).toBeGreaterThanOrEqual(0);
       });
@@ -262,8 +300,8 @@ describe("Inventory Data Processing", () => {
 
   describe("Ending Stock Calculations", () => {
     const combinePartWithEndingStock = (
-      part: SparePart, 
-      stockCalc: StockCalculationResult | undefined
+      part: SparePart,
+      stockCalc: StockCalculationResult | undefined,
     ): SparePartWithEndingStock => {
       return {
         ...part,
@@ -272,19 +310,28 @@ describe("Inventory Data Processing", () => {
     };
 
     it("combines part with stock calculation correctly", () => {
-      const combined = combinePartWithEndingStock(mockSparePart, mockStockCalculationResult);
+      const combined = combinePartWithEndingStock(
+        mockSparePart,
+        mockStockCalculationResult,
+      );
       expect(combined.endingStock).toBe(20);
       expect(combined.id).toBe(mockSparePart.id);
       expect(combined.name).toBe(mockSparePart.name);
     });
 
     it("falls back to current stock when no calculation available", () => {
-      const combined = combinePartWithEndingStock(mockSparePartOilFilter, undefined);
+      const combined = combinePartWithEndingStock(
+        mockSparePartOilFilter,
+        undefined,
+      );
       expect(combined.endingStock).toBe(100); // Falls back to stock_quantity
     });
 
     it("handles null stock quantity with no calculation", () => {
-      const combined = combinePartWithEndingStock(mockSparePartNoStock, undefined);
+      const combined = combinePartWithEndingStock(
+        mockSparePartNoStock,
+        undefined,
+      );
       expect(combined.endingStock).toBe(0); // Falls back to 0 when stock_quantity is null
     });
 
@@ -296,7 +343,7 @@ describe("Inventory Data Processing", () => {
         usedDuringPeriod: 35,
         endStock: 15, // Different from current stock
       };
-      
+
       const combined = combinePartWithEndingStock(mockSparePart, customCalc);
       expect(combined.endingStock).toBe(15); // Uses calculation, not current stock
     });

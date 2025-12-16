@@ -1,9 +1,9 @@
 "use client";
 
+import { Package, Wrench } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useMonthlyUsageStats } from "@/hooks/use-monthly-usage-stats";
-import { Package, Wrench } from "lucide-react";
 
 export function UsageStatsCard() {
   const { data: stats, isLoading } = useMonthlyUsageStats();
@@ -38,7 +38,7 @@ export function UsageStatsCard() {
               <Badge
                 variant={getUsageBadgeVariant(
                   stats.partUsage,
-                  stats.maxPartsPerMonth
+                  stats.maxPartsPerMonth,
                 )}
               >
                 Parts: {stats.partUsage}/{stats.maxPartsPerMonth}
@@ -52,7 +52,7 @@ export function UsageStatsCard() {
               <Badge
                 variant={getUsageBadgeVariant(
                   stats.laborUsage,
-                  stats.maxLaborTypesPerMonth
+                  stats.maxLaborTypesPerMonth,
                 )}
               >
                 Labor: {stats.laborUsage}/{stats.maxLaborTypesPerMonth}

@@ -1,15 +1,15 @@
 "use client";
 
+import type { ColumnDef } from "@tanstack/react-table";
+import { ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
-import { PaymentWithDetails } from "@/types";
-import { ColumnDef } from "@tanstack/react-table";
-import { ArrowLeft } from "lucide-react";
-import { Actions } from "./actions";
 import { Label } from "@/components/ui/label";
+import type { PaymentWithDetails } from "@/types";
+import { Actions } from "./actions";
 
 export const createColumns = (
-  t: (key: string) => string
+  t: (key: string) => string,
 ): ColumnDef<PaymentWithDetails>[] => [
   {
     accessorKey: "vehicle.license_plate",
@@ -53,14 +53,14 @@ export const createColumns = (
     },
     accessorKey: "amount",
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
+      const amount = Number.parseFloat(row.getValue("amount"));
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
       }).format(amount);
 
       return (
-        <div className="text-right font-medium flex items-center justify-end gap-2">
+        <div className="flex items-center justify-end gap-2 text-right font-medium">
           <ArrowLeft className="h-4 w-4 text-green-600" />
           <Label className="text-green-600">{formatted}</Label>
         </div>
@@ -121,7 +121,7 @@ export const createColumns = (
       return (
         <div className="flex flex-col">
           <Label>{date.toLocaleDateString()}</Label>
-          <Label className="text-xs text-muted-foreground">
+          <Label className="text-muted-foreground text-xs">
             {date.toLocaleTimeString()}
           </Label>
         </div>
@@ -146,7 +146,7 @@ export const createColumns = (
         <div className="flex flex-col">
           <Label>{fullName || "Unknown"}</Label>
           {email && (
-            <Label className="text-xs text-muted-foreground">{email}</Label>
+            <Label className="text-muted-foreground text-xs">{email}</Label>
           )}
         </div>
       );

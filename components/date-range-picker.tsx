@@ -1,12 +1,12 @@
 "use client";
 
+import { ChevronDown, ChevronUp } from "lucide-react";
 import * as React from "react";
-import { type DateRange } from "react-day-picker";
-import { ChevronUp, ChevronDown } from "lucide-react";
+import type { DateRange } from "react-day-picker";
 
 import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Button } from "./ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import {
   Select,
   SelectContent,
@@ -47,7 +47,7 @@ interface DateRangePickerProps {
   disableFuture?: boolean;
 }
 
-const formatDate = (date: Date, locale: string = "en-us"): string => {
+const formatDate = (date: Date, locale = "en-us"): string => {
   return date.toLocaleDateString(locale, {
     month: "short",
     day: "numeric",
@@ -57,12 +57,11 @@ const formatDate = (date: Date, locale: string = "en-us"): string => {
 
 const getDateAdjustedForTimezone = (dateInput: Date | string): Date => {
   if (typeof dateInput === "string") {
-    const parts = dateInput.split("-").map((part) => parseInt(part, 10));
+    const parts = dateInput.split("-").map((part) => Number.parseInt(part, 10));
     const date = new Date(parts[0], parts[1] - 1, parts[2]);
     return date;
-  } else {
-    return dateInput;
   }
+  return dateInput;
 };
 
 // Helper function to normalize date range with proper times
@@ -129,7 +128,7 @@ export default function DateRangePicker({
   >(undefined);
 
   const [isSmallScreen, setIsSmallScreen] = React.useState(
-    typeof window !== "undefined" ? window.innerWidth < 960 : false
+    typeof window !== "undefined" ? window.innerWidth < 960 : false,
   );
 
   React.useEffect(() => {
@@ -308,13 +307,13 @@ export default function DateRangePicker({
               }`}</div>
             </div>
           </div>
-          <div className="pl-1 pr-1 opacity-60 -mr-2 scale-125">
+          <div className="-mr-2 scale-125 pr-1 pl-1 opacity-60">
             {isOpen ? <ChevronUp width={24} /> : <ChevronDown width={24} />}
           </div>
         </Button>
       </PopoverTrigger>
       <PopoverContent align={align} className="w-auto">
-        <div className="flex flex-col ">
+        <div className="flex flex-col">
           <div className="flex justify-center">
             <Calendar
               mode="range"
@@ -329,16 +328,16 @@ export default function DateRangePicker({
               defaultMonth={
                 new Date(
                   new Date().setMonth(
-                    new Date().getMonth() - (isSmallScreen ? 0 : 1)
-                  )
+                    new Date().getMonth() - (isSmallScreen ? 0 : 1),
+                  ),
                 )
               }
               disabled={disableFuture ? { after: new Date() } : undefined}
             />
           </div>
           <div
-            className={`flex py-2 px-2 ${
-              isSmallScreen ? "flex-col gap-2" : "justify-between items-center"
+            className={`flex px-2 py-2 ${
+              isSmallScreen ? "flex-col gap-2" : "items-center justify-between"
             } `}
           >
             <Select

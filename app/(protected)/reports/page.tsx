@@ -1,7 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AlertCircle, BarChart3, Package } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useCallback, useEffect, useState } from "react";
+import MonthYearPicker from "@/components/month-year-picker";
+import { InventoryTable } from "@/components/reports/inventory-table";
+import { SalesAnalyticsChart } from "@/components/reports/sales-analytics-chart";
+import { SalesTable } from "@/components/reports/sales-table";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Card,
   CardContent,
@@ -9,16 +15,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import MonthYearPicker from "@/components/month-year-picker";
-import { SalesAnalyticsChart } from "@/components/reports/sales-analytics-chart";
-import { SalesTable } from "@/components/reports/sales-table";
-import { InventoryTable } from "@/components/reports/inventory-table";
-import { useReportsQuery } from "@/hooks/use-reports";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle, BarChart3, Package } from "lucide-react";
-import { useTranslations } from "next-intl";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useReportsQuery } from "@/hooks/use-reports";
 
 export default function Page() {
   const t = useTranslations("reports");
@@ -47,7 +47,7 @@ export default function Page() {
         });
       }
     },
-    []
+    [],
   );
 
   const period = {
@@ -71,7 +71,7 @@ export default function Page() {
           errors.inventory?.message ||
           errors.b51?.message ||
           errors.b52?.message ||
-          "Unknown error"
+          "Unknown error",
       )
     : null;
 
@@ -89,7 +89,7 @@ export default function Page() {
   }
 
   return (
-    <div className="p-4 space-y-6">
+    <div className="space-y-6 p-4">
       <Tabs defaultValue="sales" className="space-y-4">
         <div className="grid grid-cols-3 items-center gap-4">
           <TabsList className="grid grid-cols-2">
@@ -102,7 +102,7 @@ export default function Page() {
               {t("tabs.inventoryAnalysis")}
             </TabsTrigger>
           </TabsList>
-          <div></div>
+          <div />
           <MonthYearPicker
             initialMonth={selectedPeriod.month - 1}
             initialYear={selectedPeriod.year}
@@ -145,36 +145,36 @@ export default function Page() {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <Label className="text-sm font-medium">
+                    <div className="flex items-center justify-between">
+                      <Label className="font-medium text-sm">
                         {t("keyMetrics.totalRevenue")}
                       </Label>
-                      <Label className="text-2xl font-bold">
+                      <Label className="font-bold text-2xl">
                         {salesAnalytics?.totalRevenue?.toLocaleString("en-US", {
                           style: "currency",
                           currency: "USD",
                         }) || "0.00 $"}
                       </Label>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <Label className="text-sm font-medium">
+                    <div className="flex items-center justify-between">
+                      <Label className="font-medium text-sm">
                         {t("keyMetrics.totalOrders")}
                       </Label>
-                      <Label className="text-2xl font-bold">
+                      <Label className="font-bold text-2xl">
                         {salesAnalytics?.totalOrders || 0}
                       </Label>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <Label className="text-sm font-medium">
+                    <div className="flex items-center justify-between">
+                      <Label className="font-medium text-sm">
                         {t("keyMetrics.averageOrderValue")}
                       </Label>
-                      <Label className="text-2xl font-bold">
+                      <Label className="font-bold text-2xl">
                         {salesAnalytics?.averageOrderValue?.toLocaleString(
                           "en-US",
                           {
                             style: "currency",
                             currency: "USD",
-                          }
+                          },
                         ) || "0 0.00 $"}
                       </Label>
                     </div>
@@ -223,27 +223,27 @@ export default function Page() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <Label className="text-sm font-medium">
+                  <div className="flex items-center justify-between">
+                    <Label className="font-medium text-sm">
                       {t("inventoryMetrics.totalParts")}
                     </Label>
-                    <Label className="text-2xl font-bold">
+                    <Label className="font-bold text-2xl">
                       {inventoryAnalytics?.totalParts || 0}
                     </Label>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <Label className="text-sm font-medium">
+                  <div className="flex items-center justify-between">
+                    <Label className="font-medium text-sm">
                       {t("inventoryMetrics.lowStockItems")}
                     </Label>
-                    <Label className="text-2xl font-bold text-destructive">
+                    <Label className="font-bold text-2xl text-destructive">
                       {inventoryAnalytics?.lowStockItems || 0}
                     </Label>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <Label className="text-sm font-medium">
+                  <div className="flex items-center justify-between">
+                    <Label className="font-medium text-sm">
                       {t("inventoryMetrics.totalValue")}
                     </Label>
-                    <Label className="text-2xl font-bold">
+                    <Label className="font-bold text-2xl">
                       {inventoryAnalytics?.totalValue?.toLocaleString("en-US", {
                         style: "currency",
                         currency: "USD",

@@ -3,7 +3,12 @@
  * Used in testing employee management, garage settings, and data validation
  */
 
-import type { Employee, SystemSetting, SparePart, LaborType } from "@/types/settings";
+import type {
+  Employee,
+  LaborType,
+  SparePart,
+  SystemSetting,
+} from "@/types/settings";
 
 export const mockEmployee: Employee = {
   id: "emp-001",
@@ -114,7 +119,7 @@ export const mockSparePartsArray: SparePart[] = [
   {
     id: "part-003",
     name: "Air Filter",
-    price: 15.50,
+    price: 15.5,
     stock_quantity: 75,
     created_at: "2024-12-01T08:00:00.000Z",
     updated_at: "2024-12-01T08:00:00.000Z",
@@ -124,7 +129,7 @@ export const mockSparePartsArray: SparePart[] = [
 export const mockLaborType: LaborType = {
   id: "labor-001",
   name: "Oil Change",
-  cost: 50.00,
+  cost: 50.0,
   created_at: "2024-12-01T08:00:00.000Z",
   updated_at: "2024-12-01T08:00:00.000Z",
 };
@@ -134,14 +139,14 @@ export const mockLaborTypesArray: LaborType[] = [
   {
     id: "labor-002",
     name: "Brake Service",
-    cost: 150.00,
+    cost: 150.0,
     created_at: "2024-12-01T08:00:00.000Z",
     updated_at: "2024-12-01T08:00:00.000Z",
   },
   {
     id: "labor-003",
     name: "Engine Diagnostic",
-    cost: 100.00,
+    cost: 100.0,
     created_at: "2024-12-01T08:00:00.000Z",
     updated_at: "2024-12-01T08:00:00.000Z",
   },

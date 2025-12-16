@@ -1,11 +1,11 @@
-import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { CreditCard } from "lucide-react";
-import { OrderDataProps } from "@/types";
-import { OrderTrackingPaymentDialog } from "@/components/dialogs/order-tracking-payment-dialog";
-import { useVehicleDebt } from "@/hooks/use-vehicle-debt";
 import { useTranslations } from "next-intl";
+import React from "react";
+import { OrderTrackingPaymentDialog } from "@/components/dialogs/order-tracking-payment-dialog";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useVehicleDebt } from "@/hooks/use-vehicle-debt";
+import type { OrderDataProps } from "@/types";
 import { Label } from "./ui/label";
 
 type ExpenseSummaryCardProps = {
@@ -42,7 +42,7 @@ const ExpenseSummaryCard = ({
     debtData?.totalExpense ||
     RepairOrderWithItemsDetails.reduce(
       (sum, order) => sum + (order.total_amount || 0),
-      0
+      0,
     );
 
   const totalPaid =
@@ -70,7 +70,7 @@ const ExpenseSummaryCard = ({
         <CardContent>
           <div className="flex items-center justify-center p-8">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+              <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-gray-900 border-b-2" />
               <p className="text-muted-foreground">{t("loadingPaymentInfo")}</p>
             </div>
           </div>
@@ -87,39 +87,39 @@ const ExpenseSummaryCard = ({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {/* Total Expense */}
-          <div className="bg-expense-info p-4 rounded-lg text-center">
-            <div className="text-sm font-medium mb-2">{t("totalExpense")}</div>
-            <div className="text-2xl font-bold text-green-600">
+          <div className="rounded-lg bg-expense-info p-4 text-center">
+            <div className="mb-2 font-medium text-sm">{t("totalExpense")}</div>
+            <div className="font-bold text-2xl text-green-600">
               {formatCurrency(totalExpense)}
             </div>
           </div>
 
-          <div className="bg-expense-success p-4 rounded-lg text-center">
-            <div className="text-sm font-medium mb-2">{t("amountPaid")}</div>
-            <div className="text-2xl font-bold text-green-600">
+          <div className="rounded-lg bg-expense-success p-4 text-center">
+            <div className="mb-2 font-medium text-sm">{t("amountPaid")}</div>
+            <div className="font-bold text-2xl text-green-600">
               {formatCurrency(totalPaid)}
             </div>
           </div>
 
-          <div className="p-4 rounded-lg text-center">
-            <div className="text-sm font-medium mb-2">
+          <div className="rounded-lg p-4 text-center">
+            <div className="mb-2 font-medium text-sm">
               {remainingAmount > 0
                 ? t("amountDue")
                 : remainingAmount < 0
-                ? t("overpaid")
-                : t("paidInFull")}
+                  ? t("overpaid")
+                  : t("paidInFull")}
             </div>
-            <div className="text-2xl font-bold text-green-600">
+            <div className="font-bold text-2xl text-green-600">
               {formatCurrency(Math.abs(remainingAmount))}
             </div>
           </div>
         </div>
 
         {/* Additional Details */}
-        <div className="mt-4 pt-4 border-t border-border">
-          <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
+        <div className="mt-4 border-border border-t pt-4">
+          <div className="grid grid-cols-2 gap-4 text-muted-foreground text-sm">
             <div>
               <strong>{t("totalRepairOrders")}:</strong>{" "}
               {RepairOrderWithItemsDetails.length}
@@ -131,15 +131,15 @@ const ExpenseSummaryCard = ({
                   remainingAmount > 0
                     ? "text-expense-error-foreground"
                     : remainingAmount < 0
-                    ? "text-expense-warning-foreground"
-                    : "text-expense-success-foreground"
+                      ? "text-expense-warning-foreground"
+                      : "text-expense-success-foreground"
                 }`}
               >
                 {remainingAmount > 0
                   ? t("amountDue")
                   : remainingAmount < 0
-                  ? t("overpaid")
-                  : t("paidInFull")}
+                    ? t("overpaid")
+                    : t("paidInFull")}
               </Label>
             </div>
           </div>
@@ -150,7 +150,7 @@ const ExpenseSummaryCard = ({
               <OrderTrackingPaymentDialog
                 trigger={
                   <Button className="bg-green-600 hover:bg-green-700">
-                    <CreditCard className="w-4 h-4 mr-2" />
+                    <CreditCard className="mr-2 h-4 w-4" />
                     {t("makePayment")}
                   </Button>
                 }

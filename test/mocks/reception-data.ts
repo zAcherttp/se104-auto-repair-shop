@@ -1,4 +1,4 @@
-import { VehicleRegistration } from "@/app/(protected)/reception/columns";
+import type { VehicleRegistration } from "@/app/(protected)/reception/columns";
 import { Customer, RepairOrder, Vehicle } from "@/types";
 
 export const mockVehicleRegistrationData: VehicleRegistration[] = [
@@ -9,7 +9,7 @@ export const mockVehicleRegistrationData: VehicleRegistration[] = [
       brand: "Toyota",
       customer_id: "1",
       created_at: "2024-01-01T10:00:00Z",
-      total_paid: 750.00,
+      total_paid: 750.0,
     },
     customer: {
       id: "1",
@@ -22,7 +22,7 @@ export const mockVehicleRegistrationData: VehicleRegistration[] = [
     repair_order: {
       id: "1",
       vehicle_id: "1",
-      total_amount: 750.00,
+      total_amount: 750.0,
       status: "in-progress",
       reception_date: "2024-01-15T08:30:00Z",
       completion_date: null,
@@ -40,7 +40,7 @@ export const mockVehicleRegistrationData: VehicleRegistration[] = [
       brand: "Honda",
       customer_id: "2",
       created_at: "2024-01-01T11:00:00Z",
-      total_paid: 900.00,
+      total_paid: 900.0,
     },
     customer: {
       id: "2",
@@ -53,7 +53,7 @@ export const mockVehicleRegistrationData: VehicleRegistration[] = [
     repair_order: {
       id: "2",
       vehicle_id: "2",
-      total_amount: 1200.00,
+      total_amount: 1200.0,
       status: "completed",
       reception_date: "2024-01-14T09:00:00Z",
       completion_date: "2024-01-16T16:00:00Z",
@@ -71,7 +71,7 @@ export const mockVehicleRegistrationData: VehicleRegistration[] = [
       brand: "Ford",
       customer_id: "3",
       created_at: "2024-01-01T12:00:00Z",
-      total_paid: 2350.00,
+      total_paid: 2350.0,
     },
     customer: {
       id: "3",
@@ -84,7 +84,7 @@ export const mockVehicleRegistrationData: VehicleRegistration[] = [
     repair_order: {
       id: "3",
       vehicle_id: "3",
-      total_amount: 2500.00,
+      total_amount: 2500.0,
       status: "pending",
       reception_date: "2024-01-16T07:45:00Z",
       completion_date: null,

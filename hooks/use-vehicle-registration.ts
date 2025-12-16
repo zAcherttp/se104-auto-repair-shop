@@ -2,8 +2,8 @@
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import type { DateRange } from "react-day-picker";
 import { fetchVehicleRegistrationWithDateRange } from "@/app/actions/vehicles";
-import { DateRange } from "react-day-picker";
 
 export const VEHICLE_REGISTRATION_QUERY_KEY = "vehicle-registration";
 
@@ -12,7 +12,7 @@ interface UseVehicleRegistrationOptions {
 }
 
 export function useVehicleRegistration(
-  options: UseVehicleRegistrationOptions = {}
+  options: UseVehicleRegistrationOptions = {},
 ) {
   // Set default date range to today if no initial range provided
   const getDefaultDateRange = (): DateRange => {
@@ -22,7 +22,7 @@ export function useVehicleRegistration(
   };
 
   const [dateRange, setDateRange] = useState<DateRange | undefined>(
-    options.initialDateRange || getDefaultDateRange()
+    options.initialDateRange || getDefaultDateRange(),
   );
 
   const queryClient = useQueryClient();

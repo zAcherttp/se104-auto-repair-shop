@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
-import { createClient } from "@/supabase/server";
 import { SettingsTabs } from "@/components/settings/settings-tabs";
+import { createClient } from "@/supabase/server";
 
 export default async function SettingsPage() {
   const supabase = await createClient();
@@ -28,7 +28,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="flex flex-col">
-      <div className="flex-1 p-4 overflow-hidden">
+      <div className="flex-1 overflow-hidden p-4">
         <SettingsTabs />
       </div>
     </div>

@@ -15,7 +15,7 @@ jest.mock("@/hooks/use-daily-vehicle-limit", () => ({
 import { createReception } from "@/app/actions/vehicles";
 import { useCarBrands } from "@/hooks/use-car-brands";
 import { useDailyVehicleLimit } from "@/hooks/use-daily-vehicle-limit";
-import { VehicleReceptionFormData } from "@/lib/form/definitions";
+import type { VehicleReceptionFormData } from "@/lib/form/definitions";
 
 const mockCreateReception = createReception as jest.MockedFunction<
   typeof createReception
@@ -428,7 +428,7 @@ describe("ReceptionForm Data Layer", () => {
       requiredFields.forEach((field) => {
         expect(validReceptionData).toHaveProperty(field);
         expect(
-          validReceptionData[field as keyof VehicleReceptionFormData]
+          validReceptionData[field as keyof VehicleReceptionFormData],
         ).toBeTruthy();
       });
     });

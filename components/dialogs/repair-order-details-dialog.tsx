@@ -1,28 +1,28 @@
 "use client";
 
 import {
+  Calendar,
+  Car,
+  DollarSign,
+  FileText,
+  Package,
+  User,
+  Wrench,
+} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { RepairOrderWithVehicleDetails } from "@/types/types";
 import { useRepairOrderDetails } from "@/hooks/use-repair-order-details";
-import {
-  Calendar,
-  Car,
-  User,
-  DollarSign,
-  FileText,
-  Wrench,
-  Package,
-} from "lucide-react";
-import { ScrollArea } from "../ui/scroll-area";
+import type { RepairOrderWithVehicleDetails } from "@/types/types";
 import { Label } from "../ui/label";
+import { ScrollArea } from "../ui/scroll-area";
 
 interface RepairOrderDetailsDialogProps {
   open: boolean;
@@ -56,7 +56,7 @@ export function RepairOrderDetailsDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0 max-h-[80vh] max-w-[80vw] md:max-h-[80vh] md:max-w-[50vw] lg:max-w-[60vw]">
+      <DialogContent className="max-h-[80vh] max-w-[80vw] p-0 md:max-h-[80vh] md:max-w-[50vw] lg:max-w-[60vw]">
         <ScrollArea className="max-h-[80vh]">
           <div className="p-4">
             <DialogHeader className="pb-4">
@@ -82,8 +82,8 @@ export function RepairOrderDetailsDialog({
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4 text-muted-foreground" />
                       <div>
-                        <p className="text-sm font-medium">Reception Date</p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="font-medium text-sm">Reception Date</p>
+                        <p className="text-muted-foreground text-sm">
                           {new Date(order.reception_date).toLocaleDateString()}
                         </p>
                       </div>
@@ -93,10 +93,10 @@ export function RepairOrderDetailsDialog({
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4 text-muted-foreground" />
                         <div>
-                          <p className="text-sm font-medium">Completion Date</p>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="font-medium text-sm">Completion Date</p>
+                          <p className="text-muted-foreground text-sm">
                             {new Date(
-                              order.completion_date
+                              order.completion_date,
                             ).toLocaleDateString()}
                           </p>
                         </div>
@@ -109,8 +109,8 @@ export function RepairOrderDetailsDialog({
                       <div className="flex items-center gap-2">
                         <DollarSign className="h-4 w-4 text-muted-foreground" />
                         <div>
-                          <p className="text-sm font-medium">Total Amount</p>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="font-medium text-sm">Total Amount</p>
+                          <p className="text-muted-foreground text-sm">
                             ${order.total_amount.toFixed(2)}
                           </p>
                         </div>
@@ -122,15 +122,15 @@ export function RepairOrderDetailsDialog({
                         <div className="flex items-center gap-2">
                           <DollarSign className="h-4 w-4 text-muted-foreground" />
                           <div>
-                            <p className="text-sm font-medium">
+                            <p className="font-medium text-sm">
                               Vehicle Total Paid
                             </p>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-muted-foreground text-sm">
                               $
                               {order.vehicle.payments
                                 .reduce(
                                   (sum, payment) => sum + payment.amount,
-                                  0
+                                  0,
                                 )
                                 .toFixed(2)}
                             </p>
@@ -152,31 +152,31 @@ export function RepairOrderDetailsDialog({
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <div>
-                      <p className="text-sm font-medium">Name</p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="font-medium text-sm">Name</p>
+                      <p className="text-muted-foreground text-sm">
                         {order.vehicle?.customer?.name}
                       </p>
                     </div>
                     {order.vehicle?.customer?.email && (
                       <div>
-                        <p className="text-sm font-medium">Email</p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="font-medium text-sm">Email</p>
+                        <p className="text-muted-foreground text-sm">
                           {order.vehicle.customer.email}
                         </p>
                       </div>
                     )}
                     {order.vehicle?.customer?.phone && (
                       <div>
-                        <p className="text-sm font-medium">Phone</p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="font-medium text-sm">Phone</p>
+                        <p className="text-muted-foreground text-sm">
                           {order.vehicle.customer.phone}
                         </p>
                       </div>
                     )}
                     {order.vehicle?.customer?.address && (
                       <div>
-                        <p className="text-sm font-medium">Address</p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="font-medium text-sm">Address</p>
+                        <p className="text-muted-foreground text-sm">
                           {order.vehicle.customer.address}
                         </p>
                       </div>
@@ -193,14 +193,14 @@ export function RepairOrderDetailsDialog({
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <div>
-                      <p className="text-sm font-medium">Brand</p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="font-medium text-sm">Brand</p>
+                      <p className="text-muted-foreground text-sm">
                         {order.vehicle?.brand}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium">License Plate</p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="font-medium text-sm">License Plate</p>
+                      <p className="text-muted-foreground text-sm">
                         {order.vehicle?.license_plate}
                       </p>
                     </div>
@@ -233,23 +233,23 @@ export function RepairOrderDetailsDialog({
                       ))}
                     </div>
                   ) : error ? (
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-muted-foreground text-sm">
                       Failed to load repair items
                     </p>
                   ) : orderDetails?.repair_order_items?.length ? (
                     <div className="space-y-4">
                       {orderDetails.repair_order_items.map((item) => (
-                        <div key={item.id} className="border rounded-lg p-4">
+                        <div key={item.id} className="rounded-lg border p-4">
                           <div className="flex items-start justify-between">
                             <div className="space-y-2">
                               {item.spare_part && (
                                 <div className="flex items-center gap-2">
                                   <Package className="h-4 w-4 text-muted-foreground" />
                                   <div>
-                                    <p className="text-sm font-medium">
+                                    <p className="font-medium text-sm">
                                       {item.spare_part.name}
                                     </p>
-                                    <p className="text-xs text-muted-foreground">
+                                    <p className="text-muted-foreground text-xs">
                                       Spare Part • Qty: {item.quantity} • $
                                       {item.spare_part.price.toFixed(2)} each
                                     </p>
@@ -261,10 +261,10 @@ export function RepairOrderDetailsDialog({
                                 <div className="flex items-center gap-2">
                                   <Wrench className="h-4 w-4 text-muted-foreground" />
                                   <div>
-                                    <p className="text-sm font-medium">
+                                    <p className="font-medium text-sm">
                                       {item.labor_type.name}
                                     </p>
-                                    <p className="text-xs text-muted-foreground">
+                                    <p className="text-muted-foreground text-xs">
                                       Labor • ${item.labor_type.cost.toFixed(2)}
                                     </p>
                                   </div>
@@ -272,7 +272,7 @@ export function RepairOrderDetailsDialog({
                               )}
                             </div>
                             <div className="text-right">
-                              <p className="text-sm font-medium">
+                              <p className="font-medium text-sm">
                                 ${item.total_amount.toFixed(2)}
                               </p>
                             </div>
@@ -282,9 +282,9 @@ export function RepairOrderDetailsDialog({
 
                       <Separator />
 
-                      <div className="flex justify-between items-center pt-2">
-                        <p className="text-sm font-medium">Total</p>
-                        <p className="text-sm font-bold">
+                      <div className="flex items-center justify-between pt-2">
+                        <p className="font-medium text-sm">Total</p>
+                        <p className="font-bold text-sm">
                           $
                           {orderDetails.repair_order_items
                             .reduce((sum, item) => sum + item.total_amount, 0)
@@ -293,7 +293,7 @@ export function RepairOrderDetailsDialog({
                       </div>
                     </div>
                   ) : (
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-muted-foreground text-sm">
                       No repair items found
                     </p>
                   )}

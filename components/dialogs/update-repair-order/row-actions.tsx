@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import type { Table } from "@tanstack/react-table";
 import { Check, X } from "lucide-react";
-import { LineItem } from "./columns";
-import { LineItemFormSchema } from "@/lib/form/definitions";
-import { z } from "zod";
 import { useState } from "react";
-import { Table } from "@tanstack/react-table";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import { LineItemFormSchema } from "@/lib/form/definitions";
+import type { LineItem } from "./columns";
 
 interface RowActionsProps {
   row: { index: number; original: LineItem };
@@ -108,9 +108,9 @@ export function RowActions({ row, table }: RowActionsProps) {
         </Button>
       </div>
       {errors.length > 0 && (
-        <div className="text-xs text-red-500 max-w-[200px]">
+        <div className="max-w-[200px] text-red-500 text-xs">
           {errors.map((error, index) => (
-            <div key={index}>{error}</div>
+            <div key={index.toString()}>{error}</div>
           ))}
         </div>
       )}

@@ -1,6 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import OrderDetails from "@/components/order-data-detail";
+import SubmitButton from "@/components/submit-button";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,14 +17,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ArrowLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { createClient } from "@/supabase/client";
-import { toast } from "sonner";
-import { OrderDataProps } from "@/types";
-import OrderDetails from "@/components/order-data-detail";
 import {
   Form,
   FormControl,
@@ -24,14 +25,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
+  type RepairTrackingFormData,
   RepairTrackingFormSchema,
-  RepairTrackingFormData,
 } from "@/lib/form/definitions";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import SubmitButton from "@/components/submit-button";
-import { useTranslations } from "next-intl";
+import { createClient } from "@/supabase/client";
+import type { OrderDataProps } from "@/types";
 
 export default function TrackOrderPage() {
   const t = useTranslations("auth");
@@ -62,7 +62,7 @@ export default function TrackOrderPage() {
           *,
           customer:customers(*),
           payments(*)
-        `
+        `,
         )
         .eq("license_plate", data.query.toUpperCase())
         .single();
@@ -85,7 +85,7 @@ export default function TrackOrderPage() {
             spare_part:spare_parts(*),
             labor_type:labor_types(*)
           )
-        `
+        `,
         )
         .eq("vehicle_id", vehicle.id)
         .order("created_at", { ascending: false });
@@ -104,7 +104,7 @@ export default function TrackOrderPage() {
     } catch (error) {
       console.error("Error searching order:", error);
       toast.error(
-        error instanceof Error ? error.message : "An unexpected error occurred"
+        error instanceof Error ? error.message : "An unexpected error occurred",
       );
     }
 
@@ -118,14 +118,14 @@ export default function TrackOrderPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br flex items-center justify-center">
-      <div className="flex flex-col gap-4 w-full max-w-md">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br">
+      <div className="flex w-full max-w-md flex-col gap-4">
         <Button
           variant="ghost"
           className="w-min"
           onClick={() => router.push("/")}
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="h-4 w-4" />
           {t("back")}
         </Button>
         <Card className="max-w-md">

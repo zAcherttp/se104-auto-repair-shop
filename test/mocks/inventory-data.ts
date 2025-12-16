@@ -3,9 +3,9 @@
  * Used in testing spare parts processing, stock calculations, and display logic
  */
 
-import type { SparePart } from "@/types/types";
 import type { SparePartWithEndingStock } from "@/app/(protected)/inventory/columns";
 import type { StockCalculationResult } from "@/lib/inventory-calculations";
+import type { SparePart } from "@/types/types";
 
 export const mockSparePart: SparePart = {
   id: "part-001",
@@ -18,7 +18,7 @@ export const mockSparePart: SparePart = {
 export const mockSparePartOilFilter: SparePart = {
   id: "part-002",
   name: "Oil Filter",
-  price: 12.50,
+  price: 12.5,
   stock_quantity: 100,
   created_at: "2024-12-01T08:30:00.000Z",
 };
@@ -34,7 +34,7 @@ export const mockSparePartAirFilter: SparePart = {
 export const mockSparePartTires: SparePart = {
   id: "part-004",
   name: "All-Season Tire",
-  price: 125.00,
+  price: 125.0,
   stock_quantity: 16,
   created_at: "2024-12-01T09:30:00.000Z",
 };
@@ -166,7 +166,7 @@ export const mockSparePartMinimalData: SparePart = {
 export const mockSparePartInvalidPrice: Partial<SparePart> = {
   id: "part-invalid",
   name: "Invalid Part",
-  price: -10.00, // Invalid negative price
+  price: -10.0, // Invalid negative price
   stock_quantity: 5,
   created_at: "2024-12-01T12:30:00.000Z",
 };
@@ -174,7 +174,7 @@ export const mockSparePartInvalidPrice: Partial<SparePart> = {
 export const mockSparePartMissingName: Partial<SparePart> = {
   id: "part-no-name",
   name: "", // Invalid empty name
-  price: 25.00,
+  price: 25.0,
   stock_quantity: 5,
   created_at: "2024-12-01T13:00:00.000Z",
 };

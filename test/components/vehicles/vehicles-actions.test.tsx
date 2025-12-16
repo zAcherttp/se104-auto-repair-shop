@@ -5,19 +5,27 @@ jest.mock("@/app/actions/vehicles", () => ({
   removeVehicle: jest.fn(),
 }));
 
-import { 
-  fetchVehiclesWithDebt, 
-  handleVehiclePayment, 
-  removeVehicle 
+import {
+  fetchVehiclesWithDebt,
+  handleVehiclePayment,
+  removeVehicle,
 } from "@/app/actions/vehicles";
-import { mockVehiclesData, mockEmptyVehiclesData } from "@/test/mocks/vehicles-data";
+import {
+  mockEmptyVehiclesData,
+  mockVehiclesData,
+} from "@/test/mocks/vehicles-data";
 
-const mockFetchVehiclesWithDebt = fetchVehiclesWithDebt as jest.MockedFunction<typeof fetchVehiclesWithDebt>;
-const mockHandleVehiclePayment = handleVehiclePayment as jest.MockedFunction<typeof handleVehiclePayment>;
-const mockRemoveVehicle = removeVehicle as jest.MockedFunction<typeof removeVehicle>;
+const mockFetchVehiclesWithDebt = fetchVehiclesWithDebt as jest.MockedFunction<
+  typeof fetchVehiclesWithDebt
+>;
+const mockHandleVehiclePayment = handleVehiclePayment as jest.MockedFunction<
+  typeof handleVehiclePayment
+>;
+const mockRemoveVehicle = removeVehicle as jest.MockedFunction<
+  typeof removeVehicle
+>;
 
 describe("Vehicles Server Actions", () => {
-
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -75,8 +83,8 @@ describe("Vehicles Server Actions", () => {
     });
 
     it("correctly calculates debt amounts", async () => {
-      const vehicleWithDebt = mockVehiclesData.find(v => v.total_debt > 0);
-      
+      const vehicleWithDebt = mockVehiclesData.find((v) => v.total_debt > 0);
+
       mockFetchVehiclesWithDebt.mockResolvedValue({
         data: [vehicleWithDebt!],
         error: null,
@@ -85,7 +93,9 @@ describe("Vehicles Server Actions", () => {
       const result = await fetchVehiclesWithDebt();
 
       expect(result.data?.[0].total_debt).toBe(vehicleWithDebt!.total_debt);
-      expect(result.data?.[0].total_repair_cost).toBeGreaterThan(result.data?.[0].total_paid);
+      expect(result.data?.[0].total_repair_cost).toBeGreaterThan(
+        result.data?.[0].total_paid,
+      );
     });
   });
 
@@ -105,7 +115,7 @@ describe("Vehicles Server Actions", () => {
       const result = await handleVehiclePayment(
         validPaymentData.vehicleId,
         validPaymentData.amount,
-        validPaymentData.paymentMethod
+        validPaymentData.paymentMethod,
       );
 
       expect(result.data).toEqual({ success: true });
@@ -113,7 +123,7 @@ describe("Vehicles Server Actions", () => {
       expect(mockHandleVehiclePayment).toHaveBeenCalledWith(
         validPaymentData.vehicleId,
         validPaymentData.amount,
-        validPaymentData.paymentMethod
+        validPaymentData.paymentMethod,
       );
     });
 
@@ -126,7 +136,9 @@ describe("Vehicles Server Actions", () => {
       const result = await handleVehiclePayment("vehicle-1", 10000, "cash");
 
       expect(result.error).toBeTruthy();
-      expect(result.error?.message).toBe("Payment amount exceeds remaining debt");
+      expect(result.error?.message).toBe(
+        "Payment amount exceeds remaining debt",
+      );
       expect(result.data).toBeUndefined();
     });
 
@@ -139,7 +151,9 @@ describe("Vehicles Server Actions", () => {
       const result = await handleVehiclePayment("vehicle-2", 100, "cash");
 
       expect(result.error).toBeTruthy();
-      expect(result.error?.message).toBe("No outstanding debt found for this vehicle");
+      expect(result.error?.message).toBe(
+        "No outstanding debt found for this vehicle",
+      );
     });
 
     it("handles invalid vehicle ID", async () => {
@@ -164,7 +178,11 @@ describe("Vehicles Server Actions", () => {
 
       for (const method of paymentMethods) {
         await handleVehiclePayment("vehicle-1", 100, method);
-        expect(mockHandleVehiclePayment).toHaveBeenCalledWith("vehicle-1", 100, method);
+        expect(mockHandleVehiclePayment).toHaveBeenCalledWith(
+          "vehicle-1",
+          100,
+          method,
+        );
       }
     });
 
@@ -211,7 +229,9 @@ describe("Vehicles Server Actions", () => {
 
       const result = await removeVehicle("vehicle-with-orders");
 
-      expect(result.error).toBe("Cannot delete vehicle with existing repair orders");
+      expect(result.error).toBe(
+        "Cannot delete vehicle with existing repair orders",
+      );
     });
 
     it("handles authentication errors", async () => {
@@ -234,7 +254,7 @@ describe("Vehicles Server Actions", () => {
       });
 
       const vehicles = await fetchVehiclesWithDebt();
-      const vehicleWithDebt = vehicles.data?.find(v => v.total_debt > 0);
+      const vehicleWithDebt = vehicles.data?.find((v) => v.total_debt > 0);
 
       expect(vehicleWithDebt).toBeTruthy();
 
@@ -247,7 +267,7 @@ describe("Vehicles Server Actions", () => {
       const paymentResult = await handleVehiclePayment(
         vehicleWithDebt!.id,
         100,
-        "cash"
+        "cash",
       );
 
       expect(paymentResult.data?.success).toBe(true);
@@ -257,7 +277,7 @@ describe("Vehicles Server Actions", () => {
       expect(mockHandleVehiclePayment).toHaveBeenCalledWith(
         vehicleWithDebt!.id,
         100,
-        "cash"
+        "cash",
       );
     });
 
@@ -294,15 +314,23 @@ describe("Vehicles Server Actions", () => {
         error: null,
       });
 
-      const result = await handleVehiclePayment("vehicle-1", 999999.99, "transfer");
+      const result = await handleVehiclePayment(
+        "vehicle-1",
+        999999.99,
+        "transfer",
+      );
 
       expect(result.data?.success).toBe(true);
-      expect(mockHandleVehiclePayment).toHaveBeenCalledWith("vehicle-1", 999999.99, "transfer");
+      expect(mockHandleVehiclePayment).toHaveBeenCalledWith(
+        "vehicle-1",
+        999999.99,
+        "transfer",
+      );
     });
 
     it("handles vehicles with zero debt calculations", async () => {
-      const zeroDebtVehicle = mockVehiclesData.find(v => v.total_debt === 0);
-      
+      const zeroDebtVehicle = mockVehiclesData.find((v) => v.total_debt === 0);
+
       mockFetchVehiclesWithDebt.mockResolvedValue({
         data: [zeroDebtVehicle!],
         error: null,
@@ -311,7 +339,9 @@ describe("Vehicles Server Actions", () => {
       const result = await fetchVehiclesWithDebt();
 
       expect(result.data?.[0].total_debt).toBe(0);
-      expect(result.data?.[0].total_repair_cost).toBe(result.data?.[0].total_paid);
+      expect(result.data?.[0].total_repair_cost).toBe(
+        result.data?.[0].total_paid,
+      );
     });
 
     it("handles special characters in vehicle data", async () => {

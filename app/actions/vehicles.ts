@@ -1,16 +1,15 @@
 "use server";
 
-import { updateSparePartsStock } from "@/lib/inventory-calculations";
-import { createClient } from "@/supabase/server";
-import {
-  VehicleReceptionFormData,
-  VehicleReceptionFormSchema,
-} from "@/lib/form/definitions";
-import { ApiResponse } from "@/types/types";
-import { VehicleWithDebt } from "@/types/types";
 import { format } from "date-fns";
 import { revalidatePath } from "next/cache";
-import { VehicleRegistration } from "../(protected)/reception/columns";
+import {
+  type VehicleReceptionFormData,
+  VehicleReceptionFormSchema,
+} from "@/lib/form/definitions";
+import { updateSparePartsStock } from "@/lib/inventory-calculations";
+import { createClient } from "@/supabase/server";
+import type { ApiResponse, VehicleWithDebt } from "@/types/types";
+import type { VehicleRegistration } from "../(protected)/reception/columns";
 
 interface FetchVehicleRegistrationParams {
   from?: Date;
@@ -197,9 +196,10 @@ export async function createReception(
   } catch (error) {
     console.error("Reception creation error:", error);
     return {
-      error: error instanceof Error
-        ? error
-        : new Error("Something went wrong. Please try again."),
+      error:
+        error instanceof Error
+          ? error
+          : new Error("Something went wrong. Please try again."),
       data: undefined,
     };
   }
@@ -208,7 +208,7 @@ export async function createReception(
 export async function handleVehiclePayment(
   vehicleId: string,
   amount: number,
-  paymentMethod: string = "cash",
+  paymentMethod = "cash",
 ): Promise<ApiResponse<{ success: true }>> {
   try {
     const supabase = await createClient();
@@ -251,10 +251,13 @@ export async function handleVehiclePayment(
     }
 
     // Calculate current debt
-    const totalRepairCosts = vehicle.repair_orders?.reduce((sum, order) =>
-      sum + (order.total_amount || 0), 0) || 0;
-    const totalPaid = vehicle.payments?.reduce((sum, payment) =>
-      sum + payment.amount, 0) || 0;
+    const totalRepairCosts =
+      vehicle.repair_orders?.reduce(
+        (sum, order) => sum + (order.total_amount || 0),
+        0,
+      ) || 0;
+    const totalPaid =
+      vehicle.payments?.reduce((sum, payment) => sum + payment.amount, 0) || 0;
     const remainingDebt = totalRepairCosts - totalPaid;
 
     if (remainingDebt <= 0) {
@@ -274,15 +277,13 @@ export async function handleVehiclePayment(
     }
 
     // Insert new payment record
-    const { error: paymentError } = await supabase
-      .from("payments")
-      .insert({
-        vehicle_id: vehicleId,
-        amount: amount,
-        payment_method: paymentMethod,
-        created_by: user.id,
-        payment_date: new Date().toISOString().split("T")[0], // Today's date
-      });
+    const { error: paymentError } = await supabase.from("payments").insert({
+      vehicle_id: vehicleId,
+      amount: amount,
+      payment_method: paymentMethod,
+      created_by: user.id,
+      payment_date: new Date().toISOString().split("T")[0], // Today's date
+    });
 
     if (paymentError) {
       console.error("Payment insertion error:", paymentError);
@@ -317,9 +318,8 @@ export async function handleVehiclePayment(
   } catch (error) {
     console.error("Error processing payment:", error);
     return {
-      error: error instanceof Error
-        ? error
-        : new Error("Failed to process payment"),
+      error:
+        error instanceof Error ? error : new Error("Failed to process payment"),
       data: undefined,
     };
   }
@@ -448,10 +448,11 @@ export async function updateRepairOrder(
 
     // Update spare parts stock
     await updateSparePartsStock({
-      deletedItems: existingItems?.map((item) => ({
-        spare_part_id: item.spare_part_id,
-        quantity: item.quantity || 0,
-      })) || [],
+      deletedItems:
+        existingItems?.map((item) => ({
+          spare_part_id: item.spare_part_id,
+          quantity: item.quantity || 0,
+        })) || [],
       newItems: orderItems
         .filter((item) => item.spare_part_id)
         .map((item) => ({
@@ -501,9 +502,10 @@ export async function updateRepairOrderSmart(
 
   try {
     // Get original quantities for deleted items (to restore stock)
-    let deletedItems: Array<
-      { spare_part_id: string | null; quantity: number }
-    > = [];
+    let deletedItems: Array<{
+      spare_part_id: string | null;
+      quantity: number;
+    }> = [];
     if (changes.deletedItemIds.length > 0) {
       const { data: itemsToDelete, error: fetchDeleteError } = await supabase
         .from("repair_order_items")
@@ -512,10 +514,11 @@ export async function updateRepairOrderSmart(
         .not("spare_part_id", "is", null);
 
       if (fetchDeleteError) throw fetchDeleteError;
-      deletedItems = itemsToDelete?.map((item) => ({
-        spare_part_id: item.spare_part_id,
-        quantity: item.quantity || 0,
-      })) || [];
+      deletedItems =
+        itemsToDelete?.map((item) => ({
+          spare_part_id: item.spare_part_id,
+          quantity: item.quantity || 0,
+        })) || [];
     }
 
     // Get original quantities for updated items
@@ -675,12 +678,15 @@ export async function fetchVehicleRegistrationWithDateRange(
     if (error) throw error;
 
     // Fetch total repair costs and payments for all vehicles in the result set
-    const vehicleIds = data?.map((repairOrder) => {
-      const vehicle = Array.isArray(repairOrder.vehicle)
-        ? repairOrder.vehicle[0]
-        : repairOrder.vehicle;
-      return vehicle?.id;
-    }).filter(Boolean) || [];
+    const vehicleIds =
+      data
+        ?.map((repairOrder) => {
+          const vehicle = Array.isArray(repairOrder.vehicle)
+            ? repairOrder.vehicle[0]
+            : repairOrder.vehicle;
+          return vehicle?.id;
+        })
+        .filter(Boolean) || [];
 
     const vehicleDebts: Record<
       string,
@@ -702,14 +708,14 @@ export async function fetchVehicleRegistrationWithDateRange(
 
       // Calculate totals per vehicle
       vehicleIds.forEach((vehicleId) => {
-        const totalRepairs = repairTotals?.filter((r) =>
-          r.vehicle_id === vehicleId
-        )
-          .reduce((sum, r) => sum + (r.total_amount || 0), 0) || 0;
-        const totalPaid = paymentTotals?.filter((p) =>
-          p.vehicle_id === vehicleId
-        )
-          .reduce((sum, p) => sum + p.amount, 0) || 0;
+        const totalRepairs =
+          repairTotals
+            ?.filter((r) => r.vehicle_id === vehicleId)
+            .reduce((sum, r) => sum + (r.total_amount || 0), 0) || 0;
+        const totalPaid =
+          paymentTotals
+            ?.filter((p) => p.vehicle_id === vehicleId)
+            .reduce((sum, p) => sum + p.amount, 0) || 0;
 
         vehicleDebts[vehicleId] = { totalRepairs, totalPaid };
       });
@@ -717,40 +723,43 @@ export async function fetchVehicleRegistrationWithDateRange(
 
     return {
       error: null,
-      data: data?.map((repairOrder) => {
-        const vehicle = Array.isArray(repairOrder.vehicle)
-          ? repairOrder.vehicle[0]
-          : repairOrder.vehicle;
-        const customer = Array.isArray(vehicle?.customer)
-          ? vehicle.customer[0]
-          : vehicle?.customer;
+      data:
+        data?.map((repairOrder) => {
+          const vehicle = Array.isArray(repairOrder.vehicle)
+            ? repairOrder.vehicle[0]
+            : repairOrder.vehicle;
+          const customer = Array.isArray(vehicle?.customer)
+            ? vehicle.customer[0]
+            : vehicle?.customer;
 
-        // Calculate debt for this vehicle using aggregated data
-        const vehicleDebt = vehicleDebts[vehicle?.id] ||
-          { totalRepairs: 0, totalPaid: 0 };
-        const debt = Math.max(
-          0,
-          vehicleDebt.totalRepairs - vehicleDebt.totalPaid,
-        );
+          // Calculate debt for this vehicle using aggregated data
+          const vehicleDebt = vehicleDebts[vehicle?.id] || {
+            totalRepairs: 0,
+            totalPaid: 0,
+          };
+          const debt = Math.max(
+            0,
+            vehicleDebt.totalRepairs - vehicleDebt.totalPaid,
+          );
 
-        return {
-          vehicle: vehicle,
-          customer: customer,
-          repair_order: {
-            id: repairOrder.id,
-            vehicle_id: repairOrder.vehicle_id,
-            created_by: repairOrder.created_by,
-            status: repairOrder.status,
-            reception_date: repairOrder.reception_date,
-            completion_date: repairOrder.completion_date,
-            notes: repairOrder.notes,
-            total_amount: repairOrder.total_amount,
-            created_at: repairOrder.created_at,
-            updated_at: repairOrder.updated_at,
-          },
-          debt: debt,
-        };
-      }) || [],
+          return {
+            vehicle: vehicle,
+            customer: customer,
+            repair_order: {
+              id: repairOrder.id,
+              vehicle_id: repairOrder.vehicle_id,
+              created_by: repairOrder.created_by,
+              status: repairOrder.status,
+              reception_date: repairOrder.reception_date,
+              completion_date: repairOrder.completion_date,
+              notes: repairOrder.notes,
+              total_amount: repairOrder.total_amount,
+              created_at: repairOrder.created_at,
+              updated_at: repairOrder.updated_at,
+            },
+            debt: debt,
+          };
+        }) || [],
       totalCount: count || 0,
     };
   } catch (error) {
@@ -839,27 +848,32 @@ export async function fetchVehiclesWithDebt(): Promise<
     if (error) throw error;
 
     // Calculate debt for each vehicle
-    const vehiclesWithDebt: VehicleWithDebt[] = vehicles?.map((vehicle) => {
-      const customer = Array.isArray(vehicle.customer)
-        ? vehicle.customer[0]
-        : vehicle.customer;
-      const totalRepairCosts = vehicle.repair_orders?.reduce((sum, order) =>
-        sum + (order.total_amount || 0), 0) || 0;
-      const totalPaid = vehicle.payments?.reduce((sum, payment) =>
-        sum + payment.amount, 0) || 0;
-      const totalDebt = Math.max(0, totalRepairCosts - totalPaid);
+    const vehiclesWithDebt: VehicleWithDebt[] =
+      vehicles?.map((vehicle) => {
+        const customer = Array.isArray(vehicle.customer)
+          ? vehicle.customer[0]
+          : vehicle.customer;
+        const totalRepairCosts =
+          vehicle.repair_orders?.reduce(
+            (sum, order) => sum + (order.total_amount || 0),
+            0,
+          ) || 0;
+        const totalPaid =
+          vehicle.payments?.reduce((sum, payment) => sum + payment.amount, 0) ||
+          0;
+        const totalDebt = Math.max(0, totalRepairCosts - totalPaid);
 
-      return {
-        id: vehicle.id,
-        license_plate: vehicle.license_plate,
-        brand: vehicle.brand,
-        customer: customer,
-        total_repair_cost: totalRepairCosts,
-        total_paid: totalPaid,
-        total_debt: totalDebt,
-        created_at: vehicle.created_at,
-      };
-    }) || [];
+        return {
+          id: vehicle.id,
+          license_plate: vehicle.license_plate,
+          brand: vehicle.brand,
+          customer: customer,
+          total_repair_cost: totalRepairCosts,
+          total_paid: totalPaid,
+          total_debt: totalDebt,
+          created_at: vehicle.created_at,
+        };
+      }) || [];
 
     return {
       error: null,
@@ -868,9 +882,8 @@ export async function fetchVehiclesWithDebt(): Promise<
   } catch (error) {
     console.error("Error fetching vehicles with debt:", error);
     return {
-      error: error instanceof Error
-        ? error
-        : new Error("Failed to fetch vehicles"),
+      error:
+        error instanceof Error ? error : new Error("Failed to fetch vehicles"),
       data: undefined,
     };
   }
@@ -898,7 +911,7 @@ async function checkDailyVehicleLimit() {
       };
     }
 
-    const maxCapacity = parseInt(settings.setting_value) || 0;
+    const maxCapacity = Number.parseInt(settings.setting_value, 10) || 0;
     if (maxCapacity <= 0) {
       return {
         success: true,
@@ -931,8 +944,8 @@ async function checkDailyVehicleLimit() {
       maxCapacity,
       canCreate,
       isAtLimit: currentCount >= maxCapacity,
-      isNearLimit: currentCount >= maxCapacity - 2 &&
-        currentCount < maxCapacity,
+      isNearLimit:
+        currentCount >= maxCapacity - 2 && currentCount < maxCapacity,
     };
   } catch (error) {
     console.error("Error checking daily vehicle limit:", error);

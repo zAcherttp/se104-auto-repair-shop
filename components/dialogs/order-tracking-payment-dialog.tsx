@@ -1,24 +1,25 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
+import CurrencyInput from "react-currency-input-field";
+import { toast } from "sonner";
+import SubmitButton from "@/components/submit-button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { getPaymentImageURL } from "@/lib/utils";
-import ZoomableImage from "../zoomable-image";
-import SubmitButton from "@/components/submit-button";
-import { toast } from "sonner";
-import CurrencyInput from "react-currency-input-field";
-import { createClient } from "@/supabase/client";
-import { Vehicle, Customer } from "@/types";
 import { useVehicleDebt } from "@/hooks/use-vehicle-debt";
+import { getPaymentImageURL } from "@/lib/utils";
+import { createClient } from "@/supabase/client";
+import type { Customer, Vehicle } from "@/types";
 import { Label } from "../ui/label";
+import ZoomableImage from "../zoomable-image";
 
 interface OrderTrackingPaymentDialogProps {
   trigger: React.ReactNode;
@@ -93,8 +94,8 @@ export function OrderTrackingPaymentDialog({
       if (paymentAmount > debtData.remainingDebt) {
         toast.error(
           `Payment amount exceeds remaining debt of $${debtData.remainingDebt.toFixed(
-            2
-          )}`
+            2,
+          )}`,
         );
         return;
       }
@@ -160,7 +161,7 @@ export function OrderTrackingPaymentDialog({
           </DialogHeader>
           <div className="flex items-center justify-center p-8">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+              <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-gray-900 border-b-2" />
               <p className="text-muted-foreground">
                 Loading payment information...
               </p>
@@ -186,24 +187,24 @@ export function OrderTrackingPaymentDialog({
 
         <div className="space-y-4">
           {/* Vehicle Info */}
-          <div className="bg-slate-50 dark:bg-slate-900 p-3 rounded-lg">
-            <div className="flex justify-between items-center text-sm">
+          <div className="rounded-lg bg-slate-50 p-3 dark:bg-slate-900">
+            <div className="flex items-center justify-between text-sm">
               <Label className="text-muted-foreground">Vehicle:</Label>
               <Label className="font-medium">{vehicle.license_plate}</Label>
             </div>
-            <div className="flex justify-between items-center text-sm">
+            <div className="flex items-center justify-between text-sm">
               <Label className="text-muted-foreground">Customer:</Label>
               <Label className="font-medium">{customer.name}</Label>
             </div>
-            <div className="flex justify-between items-center text-sm">
+            <div className="flex items-center justify-between text-sm">
               <Label className="text-muted-foreground">Brand:</Label>
               <Label className="font-medium">{vehicle.brand}</Label>
             </div>
           </div>
 
           {/* Payment Amount */}
-          <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 rounded-lg border">
-            <p className="text-muted-foreground mb-4">Payment Amount:</p>
+          <div className="rounded-lg border bg-gradient-to-br from-green-50 to-emerald-50 p-4 text-center dark:from-green-950 dark:to-emerald-950">
+            <p className="mb-4 text-muted-foreground">Payment Amount:</p>
             <div className="space-y-2">
               <CurrencyInput
                 id="payment-amount"
@@ -217,14 +218,14 @@ export function OrderTrackingPaymentDialog({
                 allowDecimals={true}
                 allowNegativeValue={false}
                 disabled={showQRCode}
-                className="w-full text-center text-2xl font-bold bg-transparent border-0 outline-none focus:ring-2 focus:ring-green-500 rounded px-2 py-1 disabled:opacity-50"
+                className="w-full rounded border-0 bg-transparent px-2 py-1 text-center font-bold text-2xl outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50"
                 style={{
                   color: paymentAmount > debtAmount ? "#ef4444" : "#16a34a",
                 }}
                 placeholder="Enter amount"
                 step={0.01}
               />
-              <div className="text-sm text-muted-foreground">
+              <div className="text-muted-foreground text-sm">
                 Max:{" "}
                 {new Intl.NumberFormat("en-US", {
                   style: "currency",
@@ -232,12 +233,12 @@ export function OrderTrackingPaymentDialog({
                 }).format(debtAmount)}
               </div>
               {paymentAmount > debtAmount && (
-                <p className="text-sm text-red-500">
+                <p className="text-red-500 text-sm">
                   Payment cannot exceed debt amount
                 </p>
               )}
               {paymentAmount <= 0 && (
-                <p className="text-sm text-red-500">
+                <p className="text-red-500 text-sm">
                   Payment must be greater than 0
                 </p>
               )}
@@ -255,7 +256,7 @@ export function OrderTrackingPaymentDialog({
 
           {/* QR Code */}
           {showQRCode && (
-            <div className="flex justify-center p-4 bg-white rounded-lg border">
+            <div className="flex justify-center rounded-lg border bg-white p-4">
               <ZoomableImage
                 src={getPaymentImageURL({
                   bankCode: process.env.NEXT_PUBLIC_VIETQR_BANKCODE || "N/A",

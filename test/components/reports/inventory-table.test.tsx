@@ -1,9 +1,9 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
+import React from "react";
 import { InventoryTable } from "@/components/reports/inventory-table";
 import {
-  mockInventoryReport,
   mockEmptyInventoryReport,
+  mockInventoryReport,
 } from "@/test/mocks/reports-data";
 
 describe("InventoryTable Data Layer", () => {
@@ -27,7 +27,7 @@ describe("InventoryTable Data Layer", () => {
 
     // Check month display
     expect(
-      screen.getByText(/inventory status report: June 2025/i)
+      screen.getByText(/inventory status report: June 2025/i),
     ).toBeTruthy();
 
     // Check that data rows are rendered

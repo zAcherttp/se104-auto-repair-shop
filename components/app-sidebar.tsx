@@ -3,16 +3,16 @@
 import {
   BarChart3,
   Car,
+  ClipboardList,
   Cog,
   CreditCard,
   Package2,
-  ClipboardList,
 } from "lucide-react";
-import { NavGroup } from "./nav-group";
-import { Sidebar, SidebarContent, SidebarHeader } from "./ui/sidebar";
-import { AppBanner } from "./sidebar-banner";
-import { useMemo, memo } from "react";
 import { useTranslations } from "next-intl";
+import { memo, useMemo } from "react";
+import { NavGroup } from "./nav-group";
+import { AppBanner } from "./sidebar-banner";
+import { Sidebar, SidebarContent, SidebarHeader } from "./ui/sidebar";
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   isAdmin?: boolean;
@@ -36,13 +36,13 @@ export const AppSidebar = memo(function AppSidebar({
       { name: t("inventory"), url: "/inventory", icon: Package2 },
       { name: t("reports"), url: "/reports", icon: BarChart3 },
     ],
-    [t]
+    [t],
   );
 
   // Memoize the admin items array with translations
   const adminItems = useMemo(
     () => [{ name: t("settings"), url: "/settings", icon: Cog }],
-    [t]
+    [t],
   );
 
   // Memoize garage items based on admin status

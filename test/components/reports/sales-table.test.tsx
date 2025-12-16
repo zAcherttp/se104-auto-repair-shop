@@ -1,9 +1,9 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
+import React from "react";
 import { SalesTable } from "@/components/reports/sales-table";
 import {
-  mockSalesReport,
   mockEmptySalesReport,
+  mockSalesReport,
 } from "@/test/mocks/reports-data";
 
 describe("SalesTable Data Layer", () => {
@@ -78,7 +78,7 @@ describe("SalesTable Data Layer", () => {
     render(<SalesTable data={mockEmptySalesReport} />);
 
     const noDataMessage = screen.getByText(
-      /no sales data available for this period/i
+      /no sales data available for this period/i,
     );
     expect(noDataMessage).toBeTruthy();
 
@@ -91,7 +91,7 @@ describe("SalesTable Data Layer", () => {
     render(<SalesTable data={undefined} />);
 
     const noDataMessage = screen.getByText(
-      /no sales data available for this period/i
+      /no sales data available for this period/i,
     );
     expect(noDataMessage).toBeTruthy();
   });
@@ -105,7 +105,7 @@ describe("SalesTable Data Layer", () => {
     render(<SalesTable data={dataWithNoOrders} />);
 
     const noDataMessage = screen.getByText(
-      /no sales data available for this period/i
+      /no sales data available for this period/i,
     );
     expect(noDataMessage).toBeTruthy();
   });

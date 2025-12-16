@@ -1,20 +1,19 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
 import { useTranslations } from "next-intl";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 import {
   getSystemSettings,
   updateSystemSettings,
 } from "@/app/actions/settings";
 import { uploadBannerImage } from "@/app/actions/upload-banner-image";
 import { uploadLogoImage } from "@/app/actions/upload-logo-image";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -22,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Tooltip,
   TooltipContent,
@@ -123,7 +123,7 @@ export default function GarageSettingsTab() {
             acc[setting.setting_key] = setting.setting_value;
             return acc;
           },
-          {}
+          {},
         );
 
         setFormData({
@@ -236,7 +236,7 @@ export default function GarageSettingsTab() {
       <Card>
         <CardContent className="p-4">
           <div className="flex items-center justify-center">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+            <div className="h-6 w-6 animate-spin rounded-full border-primary border-b-2" />
           </div>
         </CardContent>
       </Card>
@@ -246,7 +246,7 @@ export default function GarageSettingsTab() {
   return (
     <Card>
       <CardContent className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="garageName">{t("form.garageName")}</Label>
             <Input
@@ -337,7 +337,7 @@ export default function GarageSettingsTab() {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="space-y-2">
             <Tooltip delayDuration={500}>
               <TooltipTrigger asChild>
@@ -379,7 +379,7 @@ export default function GarageSettingsTab() {
           </div>
         </div>
 
-        <div className="space-y-2 select-none">
+        <div className="select-none space-y-2">
           <Label htmlFor="logoPosition">{t("form.logoPosition")}</Label>
           <Select
             value={formData.logoPosition}
@@ -399,7 +399,7 @@ export default function GarageSettingsTab() {
         {formData.bannerImageUrl || formData.logoImageUrl ? (
           <div className="space-y-2">
             <Label>{t("preview.title")}</Label>
-            <div className="relative w-full bg-gray-100 rounded border overflow-hidden aspect-[4/1]">
+            <div className="relative aspect-[4/1] w-full overflow-hidden rounded border bg-gray-100">
               {/* Banner Image */}
               {formData.bannerImageUrl && (
                 <div className="absolute inset-0">
@@ -408,12 +408,12 @@ export default function GarageSettingsTab() {
                     alt="Banner preview"
                     width={2048}
                     height={512}
-                    className={`w-full h-full object-cover ${
+                    className={`h-full w-full object-cover ${
                       formData.logoPosition === "left"
                         ? "object-[75%_center]"
                         : formData.logoPosition === "right"
-                        ? "object-[25%_center]"
-                        : "object-center"
+                          ? "object-[25%_center]"
+                          : "object-center"
                     }`}
                     priority
                   />
@@ -429,7 +429,7 @@ export default function GarageSettingsTab() {
                       : "justify-end pr-16"
                   }`}
                 >
-                  <div className="w-64 h-64 bg-white rounded-lg flex items-center justify-center">
+                  <div className="flex h-64 w-64 items-center justify-center rounded-lg bg-white">
                     <Image
                       src={formData.logoImageUrl}
                       alt="Logo preview"
@@ -443,14 +443,14 @@ export default function GarageSettingsTab() {
 
               {/* Fallback when no banner */}
               {!formData.bannerImageUrl && formData.logoImageUrl && (
-                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                <div className="flex h-full w-full items-center justify-center bg-gray-200">
                   <span className="text-gray-500 text-sm">
                     {t("preview.noBanner")}
                   </span>
                 </div>
               )}
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               {t("preview.description")}
             </p>
           </div>

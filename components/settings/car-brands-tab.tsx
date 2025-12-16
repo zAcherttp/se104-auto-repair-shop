@@ -1,15 +1,15 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Plus, Save, X } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
+import { getCarBrands, updateCarBrands } from "@/app/actions/settings";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { Plus, X, Save } from "lucide-react";
-import { toast } from "sonner";
-import { useTranslations } from "next-intl";
-import { getCarBrands, updateCarBrands } from "@/app/actions/settings";
 
 export default function CarBrandsTab() {
   const t = useTranslations("settings.brands");
@@ -24,7 +24,7 @@ export default function CarBrandsTab() {
       if (response.success && response.data) {
         // Filter out empty strings and ensure unique brands
         const validBrands = response.data.filter(
-          (brand) => brand.trim() !== ""
+          (brand) => brand.trim() !== "",
         );
         setCarBrands(validBrands);
       }
@@ -49,7 +49,7 @@ export default function CarBrandsTab() {
 
     if (
       carBrands.some(
-        (brand) => brand.toLowerCase() === trimmedBrand.toLowerCase()
+        (brand) => brand.toLowerCase() === trimmedBrand.toLowerCase(),
       )
     ) {
       toast.error(t("brandExistsError"));
@@ -93,12 +93,12 @@ export default function CarBrandsTab() {
       <Card>
         <CardContent>
           <div className="animate-pulse space-y-4">
-            <div className="h-4 bg-muted rounded w-1/4"></div>
-            <div className="h-10 bg-muted rounded"></div>
-            <div className="h-10 bg-muted rounded"></div>
+            <div className="h-4 w-1/4 rounded bg-muted" />
+            <div className="h-10 rounded bg-muted" />
+            <div className="h-10 rounded bg-muted" />
             <div className="flex flex-wrap gap-2">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="h-8 bg-muted rounded w-20"></div>
+                <div key={i} className="h-8 w-20 rounded bg-muted" />
               ))}
             </div>
           </div>
@@ -123,7 +123,7 @@ export default function CarBrandsTab() {
               className="flex-1"
             />
             <Button onClick={handleAddBrand} size="sm">
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="mr-2 h-4 w-4" />
               {t("addButton")}
             </Button>
           </div>
@@ -135,22 +135,22 @@ export default function CarBrandsTab() {
             {t("currentBrands")} ({carBrands.length})
           </Label>
           {carBrands.length === 0 ? (
-            <p className="text-sm text-muted-foreground">{t("noBrands")}</p>
+            <p className="text-muted-foreground text-sm">{t("noBrands")}</p>
           ) : (
-            <div className="flex flex-wrap gap-2 p-4 border rounded-lg bg-muted/50">
+            <div className="flex flex-wrap gap-2 rounded-lg border bg-muted/50 p-4">
               {carBrands.map((brand, index) => (
                 <Badge
                   key={index}
                   variant="secondary"
-                  className="text-sm px-3 py-1 flex items-center gap-2"
+                  className="flex items-center gap-2 px-3 py-1 text-sm"
                 >
                   {brand}
                   <button
                     onClick={() => handleRemoveBrand(index)}
-                    className="text-muted-foreground hover:text-destructive transition-colors"
+                    className="text-muted-foreground transition-colors hover:text-destructive"
                     title={`Remove ${brand}`}
                   >
-                    <X className="w-3 h-3" />
+                    <X className="h-3 w-3" />
                   </button>
                 </Badge>
               ))}
@@ -159,13 +159,13 @@ export default function CarBrandsTab() {
         </div>
 
         {/* Save Button */}
-        <div className="flex justify-end pt-4 border-t">
+        <div className="flex justify-end border-t pt-4">
           <Button
             onClick={handleSaveChanges}
             disabled={saving}
             className="bg-primary hover:bg-primary/90"
           >
-            <Save className="w-4 h-4 mr-2" />
+            <Save className="mr-2 h-4 w-4" />
             {saving ? t("saving") : t("saveChanges")}
           </Button>
         </div>

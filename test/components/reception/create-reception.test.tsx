@@ -4,9 +4,11 @@ jest.mock("@/app/actions/vehicles", () => ({
 }));
 
 import { createReception } from "@/app/actions/vehicles";
-import { VehicleReceptionFormData } from "@/lib/form/definitions";
+import type { VehicleReceptionFormData } from "@/lib/form/definitions";
 
-const mockCreateReception = createReception as jest.MockedFunction<typeof createReception>;
+const mockCreateReception = createReception as jest.MockedFunction<
+  typeof createReception
+>;
 
 describe("createReception Server Action", () => {
   const validFormData: VehicleReceptionFormData = {

@@ -1,6 +1,6 @@
 /**
  * Track Order Data Processing Tests
- * 
+ *
  * This test suite focuses on validating the data processing and transformation logic
  * used in the track-order functionality. Tests core business logic without UI dependencies.
  */
@@ -9,8 +9,8 @@ import {
   mockOrderData,
   mockOrderDataMultipleOrders,
   mockOrderDataOverpaid,
-  mockOrderDataWithDebt,
   mockOrderDataPaidInFull,
+  mockOrderDataWithDebt,
 } from "@/test/mocks/track-order-data";
 import type { OrderDataProps, RepairOrderWithItemsDetails } from "@/types";
 
@@ -19,15 +19,17 @@ describe("Track Order Data Processing", () => {
     const calculateTotalExpense = (orderData: OrderDataProps): number => {
       return orderData.RepairOrderWithItemsDetails.reduce(
         (sum, order) => sum + (order.total_amount || 0),
-        0
+        0,
       );
     };
 
     const calculateTotalPaid = (orderData: OrderDataProps): number => {
-      return orderData.vehicle.payments?.reduce(
-        (sum, payment) => sum + payment.amount,
-        0
-      ) || 0;
+      return (
+        orderData.vehicle.payments?.reduce(
+          (sum, payment) => sum + payment.amount,
+          0,
+        ) || 0
+      );
     };
 
     const calculateRemainingAmount = (orderData: OrderDataProps): number => {
@@ -36,34 +38,34 @@ describe("Track Order Data Processing", () => {
 
     it("calculates total expense correctly for single order", () => {
       const totalExpense = calculateTotalExpense(mockOrderData);
-      expect(totalExpense).toBe(545.00);
+      expect(totalExpense).toBe(545.0);
     });
 
     it("calculates total expense correctly for multiple orders", () => {
       const totalExpense = calculateTotalExpense(mockOrderDataMultipleOrders);
-      expect(totalExpense).toBe(845.00);
+      expect(totalExpense).toBe(845.0);
     });
 
     it("calculates total paid amount correctly", () => {
       const totalPaid = calculateTotalPaid(mockOrderData);
-      expect(totalPaid).toBe(350.00);
+      expect(totalPaid).toBe(350.0);
     });
 
     it("calculates remaining amount for debt scenario", () => {
       const remaining = calculateRemainingAmount(mockOrderDataWithDebt);
-      expect(remaining).toBe(345.00);
+      expect(remaining).toBe(345.0);
       expect(remaining > 0).toBe(true);
     });
 
     it("calculates remaining amount for overpaid scenario", () => {
       const remaining = calculateRemainingAmount(mockOrderDataOverpaid);
-      expect(remaining).toBe(-105.00);
+      expect(remaining).toBe(-105.0);
       expect(remaining < 0).toBe(true);
     });
 
     it("calculates remaining amount for paid in full scenario", () => {
       const remaining = calculateRemainingAmount(mockOrderDataPaidInFull);
-      expect(remaining).toBe(0.00);
+      expect(remaining).toBe(0.0);
       expect(remaining === 0).toBe(true);
     });
 
@@ -80,7 +82,7 @@ describe("Track Order Data Processing", () => {
       const remaining = calculateRemainingAmount(mockDataNoPayments);
 
       expect(totalPaid).toBe(0);
-      expect(remaining).toBe(545.00);
+      expect(remaining).toBe(545.0);
     });
 
     it("handles undefined payments", () => {
@@ -111,12 +113,13 @@ describe("Track Order Data Processing", () => {
     const getPaymentStatus = (orderData: OrderDataProps): string => {
       const totalExpense = orderData.RepairOrderWithItemsDetails.reduce(
         (sum, order) => sum + (order.total_amount || 0),
-        0
+        0,
       );
-      const totalPaid = orderData.vehicle.payments?.reduce(
-        (sum, payment) => sum + payment.amount,
-        0
-      ) || 0;
+      const totalPaid =
+        orderData.vehicle.payments?.reduce(
+          (sum, payment) => sum + payment.amount,
+          0,
+        ) || 0;
       const remainingAmount = totalExpense - totalPaid;
 
       if (remainingAmount > 0) return "Outstanding";
@@ -172,7 +175,7 @@ describe("Track Order Data Processing", () => {
     };
 
     it("formats positive amounts correctly", () => {
-      expect(formatCurrency(545.00)).toBe("$545.00");
+      expect(formatCurrency(545.0)).toBe("$545.00");
       expect(formatCurrency(1234.56)).toBe("$1,234.56");
     });
 
@@ -181,11 +184,11 @@ describe("Track Order Data Processing", () => {
     });
 
     it("formats negative amounts correctly", () => {
-      expect(formatCurrency(-105.00)).toBe("-$105.00");
+      expect(formatCurrency(-105.0)).toBe("-$105.00");
     });
 
     it("formats large amounts with commas", () => {
-      expect(formatCurrency(1000000.50)).toBe("$1,000,000.50");
+      expect(formatCurrency(1000000.5)).toBe("$1,000,000.50");
     });
 
     it("handles decimal precision correctly", () => {
@@ -196,9 +199,11 @@ describe("Track Order Data Processing", () => {
 
   describe("Repair Order Item Processing", () => {
     const processRepairOrderItems = (order: RepairOrderWithItemsDetails) => {
-      return order.repair_order_items.map(item => ({
+      return order.repair_order_items.map((item) => ({
         ...item,
-        calculatedTotal: (item.unit_price || 0) * (item.quantity || 0) + (item.labor_cost || 0),
+        calculatedTotal:
+          (item.unit_price || 0) * (item.quantity || 0) +
+          (item.labor_cost || 0),
       }));
     };
 
@@ -207,8 +212,8 @@ describe("Track Order Data Processing", () => {
       const processedItems = processRepairOrderItems(order);
 
       expect(processedItems).toHaveLength(2);
-      expect(processedItems[0].calculatedTotal).toBe(460.00); // (150 * 2) + 160
-      expect(processedItems[1].calculatedTotal).toBe(85.00);  // (50 * 1) + 35
+      expect(processedItems[0].calculatedTotal).toBe(460.0); // (150 * 2) + 160
+      expect(processedItems[1].calculatedTotal).toBe(85.0); // (50 * 1) + 35
     });
 
     it("validates item totals match stored totals", () => {
@@ -216,45 +221,55 @@ describe("Track Order Data Processing", () => {
       const processedItems = processRepairOrderItems(order);
 
       processedItems.forEach((item, index) => {
-        expect(item.calculatedTotal).toBe(order.repair_order_items[index].total_amount);
+        expect(item.calculatedTotal).toBe(
+          order.repair_order_items[index].total_amount,
+        );
       });
     });
 
     it("handles zero quantities correctly", () => {
       const mockOrder: RepairOrderWithItemsDetails = {
         ...mockOrderData.RepairOrderWithItemsDetails[0],
-        repair_order_items: [{
-          ...mockOrderData.RepairOrderWithItemsDetails[0].repair_order_items[0],
-          quantity: 0,
-          unit_price: 100,
-          labor_cost: 50,
-          total_amount: 50,
-        }],
+        repair_order_items: [
+          {
+            ...mockOrderData.RepairOrderWithItemsDetails[0]
+              .repair_order_items[0],
+            quantity: 0,
+            unit_price: 100,
+            labor_cost: 50,
+            total_amount: 50,
+          },
+        ],
       };
 
       const processedItems = processRepairOrderItems(mockOrder);
-      expect(processedItems[0].calculatedTotal).toBe(50.00); // (100 * 0) + 50
+      expect(processedItems[0].calculatedTotal).toBe(50.0); // (100 * 0) + 50
     });
 
     it("handles zero labor cost correctly", () => {
       const mockOrder: RepairOrderWithItemsDetails = {
         ...mockOrderData.RepairOrderWithItemsDetails[0],
-        repair_order_items: [{
-          ...mockOrderData.RepairOrderWithItemsDetails[0].repair_order_items[0],
-          quantity: 2,
-          unit_price: 100,
-          labor_cost: 0,
-          total_amount: 200,
-        }],
+        repair_order_items: [
+          {
+            ...mockOrderData.RepairOrderWithItemsDetails[0]
+              .repair_order_items[0],
+            quantity: 2,
+            unit_price: 100,
+            labor_cost: 0,
+            total_amount: 200,
+          },
+        ],
       };
 
       const processedItems = processRepairOrderItems(mockOrder);
-      expect(processedItems[0].calculatedTotal).toBe(200.00); // (100 * 2) + 0
+      expect(processedItems[0].calculatedTotal).toBe(200.0); // (100 * 2) + 0
     });
   });
 
   describe("Data Validation Logic", () => {
-    const validateOrderData = (orderData: OrderDataProps): { isValid: boolean; errors: string[] } => {
+    const validateOrderData = (
+      orderData: OrderDataProps,
+    ): { isValid: boolean; errors: string[] } => {
       const errors: string[] = [];
 
       // Validate vehicle data
@@ -278,16 +293,20 @@ describe("Track Order Data Processing", () => {
         if (!order.id) {
           errors.push(`Repair order ${index + 1} ID is required`);
         }
-        if (typeof order.total_amount !== 'number' || order.total_amount < 0) {
-          errors.push(`Repair order ${index + 1} total amount must be a positive number`);
+        if (typeof order.total_amount !== "number" || order.total_amount < 0) {
+          errors.push(
+            `Repair order ${index + 1} total amount must be a positive number`,
+          );
         }
       });
 
       // Validate payments
       if (orderData.vehicle.payments) {
         orderData.vehicle.payments.forEach((payment, index) => {
-          if (typeof payment.amount !== 'number' || payment.amount <= 0) {
-            errors.push(`Payment ${index + 1} amount must be a positive number`);
+          if (typeof payment.amount !== "number" || payment.amount <= 0) {
+            errors.push(
+              `Payment ${index + 1} amount must be a positive number`,
+            );
           }
         });
       }
@@ -346,8 +365,12 @@ describe("Track Order Data Processing", () => {
 
       const validation = validateOrderData(invalidData);
       expect(validation.isValid).toBe(false);
-      expect(validation.errors.some(error => error.includes("Payment 1 amount"))).toBe(true);
-      expect(validation.errors.some(error => error.includes("Payment 2 amount"))).toBe(true);
+      expect(
+        validation.errors.some((error) => error.includes("Payment 1 amount")),
+      ).toBe(true);
+      expect(
+        validation.errors.some((error) => error.includes("Payment 2 amount")),
+      ).toBe(true);
     });
   });
 
@@ -355,22 +378,24 @@ describe("Track Order Data Processing", () => {
     const aggregateOrderStatistics = (orderData: OrderDataProps) => {
       const totalExpense = orderData.RepairOrderWithItemsDetails.reduce(
         (sum, order) => sum + (order.total_amount || 0),
-        0
+        0,
       );
-      const totalPaid = orderData.vehicle.payments?.reduce(
-        (sum, payment) => sum + payment.amount,
-        0
-      ) || 0;
+      const totalPaid =
+        orderData.vehicle.payments?.reduce(
+          (sum, payment) => sum + payment.amount,
+          0,
+        ) || 0;
       const remainingAmount = totalExpense - totalPaid;
 
       const totalItems = orderData.RepairOrderWithItemsDetails.reduce(
         (sum, order) => sum + order.repair_order_items.length,
-        0
+        0,
       );
 
-      const averageOrderValue = orderData.RepairOrderWithItemsDetails.length > 0
-        ? totalExpense / orderData.RepairOrderWithItemsDetails.length
-        : 0;
+      const averageOrderValue =
+        orderData.RepairOrderWithItemsDetails.length > 0
+          ? totalExpense / orderData.RepairOrderWithItemsDetails.length
+          : 0;
 
       return {
         totalOrders: orderData.RepairOrderWithItemsDetails.length,
@@ -379,9 +404,14 @@ describe("Track Order Data Processing", () => {
         totalPaid,
         remainingAmount: Math.abs(remainingAmount),
         averageOrderValue,
-        paymentStatus: remainingAmount > 0 ? "Outstanding" : 
-                      remainingAmount < 0 ? "Overpaid" : "Paid in Full",
-        paymentProgress: totalExpense > 0 ? (totalPaid / totalExpense) * 100 : 0,
+        paymentStatus:
+          remainingAmount > 0
+            ? "Outstanding"
+            : remainingAmount < 0
+              ? "Overpaid"
+              : "Paid in Full",
+        paymentProgress:
+          totalExpense > 0 ? (totalPaid / totalExpense) * 100 : 0,
       };
     };
 
@@ -390,10 +420,10 @@ describe("Track Order Data Processing", () => {
 
       expect(stats.totalOrders).toBe(1);
       expect(stats.totalItems).toBe(2);
-      expect(stats.totalExpense).toBe(545.00);
-      expect(stats.totalPaid).toBe(350.00);
-      expect(stats.remainingAmount).toBe(195.00);
-      expect(stats.averageOrderValue).toBe(545.00);
+      expect(stats.totalExpense).toBe(545.0);
+      expect(stats.totalPaid).toBe(350.0);
+      expect(stats.remainingAmount).toBe(195.0);
+      expect(stats.averageOrderValue).toBe(545.0);
       expect(stats.paymentStatus).toBe("Outstanding");
       expect(stats.paymentProgress).toBeCloseTo(64.22, 2); // (350/545) * 100
     });
@@ -402,15 +432,15 @@ describe("Track Order Data Processing", () => {
       const stats = aggregateOrderStatistics(mockOrderDataMultipleOrders);
 
       expect(stats.totalOrders).toBe(2);
-      expect(stats.totalExpense).toBe(845.00);
-      expect(stats.averageOrderValue).toBe(422.50); // 845 / 2
+      expect(stats.totalExpense).toBe(845.0);
+      expect(stats.averageOrderValue).toBe(422.5); // 845 / 2
     });
 
     it("handles overpaid scenario correctly", () => {
       const stats = aggregateOrderStatistics(mockOrderDataOverpaid);
 
       expect(stats.paymentStatus).toBe("Overpaid");
-      expect(stats.remainingAmount).toBe(105.00); // Absolute value
+      expect(stats.remainingAmount).toBe(105.0); // Absolute value
       expect(stats.paymentProgress).toBeCloseTo(119.27, 2); // (650/545) * 100
     });
 

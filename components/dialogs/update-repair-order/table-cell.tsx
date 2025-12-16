@@ -1,11 +1,11 @@
 "use client";
 
+import type { Table } from "@tanstack/react-table";
+import { Edit } from "lucide-react";
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Edit } from "lucide-react";
-import { LineItem } from "./columns";
-import { Table } from "@tanstack/react-table";
 import { Label } from "@/components/ui/label";
+import type { LineItem } from "./columns";
 
 interface TableCellProps {
   getValue: () => unknown;
@@ -46,21 +46,21 @@ export const TableCell = React.memo<TableCellProps>(function TableCell({
       }
       return (value as string) || "-";
     },
-    [column.id]
+    [column.id],
   );
 
   const isTotal = column.id === "total";
   const formattedValue = formatValue(initialValue);
 
   return (
-    <div className="flex items-center justify-between group">
+    <div className="group flex items-center justify-between">
       <Label className={isTotal ? "font-medium" : ""}>{formattedValue}</Label>
       {!isTotal && (
         <Button
           variant="ghost"
           size="sm"
           onClick={onEdit}
-          className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0"
+          className="h-6 w-6 p-0 opacity-0 transition-opacity group-hover:opacity-100"
         >
           <Edit className="h-3 w-3" />
         </Button>

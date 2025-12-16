@@ -1,5 +1,75 @@
 # Completed Tasks
 
+## ✅ Integration Tests MVP (Nov 25, 2024)
+
+### Summary
+
+- **Duration**: 5 days
+- **Total Test Cases**: 34 across 4 test files
+- **Test Files Created**: 8 files (config, setup, fixtures, tests)
+- **Status**: All MVP requirements completed ✅
+
+### Day 1: Test Infrastructure ✅
+
+- [x] Create `test/integration/setup/supabase-test.ts`
+- [x] Add `.env.test.local.example` with Supabase test credentials template
+- [x] Create `jest.config.integration.mjs` (timeout: 30s)
+- [x] Implement `seedTestDatabase()` in `test/integration/fixtures/seed.ts`
+- [x] Implement `cleanupDatabase()` for afterEach cleanup
+- [x] Create test factories: `createTestGarage()`, `createTestUser()`, `createTestVehicle()`, etc.
+
+### Day 2: Reception Workflow ✅
+
+- [x] **Reception Integration Test** (`test/integration/workflows/reception.test.ts`)
+  - Test: createReception with new customer → creates customer + vehicle + repair_order
+  - Test: createReception with existing customer → reuses customer, creates vehicle + repair_order
+  - Test: License plate uniqueness validation
+  - Test: Multiple repair orders for same vehicle
+  - **Total**: 10 test cases
+
+### Day 3: Inventory Management ✅
+
+- [x] **Inventory Integration** (`test/integration/modules/inventory.test.ts`)
+  - Test: Adding repair_order_items decreases spare_parts.stock_quantity
+  - Test: Deleting repair_order_items restores stock
+  - Test: Labor types (no stock impact)
+  - Test: Mixed spare parts + labor types in single order
+  - Test: Negative stock prevention
+  - **Total**: 8 test cases
+
+### Day 4: Payment & Security ✅
+
+- [x] **Payment Integration** (`test/integration/modules/payments.test.ts`)
+  - Test: handleVehiclePayment creates payment record + updates vehicle.total_paid
+  - Test: Payment validation (prevents exceeding debt)
+  - Test: Multiple payments tracking (cumulative)
+  - Test: Different payment methods
+  - Test: Debt across multiple repair orders
+  - **Total**: 9 test cases
+
+- [x] **RLS Security** (`test/integration/security/rls.test.ts`)
+  - Test: Multi-tenant data isolation
+  - Test: Authentication requirements
+  - Test: Admin vs employee permissions
+  - Test: Profile creation with user
+  - **Total**: 7 test cases
+
+### Day 5: Documentation ✅
+
+- [x] Update `test/README.md` with integration test instructions
+- [x] Document test environment setup
+- [x] Update `todo/tasks.md` with completion status
+
+### Running Tests
+
+```bash
+pnpm test:integration              # Run all integration tests
+pnpm test:integration:watch        # Watch mode
+pnpm test:integration reception    # Specific test file
+```
+
+---
+
 ## Done ✓
 
 - [x] Garage info (name, phone, email, address) now displayed on landing page

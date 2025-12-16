@@ -1,11 +1,11 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+import { useEffect } from "react";
+import { toast } from "sonner";
 import { useVehicles } from "@/hooks/use-vehicles";
 import { createColumns } from "./columns";
 import { VehiclesDataTable } from "./data-table";
-import { toast } from "sonner";
-import { useEffect } from "react";
-import { useTranslations } from "next-intl";
 
 export default function VehiclesPage() {
   const { data: vehicles, isLoading, error } = useVehicles();

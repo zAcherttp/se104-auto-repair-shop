@@ -1,6 +1,6 @@
 /**
  * Payments Page Logic Tests
- * 
+ *
  * This test suite focuses on testing the payments page business logic,
  * including default date range generation, error handling, and state management.
  */
@@ -10,16 +10,19 @@ jest.mock("@/hooks/use-payments", () => ({
   usePayments: jest.fn(),
 }));
 
+import type { DateRange } from "react-day-picker";
 import { usePayments } from "@/hooks/use-payments";
-import { mockPaymentsArray, mockPaymentsEmptyArray } from "@/test/mocks/payments-data";
-import { DateRange } from "react-day-picker";
+import {
+  mockPaymentsArray,
+  mockPaymentsEmptyArray,
+} from "@/test/mocks/payments-data";
 
 const mockUsePayments = usePayments as jest.MockedFunction<typeof usePayments>;
 
 describe("Payments Page Logic", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    
+
     // Default successful mock
     mockUsePayments.mockReturnValue({
       data: mockPaymentsArray,
@@ -48,24 +51,26 @@ describe("Payments Page Logic", () => {
 
     it("generates default date range for last 7 days", () => {
       const range = getDefaultDateRange();
-      
+
       expect(range.from).toBeInstanceOf(Date);
       expect(range.to).toBeInstanceOf(Date);
-      
+
       // Verify it's exactly 7 days difference
-      const daysDiff = Math.floor((range.to!.getTime() - range.from!.getTime()) / (1000 * 60 * 60 * 24));
+      const daysDiff = Math.floor(
+        (range.to!.getTime() - range.from!.getTime()) / (1000 * 60 * 60 * 24),
+      );
       expect(daysDiff).toBe(7);
     });
 
     it("sets correct time boundaries for date range", () => {
       const range = getDefaultDateRange();
-      
+
       // From date should be start of day
       expect(range.from!.getHours()).toBe(0);
       expect(range.from!.getMinutes()).toBe(0);
       expect(range.from!.getSeconds()).toBe(0);
       expect(range.from!.getMilliseconds()).toBe(0);
-      
+
       // To date should be end of day
       expect(range.to!.getHours()).toBe(23);
       expect(range.to!.getMinutes()).toBe(59);
@@ -75,16 +80,16 @@ describe("Payments Page Logic", () => {
 
     it("generates different ranges when called at different times", () => {
       const range1 = getDefaultDateRange();
-      
+
       // Simulate time passing
       jest.useFakeTimers();
       jest.advanceTimersByTime(24 * 60 * 60 * 1000); // 1 day
-      
+
       const range2 = getDefaultDateRange();
-      
+
       expect(range2.from!.getTime()).toBeGreaterThan(range1.from!.getTime());
       expect(range2.to!.getTime()).toBeGreaterThan(range1.to!.getTime());
-      
+
       jest.useRealTimers();
     });
   });
@@ -108,17 +113,18 @@ describe("Payments Page Logic", () => {
       } as any);
 
       expect(mockUsePayments).toBeDefined();
-      
+
       // Verify hook was called with initial date range
-      const lastCall = mockUsePayments.mock.calls[mockUsePayments.mock.calls.length - 1];
+      const lastCall =
+        mockUsePayments.mock.calls[mockUsePayments.mock.calls.length - 1];
       if (lastCall && lastCall[0]) {
-        expect(lastCall[0]).toHaveProperty('initialDateRange');
+        expect(lastCall[0]).toHaveProperty("initialDateRange");
       }
     });
 
     it("provides data to components correctly", () => {
       const result = mockUsePayments();
-      
+
       expect(result.data).toEqual(mockPaymentsArray);
       expect(result.isLoading).toBe(false);
       expect(result.error).toBeNull();
@@ -126,7 +132,7 @@ describe("Payments Page Logic", () => {
 
     it("handles date range updates", () => {
       const mockUpdateDateRange = jest.fn();
-      
+
       mockUsePayments.mockReturnValue({
         data: mockPaymentsArray,
         isLoading: false,
@@ -142,12 +148,12 @@ describe("Payments Page Logic", () => {
       } as any);
 
       const result = mockUsePayments();
-      
+
       const newRange: DateRange = {
         from: new Date("2024-11-01"),
         to: new Date("2024-11-30"),
       };
-      
+
       result.updateDateRange(newRange);
       expect(mockUpdateDateRange).toHaveBeenCalledWith(newRange);
     });
@@ -156,7 +162,7 @@ describe("Payments Page Logic", () => {
   describe("Error State Handling", () => {
     it("handles network errors gracefully", () => {
       const errorMessage = "Network connection failed";
-      
+
       mockUsePayments.mockReturnValue({
         data: undefined,
         isLoading: false,
@@ -172,7 +178,7 @@ describe("Payments Page Logic", () => {
       } as any);
 
       const result = mockUsePayments();
-      
+
       expect(result.error).toBeInstanceOf(Error);
       expect(result.error?.message).toBe(errorMessage);
       expect(result.isError).toBe(true);
@@ -181,7 +187,7 @@ describe("Payments Page Logic", () => {
 
     it("handles database errors", () => {
       const errorMessage = "Database query failed";
-      
+
       mockUsePayments.mockReturnValue({
         data: undefined,
         isLoading: false,
@@ -197,7 +203,7 @@ describe("Payments Page Logic", () => {
       } as any);
 
       const result = mockUsePayments();
-      
+
       expect(result.error?.message).toBe(errorMessage);
       expect(result.isError).toBe(true);
     });
@@ -207,7 +213,7 @@ describe("Payments Page Logic", () => {
         from: new Date("2024-12-01"),
         to: new Date("2024-12-08"),
       };
-      
+
       mockUsePayments.mockReturnValue({
         data: undefined,
         isLoading: false,
@@ -220,9 +226,9 @@ describe("Payments Page Logic", () => {
       } as any);
 
       const result = mockUsePayments();
-      
+
       expect(result.dateRange).toEqual(dateRange);
-      expect(typeof result.updateDateRange).toBe('function');
+      expect(typeof result.updateDateRange).toBe("function");
     });
   });
 
@@ -243,7 +249,7 @@ describe("Payments Page Logic", () => {
       } as any);
 
       const result = mockUsePayments();
-      
+
       expect(result.isLoading).toBe(true);
       expect(result.data).toBeUndefined();
       expect(result.error).toBeNull();
@@ -282,7 +288,7 @@ describe("Payments Page Logic", () => {
 
       const loadingResult = mockUsePayments();
       expect(loadingResult.isLoading).toBe(true);
-      
+
       const successResult = mockUsePayments();
       expect(successResult.isLoading).toBe(false);
       expect(successResult.data).toEqual(mockPaymentsArray);
@@ -290,7 +296,7 @@ describe("Payments Page Logic", () => {
 
     it("handles loading state during refetch", () => {
       const mockRefetch = jest.fn();
-      
+
       mockUsePayments.mockReturnValue({
         data: mockPaymentsArray,
         isLoading: false,
@@ -306,7 +312,7 @@ describe("Payments Page Logic", () => {
       } as any);
 
       const result = mockUsePayments();
-      
+
       result.refetch();
       expect(mockRefetch).toHaveBeenCalled();
     });
@@ -329,7 +335,7 @@ describe("Payments Page Logic", () => {
       } as any);
 
       const result = mockUsePayments();
-      
+
       expect(result.data).toEqual(mockPaymentsArray);
       expect(result.data).toHaveLength(5);
       expect(result.isSuccess).toBe(true);
@@ -351,7 +357,7 @@ describe("Payments Page Logic", () => {
       } as any);
 
       const result = mockUsePayments();
-      
+
       expect(result.data).toEqual([]);
       expect(result.data).toHaveLength(0);
       expect(result.isSuccess).toBe(true);
@@ -373,7 +379,7 @@ describe("Payments Page Logic", () => {
       } as any);
 
       const result = mockUsePayments();
-      
+
       // Page should handle undefined data by providing empty array fallback
       const dataForTable = result.data || [];
       expect(dataForTable).toEqual([]);
@@ -387,7 +393,7 @@ describe("Payments Page Logic", () => {
         from: new Date("2024-12-01"),
         to: new Date("2024-12-08"),
       };
-      
+
       mockUsePayments.mockReturnValue({
         data: mockPaymentsArray,
         isLoading: false,
@@ -400,26 +406,26 @@ describe("Payments Page Logic", () => {
       } as any);
 
       const result = mockUsePayments();
-      
+
       // Verify all required props are available
       expect(result.data).toBeDefined();
       expect(result.isLoading).toBeDefined();
       expect(result.dateRange).toBeDefined();
       expect(result.updateDateRange).toBeDefined();
-      
+
       // Test the update function
       const newRange: DateRange = {
         from: new Date("2024-11-01"),
         to: new Date("2024-11-30"),
       };
-      
+
       result.updateDateRange(newRange);
       expect(mockUpdateDateRange).toHaveBeenCalledWith(newRange);
     });
 
     it("handles data table callback interactions", () => {
       const mockUpdateDateRange = jest.fn();
-      
+
       mockUsePayments.mockReturnValue({
         data: mockPaymentsArray,
         isLoading: false,
@@ -435,15 +441,15 @@ describe("Payments Page Logic", () => {
       } as any);
 
       const result = mockUsePayments();
-      
+
       // Simulate date range picker interaction
       const newRange: DateRange = {
         from: new Date("2024-10-01"),
         to: new Date("2024-10-31"),
       };
-      
+
       result.updateDateRange(newRange);
-      
+
       expect(mockUpdateDateRange).toHaveBeenCalledTimes(1);
       expect(mockUpdateDateRange).toHaveBeenCalledWith(newRange);
     });
@@ -466,7 +472,7 @@ describe("Payments Page Logic", () => {
       } as any);
 
       const result = mockUsePayments();
-      
+
       expect(result).toBeDefined();
       expect(result.data).toEqual([]);
       expect(result.dateRange).toBeDefined();
@@ -474,7 +480,7 @@ describe("Payments Page Logic", () => {
 
     it("handles rapid date range changes", () => {
       const mockUpdateDateRange = jest.fn();
-      
+
       mockUsePayments.mockReturnValue({
         data: mockPaymentsArray,
         isLoading: false,
@@ -490,16 +496,25 @@ describe("Payments Page Logic", () => {
       } as any);
 
       const result = mockUsePayments();
-      
+
       // Simulate rapid changes
-      const range1: DateRange = { from: new Date("2024-01-01"), to: new Date("2024-01-31") };
-      const range2: DateRange = { from: new Date("2024-02-01"), to: new Date("2024-02-28") };
-      const range3: DateRange = { from: new Date("2024-03-01"), to: new Date("2024-03-31") };
-      
+      const range1: DateRange = {
+        from: new Date("2024-01-01"),
+        to: new Date("2024-01-31"),
+      };
+      const range2: DateRange = {
+        from: new Date("2024-02-01"),
+        to: new Date("2024-02-28"),
+      };
+      const range3: DateRange = {
+        from: new Date("2024-03-01"),
+        to: new Date("2024-03-31"),
+      };
+
       result.updateDateRange(range1);
       result.updateDateRange(range2);
       result.updateDateRange(range3);
-      
+
       expect(mockUpdateDateRange).toHaveBeenCalledTimes(3);
       expect(mockUpdateDateRange).toHaveBeenNthCalledWith(1, range1);
       expect(mockUpdateDateRange).toHaveBeenNthCalledWith(2, range2);
@@ -523,10 +538,10 @@ describe("Payments Page Logic", () => {
 
       const result1 = mockUsePayments();
       const result2 = mockUsePayments();
-      
+
       // Functions should be stable across calls (if properly memoized)
-      expect(typeof result1.updateDateRange).toBe('function');
-      expect(typeof result2.updateDateRange).toBe('function');
+      expect(typeof result1.updateDateRange).toBe("function");
+      expect(typeof result2.updateDateRange).toBe("function");
     });
   });
 });

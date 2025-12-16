@@ -1,6 +1,6 @@
 /**
  * Settings Hooks Tests
- * 
+ *
  * This test suite focuses on testing the settings-related custom hooks,
  * including TanStack Query integration, data fetching, and state management.
  */
@@ -18,16 +18,18 @@ jest.mock("@/app/actions/settings", () => ({
 }));
 
 import { useQuery } from "@tanstack/react-query";
+import { renderHook } from "@testing-library/react";
 import { getEmployees } from "@/app/actions/settings";
 import { useEmployees } from "@/hooks/use-employees";
-import { 
-  mockEmployeesSuccessResponse, 
-  mockErrorResponse
+import {
+  mockEmployeesSuccessResponse,
+  mockErrorResponse,
 } from "@/test/mocks/settings-data";
-import { renderHook } from "@testing-library/react";
 
 const mockUseQuery = useQuery as jest.MockedFunction<typeof useQuery>;
-const mockGetEmployees = getEmployees as jest.MockedFunction<typeof getEmployees>;
+const mockGetEmployees = getEmployees as jest.MockedFunction<
+  typeof getEmployees
+>;
 
 describe("Settings Hooks", () => {
   beforeEach(() => {
@@ -181,9 +183,10 @@ describe("Settings Hooks", () => {
 
       renderHook(() => useEmployees());
 
-      const lastCall = mockUseQuery.mock.calls[mockUseQuery.mock.calls.length - 1];
+      const lastCall =
+        mockUseQuery.mock.calls[mockUseQuery.mock.calls.length - 1];
       const config = lastCall[0];
-      
+
       // Verify caching configuration
       expect(config.staleTime).toBe(5 * 60 * 1000); // 5 minutes
       expect(config.refetchOnWindowFocus).toBe(false);
@@ -202,9 +205,10 @@ describe("Settings Hooks", () => {
 
       renderHook(() => useEmployees());
 
-      const lastCall = mockUseQuery.mock.calls[mockUseQuery.mock.calls.length - 1];
+      const lastCall =
+        mockUseQuery.mock.calls[mockUseQuery.mock.calls.length - 1];
       const config = lastCall[0];
-      
+
       expect(Array.isArray(config.queryKey)).toBeTruthy();
       expect(config.queryKey[0]).toBe("employees");
     });

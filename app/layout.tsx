@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
-import { Providers } from "@/components/providers/providers";
-import { ReactNode } from "react";
-import { ReactScan } from "@/components/react-scan";
 import { getLocale, getMessages } from "next-intl/server";
+import type { ReactNode } from "react";
+import { Providers } from "@/components/providers/providers";
+import { ReactScan } from "@/components/react-scan";
 
 const defaultUrl = "http://localhost:3000";
 

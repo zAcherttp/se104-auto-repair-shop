@@ -1,25 +1,28 @@
 "use client";
 
-import * as React from "react";
 import {
-  ColumnDef,
+  type ColumnDef,
   flexRender,
-  SortingState,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  type SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronsLeftIcon,
+  ChevronsRightIcon,
+  Search,
+} from "lucide-react";
+import { useTranslations } from "next-intl";
+import * as React from "react";
+import type { DateRange } from "react-day-picker";
+import DateRangePicker from "@/components/date-range-picker";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -28,18 +31,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ChevronsLeftIcon,
-  ChevronsRightIcon,
-  Search,
-} from "lucide-react";
-import { Input } from "@/components/ui/input";
-import DateRangePicker from "@/components/date-range-picker";
-import { DateRange } from "react-day-picker";
-import { useTranslations } from "next-intl";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface PaymentsDataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -86,7 +85,7 @@ export function PaymentsDataTable<TData, TValue>({
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="relative w-80">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute top-2.5 left-2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder={t("searchPlaceholder")}
               value={globalFilter ?? ""}
@@ -120,7 +119,7 @@ export function PaymentsDataTable<TData, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -148,7 +147,7 @@ export function PaymentsDataTable<TData, TValue>({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -170,13 +169,13 @@ export function PaymentsDataTable<TData, TValue>({
 
       {/* Pagination */}
       <div className="flex items-center justify-between px-2">
-        <div className="flex-1 text-sm text-muted-foreground">
+        <div className="flex-1 text-muted-foreground text-sm">
           {table.getFilteredSelectedRowModel().rows.length} {t("of")}{" "}
           {table.getFilteredRowModel().rows.length} {t("rowsSelected")}
         </div>
         <div className="flex items-center space-x-6 lg:space-x-8">
           <div className="flex items-center space-x-2">
-            <Label htmlFor="pageSize" className="text-sm font-medium">
+            <Label htmlFor="pageSize" className="font-medium text-sm">
               {t("rowsPerPage")}
             </Label>
             <Select
@@ -199,7 +198,7 @@ export function PaymentsDataTable<TData, TValue>({
               </SelectContent>
             </Select>
           </div>
-          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+          <div className="flex w-[100px] items-center justify-center font-medium text-sm">
             {t("page")} {table.getState().pagination.pageIndex + 1} {t("of")}{" "}
             {table.getPageCount()}
           </div>

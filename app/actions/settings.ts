@@ -1,9 +1,9 @@
 "use server";
 
-import { createClient } from "@/supabase/server";
-import { createAdminClient } from "@/supabase/admin";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { createAdminClient } from "@/supabase/admin";
+import { createClient } from "@/supabase/server";
 import type { ApiResponse } from "@/types/settings";
 
 // Helper function to check admin role
@@ -21,8 +21,8 @@ export async function checkAdminRole() {
 
   // Use admin client to check user role through auth metadata
   const adminClient = createAdminClient();
-  const { data: adminUserData, error: adminError } = await adminClient.auth
-    .admin.getUserById(user.id);
+  const { data: adminUserData, error: adminError } =
+    await adminClient.auth.admin.getUserById(user.id);
 
   if (adminError || !adminUserData.user) {
     throw new Error("Failed to verify user permissions.");
@@ -255,8 +255,11 @@ export async function createSparePart(
     const { supabase } = await checkAdminRole();
 
     const name = formData.get("name") as string;
-    const price = parseFloat(formData.get("price") as string);
-    const stockQuantity = parseInt(formData.get("stockQuantity") as string);
+    const price = Number.parseFloat(formData.get("price") as string);
+    const stockQuantity = Number.parseInt(
+      formData.get("stockQuantity") as string,
+      10,
+    );
 
     const { data, error } = await supabase
       .from("spare_parts")
@@ -286,8 +289,11 @@ export async function updateSparePart(
     const { supabase } = await checkAdminRole();
 
     const name = formData.get("name") as string;
-    const price = parseFloat(formData.get("price") as string);
-    const stockQuantity = parseInt(formData.get("stockQuantity") as string);
+    const price = Number.parseFloat(formData.get("price") as string);
+    const stockQuantity = Number.parseInt(
+      formData.get("stockQuantity") as string,
+      10,
+    );
 
     const { data, error } = await supabase
       .from("spare_parts")
@@ -314,10 +320,7 @@ export async function deleteSparePart(id: string): Promise<ApiResponse> {
   try {
     const { supabase } = await checkAdminRole();
 
-    const { error } = await supabase
-      .from("spare_parts")
-      .delete()
-      .eq("id", id);
+    const { error } = await supabase.from("spare_parts").delete().eq("id", id);
 
     if (error) throw error;
 
@@ -355,7 +358,7 @@ export async function createLaborType(
     const { supabase } = await checkAdminRole();
 
     const name = formData.get("name") as string;
-    const cost = parseFloat(formData.get("cost") as string);
+    const cost = Number.parseFloat(formData.get("cost") as string);
 
     const { data, error } = await supabase
       .from("labor_types")
@@ -384,7 +387,7 @@ export async function updateLaborType(
     const { supabase } = await checkAdminRole();
 
     const name = formData.get("name") as string;
-    const cost = parseFloat(formData.get("cost") as string);
+    const cost = Number.parseFloat(formData.get("cost") as string);
 
     const { data, error } = await supabase
       .from("labor_types")
@@ -410,10 +413,7 @@ export async function deleteLaborType(id: string): Promise<ApiResponse> {
   try {
     const { supabase } = await checkAdminRole();
 
-    const { error } = await supabase
-      .from("labor_types")
-      .delete()
-      .eq("id", id);
+    const { error } = await supabase.from("labor_types").delete().eq("id", id);
 
     if (error) throw error;
 
@@ -505,15 +505,12 @@ export async function promoteUserToAdmin(userId: string): Promise<ApiResponse> {
     const adminClient = createAdminClient();
 
     // Update user metadata to include admin role
-    const { error: authUpdateError } = await adminClient.auth.admin
-      .updateUserById(
-        userId,
-        {
-          user_metadata: {
-            is_garage_admin: true,
-          },
+    const { error: authUpdateError } =
+      await adminClient.auth.admin.updateUserById(userId, {
+        user_metadata: {
+          is_garage_admin: true,
         },
-      );
+      });
 
     if (authUpdateError) throw authUpdateError;
 
@@ -630,8 +627,8 @@ export async function getGarageInfo(): Promise<ApiResponse<GarageInfo>> {
       address: settingsMap.address || "",
       bannerImageUrl: settingsMap.banner_image_url || "",
       logoImageUrl: settingsMap.logo_image_url || "",
-      logoPosition: (settingsMap.logo_position as "left" | "right" | "none") ||
-        "left",
+      logoPosition:
+        (settingsMap.logo_position as "left" | "right" | "none") || "left",
     };
 
     return {
@@ -674,14 +671,18 @@ export async function validateMonthlyUsage(
 
     if (settingsError) throw settingsError;
 
-    const settingsMap = (settings || []).reduce((acc, setting) => {
-      acc[setting.setting_key] = setting.setting_value;
-      return acc;
-    }, {} as Record<string, string>);
+    const settingsMap = (settings || []).reduce(
+      (acc, setting) => {
+        acc[setting.setting_key] = setting.setting_value;
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
 
-    const maxPartsPerMonth = parseInt(settingsMap.max_parts_per_month) || 0;
+    const maxPartsPerMonth =
+      Number.parseInt(settingsMap.max_parts_per_month, 10) || 0;
     const maxLaborTypesPerMonth =
-      parseInt(settingsMap.max_labor_types_per_month) || 0;
+      Number.parseInt(settingsMap.max_labor_types_per_month, 10) || 0;
 
     // If no limits are set, allow everything
     if (maxPartsPerMonth === 0 && maxLaborTypesPerMonth === 0) {

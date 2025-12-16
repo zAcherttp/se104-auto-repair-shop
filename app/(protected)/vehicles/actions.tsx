@@ -1,5 +1,8 @@
 "use client";
 
+import { CreditCard, MoreHorizontal } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { PaymentDialog } from "@/components/dialogs/payment-dialog";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -7,12 +10,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, CreditCard } from "lucide-react";
-import { VehicleWithDebt } from "@/types/types";
-import { PaymentDialog } from "@/components/dialogs/payment-dialog";
-import { VehicleRegistration } from "../reception/columns";
-import { useTranslations } from "next-intl";
 import { Label } from "@/components/ui/label";
+import type { VehicleWithDebt } from "@/types/types";
+import type { VehicleRegistration } from "../reception/columns";
 
 interface ActionsProps {
   vehicle: VehicleWithDebt;

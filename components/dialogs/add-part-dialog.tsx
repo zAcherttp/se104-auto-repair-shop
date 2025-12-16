@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { type ReactNode, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { addSparePart } from "@/app/actions/inventory";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -20,11 +23,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { SparePartFormSchema, SparePartFormData } from "@/lib/form/definitions";
-import { addSparePart } from "@/app/actions/inventory";
-import { toast } from "sonner";
-import { ReactNode } from "react";
+import {
+  type SparePartFormData,
+  SparePartFormSchema,
+} from "@/lib/form/definitions";
 
 interface AddPartDialogProps {
   trigger: ReactNode;
@@ -106,7 +108,7 @@ export function AddPartDialog({ trigger, onSuccess }: AddPartDialogProps) {
                       placeholder="0.00"
                       {...field}
                       onChange={(e) =>
-                        field.onChange(parseFloat(e.target.value) || 0)
+                        field.onChange(Number.parseFloat(e.target.value) || 0)
                       }
                     />
                   </FormControl>
@@ -127,7 +129,7 @@ export function AddPartDialog({ trigger, onSuccess }: AddPartDialogProps) {
                       placeholder="0"
                       {...field}
                       onChange={(e) =>
-                        field.onChange(parseInt(e.target.value) || 0)
+                        field.onChange(Number.parseInt(e.target.value) || 0)
                       }
                     />
                   </FormControl>

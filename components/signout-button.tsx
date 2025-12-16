@@ -1,11 +1,11 @@
 "use client";
 
-import { createClient } from "@/supabase/client";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
-import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { createClient } from "@/supabase/client";
 
 export function SignOutButton() {
   const router = useRouter();
@@ -22,7 +22,7 @@ export function SignOutButton() {
   return (
     <Button variant={"ghost"} onClick={signOut}>
       {t("title")}
-      <ArrowRight className="w-4 h-4" />
+      <ArrowRight className="h-4 w-4" />
     </Button>
   );
 }

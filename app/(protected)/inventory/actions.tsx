@@ -1,5 +1,7 @@
 "use client";
 
+import { Edit, MoreHorizontal, Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -7,10 +9,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Edit, Trash2 } from "lucide-react";
-import { SparePart } from "@/types/types";
-import { useTranslations } from "next-intl";
 import { Label } from "@/components/ui/label";
+import type { SparePart } from "@/types/types";
 
 interface ActionsProps {
   sparePart: SparePart;

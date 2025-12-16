@@ -1,6 +1,7 @@
 "use client";
 
-import { SalesReport } from "@/types/reports";
+import { useTranslations } from "next-intl";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -9,8 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useTranslations } from "next-intl";
+import type { SalesReport } from "@/types/reports";
 import { Label } from "../ui/label";
 
 interface SalesTableProps {
@@ -22,7 +22,7 @@ export function SalesTable({ data }: SalesTableProps) {
 
   if (!data?.orders?.length) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
+      <div className="py-8 text-center text-muted-foreground">
         {t("noData")}
       </div>
     );
@@ -32,14 +32,14 @@ export function SalesTable({ data }: SalesTableProps) {
     <Card>
       <CardHeader>
         <CardTitle className="text-center">
-          <Label className="text-lg font-bold">
+          <Label className="font-bold text-lg">
             {t("title")} {data.month}
           </Label>
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-center mb-6">
-          <p className="text-lg font-semibold">
+        <div className="mb-6 text-center">
+          <p className="font-semibold text-lg">
             <strong>{t("totalRevenue")}</strong>{" "}
             {data.totalRevenue.toLocaleString("en-US", {
               style: "currency",
@@ -51,19 +51,19 @@ export function SalesTable({ data }: SalesTableProps) {
         <Table>
           <TableHeader>
             <TableRow className="bg-muted">
-              <TableHead className="text-center font-bold border">
+              <TableHead className="border text-center font-bold">
                 {t("columns.no")}
               </TableHead>
-              <TableHead className="text-center font-bold border">
+              <TableHead className="border text-center font-bold">
                 {t("columns.vehicleBrand")}
               </TableHead>
-              <TableHead className="text-center font-bold border">
+              <TableHead className="border text-center font-bold">
                 {t("columns.repairCount")}
               </TableHead>
-              <TableHead className="text-center font-bold border">
+              <TableHead className="border text-center font-bold">
                 {t("columns.revenue")}
               </TableHead>
-              <TableHead className="text-center font-bold border">
+              <TableHead className="border text-center font-bold">
                 {t("columns.rate")}
               </TableHead>
             </TableRow>
@@ -71,22 +71,22 @@ export function SalesTable({ data }: SalesTableProps) {
           <TableBody>
             {data.orders.map((item) => (
               <TableRow key={item.stt} className="border-b hover:bg-muted/50">
-                <TableCell className="text-center border font-medium">
+                <TableCell className="border text-center font-medium">
                   {item.stt}
                 </TableCell>
                 <TableCell className="border font-medium">
                   {item.vehicleBrand}
                 </TableCell>
-                <TableCell className="text-center border">
+                <TableCell className="border text-center">
                   {item.repairCount.toLocaleString()}
                 </TableCell>
-                <TableCell className="text-right border">
+                <TableCell className="border text-right">
                   {item.amount.toLocaleString("en-US", {
                     style: "currency",
                     currency: "USD",
                   })}
                 </TableCell>
-                <TableCell className="text-center border">
+                <TableCell className="border text-center">
                   {item.rate.toFixed(1)}%
                 </TableCell>
               </TableRow>
