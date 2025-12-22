@@ -1,6 +1,8 @@
 import { test, expect } from "@playwright/test";
 import fs from "fs";
 import path from "path";
+import { createAdminClient } from "../../supabase/admin";
+import crypto from "crypto";
 
 // Load .env.local into process.env if present
 const envPath = path.resolve(process.cwd(), ".env.local");
@@ -19,9 +21,6 @@ if (fs.existsSync(envPath)) {
     if (!(key in process.env)) process.env[key] = value;
   });
 }
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { createAdminClient } = require("../../supabase/admin");
 
 /**
  * PERF-PROFILE-08: Employee table pagination/scrolling - measure large list performance
@@ -90,14 +89,13 @@ test.describe("PERF-PROFILE-08: Employee table pagination/scrolling performance"
 
     // Insert in batches to avoid overly large payloads
     const batchSize = 50;
-    const cryptoLib = require("crypto");
     while (toInsert > 0) {
       const thisBatch = Math.min(batchSize, toInsert);
       const inserts: any[] = [];
       const ts = Date.now();
       for (let i = 0; i < thisBatch; i++) {
         inserts.push({
-          id: cryptoLib.randomUUID(),
+          id: crypto.randomUUID(),
           email: `perf.emp.${ts}.${Math.floor(Math.random() * 100000)}@example.com`,
           full_name: `Performance Employee ${ts}-${i}`,
           role: "employee",

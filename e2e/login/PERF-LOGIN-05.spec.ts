@@ -1,4 +1,6 @@
 import { test, expect } from "@playwright/test";
+import fs from "fs";
+import path from "path";
 
 /**
  * PERF-LOGIN-05: Login page JavaScript bundle size
@@ -142,8 +144,6 @@ test.describe("PERF-LOGIN-05: JavaScript Bundle Size", () => {
       resources: jsResources,
     };
 
-    const fs = require("fs");
-    const path = require("path");
     const resultsDir = path.join(process.cwd(), "test-results");
     
     if (!fs.existsSync(resultsDir)) {

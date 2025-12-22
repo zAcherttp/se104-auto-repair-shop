@@ -1,4 +1,6 @@
 import { test, expect } from "@playwright/test";
+import fs from "fs";
+import path from "path";
 
 /**
  * PERF-LOGIN-06: Logout flow latency
@@ -111,7 +113,6 @@ test.describe("PERF-LOGIN-06: Logout Flow Latency", () => {
         const pageHtml = await page.content();
         await page.screenshot({ path: `test-results/PERF-LOGIN-06-no-logout-button-${i}.png`, fullPage: true });
         // write a small debug file with nearest header HTML to results for faster inspection
-        const fs = require('fs');
         try {
           fs.writeFileSync(`test-results/PERF-LOGIN-06-no-logout-button-${i}.html`, pageHtml);
         } catch (e) {}
@@ -307,8 +308,6 @@ test.describe("PERF-LOGIN-06: Logout Flow Latency", () => {
       individualAttempts: metrics,
     };
 
-    const fs = require("fs");
-    const path = require("path");
     const resultsDir = path.join(process.cwd(), "test-results");
     
     if (!fs.existsSync(resultsDir)) {

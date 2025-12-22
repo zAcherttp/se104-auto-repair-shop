@@ -1,4 +1,6 @@
 import { test, expect } from "@playwright/test";
+import fs from "fs";
+import path from "path";
 
 /**
  * PERF-LOGIN-07: Login page memory baseline
@@ -209,8 +211,6 @@ test.describe("PERF-LOGIN-07: Login Page Memory Baseline", () => {
       individualAttempts: metrics,
     };
 
-    const fs = require("fs");
-    const path = require("path");
     const resultsDir = path.join(process.cwd(), "test-results");
     
     if (!fs.existsSync(resultsDir)) {

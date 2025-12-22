@@ -3,6 +3,8 @@
  */
 import { Page } from "@playwright/test";
 import { createAdminClient } from "../../supabase/admin";
+import fs from "fs";
+import path from "path";
 
 export const TEST_CREDENTIALS = {
   email: "saladegg24@gmail.com",
@@ -32,8 +34,6 @@ export async function loginUser(page: Page) {
  * Load environment variables from .env.local
  */
 export function loadEnvFile() {
-  const fs = require("fs");
-  const path = require("path");
   const envPath = path.resolve(process.cwd(), ".env.local");
   
   if (fs.existsSync(envPath)) {
@@ -112,8 +112,6 @@ export function calculatePercentile(sortedValues: number[], percentile: number):
  * Save test results to JSON file
  */
 export function saveTestResults(testName: string, results: any) {
-  const fs = require("fs");
-  const path = require("path");
   const resultsDir = path.join(process.cwd(), "test-results");
   
   if (!fs.existsSync(resultsDir)) {

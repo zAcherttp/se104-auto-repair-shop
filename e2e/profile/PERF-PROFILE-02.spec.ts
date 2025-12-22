@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import fs from "fs";
 import path from "path";
+import { createAdminClient } from "../../supabase/admin";
 
 // Load environment variables so createAdminClient can read NEXT_PUBLIC_SUPABASE_* values
 // Load .env.local into process.env if present (avoids adding dotenv dependency)
@@ -21,11 +22,6 @@ if (fs.existsSync(envPath)) {
 		if (!(key in process.env)) process.env[key] = value;
 	});
 }
-
-// Import admin client after envs are loaded
-// Use require to ensure envs are present when module initializes
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { createAdminClient } = require("../../supabase/admin");
 
 /**
  * PERF-PROFILE-02: Load 50+ Employees

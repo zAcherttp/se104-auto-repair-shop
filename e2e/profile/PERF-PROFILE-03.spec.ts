@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import fs from "fs";
 import path from "path";
+import { createAdminClient } from "../../supabase/admin";
 
 // Load .env.local into process.env if present (same approach as other perf tests)
 const envPath = path.resolve(process.cwd(), ".env.local");
@@ -19,10 +20,6 @@ if (fs.existsSync(envPath)) {
     if (!(key in process.env)) process.env[key] = value;
   });
 }
-
-// Import admin client after envs loaded
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { createAdminClient } = require("../../supabase/admin");
 
 test.describe("PERF-PROFILE-03: Add New Employee Performance", () => {
   test.setTimeout(120000);

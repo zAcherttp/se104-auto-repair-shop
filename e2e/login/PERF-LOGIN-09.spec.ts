@@ -1,4 +1,6 @@
 import { test, expect } from "@playwright/test";
+import fs from "fs";
+import path from "path";
 
 /**
  * PERF-LOGIN-09: Concurrent login sessions
@@ -248,8 +250,6 @@ test.describe("PERF-LOGIN-09: Concurrent Login Sessions", () => {
         individualSessions: metrics,
       };
       
-      const fs = require("fs");
-      const path = require("path");
       const resultsDir = path.join(process.cwd(), "test-results");
       
       if (!fs.existsSync(resultsDir)) {

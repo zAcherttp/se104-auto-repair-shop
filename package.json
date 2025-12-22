@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -27,7 +28,10 @@
     "testcafe:dashboard": "testcafe chrome testcafe/dashboard.ts",
     "testcafe:navigation": "testcafe chrome testcafe/navigation.ts",
     "testcafe:orders": "testcafe chrome testcafe/repair-orders.ts",
-    "testcafe:reports": "testcafe chrome testcafe/reports.ts"
+    "testcafe:reports": "testcafe chrome testcafe/reports.ts",
+    "test:integration:watch": "jest --config=jest.config.integration.mjs --watch",
+    "db:seed": "node scripts/seed-db.js",
+    "test:integration": "jest --config=jest.config.integration.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -87,9 +91,11 @@
     "sonner": "^2.0.5",
     "tailwind-merge": "^3.3.0",
     "vaul": "^1.1.2",
-    "zod": "^3.25.67"
+    "zod": "^3.25.67",
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
+    "tsx": "^4.7.0",
     "@eslint/eslintrc": "^3",
     "@eslint/js": "^9.29.0",
     "@next/eslint-plugin-next": "^15.3.4",

@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import fs from "fs";
 import path from "path";
+import { createAdminClient } from "../../supabase/admin";
 
 // Load .env.local into process.env if present
 const envPath = path.resolve(process.cwd(), ".env.local");
@@ -19,9 +20,6 @@ if (fs.existsSync(envPath)) {
     if (!(key in process.env)) process.env[key] = value;
   });
 }
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { createAdminClient } = require("../../supabase/admin");
 
 test.describe("PERF-PROFILE-06: Add Employee dialog load time", () => {
   test.setTimeout(120000);

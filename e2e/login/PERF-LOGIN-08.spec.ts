@@ -1,4 +1,6 @@
 import { test, expect } from "@playwright/test";
+import fs from "fs";
+import path from "path";
 
 /**
  * PERF-LOGIN-08: Form input responsiveness
@@ -189,8 +191,6 @@ test.describe("PERF-LOGIN-08: Form Input Responsiveness", () => {
         keystrokeDetails: allMetrics,
       };
       
-      const fs = require("fs");
-      const path = require("path");
       const resultsDir = path.join(process.cwd(), "test-results");
       
       if (!fs.existsSync(resultsDir)) {
