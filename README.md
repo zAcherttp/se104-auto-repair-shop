@@ -14,6 +14,14 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Clone and run locally
 
+### Demo availability
+
+The previous public Vercel demo is currently unavailable. Its broken link has
+been removed from the repository's About section. The source and local setup
+remain available below; running the app requires your own Supabase project.
+
+### Setup
+
 1. You'll first need a Supabase project, which can be made [via the Supabase dashboard](https://database.new).
 
 2. Set up the database with the schema provided in /supabase/schema.
